@@ -2,37 +2,48 @@
 
 //1. Update the curlUrl and auth token to retrieve data
 
-//include 'databaseManager.class2.php';
-include 'spotify.php';
+include '../includes/databaseManager.class2.php';
+include '../includes/curlFunctions.php';
 
-$ch = curl_init();
+function findSongIdForDatapoint($db, $dp){
 
-curl_setopt($ch, CURLOPT_URL, "https://chartex.com/api/tiktok_songs/?pageSize=200&ordering=-videos_last_14days");
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    $tiktok_platform_id = $dp['tiktok_platform_id'];
+    $song = $db->findSongByTiktokId($tiktok_platform_id);
+        
+    if($song != false) {
+        return $song['id'];
+    } else {
+        $id = $db->createSong([
+            'song_name' => $dp['song_name'],
+            'artist_name' => $dp['artist_name'],
+            'tiktok_platform_id' => $dp['tiktok_platform_id'],
+            'spotify_platform_id' => $dp['spotify_platform_id'],
+            'youtube_platform_id' => $dp['youtube_platform_id'],
+            'itunes_platform_id' => $dp['itunes_platform_id'],
+            'itunes_album_platform_id' => $dp['itunes_album_platform_id'],
+            'song_guid' => $dp['song_guid']
+        ]);
 
-$headers = [
-    'authorization: Token 3fc2a8c4624b8f6ff94ee3ca5b8ba9fd335024d2f3ee76e3a812aed3a0c55690'
-];
-
-curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-
-$resp = curl_exec($ch);
-$decoded = json_decode($resp, true);
-
-curl_close($ch);
-
-if($e = curl_error($ch)){
-    echo $e;
-} else {
-    $db = new DatabaseManager();
-    // print_r($decoded);
-
-    $date = date("Y-m-d");
-
-    for($i=0; $i < count($decoded["results"]); $i++){
-        $decoded["results"][$i]["fetch_date"] = $date;
-        $decoded["results"][$i]["source"] = "https://chartex.com";
-
-        $db->insertSong($decoded["results"][$i]);
+        return $id;
     }
+}
+
+$db = new DatabaseManager();
+$date = date("Y-m-d");
+
+$dataPoints = fetchTiktokDatapoints();
+foreach($dataPoints as $dp){
+    var_dump($dp);
+    echo "<hr>";
+    $id = findSongIdForDatapoint($db, $dp);
+
+    var_dump($dp);
+
+    $dp["fetch_date"] = $date;
+    $dp["source"] = "https://chartex.com";
+    $dp["song_id"] = $id;
+    $dp["spotify_popularity"] = isset($dp["spotify_platform_id"]) ? fetchSpotifyDatapoints($dp["spotify_platform_id"]) : null;
+    $dp["youtube_views"] = isset($dp["youtube_platform_id"]) ? fetchYoutubeDatapoints($dp["youtube_platform_id"]) : null;
+
+    $db->insertDatapoint($dp);
 }

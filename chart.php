@@ -1,3 +1,44 @@
+<?php
+
+include './includes/common.php';
+include './includes/databaseManager.class2.php';
+
+$sid = isset($_GET["sid"]) && ctype_digit($_GET['sid']) ? intval($_GET["sid"]) : -1;
+if($sid < 0) redirect("./index.php");
+
+$db = new DatabaseManager();
+$dataPoints = $db->getDatapointsForSong($sid);
+
+if($dataPoints === false) redirect("./index.php");
+
+
+// [object, object{
+//  spotify_popularity, tiktok_popularity  
+//}]
+
+// [spotify_popularity_day1, spotify_popularity_day2]
+// [tiktok_popularity_day1, tiktok_popularity_day2]
+
+$sy = [];
+$tt = [];
+$yt = [];
+
+foreach($dataPoints as $dp){
+    $sy[] = $dp["spotify_popularity"];
+    $tt[] = $dp["number_of_videos_last_14days"];
+    $yt[] = $dp["youtube_views"];
+}
+
+$maxTiktok = max($tt);
+$maxYoutube = max($yt);
+
+for($i=0; $i<count($tt); $i++){
+    $tt[$i] = ($tt[$i] * 100)/$maxTiktok;
+}
+for($i=0; $i<count($yt); $i++){
+    $yt[$i] = ($yt[$i] * 100)/$maxYoutube;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,14 +56,14 @@
     <script>
         const ctx = document.getElementById('myChart');
 
-        let ytData = [98,99.4, 96.5, 100];
-        let syData = [38,38,40,50];
-        let ttData = [97,99.4,100,98.7];
+        let ytData = JSON.parse('<?php echo json_encode($yt) ?>');
+        let syData = JSON.parse('<?php echo json_encode($sy) ?>');
+        let ttData = JSON.parse('<?php echo json_encode($tt) ?>');
 
         new Chart(ctx, {
         type: 'line',
         data: {
-            labels: ['24.12.2022', '26.12.2022', '28.12.2022', '30.12.2022'], //x
+            labels: ['2023-01-03', '2023-01-04', '2023-01-05', '2023-01-06', '2023-01-07'], //x
             datasets: [
                 {
                 label: 'Youtube views',

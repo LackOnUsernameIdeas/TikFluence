@@ -49,7 +49,7 @@ class DatabaseManager {
     }
 
     public function fetchYoutube(){
-        $sql = "SELECT youtube_views, id, youtube_platform_id, fetch_date FROM tiktok_records WHERE DATE(`fetch_date`) = DATE(NOW())"; //WHERE id > 200,400,600...
+        $sql = "SELECT youtube_views, id, youtube_platform_id, fetch_date FROM tiktok_records WHERE DATE(`fetch_date`) = DATE(NOW())"; //WHERE id > 200,400,600... DATE(`fetch_date`) = DATE(NOW())
 
         $query = $this->pdo->prepare($sql);
         $query->execute();
@@ -57,7 +57,7 @@ class DatabaseManager {
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function fetchAllData(){
+    public function fetchAllDataFromRecords(){
         $sql = "SELECT * FROM tiktok_records"; //  WHERE DATE(`fetch_date`) = DATE(NOW())
 
         $query = $this->pdo->prepare($sql);
@@ -68,29 +68,8 @@ class DatabaseManager {
         return $songs;
     }
 
-    public function getDetails($sid){
-        $sql = "SELECT * FROM tiktok_records WHERE id=?";
-        $prepared = $this->pdo->prepare($sql);
-        $prepared->execute(array($sid));
-
-        return $prepared;
-    }
-
-    public function getFullList(){
-
-        $sql = "SELECT * FROM `tiktok_records` WHERE DATE(`fetch_date`) = DATE(NOW())";
-        $prepared = $this->pdo->prepare($sql);
-        $prepared->execute(array());
-
-        return $prepared;
-    }
-
-    public function fetchMode($prepared){
-        $prepared->setFetchMode(PDO::FETCH_ASSOC);
-    }
-
-    public function findSongById($tiktok_platform_id){
-        $sql = "SELECT * FROM tiktok_songs WHERE `tiktok_platform_id` LIKE '$tiktok_platform_id'";
+    public function fetchAllDataFromSongs(){
+        $sql = "SELECT * FROM tiktok_songs"; //  WHERE DATE(`fetch_date`) = DATE(NOW())
 
         $query = $this->pdo->prepare($sql);
         $query->execute();
@@ -100,18 +79,59 @@ class DatabaseManager {
         return $songs;
     }
 
+    public function getDatapointsForSong($sid){
+        $sql = "SELECT * FROM `tiktok_records`
+                WHERE song_id=:mandja";
+
+        $query = $this->pdo->prepare($sql);
+        $query->bindValue('mandja', $sid);
+
+        $query->execute();
+        $result_array = $query->fetchAll(PDO::FETCH_ASSOC);
+
+        return count($result_array) > 0 ? $result_array : false;
+    }
+
+    public function listTop200Songs() {
+        $sql = "SELECT * FROM `tiktok_records` 
+                JOIN tiktok_songs ON tiktok_records.song_id = tiktok_songs.id
+                WHERE DATE(`fetch_date`) = DATE(NOW())";
+
+        $query = $this->pdo->prepare($sql);
+        $query->execute();
+        $result_array = $query->fetchAll(PDO::FETCH_ASSOC);
+
+        return count($result_array) > 0 ? $result_array : false;
+    }
+
+    public function fetchMode($prepared){
+        $prepared->setFetchMode(PDO::FETCH_ASSOC);
+    }
+
+    public function findSongByTiktokId($pesho){
+        $sql = "SELECT * FROM tiktok_songs WHERE `tiktok_platform_id`=:nababatifurchiloto";
+
+        $query = $this->pdo->prepare($sql);
+        $query->bindValue('nababatifurchiloto', $pesho);
+        $query->execute();
+
+        $result = $query->fetch(PDO::FETCH_ASSOC);
+
+        return $result;
+    }
+
     public function createSong($object){
-        $sql = "INSERT INTO `tiktok_songs` ( 
-			`song_name`, 
-			`artist_name`,
-            `tiktok_platform_id`,
-			`spotify_platform_id`, 
-			`youtube_platform_id`,
-			`itunes_platform_id`, 
-			`itunes_album_platform_id`,
-			`song_guid`
-			)
-			VALUES (
+        $sql = "
+            INSERT INTO `tiktok_songs` ( 
+                `song_name`, 
+                `artist_name`,
+                `tiktok_platform_id`,
+                `spotify_platform_id`, 
+                `youtube_platform_id`,
+                `itunes_platform_id`, 
+                `itunes_album_platform_id`,
+                `song_guid`
+            ) VALUES (
                 :song_name, 
                 :artist_name,
                 :tiktok_platform_id,
@@ -120,7 +140,8 @@ class DatabaseManager {
                 :itunes_platform_id, 
                 :itunes_album_platform_id,
                 :song_guid
-				)";
+            )
+        ";
 
         $query = $this->pdo->prepare($sql);
 
@@ -138,6 +159,17 @@ class DatabaseManager {
         return $this->pdo->lastInsertId();
     }
 
+    public function insertIdForDataPoint($object){
+        $sql = "UPDATE `tiktok_records` SET `song_id`=:song_id WHERE `song_id` = NULL";
+
+        $query = $this->pdo->prepare($sql);
+
+        $query->bindValue('song_id', $object['song_id']);
+
+        $query->execute();
+
+        return $this->pdo->lastInsertId();
+    }
  //    private function initTables() {
  //        $this->pdo->exec(
  //            "CREATE TABLE IF NOT EXISTS User ( ".
@@ -188,59 +220,41 @@ class DatabaseManager {
      * @param array $object
      * @return string
      */
-    public function insertSong($object){
+    public function insertDatapoint($object){
         $sql = "INSERT INTO `tiktok_records` (
+            `song_id`,
 			`rank`, 
-			`song_name`, 
-			`artist_name`, 
 			`total_likes_count`, 
 			`number_of_videos`,
-			`number_of_videos_last_14days`, 
-			`youtube_platform_id`, 
-			`spotify_platform_id`, 
-			`tiktok_platform_id`, 
-			`itunes_platform_id`, 
-			`itunes_album_platform_id`,
-			`song_guid`,
+			`number_of_videos_last_14days`,
 			`fetch_date`,
 			`source`,
-			`spotify_popularity`
+			`spotify_popularity`,
+            `youtube_views`
 			)
 			VALUES (
-				:rank, 
-				:song_name, 
-				:artist_name, 
+                :song_id,
+				:rank,  
 				:total_likes_count, 
 				:number_of_videos, 
 				:number_of_videos_last_14days, 
-				:youtube_platform_id, 
-				:spotify_platform_id, 
-				:tiktok_platform_id, 
-				:itunes_platform_id, 
-				:itunes_album_platform_id, 
-				:song_guid,
 				:fetch_date,
 				:source,
-				:spotify_popularity
+				:ushitesamigolemi,
+                :youtube_views
 				)";
 
         $query = $this->pdo->prepare($sql);
 
+        $query->bindValue('song_id', $object['song_id']);
         $query->bindValue('rank', $object['rank']);
-        $query->bindValue('song_name', $object['song_name']);
-        $query->bindValue('artist_name', $object['artist_name']);
         $query->bindValue('total_likes_count', $object['total_likes_count']);
 		$query->bindValue('number_of_videos', $object['number_of_videos']);
 		$query->bindValue('number_of_videos_last_14days', $object['number_of_videos_last_14days']);
-		$query->bindValue('youtube_platform_id', $object['youtube_platform_id']);
-		$query->bindValue('spotify_platform_id', $object['spotify_platform_id']);
-		$query->bindValue('tiktok_platform_id', $object['tiktok_platform_id']);
-		$query->bindValue('itunes_platform_id', $object['itunes_platform_id']);
-		$query->bindValue('itunes_album_platform_id', $object['itunes_album_platform_id']);
-		$query->bindValue('song_guid', $object['song_guid']);
 		$query->bindValue('fetch_date', $object['fetch_date']);
 		$query->bindValue('source', $object['source']);
-		$query->bindValue('spotify_popularity', $object['spotify_popularity']);
+		$query->bindValue('ushitesamigolemi', $object['spotify_popularity']);
+        $query->bindValue('youtube_views', $object['youtube_views']);
 
         $query->execute();
 
