@@ -63,7 +63,7 @@ function fetchTiktokDatapointsBG(){
 // Взимаме данните за Spotify
 function fetchSpotifyDatapoints($spotify_id){
     
-    $accessToken = 'BQANXx-HaukzAHet2fL9rVhD4J4WK8u1c7o4xGqhvTw0MxIz7G_suJmOaHtQtsgl5rUoYJidIOMaYQlbwRM46sQRX1-0LcCxbjUpOAfkTsJhoSfucMrmd8ON7F9zJBS8Il4NnVOkdRzy-kZ0SVKkLmHITBFlcigjlvXAbNHw2Ne7I6GZpaALG_BWd8dunD5W5vtn0UD264MT27tzHLpBtTlwmQjsuiFj0xLKEjs2KzTQh6FCYGEnkDJXk2AG60ahXh6zHvoqR4lBfg';
+    $accessToken = 'BQDqoKTRoDXqZRzydM66sX0Mbb7rjb4zDhlOOfnIFS4trmOKs-wYDYzSq5vSv3uvARXimQ3hBqZ-IdDnByBXB87I9nMmv6If-5AI8ej1Vw4XnkOPPdxOvk21jmvXGV48YkF4XDYXPImgO63NbTbx9tOqNcTXRRWYHDOU_-C6-oVF9bllHtj_v-Og3vYQzjfnK8pIYwqZQcDIARoUdPKrNbySpTtB2-dQImUn_g3S-CW92gfMTCIuFkU7gaKGEqq0_Dq8CJMzyC6ukg';
     
     $curl = curl_init();
     
