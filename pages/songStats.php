@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
     //Вмъкване на нужните файлове
     include "../selectDate.php";
@@ -241,12 +241,6 @@
         $growthSY = true;
     }
 
-    // $setConclusion = false;
-    // if($growthTT) {
-    //     if($growthSY || $growthYT) {
-    //         $setConclusion = true;
-    //     }
-    // }
     $setConclusionPerfect = false;
     $setConclusionYT = false;
     $setConclusionSY = false;

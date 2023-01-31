@@ -11,13 +11,7 @@ class DatabaseManager {
 
     //Създаваме връзка с базата данни
     public function __construct(){
-    	$dbopts = [
-    		'db_host' => 'localhost',
-    		'db_name' => 'tikfluence',
-    		'db_user' => 'root',
-    		'db_pass' => '',
-            'db_port' => 3306
-    	];
+    	include("config.php");
 
 		try {
 			$this->pdo = new PDO('mysql:host='.$dbopts['db_host'].';port='.$dbopts['db_port'].';dbname='.$dbopts['db_name'], $dbopts['db_user'], $dbopts['db_pass']);

@@ -2,7 +2,7 @@
 
 //Вмъкваме нужните файлове
 include '../../includes/databaseManager.php';
-include '../includes/curlFunctions.php';
+include 'curlFunctions.php';
 
 //Търсим песен по запис, ако я няма я създаваме. Връща се id като резултат
 

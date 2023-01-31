@@ -5,7 +5,7 @@
     //Вмъкване на нужните файлове
     include '../includes/databaseManager.php';
     include '../includes/common.php';
-    include '../scraping/includes/curlFunctions.php';
+    include '../scraping/curlFunctions.php';
 
     //Създаваме връзката с базата данни
     $db = new DatabaseManager();
