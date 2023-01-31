@@ -6,13 +6,10 @@ function fetchTiktokDatapoints(){
     $ch = curl_init();
 
     curl_setopt($ch, CURLOPT_URL, "https://chartex.com/api/tiktok_songs/?pageSize=200&ordering=-videos_last_14days"); //за 14 дни
-    //curl_setopt($ch, CURLOPT_URL, "https://chartex.com/api/tiktok_songs/?pageSize=200&ordering=-number_videos"); //като цяло
-
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
     $headers = [
         'authorization: Token 3fc2a8c4624b8f6ff94ee3ca5b8ba9fd335024d2f3ee76e3a812aed3a0c55690' //за 14 дни
-        //'authorization: Token 3fc2a8c4624b8f6ff94ee3ca5b8ba9fd335024d2f3ee76e3a812aed3a0c55690' //като цяло
     ];
 
     curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
@@ -20,12 +17,12 @@ function fetchTiktokDatapoints(){
     $resp = curl_exec($ch);
     $decoded = json_decode($resp, true);
 
-    curl_close($ch);
-
     $error_message = curl_error($ch);
     if($error_message != ''){
         die($error_message);
     };
+    
+    curl_close($ch);
 
     return $decoded["results"];
 }
@@ -35,14 +32,11 @@ function fetchTiktokDatapointsBG(){
 
     $ch = curl_init();
 
-    curl_setopt($ch, CURLOPT_URL, "https://chartex.com/api/tiktok_songs/?pageSize=200&ordering=-videos_last_14days&nationality=481"); //за 14 дни
-    //curl_setopt($ch, CURLOPT_URL, "https://chartex.com/api/tiktok_songs/?pageSize=200&ordering=-number_videos&nationality=481"); //като цяло
-    
+    curl_setopt($ch, CURLOPT_URL, "https://chartex.com/api/tiktok_songs/?pageSize=200&ordering=-videos_last_14days&nationality=481"); //за 14 дни    
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
     $headers = [
         'authorization: Token 3fc2a8c4624b8f6ff94ee3ca5b8ba9fd335024d2f3ee76e3a812aed3a0c55690' //за 14 дни
-        //'authorization: Token 3fc2a8c4624b8f6ff94ee3ca5b8ba9fd335024d2f3ee76e3a812aed3a0c55690' //като цяло
     ];
 
     curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
@@ -50,21 +44,37 @@ function fetchTiktokDatapointsBG(){
     $resp = curl_exec($ch);
     $decoded = json_decode($resp, true);
 
-    curl_close($ch);
-
     $error_message = curl_error($ch);
     if($error_message != ''){
         die($error_message);
     };
 
+    curl_close($ch);
+
     return $decoded["results"];
 }
 
+function generateSpotifyToken(){
+
+    $client_id = '011ae0a5a92045b38edf6051aeb21370';
+    $client_secret = 'f3d26c4f8b9d49cb96ea6561a5e5bf2d';
+
+    $ch = curl_init();
+
+    curl_setopt($ch, CURLOPT_URL, 'https://accounts.spotify.com/api/token' );
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1 );
+    curl_setopt($ch, CURLOPT_POST, 1 );
+    curl_setopt($ch, CURLOPT_POSTFIELDS, 'grant_type=client_credentials' );
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array('Authorization: Basic '.base64_encode($client_id.':'.$client_secret)));
+
+    $result=curl_exec($ch);
+    return json_decode($result)->access_token;
+
+}
+
 // Взимаме данните за Spotify
-function fetchSpotifyDatapoints($spotify_id){
-    
-    $accessToken = 'BQB00diz0yDnw2-ExSXRt6r4v2GEKaqJQ6uL4K7xMiJBmla6L_S1jOaawFv-iVKBaybKUZj1ytCYGXKtTPGZMb775XLHldJgK65icyljv_f4SPi_Q0FD6u8KnXeF18l5XmnqPnGipftUzAJ6Vu6Bybvq2Sgbopdy2erkLiY2FaA5q3BebZYg8uRyE2Bxuv7Uyc8_7czYVPqd4SoOkUwZe2qpf8plZG-ehnOcaJ0-9UeeEIVbtTcKsox2gMdRHCSkFQbgGy6JOFK1tg';
-    
+function fetchSpotifyDatapoints($spotify_id, $accessToken){
+
     $curl = curl_init();
     
     curl_setopt_array($curl, array(
@@ -156,12 +166,12 @@ function fetchTiktokTopUsers(){
     $resp = curl_exec($ch);
     $decoded = json_decode($resp, true);
 
-    curl_close($ch);
-
     $error_message = curl_error($ch);
     if($error_message != ''){
         die($error_message);
     };
+
+    curl_close($ch);
 
     return $decoded["results"];
 }
@@ -183,12 +193,60 @@ function fetchTiktokTopVideos(){
     $resp = curl_exec($ch);
     $decoded = json_decode($resp, true);
 
+    $error_message = curl_error($ch);
+    if($error_message != ''){
+        die($error_message);
+    };
+
     curl_close($ch);
+
+    return $decoded["results"];
+}
+
+function fetchTikTokUserId($username){
+
+    $ch = curl_init();
+
+    curl_setopt($ch, CURLOPT_URL, "https://countik.com/api/exist/$username");
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+    $headers = [];
+
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
+    $resp = curl_exec($ch);
+    $decoded = json_decode($resp, true);
 
     $error_message = curl_error($ch);
     if($error_message != ''){
         die($error_message);
     };
 
-    return $decoded["results"];
+    curl_close($ch);
+
+    return $decoded["id"];
+}
+
+function fetchTikTokUserData($id){
+
+    $ch = curl_init();
+
+    curl_setopt($ch, CURLOPT_URL, "https://countik.com/api/userinfo/$id");
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+    $headers = [];
+
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
+    $resp = curl_exec($ch);
+    $decoded = json_decode($resp, true);
+
+    $error_message = curl_error($ch);
+    if($error_message != ''){
+        die($error_message);
+    };
+
+    curl_close($ch);
+
+    return $decoded;
 }

@@ -1,6 +1,7 @@
 ﻿<?php
 
     //Вмъкване на нужните файлове
+    include "../selectDate.php";
     include '../includes/databaseManager.php';
     include '../includes/common.php';
 
@@ -15,10 +16,11 @@
     $dataPoints = $db->getDatapointsForSongBG($sid);
     if($dataPoints === false) redirect("songs.php");
 
-    //Взимаме необходимата информация и я превръщаме където е необходимо в проценти
-
-    $todayYesterdayData = $db->getTodayYesterdayDataBG($sid);
     $songData = $db->getSongDataBG($sid);
+
+    //Взимаме необходимата информация и я превръщаме където е необходимо в проценти
+    $selectDate = isset($_SESSION["setDate"]) ? $_SESSION["setDate"] : date("Y-m-d");
+    $todayYesterdayData = $db->getTodayYesterdayDataBG($sid, $selectDate);
 
 
     $dates = [];
@@ -27,9 +29,9 @@
 
     $likes = [];
 
-    $syPercent = [];
-    $ttPercent = [];
-    $ytPercent = [];
+    $syPercents = [];
+    $ttPercents = [];
+    $ytPercents = [];
 
     $ttNums = [];
     $ytNums = [];
@@ -44,29 +46,35 @@
         $likes[] = $dp["total_likes_count"];
 
         $syNums[] = $dp["spotify_popularity"];
-        $syPercent[] = $dp["spotify_popularity"];
+        $syPercents[] = $dp["spotify_popularity"];
 
         $ttNums[] = $dp["number_of_videos"];
-        $ttPercent[] = $dp["number_of_videos"];
+        $ttPercents[] = $dp["number_of_videos"];
 
         $ytNums[] = $dp["youtube_views"];
-        $ytPercent[] = $dp["youtube_views"];
+        $ytPercents[] = $dp["youtube_views"];
     }
 
-    $maxTiktok = max($ttPercent);
-    $maxYoutube = max($ytPercent);
-    $maxSpotify = max($syPercent);
+    
+    $ttNulls = array_keys($ttNums, null);
+    $ytNulls = array_keys($ytNums, null);
+    $syNulls = array_keys($syNums, null);
 
-    for($i=0; $i<count($ttPercent); $i++){
-        $ttPercent[$i] = $maxTiktok ? ($ttPercent[$i] * 100)/$maxTiktok : null;
+
+    $maxTiktok = max($ttPercents);
+    $maxYoutube = max($ytPercents);
+    $maxSpotify = max($syPercents);
+
+    for($i=0; $i<count($ttPercents); $i++){
+        $ttPercents[$i] = $maxTiktok ? ($ttPercents[$i] * 100)/$maxTiktok : null;
     }
 
-    for($i=0; $i<count($ytPercent); $i++){
-        $ytPercent[$i] = $maxYoutube ? ($ytPercent[$i] * 100)/$maxYoutube : null;
+    for($i=0; $i<count($ytPercents); $i++){
+        $ytPercents[$i] = $maxYoutube ? ($ytPercents[$i] * 100)/$maxYoutube : null;
     }
 
-    for($i=0; $i<count($syPercent); $i++){
-        $syPercent[$i] = $maxSpotify ? ($syPercent[$i] * 100)/$maxSpotify : null;
+    for($i=0; $i<count($syPercents); $i++){
+        $syPercents[$i] = $maxSpotify ? ($syPercents[$i] * 100)/$maxSpotify : null;
     }
 
 
@@ -272,12 +280,7 @@
         <aside id="leftsidebar" class="sidebar">
             <!-- User Info -->
             <div class="user-info">
-                <div class="body m-l-85 m-t-25">
-                    <button type="button" class="btn bg-purple waves-effect card" onclick="window.location.href='songs.php'">
-                        <i class="material-icons">arrow_back</i>
-                        <span>НАЗАД</span>
-                    </button>
-                </div>
+
             </div>
             <!-- #User Info -->
             <!-- Menu -->
@@ -362,10 +365,10 @@
             <!-- Footer -->
             <div class="legal">
                 <div class="copyright">
-                    &copy; 2016 - 2017 <a href="javascript:void(0);">AdminBSB - Material Design</a>.
+                    <a href="javascript:void(0);"><a href="privacyPolicy.php">Privacy Policy</a> ,</a>
                 </div>
-                <div class="version">
-                    <b>Version: </b> 1.0.5
+                <div class="copyright">
+                    <a href="javascript:void(0);"><a href="termsAndConditions.php">Terms and Conditions</a></a>
                 </div>
             </div>
             <!-- #Footer -->
@@ -522,6 +525,11 @@
             <div class="col-lg-14 col-md-14 col-sm-14 col-xs-14">
                 <div class="card">
                     <div class="body">
+                        <button type="button" class="btn bg-purple waves-effect card" onclick="window.location.href='songs.php'">
+                            <i class="material-icons">arrow_back</i>
+                            <span>НАЗАД</span>
+                        </button>
+
                         <div class="block-header">
                             <div class="card">
                                 <div class="body">
@@ -534,67 +542,96 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="block-header">
+                            <div class="card">
+                                <div class="body">
+                                    <h2>Изберете дата за която искате да видите данни:</h2>
+                                    <div class="btn-group">
+                                        <button type="button" class="btn bg-purple dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <span class="caret"></span>
+                                            <span class="sr-only" id="setDateButton"><?php echo $selectDate ?></span>
+                                        </button>
+
+                                        <ul class="dropdown-menu">
+                                            <?php if($dates):?>
+                                                <?php foreach(array_slice($dates, 1) as $date):?>
+                                                    <li data-id="<?php echo $date ?>" data-role="setDate"><a href="javascript:void(0);" class="waves-effect waves-block"><?php echo $date?></a></li>
+                                                    <li role="separator" class="divider"></li>
+                                                <?php endforeach;?>
+                                            <?php endif;?>
+                                        </ul>
+                                    
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+
                         <div class="card">
                             <div class="body">
                                 <div class="block-header">
                                     <h2>СТАТИСТИКИ ЗА:</h2>
-                                    <h1><?php echo $songData["song_name"] ?> </h1><h2>ОТ</h2>
+                                    <h1><a href="https://www.tiktok.com/music/-<?php echo $songData["tiktok_platform_id"] ?>" target="_blank"><?php echo $songData["song_name"]?></a></h1><h2>ОТ</h2>
                                     <h1><?php echo $songData["artist_name"] ?></h1>
                                 </div>
                             </div>
                         </div>
-                        <div class="row clearfix">
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                <div class="card">
-                                    <div class="header">
-                                        <h2>
-                                            ИЗМЕНЕНИЕ НА РАНКА НА: <?php echo $songData["song_name"] ?>
-                                        </h2>
-                                        <ul class="header-dropdown m-r--5">
-                                            <li class="dropdown">
-                                                <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                                    <i class="material-icons">more_vert</i>
-                                                </a>
-                                                <ul class="dropdown-menu pull-right">
-                                                    <li><a href="javascript:void(0);">Action</a></li>
-                                                    <li><a href="javascript:void(0);">Another action</a></li>
-                                                    <li><a href="javascript:void(0);">Something else here</a></li>
-                                                </ul>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div class="body">
-                                        <div class="content">
-                                            <canvas id="RankChart"></canvas>
-                                        </div>
-                                    </div>
-                                </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="row clearfix">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <div class="card">
+                        <div class="header">
+                            <h2>
+                                ИЗМЕНЕНИЕ НА РАНГА НА: <?php echo $songData["song_name"] ?>
+                            </h2>
+                            <ul class="header-dropdown m-r--5">
+                                <li class="dropdown">
+                                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                        <i class="material-icons">more_vert</i>
+                                    </a>
+                                    <ul class="dropdown-menu pull-right">
+                                        <li><a href="javascript:void(0);">Action</a></li>
+                                        <li><a href="javascript:void(0);">Another action</a></li>
+                                        <li><a href="javascript:void(0);">Something else here</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="body">
+                            <div class="content">
+                                <canvas id="RankChart"></canvas>
                             </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                <div class="card">
-                                    <div class="header">
-                                        <h2>
-                                            ИЗМЕНЕНИЕ НА ХАРЕСВАНИЯТА НА: <?php echo $songData["song_name"] ?>
-                                        </h2>
-                                        <ul class="header-dropdown m-r--5">
-                                            <li class="dropdown">
-                                                <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                                    <i class="material-icons">more_vert</i>
-                                                </a>
-                                                <ul class="dropdown-menu pull-right">
-                                                    <li><a href="javascript:void(0);">Action</a></li>
-                                                    <li><a href="javascript:void(0);">Another action</a></li>
-                                                    <li><a href="javascript:void(0);">Something else here</a></li>
-                                                </ul>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div class="body">
-                                        <div class="content">
-                                            <canvas id="LikesChart"></canvas>
-                                        </div>
-                                    </div>
-                                </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <div class="card">
+                        <div class="header">
+                            <h2>
+                                ИЗМЕНЕНИЕ НА ХАРЕСВАНИЯТА НА: <?php echo $songData["song_name"] ?>
+                            </h2>
+                            <ul class="header-dropdown m-r--5">
+                                <li class="dropdown">
+                                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                        <i class="material-icons">more_vert</i>
+                                    </a>
+                                    <ul class="dropdown-menu pull-right">
+                                        <li><a href="javascript:void(0);">Action</a></li>
+                                        <li><a href="javascript:void(0);">Another action</a></li>
+                                        <li><a href="javascript:void(0);">Something else here</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="body">
+                            <div class="content">
+                                <canvas id="LikesChart"></canvas>
                             </div>
                         </div>
                     </div>
@@ -608,34 +645,51 @@
                     </div>
                     <div class="content">
                         <div class="text">TikTok видеа</div>
-                        <div class="number"><?php echo $todayTT ?></div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                <div class="info-box bg-red hover-zoom-effect">
-                    <div class="icon">
-                        <i class="material-icons">play_circle_outline</i>
-                    </div>
-                    <div class="content">
-                        <div class="text">YouTube гледания</div>
-                        <div class="number"><?php echo $todayYT ?></div>
+                        <div class="number"><?php echo number_format($todayTT) ?></div>
                     </div>
                 </div>
             </div>
 
-            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                <div class="info-box bg-green hover-zoom-effect">
-                    <div class="icon">
-                        <i class="material-icons">playlist_play</i>
-                    </div>
-                    <div class="content">
-                        <div class="text">Spotify популярност</div>
-                        <div class="number"><?php echo $todaySY ?></div>
+            <?php if(count($ytNulls) != count($ytNums)):?>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div class="info-box bg-red hover-zoom-effect">
+                        <div class="icon">
+                            <i class="material-icons">play_circle_outline</i>
+                        </div>
+                        <div class="content">
+                            <div class="text">YouTube гледания</div>
+                            <div class="number"><?php echo number_format($todayYT) ?></div>
+                        </div>
                     </div>
                 </div>
-            </div>
+            <?php endif;?>
+
+            <?php if(count($syNulls) != count($syNums)):?>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div class="info-box bg-green hover-zoom-effect">
+                        <div class="icon">
+                            <i class="material-icons">playlist_play</i>
+                        </div>
+                        <div class="content">
+                            <div class="text">Spotify популярност</div>
+                            <div class="number"><?php echo $todaySY ?></div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+            <?php else:?>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+            <?php endif;?>
 
             <div class="row clearfix">
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
@@ -718,7 +772,7 @@
                 </div>
                 <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
             
-                    <h2>Промяна в популярност от вчера:</h2>
+                    <h2>Промяна в популярност от <?php echo date('Y-m-d', mktime(0, 0, 0, date(substr($selectDate, 5, 2)), (date(substr($selectDate, 8, 2))-1), date(substr($selectDate, 0, 4)) ));?>:</h2>
 
                     <div class="info-box-3 bg-deep-purple hover-expand-effect">
                         <div class="icon">
@@ -746,296 +800,301 @@
 
                 </div>
             </div>
+
+            <?php if(count($ytNulls) != count($ytNums)):?>
+                <div class="row clearfix">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <div class="card">
+                            <div class="header">
+                                <h2>
+                                    ИЗМЕНЕНИЕ НА ПОПУЛЯРНОСТ В YOUTUBE
+                                </h2>
+                                <ul class="header-dropdown m-r--5">
+                                    <li class="dropdown">
+                                        <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                            <i class="material-icons">more_vert</i>
+                                        </a>
+                                        <ul class="dropdown-menu pull-right">
+                                            <li><a href="javascript:void(0);">Action</a></li>
+                                            <li><a href="javascript:void(0);">Another action</a></li>
+                                            <li><a href="javascript:void(0);">Something else here</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="body">
+                                <div class="content">
+                                    <canvas id="YouTubeGraphChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <div class="card">
+                            <div class="header">
+                                <h2>
+                                    ИЗМЕНЕНИЕ НА ПОПУЛЯРНОСТ В YOUTUBE
+                                </h2>
+                                <ul class="header-dropdown m-r--5">
+                                    <li class="dropdown">
+                                        <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                            <i class="material-icons">more_vert</i>
+                                        </a>
+                                        <ul class="dropdown-menu pull-right">
+                                            <li><a href="javascript:void(0);">Action</a></li>
+                                            <li><a href="javascript:void(0);">Another action</a></li>
+                                            <li><a href="javascript:void(0);">Something else here</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="body">
+                                <div class="content">
+                                    <canvas id="YouTubeBarChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <div class="card">
+                            <div class="header">
+                                <h2>
+                                    ИЗМЕНЕНИЕ НА ПОПУЛЯРНОСТ В YOUTUBE
+                                </h2>
+                                <ul class="header-dropdown m-r--5">
+                                    <li class="dropdown">
+                                        <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                            <i class="material-icons">more_vert</i>
+                                        </a>
+                                        <ul class="dropdown-menu pull-right">
+                                            <li><a href="javascript:void(0);">Action</a></li>
+                                            <li><a href="javascript:void(0);">Another action</a></li>
+                                            <li><a href="javascript:void(0);">Something else here</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="body">
+                                <div class="content">
+                                    <canvas id="YouTubeRadarChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                
+                        <h2>Промяна в популярност от <?php echo date('Y-m-d', mktime(0, 0, 0, date(substr($selectDate, 5, 2)), (date(substr($selectDate, 8, 2))-1), date(substr($selectDate, 0, 4)) ));?>:</h2>
+
+                        <div class="info-box-3 bg-red hover-expand-effect">
+                            <div class="icon">
+                                <i class="material-icons">
+                                    <?php echo $chooseIconYT ?>
+                                </i>
+                            </div>
+                            <div class="content">
+                                <div class="text">YouTube</div>
+                                <div class="number"><?php echo round($subtractionYTPercents, 3) ?>%</div>
+                            </div>
+                        </div>
+
+                        <div class="info-box-3 bg-red hover-expand-effect">
+                            <div class="icon">
+                                <i class="material-icons">
+                                    <?php echo $chooseIconYT ?>
+                                </i>
+                            </div>
+                            <div class="content">
+                                <div class="text">YouTube</div>
+                                <div class="number"><?php echo number_format($subtractionYTNums) ?></div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            <?php endif;?>
             
-            <div class="row clearfix">
-                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <div class="card">
-                        <div class="header">
-                            <h2>
-                                ИЗМЕНЕНИЕ НА ПОПУЛЯРНОСТ В YOUTUBE
-                            </h2>
-                            <ul class="header-dropdown m-r--5">
-                                <li class="dropdown">
-                                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                        <i class="material-icons">more_vert</i>
-                                    </a>
-                                    <ul class="dropdown-menu pull-right">
-                                        <li><a href="javascript:void(0);">Action</a></li>
-                                        <li><a href="javascript:void(0);">Another action</a></li>
-                                        <li><a href="javascript:void(0);">Something else here</a></li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="body">
-                            <div class="content">
-                                <canvas id="YouTubeGraphChart"></canvas>
+            <?php if(count($syNulls) != count($syNums)):?>
+                <div class="row clearfix">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <div class="card">
+                            <div class="header">
+                                <h2>
+                                    ИЗМЕНЕНИЕ НА ПОПУЛЯРНОСТ В SPOTIFY
+                                </h2>
+                                <ul class="header-dropdown m-r--5">
+                                    <li class="dropdown">
+                                        <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                            <i class="material-icons">more_vert</i>
+                                        </a>
+                                        <ul class="dropdown-menu pull-right">
+                                            <li><a href="javascript:void(0);">Action</a></li>
+                                            <li><a href="javascript:void(0);">Another action</a></li>
+                                            <li><a href="javascript:void(0);">Something else here</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="body">
+                                <div class="content">
+                                    <canvas id="SpotifyGraphChart"></canvas>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <div class="card">
-                        <div class="header">
-                            <h2>
-                                ИЗМЕНЕНИЕ НА ПОПУЛЯРНОСТ В YOUTUBE
-                            </h2>
-                            <ul class="header-dropdown m-r--5">
-                                <li class="dropdown">
-                                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                        <i class="material-icons">more_vert</i>
-                                    </a>
-                                    <ul class="dropdown-menu pull-right">
-                                        <li><a href="javascript:void(0);">Action</a></li>
-                                        <li><a href="javascript:void(0);">Another action</a></li>
-                                        <li><a href="javascript:void(0);">Something else here</a></li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="body">
-                            <div class="content">
-                                <canvas id="YouTubeBarChart"></canvas>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <div class="card">
+                            <div class="header">
+                                <h2>
+                                    ИЗМЕНЕНИЕ НА ПОПУЛЯРНОСТ В SPOTIFY
+                                </h2>
+                                <ul class="header-dropdown m-r--5">
+                                    <li class="dropdown">
+                                        <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                            <i class="material-icons">more_vert</i>
+                                        </a>
+                                        <ul class="dropdown-menu pull-right">
+                                            <li><a href="javascript:void(0);">Action</a></li>
+                                            <li><a href="javascript:void(0);">Another action</a></li>
+                                            <li><a href="javascript:void(0);">Something else here</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="body">
+                                <div class="content">
+                                    <canvas id="SpotifyBarChart"></canvas>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <div class="card">
-                        <div class="header">
-                            <h2>
-                                ИЗМЕНЕНИЕ НА ПОПУЛЯРНОСТ В YOUTUBE
-                            </h2>
-                            <ul class="header-dropdown m-r--5">
-                                <li class="dropdown">
-                                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                        <i class="material-icons">more_vert</i>
-                                    </a>
-                                    <ul class="dropdown-menu pull-right">
-                                        <li><a href="javascript:void(0);">Action</a></li>
-                                        <li><a href="javascript:void(0);">Another action</a></li>
-                                        <li><a href="javascript:void(0);">Something else here</a></li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="body">
-                            <div class="content">
-                                <canvas id="YouTubeRadarChart"></canvas>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <div class="card">
+                            <div class="header">
+                                <h2>
+                                    ИЗМЕНЕНИЕ НА ПОПУЛЯРНОСТ В SPOTIFY
+                                </h2>
+                                <ul class="header-dropdown m-r--5">
+                                    <li class="dropdown">
+                                        <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                            <i class="material-icons">more_vert</i>
+                                        </a>
+                                        <ul class="dropdown-menu pull-right">
+                                            <li><a href="javascript:void(0);">Action</a></li>
+                                            <li><a href="javascript:void(0);">Another action</a></li>
+                                            <li><a href="javascript:void(0);">Something else here</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="body">
+                                <div class="content">
+                                    <canvas id="SpotifyRadarChart"></canvas>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
-            
-                    <h2>Промяна в популярност от вчера:</h2>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                
+                        <h2>Промяна в популярност от <?php echo date('Y-m-d', mktime(0, 0, 0, date(substr($selectDate, 5, 2)), (date(substr($selectDate, 8, 2))-1), date(substr($selectDate, 0, 4)) ));?>:</h2>
+                        
+                        <div class="info-box-3 bg-green hover-expand-effect">
+                            <div class="icon">
+                                <i class="material-icons">
+                                    <?php echo $chooseIconSY ?>
+                                </i>
+                            </div>
+                            <div class="content">
+                                <div class="text">Spotify</div>
+                                <div class="number"><?php echo round($subtractionSY, 3)?> %</div>
+                            </div>
+                        </div>
 
-                    <div class="info-box-3 bg-red hover-expand-effect">
-                        <div class="icon">
-                            <i class="material-icons">
-                                <?php echo $chooseIconYT ?>
-                            </i>
-                        </div>
-                        <div class="content">
-                            <div class="text">YouTube</div>
-                            <div class="number"><?php echo round($subtractionYTPercents, 3) ?>%</div>
-                        </div>
                     </div>
-
-                    <div class="info-box-3 bg-red hover-expand-effect">
-                        <div class="icon">
-                            <i class="material-icons">
-                                <?php echo $chooseIconYT ?>
-                            </i>
-                        </div>
-                        <div class="content">
-                            <div class="text">YouTube</div>
-                            <div class="number"><?php echo $subtractionYTNums?></div>
-                        </div>
-                    </div>
-
                 </div>
-            </div>
+            <?php endif;?>
 
-            <div class="row clearfix">
-                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <div class="card">
-                        <div class="header">
-                            <h2>
-                                ИЗМЕНЕНИЕ НА ПОПУЛЯРНОСТ В SPOTIFY
-                            </h2>
-                            <ul class="header-dropdown m-r--5">
-                                <li class="dropdown">
-                                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                        <i class="material-icons">more_vert</i>
-                                    </a>
-                                    <ul class="dropdown-menu pull-right">
-                                        <li><a href="javascript:void(0);">Action</a></li>
-                                        <li><a href="javascript:void(0);">Another action</a></li>
-                                        <li><a href="javascript:void(0);">Something else here</a></li>
-                                    </ul>
-                                </li>
-                            </ul>
+            <?php if($ttPercents[0] != null && $ytPercents[0] != null):?>
+                <div class="row clearfix">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <div class="card">
+                            <div class="header">
+                                <h2>
+                                    СРАВНЕНИЕ МЕЖДУ TIKTOK И YOUTUBE
+                                </h2>
+                                <ul class="header-dropdown m-r--5">
+                                    <li class="dropdown">
+                                        <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                            <i class="material-icons">more_vert</i>
+                                        </a>
+                                        <ul class="dropdown-menu pull-right">
+                                            <li><a href="javascript:void(0);">Action</a></li>
+                                            <li><a href="javascript:void(0);">Another action</a></li>
+                                            <li><a href="javascript:void(0);">Something else here</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="body">
+                                <div class="content">
+                                    <canvas id="TikTokYouTubeGraphChart"></canvas>
+                                </div>
+                            </div>
                         </div>
-                        <div class="body">
-                            <div class="content">
-                                <canvas id="SpotifyGraphChart"></canvas>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <div class="card">
+                            <div class="header">
+                                <h2>
+                                    СРАВНЕНИЕ МЕЖДУ TIKTOK И YOUTUBE
+                                </h2>
+                                <ul class="header-dropdown m-r--5">
+                                    <li class="dropdown">
+                                        <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                            <i class="material-icons">more_vert</i>
+                                        </a>
+                                        <ul class="dropdown-menu pull-right">
+                                            <li><a href="javascript:void(0);">Action</a></li>
+                                            <li><a href="javascript:void(0);">Another action</a></li>
+                                            <li><a href="javascript:void(0);">Something else here</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="body">
+                                <div class="content">
+                                    <canvas id="TikTokYouTubeBarChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <div class="card">
+                            <div class="header">
+                                <h2>
+                                    СРАВНЕНИЕ МЕЖДУ TIKTOK И YOUTUBE
+                                </h2>
+                                <ul class="header-dropdown m-r--5">
+                                    <li class="dropdown">
+                                        <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                            <i class="material-icons">more_vert</i>
+                                        </a>
+                                        <ul class="dropdown-menu pull-right">
+                                            <li><a href="javascript:void(0);">Action</a></li>
+                                            <li><a href="javascript:void(0);">Another action</a></li>
+                                            <li><a href="javascript:void(0);">Something else here</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="body">
+                                <div class="content">
+                                    <canvas id="TikTokYouTubeRadarChart"></canvas>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <div class="card">
-                        <div class="header">
-                            <h2>
-                                ИЗМЕНЕНИЕ НА ПОПУЛЯРНОСТ В SPOTIFY
-                            </h2>
-                            <ul class="header-dropdown m-r--5">
-                                <li class="dropdown">
-                                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                        <i class="material-icons">more_vert</i>
-                                    </a>
-                                    <ul class="dropdown-menu pull-right">
-                                        <li><a href="javascript:void(0);">Action</a></li>
-                                        <li><a href="javascript:void(0);">Another action</a></li>
-                                        <li><a href="javascript:void(0);">Something else here</a></li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="body">
-                            <div class="content">
-                                <canvas id="SpotifyBarChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <div class="card">
-                        <div class="header">
-                            <h2>
-                                ИЗМЕНЕНИЕ НА ПОПУЛЯРНОСТ В SPOTIFY
-                            </h2>
-                            <ul class="header-dropdown m-r--5">
-                                <li class="dropdown">
-                                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                        <i class="material-icons">more_vert</i>
-                                    </a>
-                                    <ul class="dropdown-menu pull-right">
-                                        <li><a href="javascript:void(0);">Action</a></li>
-                                        <li><a href="javascript:void(0);">Another action</a></li>
-                                        <li><a href="javascript:void(0);">Something else here</a></li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="body">
-                            <div class="content">
-                                <canvas id="SpotifyRadarChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
-            
-                    <h2>Промяна в популярност от вчера:</h2>
-                    
-                    <div class="info-box-3 bg-green hover-expand-effect">
-                        <div class="icon">
-                            <i class="material-icons">
-                                <?php echo $chooseIconSY ?>
-                            </i>
-                        </div>
-                        <div class="content">
-                            <div class="text">Spotify</div>
-                            <div class="number"><?php echo round($subtractionSY, 3)?> %</div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-            <div class="row clearfix">
-                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <div class="card">
-                        <div class="header">
-                            <h2>
-                                СРАВНЕНИЕ МЕЖДУ TIKTOK И YOUTUBE
-                            </h2>
-                            <ul class="header-dropdown m-r--5">
-                                <li class="dropdown">
-                                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                        <i class="material-icons">more_vert</i>
-                                    </a>
-                                    <ul class="dropdown-menu pull-right">
-                                        <li><a href="javascript:void(0);">Action</a></li>
-                                        <li><a href="javascript:void(0);">Another action</a></li>
-                                        <li><a href="javascript:void(0);">Something else here</a></li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="body">
-                            <div class="content">
-                                <canvas id="TikTokYouTubeGraphChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <div class="card">
-                        <div class="header">
-                            <h2>
-                                СРАВНЕНИЕ МЕЖДУ TIKTOK И YOUTUBE
-                            </h2>
-                            <ul class="header-dropdown m-r--5">
-                                <li class="dropdown">
-                                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                        <i class="material-icons">more_vert</i>
-                                    </a>
-                                    <ul class="dropdown-menu pull-right">
-                                        <li><a href="javascript:void(0);">Action</a></li>
-                                        <li><a href="javascript:void(0);">Another action</a></li>
-                                        <li><a href="javascript:void(0);">Something else here</a></li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="body">
-                            <div class="content">
-                                <canvas id="TikTokYouTubeBarChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <div class="card">
-                        <div class="header">
-                            <h2>
-                                СРАВНЕНИЕ МЕЖДУ TIKTOK И YOUTUBE
-                            </h2>
-                            <ul class="header-dropdown m-r--5">
-                                <li class="dropdown">
-                                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                        <i class="material-icons">more_vert</i>
-                                    </a>
-                                    <ul class="dropdown-menu pull-right">
-                                        <li><a href="javascript:void(0);">Action</a></li>
-                                        <li><a href="javascript:void(0);">Another action</a></li>
-                                        <li><a href="javascript:void(0);">Something else here</a></li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="body">
-                            <div class="content">
-                                <canvas id="TikTokYouTubeRadarChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
+            <?php endif;?>
 
         </div>
     </section>
@@ -1044,149 +1103,35 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js" integrity="sha512-JPcRR8yFa8mmCsfrw4TNte1ZvF1e3+1SdGMslZvmrzDYxS69J7J49vkFL8u6u8PlPJK+H3voElBtUCzaXj+6ig==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <!-- Статистики -->
     <script>
+
+    //Данни за ползване
+    let dates =  JSON.parse('<?php echo json_encode($dates) ?>');
+
+    let ranks = JSON.parse('<?php echo json_encode($ranks) ?>');
+    let likes = JSON.parse('<?php echo json_encode($likes) ?>');
+
+    let ytDataNums = JSON.parse('<?php echo json_encode($ytNums) ?>');
+    let syDataNums = JSON.parse('<?php echo json_encode($syNums) ?>');
+    let ttDataNums = JSON.parse('<?php echo json_encode($ttNums) ?>');
+
+    let ytDataPercents = JSON.parse('<?php echo json_encode($ytPercents) ?>');
+    let syDataPercents = JSON.parse('<?php echo json_encode($syPercents) ?>');
+    let ttDataPercents = JSON.parse('<?php echo json_encode($ttPercents) ?>');
+
+    let ytDataNulls = JSON.parse('<?php echo json_encode($ytNulls) ?>');
+    let syDataNulls = JSON.parse('<?php echo json_encode($syNulls) ?>');
+
+    
     // Линейни статистики
 
-        //Данни за ползване
-        let dates =  JSON.parse('<?php echo json_encode($dates) ?>');
-
-        let ranks = JSON.parse('<?php echo json_encode($ranks) ?>');
-
-        let likes = JSON.parse('<?php echo json_encode($likes) ?>');
-
-        let ytDataNums = JSON.parse('<?php echo json_encode($ytNums) ?>');
-        let syDataNums = JSON.parse('<?php echo json_encode($syNums) ?>');
-        let ttDataNums = JSON.parse('<?php echo json_encode($ttNums) ?>');
-
-        let ytDataPercents = JSON.parse('<?php echo json_encode($ytPercent) ?>');
-        let syDataPercents = JSON.parse('<?php echo json_encode($syPercent) ?>');
-        let ttDataPercents = JSON.parse('<?php echo json_encode($ttPercent) ?>');
-
-
-        //TikTok
-        new Chart(document.getElementById('TikTokGraphChart'), {
-        type: 'line',
-        data: {
-            labels: dates, //x
-            datasets: [
-                {
-                    label: 'TikTok видеа',
-                    data: ttDataNums, //y
-                    borderColor: 'rgba(159, 90, 253, 1)',
-                    backgroundColor: 'rgba(159, 90, 253, 0.3)',
-                    fill: true,
-                    tension: 0.4
-                }
-            ]
-        },
-            options: {
-                scales: {
-                    y: {
-                        type: 'linear',
-                        display: true,
-                        position: "left"
-                    }
-                }
-            }
-        });
-
-        //YouTube
-        new Chart(document.getElementById('YouTubeGraphChart'), {
-        type: 'line',
-        data: {
-            labels: dates, //x
-            datasets: [
-                {
-                    label: 'YouTube гледания',
-                    data: ytDataNums , //y
-                    borderColor: 'rgba(255, 99, 132, 0.9)',
-                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                    fill: true,
-                    tension: 0.4
-                }
-            ]
-        },
-            options: {
-                scales: {
-                    y: {
-                        type: 'linear',
-                        display: true,
-                        position: "left"
-                    }
-                }
-            }
-        });
-
-        //Spotify
-        new Chart(document.getElementById('SpotifyGraphChart'), {
-        type: 'line',
-        data: {
-            labels: dates, //x
-            datasets: [
-                {
-                    label: 'Spotify популярност',
-                    data: syDataNums, //y
-                    borderColor: 'rgba(147, 250, 165, 1)',
-                    backgroundColor: 'rgba(147, 250, 165, 0.4)',
-                    fill: true,
-                    tension: 0.4
-                }
-            ]
-        },
-            options: {
-                scales: {
-                    y: {
-                        type: 'linear',
-                        display: true,
-                        position: "left"
-                    }
-                }
-            }
-        });
-
-        //TikTok и YouTube сравнение
-        new Chart(document.getElementById('TikTokYouTubeGraphChart'), {
-        type: 'line',
-        data: {
-            labels: dates, //x
-            datasets: [
-                {
-                    label: 'YouTube гледания',
-                    data: ytDataNums , //y
-                    borderColor: 'rgba(255, 99, 132, 0.9)',
-                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                    fill: true,
-                    tension: 0.4
-                },
-                {
-                    label: 'TikTok видеа',
-                    data: ttDataNums, //y
-                    borderColor: 'rgba(159, 90, 253, 1)',
-                    backgroundColor: 'rgba(159, 90, 253, 0.3)',
-                    fill: true,
-                    tension: 0.4
-                }
-            ]
-        },
-            options: {
-                scales: {
-                    y: {
-                        type: 'linear',
-                        display: true,
-                        position: "left"
-                    }
-                }
-            }
-        });
-
-        
-        //Статистика за проследяване на ранка на дадена песен
+        //Статистика за проследяване на ранга на дадена песен
         new Chart(document.getElementById('RankChart'), {
             type: 'line',
             data: {
                 labels: dates, //x
                 datasets: [
                     {
-                        label: 'Ранк',
+                        label: 'Ранг',
                         data: ranks, //y
                         borderColor: 'rgba(255, 148, 112, 1)',
                         backgroundColor: 'rgba(255, 148, 112, 0.3)',
@@ -1228,14 +1173,143 @@
                     y: {
                         type: 'linear',
                         display: true,
-                        position: "left",
-                        reverse: true
+                        position: "left"
                     }
                 }
             }
         });
 
-    // Стълбчести статистики
+        //TikTok
+        new Chart(document.getElementById('TikTokGraphChart'), {
+        type: 'line',
+        data: {
+            labels: dates, //x
+            datasets: [
+                {
+                    label: 'TikTok видеа',
+                    data: ttDataNums, //y
+                    borderColor: 'rgba(159, 90, 253, 1)',
+                    backgroundColor: 'rgba(159, 90, 253, 0.3)',
+                    fill: true,
+                    tension: 0.4
+                }
+            ]
+        },
+            options: {
+                scales: {
+                    y: {
+                        type: 'linear',
+                        display: true,
+                        position: "left"
+                    }
+                }
+            }
+        });
+
+        //YouTube
+        if(ytDataNulls.length != ytDataNums.length){
+            new Chart(document.getElementById('YouTubeGraphChart'), {
+            type: 'line',
+            data: {
+                labels: dates, //x
+                datasets: [
+                    {
+                        label: 'YouTube гледания',
+                        data: ytDataNums , //y
+                        borderColor: 'rgba(255, 99, 132, 0.9)',
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        fill: true,
+                        tension: 0.4,
+                        spanGaps: true
+                    }
+                ]
+            },
+                options: {
+                    scales: {
+                        y: {
+                            type: 'linear',
+                            display: true,
+                            position: "left"
+                        }
+                    }
+                }
+            });
+        }
+
+        //Spotify
+        if(syDataNulls.length != syDataNums.length){
+            new Chart(document.getElementById('SpotifyGraphChart'), {
+            type: 'line',
+            data: {
+                labels: dates, //x
+                datasets: [
+                    {
+                        label: 'Spotify популярност',
+                        data: syDataNums, //y
+                        borderColor: 'rgba(147, 250, 165, 1)',
+                        backgroundColor: 'rgba(147, 250, 165, 0.4)',
+                        fill: true,
+                        tension: 0.4,
+                        spanGaps: true
+                    }
+                ]
+            },  
+                options: {
+                    scales: {
+                        y: {
+                            type: 'linear',
+                            display: true,
+                            position: "left"
+                        }
+                    }
+                }
+            });
+        }
+
+        //TikTok и YouTube сравнение
+        if(ytDataNulls.length != ytDataNums.length){
+            new Chart(document.getElementById('TikTokYouTubeGraphChart'), {
+                type: 'line',
+                data: {
+                    labels: dates, //x
+                    datasets: [
+                        {
+                            label: 'YouTube гледания',
+                            data: ytDataNums , //y
+                            borderColor: 'rgba(255, 99, 132, 0.9)',
+                            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                            fill: true,
+                            tension: 0.4,
+                            spanGaps: true
+                        },
+                        {
+                            label: 'TikTok видеа',
+                            data: ttDataNums, //y
+                            borderColor: 'rgba(159, 90, 253, 1)',
+                            backgroundColor: 'rgba(159, 90, 253, 0.3)',
+                            fill: true,
+                            tension: 0.4,
+                            spanGaps: true
+                        }
+                    ]
+                },
+                    options: {
+                        scales: {
+                            y: {
+                                type: 'linear',
+                                display: true,
+                                position: "left"
+                            }
+                        }
+                    }
+            });
+        }
+
+    </script>
+
+    <script>
+
+    //Стълбчести статистики    
 
         //TikTok
         new Chart(document.getElementById('TikTokBarChart'), {
@@ -1265,95 +1339,108 @@
         });
 
         //YouTube
-        new Chart(document.getElementById('YouTubeBarChart'), {
-            type: 'bar',
-            data: {
-                labels: dates, //x
-                datasets: [
-                    {
-                        label: 'Youtube гледания',
-                        data: ytDataNums , //y
-                        borderColor: 'rgba(255, 99, 132, 0.9)',
-                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                        fill: true,
-                        tension: 0.4
-                    }
-                ]
-            },
-                options: {
-                    scales: {
-                        y: {
-                            type: 'linear',
-                            display: true,
-                            position: "left"
+        if(ytDataNulls.length != ytDataNums.length){
+            new Chart(document.getElementById('YouTubeBarChart'), {
+                type: 'bar',
+                data: {
+                    labels: dates, //x
+                    datasets: [
+                        {
+                            label: 'Youtube гледания',
+                            data: ytDataNums , //y
+                            borderColor: 'rgba(255, 99, 132, 0.9)',
+                            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                            fill: true,
+                            tension: 0.4,
+                            spanGaps: true
+                        }
+                    ]
+                },
+                    options: {
+                        scales: {
+                            y: {
+                                type: 'linear',
+                                display: true,
+                                position: "left"
+                            }
                         }
                     }
-                }
-        });
+            });
+        }
 
         //Spotify
-        new Chart(document.getElementById('SpotifyBarChart'), {
-            type: 'bar',
-            data: {
-                labels: dates, //x
-                datasets: [
-                    {
-                        label: 'Spotify популярност',
-                        data: syDataNums, //y
-                        borderColor: 'rgba(147, 250, 165, 1)',
-                        backgroundColor: 'rgba(147, 250, 165, 0.4)',
-                        fill: true,
-                        tension: 0.4
-                    }
-                ]
-            },
-                options: {
-                    scales: {
-                        y: {
-                            type: 'linear',
-                            display: true,
-                            position: "left"
+        if(syDataNulls.length != syDataNums.length){
+            new Chart(document.getElementById('SpotifyBarChart'), {
+                type: 'bar',
+                data: {
+                    labels: dates, //x
+                    datasets: [
+                        {
+                            label: 'Spotify популярност',
+                            data: syDataNums, //y
+                            borderColor: 'rgba(147, 250, 165, 1)',
+                            backgroundColor: 'rgba(147, 250, 165, 0.4)',
+                            fill: true,
+                            tension: 0.4,
+                            spanGaps: true
+                        }
+                    ]
+                },
+                    options: {
+                        scales: {
+                            y: {
+                                type: 'linear',
+                                display: true,
+                                position: "left"
+                            }
                         }
                     }
-                }
-        });
+            });
+        }
 
         //TikTok и YouTube сравнение
-        new Chart(document.getElementById('TikTokYouTubeBarChart'), {
-            type: 'bar',
-            data: {
-                labels: dates, //x
-                datasets: [
-                    {
-                        label: 'Tiktok видеа',
-                        data: ttDataNums, //y
-                        borderColor: 'rgba(159, 90, 253, 1)',
-                        backgroundColor: 'rgba(159, 90, 253, 0.3)',
-                        fill: true,
-                        tension: 0.4
-                    },
-                    {
-                        label: 'Youtube гледания',
-                        data: ytDataNums , //y
-                        borderColor: 'rgba(255, 99, 132, 0.9)',
-                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                        fill: true,
-                        tension: 0.4
-                    }
-                ]
-            },
-                options: {
-                    scales: {
-                        y: {
-                            type: 'linear',
-                            display: true,
-                            position: "left"
+        if(ytDataNulls.length != ytDataNums.length){
+            new Chart(document.getElementById('TikTokYouTubeBarChart'), {
+                type: 'bar',
+                data: {
+                    labels: dates, //x
+                    datasets: [
+                        {
+                            label: 'Tiktok видеа',
+                            data: ttDataNums, //y
+                            borderColor: 'rgba(159, 90, 253, 1)',
+                            backgroundColor: 'rgba(159, 90, 253, 0.3)',
+                            fill: true,
+                            tension: 0.4,
+                            spanGaps: true
+                        },
+                        {
+                            label: 'Youtube гледания',
+                            data: ytDataNums , //y
+                            borderColor: 'rgba(255, 99, 132, 0.9)',
+                            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                            fill: true,
+                            tension: 0.4,
+                            spanGaps: true
+                        }
+                    ]
+                },
+                    options: {
+                        scales: {
+                            y: {
+                                type: 'linear',
+                                display: true,
+                                position: "left"
+                            }
                         }
                     }
-                }
-        });
+            });
+        }
+    </script>
 
-    //Радарни статистики
+    <script>
+        
+    //Радарни статистики    
 
         //TikTok
         new Chart(document.getElementById("TikTokRadarChart"), {
@@ -1376,80 +1463,112 @@
             }
         });
         
-        //Youube
-        new Chart(document.getElementById("YouTubeRadarChart"), {
-            type: 'radar',
-            data: {
-                labels: dates,
-                datasets: [
-                {
-                    label: "YouTube гледания",
-                    data: ytDataNums,
-                    borderColor: 'rgba(255, 99, 132, 1)',
-                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                    pointBorderColor: 'rgba(255, 99, 132, 1)',
-                    pointBackgroundColor: 'rgba(255, 99, 132, 1)',
-                    pointBorderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                legend: false
-            }
-        });
+        //YouTube
+        if(ytDataNulls.length != ytDataNums.length){
+            new Chart(document.getElementById("YouTubeRadarChart"), {
+                type: 'radar',
+                data: {
+                    labels: dates,
+                    datasets: [
+                    {
+                        label: "YouTube гледания",
+                        data: ytDataNums,
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        pointBorderColor: 'rgba(255, 99, 132, 1)',
+                        pointBackgroundColor: 'rgba(255, 99, 132, 1)',
+                        pointBorderWidth: 1,
+                        spanGaps: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    legend: false
+                }
+            });
+        }
 
         //Spotify
-        new Chart(document.getElementById("SpotifyRadarChart"), {
-            type: 'radar',
-            data: {
-                labels: dates,
-                datasets: [
-                {
-                    label: "Spotify популярност",
-                    data: syDataNums,
-                    borderColor: 'rgba(147, 250, 165, 1)',
-                    backgroundColor: 'rgba(147, 250, 165, 0.5)',
-                    pointBorderColor: 'rgba(147, 250, 165, 1)',
-                    pointBackgroundColor: 'rgba(147, 250, 165, 1)',
-                    pointBorderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                legend: false
-            }
-        });
+        if(syDataNulls.length != syDataNums.length){
+            new Chart(document.getElementById("SpotifyRadarChart"), {
+                type: 'radar',
+                data: {
+                    labels: dates,
+                    datasets: [
+                    {
+                        label: "Spotify популярност",
+                        data: syDataNums,
+                        borderColor: 'rgba(147, 250, 165, 1)',
+                        backgroundColor: 'rgba(147, 250, 165, 0.5)',
+                        pointBorderColor: 'rgba(147, 250, 165, 1)',
+                        pointBackgroundColor: 'rgba(147, 250, 165, 1)',
+                        pointBorderWidth: 1,
+                        spanGaps: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    legend: false
+                }
+            });
+        }
 
         //TikTok и YouTube
-        new Chart(document.getElementById("TikTokYouTubeRadarChart"), {
-            type: 'radar',
-            data: {
-                labels: dates,
-                datasets: [
+        if(ytDataNulls.length != ytDataNums.length){
+            new Chart(document.getElementById("TikTokYouTubeRadarChart"), {
+                type: 'radar',
+                data: {
+                    labels: dates,
+                    datasets: [
+                        {
+                        label: "TikTok видеа",
+                        data: ttDataNums,
+                        borderColor: 'rgba(159, 90, 253, 1)',
+                        backgroundColor: 'rgba(159, 90, 253, 0.3)',
+                        pointBorderColor: 'rgba(159, 90, 253, 1)',
+                        pointBackgroundColor: 'rgba(159, 90, 253, 1)',
+                        pointBorderWidth: 1,
+                        spanGaps: true
+                    },
                     {
-                    label: "TikTok видеа",
-                    data: ttDataNums,
-                    borderColor: 'rgba(159, 90, 253, 1)',
-                    backgroundColor: 'rgba(159, 90, 253, 0.3)',
-                    pointBorderColor: 'rgba(159, 90, 253, 1)',
-                    pointBackgroundColor: 'rgba(159, 90, 253, 1)',
-                    pointBorderWidth: 1
+                        label: "YouTube гледания",
+                        data: ytDataNums,
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        pointBorderColor: 'rgba(255, 99, 132, 1)',
+                        pointBackgroundColor: 'rgba(255, 99, 132, 1)',
+                        pointBorderWidth: 1,
+                        spanGaps: true
+                    }
+                    ]
                 },
-                {
-                    label: "YouTube гледания",
-                    data: ytDataNums,
-                    borderColor: 'rgba(255, 99, 132, 1)',
-                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                    pointBorderColor: 'rgba(255, 99, 132, 1)',
-                    pointBackgroundColor: 'rgba(255, 99, 132, 1)',
-                    pointBorderWidth: 1
+                options: {
+                    responsive: true,
+                    legend: false,
                 }
-                ]
-            },
-            options: {
-                responsive: true,
-                legend: false,
-            }
+            });
+        }
+
+    </script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $(document).on("click", "li[data-role=setDate]", function(){
+
+                let date = $(this).data('id');
+
+                $.ajax({
+                    type: "POST",
+                    url: "../selectDate.php",
+                    data: {setDate: date},
+                    success: function(data){
+                        $("#setDateButton").html(data);
+                        window.location.reload();
+                    }
+                });
+ 
+            });
         });
 
     </script>

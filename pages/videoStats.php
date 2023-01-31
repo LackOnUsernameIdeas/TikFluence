@@ -1,44 +1,38 @@
 <?php
 
-    session_start();
-
     //Вмъкване на нужните файлове
     include '../includes/databaseManager.php';
     include '../includes/common.php';
-    include '../scraping/includes/curlFunctions.php';
 
+    //Ако няма такова id за песен, потребителят е върнат в songs.php
+    $vid = isset($_GET["vid"]) && ctype_digit($_GET['vid']) ? intval($_GET["vid"]) : -1;
+    if($vid < 0) redirect("additionalStats.php");
+    
     //Създаваме връзката с базата данни
     $db = new DatabaseManager();
 
-    //Ако сте влезли в профила си, можете да продължите
-    if (isset($_SESSION["user_id"])) {
-        $user_id = $_SESSION["user_id"];
-        $user = $db->getUserById($user_id);
-    } else {
-        redirect("../logIn.php");
+    //Запазваме данните за видеото в променлива
+    $videoDatapoints = $db->getVideoData($vid);
+
+    //Осигуряваме си необходимите данни
+
+    $dates = [];
+
+    $shares = [];
+    $likes = [];
+    $views = [];
+
+    foreach($videoDatapoints as $dp){
+
+        $timestamp = new DateTime($dp["fetch_date"]);
+        $dates[] = $timestamp->format('Y-m-d');
+
+        $shares[] = $dp["shares_count"];
+        $likes[] = $dp["likes_count"];
+        $views[] = $dp["plays_count"];
     }
-
-    //Излиза информацията за потребителя
-    if(isset($_SESSION['tiktokUsername'])){
-        if($_SESSION['tiktokUsername'] != null){
-            $username = htmlspecialchars($_SESSION['tiktokUsername']);
-            $userData = getUserData($username);
-        }
-    }
-
-    //Взимаме информация за потребителя и я показваме
-
-    function getUserData($username){
-        //Взимаме id на потребителя за да можем да вземем информацията за него
-        $id = fetchTikTokUserId($username);
-
-        //Връщаме информацията за потребителя като краен резултат
-        return fetchTikTokUserData($id);
-    }
-
-    //Показваме профилната снимка на потребителя ако е въвел името си
-    $profpic = isset($userData) ? $userData["avatarThumb"] : false;
-
+    
+    $vidUrl = $videoDatapoints[0]["video_url"];
 ?>
 <!DOCTYPE html>
 <html>
@@ -46,8 +40,7 @@
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <title>СТАТИСТИКИ ЗА ПОТРЕБИТЕЛЯ</title>
-
+    <title>Статистики за видео</title>
     <!-- Favicon-->
     <link rel="icon" href="../favicon.ico" type="image/x-icon">
 
@@ -104,7 +97,6 @@
 
                 <ul class="nav navbar-nav navbar-right">
                     <!-- TOP RIGHT -->
-                    <li><a href="javascript:void(0);" class="js-search" data-close="true"><button type="button" class="btn bg-deep-purple waves-effect" onclick="window.location.href='../logOut.php'">ИЗЛЕЗ ОТ ПРОФИЛА</button></a></li>
                     <li class="pull-right"><a href="javascript:void(0);" class="js-right-sidebar" data-close="true"><i class="material-icons">invert_colors</i></a></li>
                 </ul>
 
@@ -117,18 +109,9 @@
         <aside id="leftsidebar" class="sidebar">
             <!-- User Info -->
             <div class="user-info">
-                <div class="body">
-                    <?php if($profpic != false): ?>
-                        <div class="image">
-                            <img src="<?php echo $profpic?>" width="48" height="48" alt="User" />
-                        </div>
-                    <?php endif;?>
-                    <div class="info-container">
-                        <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?= isset($username) ? $username : null ?></div>
-                        <div class="email" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?= isset($userData) ? "Followers: ". number_format($userData["followerCount"]) : null ?></div>
-                    </div>
-                </div>
+                <div class="body m-l-85 m-t-25">
 
+                </div>
             </div>
             <!-- #User Info -->
             <!-- Menu -->
@@ -189,13 +172,13 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="active">
-                        <a href="#">
+                    <li>
+                        <a href="individualStats.php">
                             <i class="material-icons">person_outline</i>
                             <span>СТАТИСТИКИ ЗА ПОТРЕБИТЕЛЯ</span>
                         </a>
                     </li>
-                    <li>
+                    <li class="active">
                         <a href="additionalStats.php">
                             <i class="material-icons">insert_chart</i>
                             <span>ОЩЕ СТАТИСТИКИ</span>
@@ -366,53 +349,242 @@
         </aside>
         <!-- #END# Right Sidebar -->
     </section>
-
+    
     <section class="content">
-        <div class="container-fluid">
 
-            <div class="block-header">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
                 <div class="body">
-                    <div class="block-header card p-t-10 p-l-10">
-                        <h2>ВИЕ СЕ НАМИРАТЕ В:</h2>
-                        <ol class="breadcrumb breadcrumb-col-black">
-                            <li onclick="window.location.href='../index.php'"><a href="javascript:void(0);"><i class="material-icons">home</i>НАЧАЛО</a></li>
-                            <li class="active"><i class="material-icons">person_outline</i>СТАТИСТИКИ ЗА ПОТРЕБИТЕЛЯ</li>
-                        </ol>
+                    <button type="button" class="btn bg-purple waves-effect card" onclick="window.location.href='additionalStats.php'">
+                        <i class="material-icons">arrow_back</i>
+                        <span>НАЗАД</span>
+                    </button>
+                    <div class="block-header">
+                        <div class="card">
+                            <div class="body">
+                                <h2>ВИЕ СЕ НАМИРАТЕ В:</h2>
+                                <ol class="breadcrumb breadcrumb-col-black">
+                                    <li onclick="window.location.href='../index.php'"><a href="javascript:void(0);"><i class="material-icons">home</i>НАЧАЛО</a></li>
+                                    <li onclick="window.location.href='additionalStats.php'"><a href="javascript:void(0);"><i class="material-icons">insert_chart</i>ОЩЕ СТАТИСТИКИ</a></li>
+                                    <li class="active"><i class="material-icons">insert_chart</i>СТАТИСТИКИ ЗА ВИДЕОТО</li>
+                                </ol>
+                            </div>
+                        </div>
                     </div>
                 </div>
-<!-- 
-                <form action="#" method="GET">
-                    <label for="tiktokUser">TikTok потребител: </label>
-                    <input type="text" id="tiktokUser" name="tiktokUser"><br><br>
-                    <button>Get Data</button>
-                </form>  -->
-            <?php isset($userData) ? var_dump($userData) : null ?>
             </div>
-
         </div>
+        
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+            <div class="card">
+                <div class="header">
+                    <h2>
+                        ИЗМЕНЕНИЕ НА ГЛЕДАНИЯТА НА ВИДЕОТО
+                    </h2>
+                    <ul class="header-dropdown m-r--5">
+                        <li class="dropdown">
+                            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                <i class="material-icons">more_vert</i>
+                            </a>
+                            <ul class="dropdown-menu pull-right">
+                                <li><a href="javascript:void(0);">Action</a></li>
+                                <li><a href="javascript:void(0);">Another action</a></li>
+                                <li><a href="javascript:void(0);">Something else here</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="body">
+                    <div class="content">
+                        <canvas id="ViewsChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+            <div class="card">
+                <div class="body">
+                    <div class="content">
+                        <blockquote class="tiktok-embed" cite="<?php echo $vidUrl ?>" data-video-id="<?php echo substr($vidUrl, -19) ?>" style="max-width: 360px;min-width: 325px;border: 0px; max-height: 585px;"> 
+                            <section></section> 
+                        </blockquote> 
+                        <script async src="https://www.tiktok.com/embed.js"></script>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+            <div class="card">
+                <div class="header">
+                    <h2>
+                        ИЗМЕНЕНИЕ НА СПОДЕЛЯНИЯТА НА ВИДЕОТО
+                    </h2>
+                    <ul class="header-dropdown m-r--5">
+                        <li class="dropdown">
+                            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                <i class="material-icons">more_vert</i>
+                            </a>
+                            <ul class="dropdown-menu pull-right">
+                                <li><a href="javascript:void(0);">Action</a></li>
+                                <li><a href="javascript:void(0);">Another action</a></li>
+                                <li><a href="javascript:void(0);">Something else here</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="body">
+                    <div class="content">
+                        <canvas id="SharesChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+            <div class="card">
+                <div class="header">
+                    <h2>
+                        ИЗМЕНЕНИЕ НА ХАРЕСВАНИЯТА НА ВИДЕОТО
+                    </h2>
+                    <ul class="header-dropdown m-r--5">
+                        <li class="dropdown">
+                            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                <i class="material-icons">more_vert</i>
+                            </a>
+                            <ul class="dropdown-menu pull-right">
+                                <li><a href="javascript:void(0);">Action</a></li>
+                                <li><a href="javascript:void(0);">Another action</a></li>
+                                <li><a href="javascript:void(0);">Something else here</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="body">
+                    <div class="content">
+                        <canvas id="LikesChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </section>
 
-    <!-- Jquery Core Js -->
-    <script src="../plugins/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js" integrity="sha512-JPcRR8yFa8mmCsfrw4TNte1ZvF1e3+1SdGMslZvmrzDYxS69J7J49vkFL8u6u8PlPJK+H3voElBtUCzaXj+6ig==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- Статистики -->
+    <script>
+        //Данни за ползване
+        let dates =  JSON.parse('<?php echo json_encode($dates) ?>');
 
-    <!-- Bootstrap Core Js -->
-    <script src="../plugins/bootstrap/js/bootstrap.js"></script>
+        let shares = JSON.parse('<?php echo json_encode($shares) ?>');
+        let likes = JSON.parse('<?php echo json_encode($likes) ?>');
+        let views = JSON.parse('<?php echo json_encode($views) ?>');
 
-    <!-- Select Plugin Js -->
-    <script src="../plugins/bootstrap-select/js/bootstrap-select.js"></script>
 
-    <!-- Slimscroll Plugin Js -->
-    <script src="../plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
+        //Статистика за проследяване на споделянията на дадена песен
+        new Chart(document.getElementById('SharesChart'), {
+            type: 'line',
+            data: {
+                labels: dates, //x
+                datasets: [
+                    {
+                        label: 'Споделяния',
+                        data: shares, //y
+                        borderColor: 'rgba(160, 82 ,45, 1)',
+                        backgroundColor: 'rgba(160, 82, 45, 0.3)',
+                        fill: false,
+                        tension: 0.4
+                    }
+                ]
+            },
+            options: {
+                scales: {
+                    y: {
+                        type: 'linear',
+                        display: true,
+                        position: "left"
+                    }
+                }
+            }
+        });
 
-    <!-- Waves Effect Plugin Js -->
-    <script src="../plugins/node-waves/waves.js"></script>
+        //Статистика за проследяване на харесванията на дадена песен
+        new Chart(document.getElementById('LikesChart'), {
+            type: 'line',
+            data: {
+                labels: dates, //x
+                datasets: [
+                    {
+                        label: 'Харесвания',
+                        data: likes, //y
+                        borderColor: 'rgba(255, 148, 112, 1)',
+                        backgroundColor: 'rgba(255, 148, 112, 0.3)',
+                        fill: false,
+                        tension: 0.4
+                    }
+                ]
+            },
+            options: {
+                scales: {
+                    y: {
+                        type: 'linear',
+                        display: true,
+                        position: "left"
+                    }
+                }
+            }
+        });
 
-    <!-- Custom Js -->
-    <script src="../js/admin.js"></script>
+        
+        //Статистика за проследяване на гледанията на дадена песен
+        new Chart(document.getElementById('ViewsChart'), {
+            type: 'line',
+            data: {
+                labels: dates, //x
+                datasets: [
+                    {
+                        label: 'Гледания',
+                        data: views, //y
+                        borderColor: 'rgba(255, 99, 132, 0.9)',
+                        backgroundColor: 'rgba(255, 99, 132, 0.3)',
+                        fill: false,
+                        tension: 0.4
+                    }
+                ]
+            },
+            options: {
+                scales: {
+                    y: {
+                        type: 'linear',
+                        display: true,
+                        position: "left"
+                    }
+                }
+            }
+        });
+    </script>
 
-    <!-- Demo Js -->
-    <script src="../js/demo.js"></script>
+<!-- Jquery Core Js -->
+<script src="../plugins/jquery/jquery.min.js"></script>
 
-</body>
+<!-- Bootstrap Core Js -->
+<script src="../plugins/bootstrap/js/bootstrap.js"></script>
 
-</html>
+<!-- Select Plugin Js -->
+<script src="../plugins/bootstrap-select/js/bootstrap-select.js"></script>
+
+<!-- Slimscroll Plugin Js -->
+<script src="../plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
+
+<!-- Waves Effect Plugin Js -->
+<script src="../plugins/node-waves/waves.js"></script>
+
+<!-- Custom Js -->
+<script src="../js/admin.js"></script>
+
+<!-- Demo Js -->
+<script src="../js/demo.js"></script>

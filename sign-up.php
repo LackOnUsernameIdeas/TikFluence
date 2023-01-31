@@ -29,7 +29,7 @@
     <div class="signup-box">
         <div class="logo">
             <small>ДОБРЕ ДОШЛИ В</small>
-            <a href="javascript:void(0);"><b style="color:#04B790">TOK</b><b>Flu</b><b style="color:#FF4162">ence</b></a></a>
+            <a href="javascript:void(0);"><b style="color:#04B790">TIK</b><b>Flu</b><b style="color:#FF4162">ence</b></a></a>
         </div>
         <div class="card">
             <div class="body">
@@ -46,10 +46,10 @@
                     </div>
                     <div class="input-group">
                         <span class="input-group-addon">
-                            <i class="material-icons">email</i>
+                            <i class="material-icons">music_note</i>
                         </span>
                         <div class="form-line">
-                            <input type="email" class="form-control" name="email" placeholder="Имейл" id="email" required>
+                            <input type="text" class="form-control" name="tiktokUsername" placeholder="Име в TikTok" id="tiktokUsername" required>
                         </div>
                     </div>
                     <div class="input-group">

@@ -7,10 +7,6 @@ if (empty($_POST["username"])) {
     die("Name is required"); 
 }
 
-if ( ! filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) {
-    die("Valid email is required");
-}
-
 if (strlen($_POST["password"]) < 8) {
     die("Password must be at least 8 characters");
 }
@@ -29,13 +25,13 @@ if ($_POST["password"] !== $_POST["password_confirmation"]) {
 
 $password_hash = password_hash($_POST["password"], PASSWORD_DEFAULT);
 $name = $_POST["username"];
-$email = $_POST["email"];
+$tiktokUsername = $_POST["tiktokUsername"];
 
 //Създаваме връзката с базата данни
 $db = new DatabaseManager();
 
 //Създаваме потребител
-$insertUser = $db->insertUser($name, $email, $password_hash);
+$insertUser = $db->insertUser($name, $tiktokUsername, $password_hash);
 
 //Препращаме към страницата ако всичко е успешно
 if ($insertUser) {
@@ -45,7 +41,7 @@ if ($insertUser) {
     
 } else {
     if ($db->pdo->errorInfo()[0] === 1062) {
-        die("email already taken");
+        die("User already registered");
     } else {
         die($db->pdo->errorInfo());
     }

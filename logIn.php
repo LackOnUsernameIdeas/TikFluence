@@ -18,7 +18,7 @@
     $is_invalid = false;
 
     if ($_SERVER["REQUEST_METHOD"] === "POST") {
-        $user2 = $db->validateEmailForLogIn();
+        $user2 = $db->validateTikTokUserForLogIn();
 
         if ($user2) {
             
@@ -30,6 +30,7 @@
                 session_regenerate_id();
                 
                 $_SESSION["user_id"] = $user2["id"];
+                $_SESSION["tiktokUsername"] = $user2["tiktok_user"];
                 
                 header("Location: ./pages/individualStats.php");
                 exit;
@@ -77,7 +78,7 @@
             <div class="body">
                 <?php if (isset($user)): ?>
                     <?=
-                        header("Location: ./individualStats.php");
+                        header("Location: ./pages/individualStats.php");
                         exit; 
                     ?>
                 <?php else: ?>
@@ -95,7 +96,7 @@
                                 <i class="material-icons">person</i>
                             </span>
                             <div class="form-line">
-                                <input type="email" class="form-control" name="email" id="email" placeholder="Имейл" value="<?= htmlspecialchars($_POST["email"] ?? "") ?>" required autofocus>
+                                <input type="text" class="form-control" name="tiktokUsername" id="tiktokUsername" placeholder="Име в TikTok" value="<?= htmlspecialchars($_POST["tiktokUsername"] ?? "") ?>" required autofocus>
                             </div>
                         </div>
                         <div class="input-group">

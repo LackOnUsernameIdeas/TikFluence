@@ -1,6 +1,7 @@
 ﻿<?php
 
     //Вмъкване на нужните файлове
+    include "../selectDate.php";
     include '../includes/databaseManager.php';
     include '../includes/common.php';
 
@@ -15,10 +16,11 @@
     $dataPoints = $db->getDatapointsForSong($sid);
     if($dataPoints === false) redirect("songs.php");
 
-    //Взимаме необходимата информация и я превръщаме където е необходимо в проценти
-
-    $todayYesterdayData = $db->getTodayYesterdayData($sid);
     $songData = $db->getSongData($sid);
+
+    //Взимаме необходимата информация и я превръщаме където е необходимо в проценти
+    $selectDate = isset($_SESSION["setDate"]) ? $_SESSION["setDate"] : date("Y-m-d");
+    $todayYesterdayData = $db->getTodayYesterdayData($sid, $selectDate);
 
 
     $dates = [];
@@ -37,6 +39,7 @@
 
 
     foreach($dataPoints as $dp){
+        
         $timestamp = new DateTime($dp["fetch_date"]);
         $dates[] = $timestamp->format('Y-m-d');
 
@@ -60,16 +63,16 @@
     $syNulls = array_keys($syNums, null);
 
 
-    $maxTiktok = max($ttPercents);
-    $maxYoutube = max($ytPercents);
+    $maxTikTok = max($ttPercents);
+    $maxYouTube = max($ytPercents);
     $maxSpotify = max($syPercents);
 
     for($i=0; $i<count($ttPercents); $i++){
-        $ttPercents[$i] = $maxTiktok ? ($ttPercents[$i] * 100)/$maxTiktok : null;
+        $ttPercents[$i] = $maxTikTok ? ($ttPercents[$i] * 100)/$maxTikTok : null;
     }
 
     for($i=0; $i<count($ytPercents); $i++){
-        $ytPercents[$i] = $maxYoutube ? ($ytPercents[$i] * 100)/$maxYoutube : null;
+        $ytPercents[$i] = $maxYouTube ? ($ytPercents[$i] * 100)/$maxYouTube : null;
     }
 
     for($i=0; $i<count($syPercents); $i++){
@@ -195,6 +198,68 @@
         $todaySY = "-";
     }
 
+    
+
+    //TikTok
+    $yesterdayTT = $ttLastTwoDaysNums[0];
+
+    //YouTube
+    if($ytLastTwoDaysPercents[0] != null || $ytLastTwoDaysPercents[0] == 0){ 
+        $yesterdayYT = $ytLastTwoDaysPercents[0];
+    } else { 
+        $yesterdayYT = "-";
+    }
+
+    //Spotify
+    if($syLastTwoDays[0] != null || $syLastTwoDays[0] == 0){ 
+        $yesterdaySY = $syLastTwoDays[0];
+    } else { 
+        $yesterdaySY = "-";
+    }
+
+
+    $averageTT = $db->getAverageTT($sid)[0][0];
+    $averageYT = $db->getAverageYT($sid)[0][0];
+    $averageSY = $db->getAverageSY($sid)[0][0];
+
+    
+    if($todayTT <= $averageTT || $yesterdayTT <= $averageTT){
+        $growthTT = false;
+    } else {
+        $growthTT = true;
+    }
+
+    if($todayYT <= $averageYT || $yesterdayYT <= $averageYT){
+        $growthYT = false;
+    } else {
+        $growthYT = true;
+    }
+
+    if($todaySY <= $averageSY || $yesterdaySY <= $averageSY){
+        $growthSY = false;
+    } else {
+        $growthSY = true;
+    }
+
+    // $setConclusion = false;
+    // if($growthTT) {
+    //     if($growthSY || $growthYT) {
+    //         $setConclusion = true;
+    //     }
+    // }
+    $setConclusionPerfect = false;
+    $setConclusionYT = false;
+    $setConclusionSY = false;
+
+    if($growthTT){
+        if($growthSY && $growthYT){
+            $setConclusionPerfect = true;
+        } elseif($growthSY == false || $growthYT){
+            $setConclusionYT = true;
+        } else {
+            $setConclusionSY = true;
+        }
+    }
 
 ?>
 <!DOCTYPE html>
@@ -273,10 +338,7 @@
             <!-- User Info -->
             <div class="user-info">
                 <div class="body m-l-85 m-t-25">
-                    <button type="button" class="btn bg-purple waves-effect card" onclick="window.location.href='songs.php'">
-                        <i class="material-icons">arrow_back</i>
-                        <span>НАЗАД</span>
-                    </button>
+
                 </div>
             </div>
             <!-- #User Info -->
@@ -362,10 +424,10 @@
             <!-- Footer -->
             <div class="legal">
                 <div class="copyright">
-                    &copy; 2016 - 2017 <a href="javascript:void(0);">AdminBSB - Material Design</a>.
+                    <a href="javascript:void(0);"><a href="privacyPolicy.php">Privacy Policy</a> ,</a>
                 </div>
-                <div class="version">
-                    <b>Version: </b> 1.0.5
+                <div class="copyright">
+                    <a href="javascript:void(0);"><a href="termsAndConditions.php">Terms and Conditions</a></a>
                 </div>
             </div>
             <!-- #Footer -->
@@ -522,6 +584,10 @@
             <div class="col-lg-14 col-md-14 col-sm-14 col-xs-14">
                 <div class="card">
                     <div class="body">
+                        <button type="button" class="btn bg-purple waves-effect card" onclick="window.location.href='songs.php'">
+                            <i class="material-icons">arrow_back</i>
+                            <span>НАЗАД</span>
+                        </button>
                         <div class="block-header">
                             <div class="card">
                                 <div class="body">
@@ -529,17 +595,59 @@
                                     <ol class="breadcrumb breadcrumb-col-black">
                                         <li onclick="window.location.href='../index.php'"><a href="javascript:void(0);"><i class="material-icons">home</i>НАЧАЛО</a></li>
                                         <li onclick="window.location.href='songs.php'"><a href="javascript:void(0);"><i class="material-icons">music_note</i>ПЕСНИ</a></li>
-                                        <li class="active"><i class="material-icons">music_note</i>СТАТИСТИКИ ЗА <?php echo $songData["song_name"]?></li>
+                                        <li class="active"><i class="material-icons">music_note</i>СТАТИСТИКИ ЗА: <?php echo $songData["song_name"]?></li>
                                     </ol>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="block-header">
+                            <div class="card">
+                                <div class="body">
+                                    <h2>Изберете дата за която искате да видите данни:</h2>
+                                    <div class="btn-group">
+                                        <button type="button" class="btn bg-purple dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <span class="caret"></span>
+                                            <span class="sr-only" id="setDateButton"><?php echo $selectDate ?></span>
+                                        </button>
+
+                                        <ul class="dropdown-menu">
+                                            <?php if($dates):?>
+                                                <?php foreach(array_slice($dates, 1) as $date):?>
+                                                    <li data-id="<?php echo $date ?>" data-role="setDate"><a href="javascript:void(0);" class="waves-effect waves-block"><?php echo $date?></a></li>
+                                                    <li role="separator" class="divider"></li>
+                                                <?php endforeach;?>
+                                            <?php endif;?>
+                                        </ul>
+                                    
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="card">
+                            <div class="body">
+                                <div class="block-header">
+                                    <h2>СТАТИСТИКИ ЗА:</h2>
+                                    <h1><a href="https://www.tiktok.com/music/-<?php echo $songData["tiktok_platform_id"] ?>" target="_blank"><?php echo $songData["song_name"]?></a></h1>
+                                    <h2>НА</h2><h1><?php echo $songData["artist_name"] ?></h1>
                                 </div>
                             </div>
                         </div>
                         <div class="card">
                             <div class="body">
                                 <div class="block-header">
-                                    <h2>СТАТИСТИКИ ЗА:</h2>
-                                    <h1><?php echo $songData["song_name"] ?> </h1><h2>ОТ</h2>
-                                    <h1><?php echo $songData["artist_name"] ?></h1>
+                                    <?php if($setConclusionPerfect):?>
+                                        <h2>Тази песен е претърпяла ефекта на повлияване от TikTok. Днешната и вчерашната популярност е по-голяма от средната на всички дни. В този случай, TikTok е повлиял на популярността на песента и в YouTube, и в Spotify.</h2>
+                                    <?php elseif($setConclusionYT):?>
+                                        <h2>Тази песен е претърпяла ефекта на повлияване от TikTok. Днешната и вчерашната популярност е по-голяма от средната на всички дни. В този случай, TikTok е повлиял на популярността на песента в YouTube, но не е повлиял на популярността на песента в Spotify.</h2>
+                                    <?php elseif($setConclusionSY):?>
+                                        <h2>Тази песен е претърпяла ефекта на повлияване от TikTok. Днешната и вчерашната популярност е по-голяма от средната на всички дни. В този случай, TikTok е повлиял на популярността на песента в Spotify, но не е повлиял на популярността на песента в YouTube.</h2>
+                                    <?php else:?>
+                                        <h2>Тук не можем да видим ефекта на повлияване от TikTok, но можем да видим статистиките за песента.</h2>
+                                    <?php endif;?>
                                 </div>
                             </div>
                         </div>
@@ -610,7 +718,7 @@
                     </div>
                     <div class="content">
                         <div class="text">TikTok видеа</div>
-                        <div class="number"><?php echo $todayTT ?></div>
+                        <div class="number"><?php echo number_format($todayTT) ?></div>
                     </div>
                 </div>
             </div>
@@ -623,7 +731,7 @@
                         </div>
                         <div class="content">
                             <div class="text">YouTube гледания</div>
-                            <div class="number"><?php echo $todayYT ?></div>
+                            <div class="number"><?php echo number_format($todayYT) ?></div>
                         </div>
                     </div>
                 </div>
@@ -655,7 +763,6 @@
                 <br>
                 <br>
             <?php endif;?>
-
 
             <div class="row clearfix">
  
@@ -739,7 +846,7 @@
                 </div>
                 <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
             
-                    <h2>Промяна в популярност от вчера:</h2>
+                    <h2>Промяна в популярност от <?php echo date('Y-m-d', mktime(0, 0, 0, date(substr($selectDate, 5, 2)), (date(substr($selectDate, 8, 2))-1), date(substr($selectDate, 0, 4)) ));?>:</h2>
 
                     <div class="info-box-3 bg-deep-purple hover-expand-effect">
                         <div class="icon">
@@ -761,7 +868,7 @@
                         </div>
                         <div class="content">
                             <div class="text">TikTok</div>
-                            <div class="number"><?php echo $subtractionTTNums ?></div>
+                            <div class="number"><?php echo number_format($subtractionTTNums) ?></div>
                         </div>
                     </div>
 
@@ -849,7 +956,7 @@
                     </div>
                     <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
                 
-                        <h2>Промяна в популярност от вчера:</h2>
+                        <h2>Промяна в популярност от <?php echo date('Y-m-d', mktime(0, 0, 0, date(substr($selectDate, 5, 2)), (date(substr($selectDate, 8, 2))-1), date(substr($selectDate, 0, 4)) ));?>:</h2>
 
                         <div class="info-box-3 bg-red hover-expand-effect">
                             <div class="icon">
@@ -871,7 +978,7 @@
                             </div>
                             <div class="content">
                                 <div class="text">YouTube</div>
-                                <div class="number"><?php echo $subtractionYTNums?></div>
+                                <div class="number"><?php echo number_format($subtractionYTNums) ?></div>
                             </div>
                         </div>
 
@@ -961,7 +1068,7 @@
                     </div>
                     <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
                 
-                        <h2>Промяна в популярност от вчера:</h2>
+                        <h2>Промяна в популярност от <?php echo date('Y-m-d', mktime(0, 0, 0, date(substr($selectDate, 5, 2)), (date(substr($selectDate, 8, 2))-1), date(substr($selectDate, 0, 4)) ));?>:</h2>
                         
                         <div class="info-box-3 bg-green hover-expand-effect">
                             <div class="icon">
@@ -1069,34 +1176,35 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js" integrity="sha512-JPcRR8yFa8mmCsfrw4TNte1ZvF1e3+1SdGMslZvmrzDYxS69J7J49vkFL8u6u8PlPJK+H3voElBtUCzaXj+6ig==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <!-- Статистики -->
     <script>
+
+    //Данни за ползване
+    let dates =  JSON.parse('<?php echo json_encode($dates) ?>');
+
+    let ranks = JSON.parse('<?php echo json_encode($ranks) ?>');
+    let likes = JSON.parse('<?php echo json_encode($likes) ?>');
+
+    let ytDataNums = JSON.parse('<?php echo json_encode($ytNums) ?>');
+    let syDataNums = JSON.parse('<?php echo json_encode($syNums) ?>');
+    let ttDataNums = JSON.parse('<?php echo json_encode($ttNums) ?>');
+
+    let ytDataPercents = JSON.parse('<?php echo json_encode($ytPercents) ?>');
+    let syDataPercents = JSON.parse('<?php echo json_encode($syPercents) ?>');
+    let ttDataPercents = JSON.parse('<?php echo json_encode($ttPercents) ?>');
+
+    let ytDataNulls = JSON.parse('<?php echo json_encode($ytNulls) ?>');
+    let syDataNulls = JSON.parse('<?php echo json_encode($syNulls) ?>');
+
+    
     // Линейни статистики
 
-        //Данни за ползване
-        let dates =  JSON.parse('<?php echo json_encode($dates) ?>');
-
-        let ranks = JSON.parse('<?php echo json_encode($ranks) ?>');
-        let likes = JSON.parse('<?php echo json_encode($likes) ?>');
-
-        let ytDataNums = JSON.parse('<?php echo json_encode($ytNums) ?>');
-        let syDataNums = JSON.parse('<?php echo json_encode($syNums) ?>');
-        let ttDataNums = JSON.parse('<?php echo json_encode($ttNums) ?>');
-
-        let ytDataPercents = JSON.parse('<?php echo json_encode($ytPercents) ?>');
-        let syDataPercents = JSON.parse('<?php echo json_encode($syPercents) ?>');
-        let ttDataPercents = JSON.parse('<?php echo json_encode($ttPercents) ?>');
-
-        let ytDataNulls = JSON.parse('<?php echo json_encode($ytNulls) ?>');
-        let syDataNulls = JSON.parse('<?php echo json_encode($syNulls) ?>');
-
-
-        //Статистика за проследяване на ранка на дадена песен
+        //Статистика за проследяване на ранга на дадена песен
         new Chart(document.getElementById('RankChart'), {
             type: 'line',
             data: {
                 labels: dates, //x
                 datasets: [
                     {
-                        label: 'Ранк',
+                        label: 'Ранг',
                         data: ranks, //y
                         borderColor: 'rgba(255, 148, 112, 1)',
                         backgroundColor: 'rgba(255, 148, 112, 0.3)',
@@ -1184,7 +1292,8 @@
                         borderColor: 'rgba(255, 99, 132, 0.9)',
                         backgroundColor: 'rgba(255, 99, 132, 0.2)',
                         fill: true,
-                        tension: 0.4
+                        tension: 0.4,
+                        spanGaps: true
                     }
                 ]
             },
@@ -1200,7 +1309,6 @@
             });
         }
 
-        
         //Spotify
         if(syDataNulls.length != syDataNums.length){
             new Chart(document.getElementById('SpotifyGraphChart'), {
@@ -1214,10 +1322,11 @@
                         borderColor: 'rgba(147, 250, 165, 1)',
                         backgroundColor: 'rgba(147, 250, 165, 0.4)',
                         fill: true,
-                        tension: 0.4
+                        tension: 0.4,
+                        spanGaps: true
                     }
                 ]
-            },
+            },  
                 options: {
                     scales: {
                         y: {
@@ -1231,7 +1340,7 @@
         }
 
         //TikTok и YouTube сравнение
-        if(ytDataNulls.length != ytDataPercents.length){
+        if(ytDataNulls.length != ytDataNums.length){
             new Chart(document.getElementById('TikTokYouTubeGraphChart'), {
                 type: 'line',
                 data: {
@@ -1239,19 +1348,21 @@
                     datasets: [
                         {
                             label: 'YouTube гледания',
-                            data: ytDataPercents , //y
+                            data: ytDataNums , //y
                             borderColor: 'rgba(255, 99, 132, 0.9)',
                             backgroundColor: 'rgba(255, 99, 132, 0.2)',
                             fill: true,
-                            tension: 0.4
+                            tension: 0.4,
+                            spanGaps: true
                         },
                         {
                             label: 'TikTok видеа',
-                            data: ttDataPercents, //y
+                            data: ttDataNums, //y
                             borderColor: 'rgba(159, 90, 253, 1)',
                             backgroundColor: 'rgba(159, 90, 253, 0.3)',
                             fill: true,
-                            tension: 0.4
+                            tension: 0.4,
+                            spanGaps: true
                         }
                     ]
                 },
@@ -1313,7 +1424,8 @@
                             borderColor: 'rgba(255, 99, 132, 0.9)',
                             backgroundColor: 'rgba(255, 99, 132, 0.2)',
                             fill: true,
-                            tension: 0.4
+                            tension: 0.4,
+                            spanGaps: true
                         }
                     ]
                 },
@@ -1342,7 +1454,8 @@
                             borderColor: 'rgba(147, 250, 165, 1)',
                             backgroundColor: 'rgba(147, 250, 165, 0.4)',
                             fill: true,
-                            tension: 0.4
+                            tension: 0.4,
+                            spanGaps: true
                         }
                     ]
                 },
@@ -1359,7 +1472,7 @@
         }
 
         //TikTok и YouTube сравнение
-        if(ytDataNulls.length != ytDataPercents.length){
+        if(ytDataNulls.length != ytDataNums.length){
             new Chart(document.getElementById('TikTokYouTubeBarChart'), {
                 type: 'bar',
                 data: {
@@ -1367,19 +1480,21 @@
                     datasets: [
                         {
                             label: 'Tiktok видеа',
-                            data: ttDataPercents, //y
+                            data: ttDataNums, //y
                             borderColor: 'rgba(159, 90, 253, 1)',
                             backgroundColor: 'rgba(159, 90, 253, 0.3)',
                             fill: true,
-                            tension: 0.4
+                            tension: 0.4,
+                            spanGaps: true
                         },
                         {
                             label: 'Youtube гледания',
-                            data: ytDataPercents , //y
+                            data: ytDataNums , //y
                             borderColor: 'rgba(255, 99, 132, 0.9)',
                             backgroundColor: 'rgba(255, 99, 132, 0.2)',
                             fill: true,
-                            tension: 0.4
+                            tension: 0.4,
+                            spanGaps: true
                         }
                     ]
                 },
@@ -1435,7 +1550,8 @@
                         backgroundColor: 'rgba(255, 99, 132, 0.2)',
                         pointBorderColor: 'rgba(255, 99, 132, 1)',
                         pointBackgroundColor: 'rgba(255, 99, 132, 1)',
-                        pointBorderWidth: 1
+                        pointBorderWidth: 1,
+                        spanGaps: true
                     }]
                 },
                 options: {
@@ -1459,7 +1575,8 @@
                         backgroundColor: 'rgba(147, 250, 165, 0.5)',
                         pointBorderColor: 'rgba(147, 250, 165, 1)',
                         pointBackgroundColor: 'rgba(147, 250, 165, 1)',
-                        pointBorderWidth: 1
+                        pointBorderWidth: 1,
+                        spanGaps: true
                     }]
                 },
                 options: {
@@ -1470,7 +1587,7 @@
         }
 
         //TikTok и YouTube
-        if(ytDataNulls.length != ytDataPercents.length){
+        if(ytDataNulls.length != ytDataNums.length){
             new Chart(document.getElementById("TikTokYouTubeRadarChart"), {
                 type: 'radar',
                 data: {
@@ -1478,21 +1595,23 @@
                     datasets: [
                         {
                         label: "TikTok видеа",
-                        data: ttDataPercents,
+                        data: ttDataNums,
                         borderColor: 'rgba(159, 90, 253, 1)',
                         backgroundColor: 'rgba(159, 90, 253, 0.3)',
                         pointBorderColor: 'rgba(159, 90, 253, 1)',
                         pointBackgroundColor: 'rgba(159, 90, 253, 1)',
-                        pointBorderWidth: 1
+                        pointBorderWidth: 1,
+                        spanGaps: true
                     },
                     {
                         label: "YouTube гледания",
-                        data: ytDataPercents,
+                        data: ytDataNums,
                         borderColor: 'rgba(255, 99, 132, 1)',
                         backgroundColor: 'rgba(255, 99, 132, 0.2)',
                         pointBorderColor: 'rgba(255, 99, 132, 1)',
                         pointBackgroundColor: 'rgba(255, 99, 132, 1)',
-                        pointBorderWidth: 1
+                        pointBorderWidth: 1,
+                        spanGaps: true
                     }
                     ]
                 },
@@ -1502,6 +1621,28 @@
                 }
             });
         }
+
+    </script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $(document).on("click", "li[data-role=setDate]", function(){
+
+                let date = $(this).data('id');
+
+                $.ajax({
+                    type: "POST",
+                    url: "../selectDate.php",
+                    data: {setDate: date},
+                    success: function(data){
+                        $("#setDateButton").html(data);
+                        window.location.reload();
+                    }
+                });
+ 
+            });
+        });
 
     </script>
 

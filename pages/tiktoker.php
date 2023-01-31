@@ -1,43 +1,35 @@
 <?php
 
-    session_start();
-
     //Вмъкване на нужните файлове
     include '../includes/databaseManager.php';
     include '../includes/common.php';
-    include '../scraping/includes/curlFunctions.php';
 
+    //Ако няма такова id за песен, потребителят е върнат в songs.php
+    $tid = isset($_GET["tid"]) && ctype_digit($_GET['tid']) ? intval($_GET["tid"]) : -1;
+    if($tid < 0) redirect("additionalStats.php");
+    
     //Създаваме връзката с базата данни
     $db = new DatabaseManager();
 
-    //Ако сте влезли в профила си, можете да продължите
-    if (isset($_SESSION["user_id"])) {
-        $user_id = $_SESSION["user_id"];
-        $user = $db->getUserById($user_id);
-    } else {
-        redirect("../logIn.php");
+    //Запазваме данните за тиктокъра в променлива
+    $tiktokerMainData = $db->getTikTokerData($tid);
+    $tiktokerDatapoints = $db->getTikTokerDatapoints($tid);
+
+    //Осигуряваме си необходимите данни
+
+    $dates = [];
+
+    $followers = [];
+    $followersThisYear = [];
+
+    foreach($tiktokerDatapoints as $dp){
+        $timestamp = new DateTime($dp["fetch_date"]);
+        $dates[] = $timestamp->format('Y-m-d');
+
+        $followers[] = $dp["followers_count"];
+        $followersThisYear[] = $dp["followers_this_year"];
     }
 
-    //Излиза информацията за потребителя
-    if(isset($_SESSION['tiktokUsername'])){
-        if($_SESSION['tiktokUsername'] != null){
-            $username = htmlspecialchars($_SESSION['tiktokUsername']);
-            $userData = getUserData($username);
-        }
-    }
-
-    //Взимаме информация за потребителя и я показваме
-
-    function getUserData($username){
-        //Взимаме id на потребителя за да можем да вземем информацията за него
-        $id = fetchTikTokUserId($username);
-
-        //Връщаме информацията за потребителя като краен резултат
-        return fetchTikTokUserData($id);
-    }
-
-    //Показваме профилната снимка на потребителя ако е въвел името си
-    $profpic = isset($userData) ? $userData["avatarThumb"] : false;
 
 ?>
 <!DOCTYPE html>
@@ -46,8 +38,7 @@
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <title>СТАТИСТИКИ ЗА ПОТРЕБИТЕЛЯ</title>
-
+    <title>Статистики за <?php echo $tiktokerMainData["tiktoker"] ?></title>
     <!-- Favicon-->
     <link rel="icon" href="../favicon.ico" type="image/x-icon">
 
@@ -104,7 +95,6 @@
 
                 <ul class="nav navbar-nav navbar-right">
                     <!-- TOP RIGHT -->
-                    <li><a href="javascript:void(0);" class="js-search" data-close="true"><button type="button" class="btn bg-deep-purple waves-effect" onclick="window.location.href='../logOut.php'">ИЗЛЕЗ ОТ ПРОФИЛА</button></a></li>
                     <li class="pull-right"><a href="javascript:void(0);" class="js-right-sidebar" data-close="true"><i class="material-icons">invert_colors</i></a></li>
                 </ul>
 
@@ -117,18 +107,9 @@
         <aside id="leftsidebar" class="sidebar">
             <!-- User Info -->
             <div class="user-info">
-                <div class="body">
-                    <?php if($profpic != false): ?>
-                        <div class="image">
-                            <img src="<?php echo $profpic?>" width="48" height="48" alt="User" />
-                        </div>
-                    <?php endif;?>
-                    <div class="info-container">
-                        <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?= isset($username) ? $username : null ?></div>
-                        <div class="email" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?= isset($userData) ? "Followers: ". number_format($userData["followerCount"]) : null ?></div>
-                    </div>
-                </div>
+                <div class="body m-l-85 m-t-25">
 
+                </div>
             </div>
             <!-- #User Info -->
             <!-- Menu -->
@@ -189,13 +170,13 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="active">
-                        <a href="#">
+                    <li>
+                        <a href="individualStats.php">
                             <i class="material-icons">person_outline</i>
                             <span>СТАТИСТИКИ ЗА ПОТРЕБИТЕЛЯ</span>
                         </a>
                     </li>
-                    <li>
+                    <li class="active">
                         <a href="additionalStats.php">
                             <i class="material-icons">insert_chart</i>
                             <span>ОЩЕ СТАТИСТИКИ</span>
@@ -366,53 +347,177 @@
         </aside>
         <!-- #END# Right Sidebar -->
     </section>
-
+    
     <section class="content">
-        <div class="container-fluid">
-
-            <div class="block-header">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
                 <div class="body">
-                    <div class="block-header card p-t-10 p-l-10">
-                        <h2>ВИЕ СЕ НАМИРАТЕ В:</h2>
-                        <ol class="breadcrumb breadcrumb-col-black">
-                            <li onclick="window.location.href='../index.php'"><a href="javascript:void(0);"><i class="material-icons">home</i>НАЧАЛО</a></li>
-                            <li class="active"><i class="material-icons">person_outline</i>СТАТИСТИКИ ЗА ПОТРЕБИТЕЛЯ</li>
-                        </ol>
+                    <button type="button" class="btn bg-purple waves-effect card" onclick="window.location.href='additionalStats.php'">
+                        <i class="material-icons">arrow_back</i>
+                        <span>НАЗАД</span>
+                    </button>
+                    <div class="block-header">
+                        <div class="card">
+                            <div class="body">
+                                <h2>ВИЕ СЕ НАМИРАТЕ В:</h2>
+                                <ol class="breadcrumb breadcrumb-col-black">
+                                    <li onclick="window.location.href='../index.php'"><a href="javascript:void(0);"><i class="material-icons">home</i>НАЧАЛО</a></li>
+                                    <li onclick="window.location.href='additionalStats.php'"><a href="javascript:void(0);"><i class="material-icons">insert_chart</i>ОЩЕ СТАТИСТИКИ</a></li>
+                                    <li class="active"><i class="material-icons">insert_chart</i>СТАТИСТИКИ ЗА ВИДЕОТО</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="body">
+                            <div class="block-header">
+                                <h2>СТАТИСТИКИ ЗА:</h2>
+                                <h1><?php if($tiktokerMainData["thumbnail"]):?><img src="<?php echo $tiktokerMainData["thumbnail"]?>" alt="Prof pic" width="62" height="62" style="vertical-align:bottom"><?php endif;?>&nbsp;<a href="https://www.tiktok.com/@<?php echo $tiktokerMainData["platform_name"] ?>" target="_blank"><?php echo $tiktokerMainData["tiktoker"]?></a></h1>
+                            </div>
+                        </div>
                     </div>
                 </div>
-<!-- 
-                <form action="#" method="GET">
-                    <label for="tiktokUser">TikTok потребител: </label>
-                    <input type="text" id="tiktokUser" name="tiktokUser"><br><br>
-                    <button>Get Data</button>
-                </form>  -->
-            <?php isset($userData) ? var_dump($userData) : null ?>
             </div>
-
         </div>
+
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+            <div class="card">
+                <div class="header">
+                    <h2>
+                        ИЗМЕНЕНИЕ НА ПОСЛЕДОВАТЕЛИТЕ НА <?php echo $tiktokerMainData["tiktoker"] ?>
+                    </h2>
+                    <ul class="header-dropdown m-r--5">
+                        <li class="dropdown">
+                            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                <i class="material-icons">more_vert</i>
+                            </a>
+                            <ul class="dropdown-menu pull-right">
+                                <li><a href="javascript:void(0);">Action</a></li>
+                                <li><a href="javascript:void(0);">Another action</a></li>
+                                <li><a href="javascript:void(0);">Something else here</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="body">
+                    <div class="content">
+                        <canvas id="FollowersChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+            <div class="card">
+                <div class="header">
+                    <h2>
+                        ИЗМЕНЕНИЕ НА ПОСЛЕДОВАТЕЛИТЕ ЗА ТАЗИ ГОДИНА НА <?php echo $tiktokerMainData["tiktoker"] ?>
+                    </h2>
+                    <ul class="header-dropdown m-r--5">
+                        <li class="dropdown">
+                            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                <i class="material-icons">more_vert</i>
+                            </a>
+                            <ul class="dropdown-menu pull-right">
+                                <li><a href="javascript:void(0);">Action</a></li>
+                                <li><a href="javascript:void(0);">Another action</a></li>
+                                <li><a href="javascript:void(0);">Something else here</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="body">
+                    <div class="content">
+                        <canvas id="FollowersThisYearChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </section>
 
-    <!-- Jquery Core Js -->
-    <script src="../plugins/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js" integrity="sha512-JPcRR8yFa8mmCsfrw4TNte1ZvF1e3+1SdGMslZvmrzDYxS69J7J49vkFL8u6u8PlPJK+H3voElBtUCzaXj+6ig==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- Статистики -->
+    <script>
+        //Данни за ползване
+        let dates =  JSON.parse('<?php echo json_encode($dates) ?>');
 
-    <!-- Bootstrap Core Js -->
-    <script src="../plugins/bootstrap/js/bootstrap.js"></script>
+        let followers = JSON.parse('<?php echo json_encode($followers) ?>');
+        let followersThisYear = JSON.parse('<?php echo json_encode($followersThisYear) ?>');
 
-    <!-- Select Plugin Js -->
-    <script src="../plugins/bootstrap-select/js/bootstrap-select.js"></script>
+        //Последователи тази година
+        new Chart(document.getElementById('FollowersThisYearChart'), {
+            type: 'line',
+            data: {
+                labels: dates, //x
+                datasets: [
+                    {
+                        label: 'Последователи за тази година',
+                        data: followersThisYear, //y
+                        borderColor: 'rgba(159, 90, 253, 1)',
+                        backgroundColor: 'rgba(159, 90, 253, 0.3)',
+                        fill: true,
+                        tension: 0.4
+                    }
+                ]
+            },
+                options: {
+                    scales: {
+                        y: {
+                            type: 'linear',
+                            display: true,
+                            position: "left"
+                        }
+                    }
+                }
+            });
 
-    <!-- Slimscroll Plugin Js -->
-    <script src="../plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
+        //Последователи
+        new Chart(document.getElementById('FollowersChart'), {
+            type: 'line',
+            data: {
+                labels: dates, //x
+                datasets: [
+                    {
+                        label: 'Последователи',
+                        data: followers, //y
+                        borderColor: 'rgba(255, 148, 112, 1)',
+                        backgroundColor: 'rgba(255, 148, 112, 0.3)',
+                        fill: true,
+                        tension: 0.4
+                    }
+                ]
+            },
+                options: {
+                    scales: {
+                        y: {
+                            type: 'linear',
+                            display: true,
+                            position: "left"
+                        }
+                    }
+                }
+            });
+    </script>
 
-    <!-- Waves Effect Plugin Js -->
-    <script src="../plugins/node-waves/waves.js"></script>
+<!-- Jquery Core Js -->
+<script src="../plugins/jquery/jquery.min.js"></script>
 
-    <!-- Custom Js -->
-    <script src="../js/admin.js"></script>
+<!-- Bootstrap Core Js -->
+<script src="../plugins/bootstrap/js/bootstrap.js"></script>
 
-    <!-- Demo Js -->
-    <script src="../js/demo.js"></script>
+<!-- Select Plugin Js -->
+<script src="../plugins/bootstrap-select/js/bootstrap-select.js"></script>
 
-</body>
+<!-- Slimscroll Plugin Js -->
+<script src="../plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
 
-</html>
+<!-- Waves Effect Plugin Js -->
+<script src="../plugins/node-waves/waves.js"></script>
+
+<!-- Custom Js -->
+<script src="../js/admin.js"></script>
+
+<!-- Demo Js -->
+<script src="../js/demo.js"></script>
