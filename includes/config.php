@@ -1,5 +1,5 @@
 <?php
-$dbopts = [
+	$dbopts = [
     		'db_host' => 'localhost',
     		'db_name' => 'tikfluence',
     		'db_user' => 'root',

@@ -253,6 +253,8 @@
         } else {
             $setConclusionSY = true;
         }
+    } else {
+        
     }
 
 ?>

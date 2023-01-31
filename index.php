@@ -162,14 +162,14 @@
             </div>
             <!-- #Menu -->
             <!-- Footer -->
-            <div class="legal">
+            <!-- <div class="legal">
                 <div class="copyright">
                     <a href="javascript:void(0);"><a href="pages/privacyPolicy.php">Privacy Policy</a> ,</a>
                 </div>
                 <div class="copyright">
                     <a href="javascript:void(0);"><a href="pages/termsAndConditions.php">Terms and Conditions</a></a>
                 </div>
-            </div>
+            </div> -->
             <!-- #Footer -->
         </aside>
         <!-- #END# Left Sidebar -->
@@ -378,7 +378,7 @@
                     <div class="card">
                         <div class="header">
                             <h1>
-                                ДОБРЕ ДОШЛИ В TIKFLUENCE!
+                                WELCOME TO TIKFLUENCE!
                             </h1>
                             <ul class="header-dropdown m-r--5">
                                 <li class="dropdown">
@@ -395,13 +395,13 @@
                         </div>
                         <div class="body">
                             <p class="lead">
-                                ВЪВЕДЕНИЕ
+                                INTRODUCTION
                             </p>
                             <p>
-                                Уеб страница, имаща за цел да представи информация, свързана най-вече с TikTok под формата на интерактивни диаграми, таблици и статистики.
+                                A web page intended to present information, mostly related to TikTok, in the format of interactive charts, tables and statistics.
                             </p>
                             <p>
-                                Информацията, която проектът показва е свързана с най-слушаните песни в TikTok в последно време и това, което се старае да докаже е че TikTok повлиява на слушанията на песните в другите платформи като прави дадена песен по-известна.
+                                The information that the project shows is related to the most listened songs on TikTok recently and what it tries to prove is that TikTok sends the listens of the songs to other platforms by making a song more famous.
                             </p>
                         </div>
                     </div>
@@ -662,6 +662,25 @@
                     </div>
                 </div>
                 <!-- #END# Browser Usage -->
+            </div>
+        </div>
+
+        <div class="row clearfix">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="card">
+                    <div class="body">
+                        <!-- Footer -->
+                        <div class="legal">
+                            <div class="copyright">
+                                <a href="javascript:void(0);"><a href="pages/privacyPolicy.php">Privacy Policy</a> ,</a>
+                            </div>
+                            <div class="copyright">
+                                <a href="javascript:void(0);"><a href="pages/termsAndConditions.php">Terms and Conditions</a></a>
+                            </div>
+                        </div>
+                        <!-- #Footer -->
+                    </div>
+                </div>
             </div>
         </div>
     </section>
