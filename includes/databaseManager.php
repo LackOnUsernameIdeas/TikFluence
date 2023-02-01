@@ -197,10 +197,27 @@ class DatabaseManager {
     }
 
     //Дърпаме цялата информация за някои от първите песни
-    public function listTopSongs($date) {
+    public function listTopSongsGlobal($date) {
         $sql = "SELECT * FROM `tiktok_records` 
                 JOIN tiktok_songs 
                 ON tiktok_records.song_id = tiktok_songs.id 
+                WHERE DATE(`fetch_date`) = DATE(:date)
+                ORDER BY rank
+                LIMIT 10";
+
+        $query = $this->pdo->prepare($sql);
+        $query->bindValue('date', $date);
+        $query->execute();
+        $result_array = $query->fetchAll(PDO::FETCH_ASSOC);
+
+        return count($result_array) > 0 ? $result_array : false;
+    }
+
+    //Дърпаме цялата информация за някои от първите песни
+    public function listTopSongsBG($date) {
+        $sql = "SELECT * FROM `tiktok_records_bulgaria` 
+                JOIN tiktok_songs_bulgaria 
+                ON tiktok_records_bulgaria.song_id = tiktok_songs_bulgaria.id 
                 WHERE DATE(`fetch_date`) = DATE(:date)
                 ORDER BY rank
                 LIMIT 10";
@@ -799,6 +816,21 @@ class DatabaseManager {
         return count($result_array) > 0 ? $result_array : false;
     }
 
+    //Дърпаме информацията за дадено видео за даден ден
+    public function getVideoDataForSpecificDate($vid, $date){
+        $sql = "SELECT * 
+                FROM `tiktok_top_videos`
+                WHERE user_id=:mandja AND DATE(`fetch_date`) = DATE(:date)";
+
+        $query = $this->pdo->prepare($sql);
+        $query->bindValue('mandja', $vid);
+        $query->bindValue('date', $date);
+        $query->execute();
+        $result_array = $query->fetch();
+
+        return count($result_array) > 0 ? $result_array : false;
+    }
+
     //Дърпаме информацията за даден тиктокър
     public function getTikTokerData($tid){
         $sql = "SELECT * 
@@ -808,6 +840,21 @@ class DatabaseManager {
         $query = $this->pdo->prepare($sql);
         $query->bindValue('mandja', $tid);
 
+        $query->execute();
+        $result_array = $query->fetch();
+
+        return count($result_array) > 0 ? $result_array : false;
+    }
+
+    //Дърпаме информацията за даден тиктокър за даден ден
+    public function getTikTokerDataForSpecificDate($tid, $date){
+        $sql = "SELECT * 
+                FROM `tiktokers`
+                WHERE given_id=:mandja AND DATE(`fetch_date`) = DATE(:date)";
+
+        $query = $this->pdo->prepare($sql);
+        $query->bindValue('mandja', $tid);
+        $query->bindValue('date', $date);
         $query->execute();
         $result_array = $query->fetch();
 

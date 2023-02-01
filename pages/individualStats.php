@@ -1,6 +1,6 @@
 <?php
 
-    session_start();
+    // session_start();
 
     //Вмъкване на нужните файлове
     include '../includes/databaseManager.php';
@@ -10,18 +10,25 @@
     //Създаваме връзката с базата данни
     $db = new DatabaseManager();
 
-    //Ако сте влезли в профила си, можете да продължите
-    if (isset($_SESSION["user_id"])) {
-        $user_id = $_SESSION["user_id"];
-        $user = $db->getUserById($user_id);
-    } else {
-        redirect("../logIn.php");
-    }
+    // // Ако сте влезли в профила си, можете да продължите
+    // if (isset($_SESSION["user_id"])) {
+    //     $user_id = $_SESSION["user_id"];
+    //     $user = $db->getUserById($user_id);
+    // } else {
+    //     redirect("../logIn.php");
+    // }
 
-    //Излиза информацията за потребителя
-    if(isset($_SESSION['tiktokUsername'])){
-        if($_SESSION['tiktokUsername'] != null){
-            $username = htmlspecialchars($_SESSION['tiktokUsername']);
+    // //Излиза информацията за потребителя
+    // if(isset($_SESSION['tiktokUsername'])){
+    //     if($_SESSION['tiktokUsername'] != null){
+    //         $username = htmlspecialchars($_SESSION['tiktokUsername']);
+    //         $userData = getUserData($username);
+    //     }
+    // }
+
+    if(isset($_GET['tiktokUser'])){
+        if($_GET['tiktokUser'] != null){
+            $username = htmlspecialchars($_GET['tiktokUser']);
             $userData = getUserData($username);
         }
     }
@@ -31,13 +38,15 @@
     function getUserData($username){
         //Взимаме id на потребителя за да можем да вземем информацията за него
         $id = fetchTikTokUserId($username);
+        $sec_uid = fetchTikTokUserSecUid($username);
 
         //Връщаме информацията за потребителя като краен резултат
-        return fetchTikTokUserData($id);
+        // return fetchTikTokUserData($id);
+        return fetchTikTokUserMoreDescriptiveData($sec_uid);
     }
 
     //Показваме профилната снимка на потребителя ако е въвел името си
-    $profpic = isset($userData) ? $userData["avatarThumb"] : false;
+    $profpic = isset($userData) ? $userData["author"]["avatarThumb"] : false;
 
 ?>
 <!DOCTYPE html>
@@ -104,7 +113,7 @@
 
                 <ul class="nav navbar-nav navbar-right">
                     <!-- TOP RIGHT -->
-                    <li><a href="javascript:void(0);" class="js-search" data-close="true"><button type="button" class="btn bg-deep-purple waves-effect" onclick="window.location.href='../logOut.php'">ИЗЛЕЗ ОТ ПРОФИЛА</button></a></li>
+                    <!-- <li><a href="javascript:void(0);" class="js-search" data-close="true"><button type="button" class="btn bg-deep-purple waves-effect" onclick="window.location.href='../logOut.php'">ИЗЛЕЗ ОТ ПРОФИЛА</button></a></li> -->
                     <li class="pull-right"><a href="javascript:void(0);" class="js-right-sidebar" data-close="true"><i class="material-icons">invert_colors</i></a></li>
                 </ul>
 
@@ -125,7 +134,7 @@
                     <?php endif;?>
                     <div class="info-container">
                         <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?= isset($username) ? $username : null ?></div>
-                        <div class="email" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?= isset($userData) ? "Followers: ". number_format($userData["followerCount"]) : null ?></div>
+                        <div class="email" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?= isset($userData) ? "Followers: ". number_format($userData["author"]["followerCount"]) : null ?></div>
                     </div>
                 </div>
 
@@ -380,12 +389,13 @@
                         </ol>
                     </div>
                 </div>
-<!-- 
+
                 <form action="#" method="GET">
                     <label for="tiktokUser">TikTok потребител: </label>
                     <input type="text" id="tiktokUser" name="tiktokUser"><br><br>
                     <button>Get Data</button>
-                </form>  -->
+                </form> 
+                
             <?php isset($userData) ? var_dump($userData) : null ?>
             </div>
 

@@ -1,6 +1,7 @@
 <?php
 
     //Вмъкване на нужните файлове
+    include "../selectDate.php";
     include '../includes/databaseManager.php';
     include '../includes/common.php';
 
@@ -16,6 +17,10 @@
     $tiktokerDatapoints = $db->getTikTokerDatapoints($tid);
 
     //Осигуряваме си необходимите данни
+
+    $selectDate = isset($_SESSION["setDate"]) ? $_SESSION["setDate"] : date("Y-m-d");
+
+    $tiktokerDataForSpecificDate = $db->getTikTokerDataForSpecificDate($tid, $selectDate);
 
     $dates = [];
 
@@ -349,6 +354,7 @@
     </section>
     
     <section class="content">
+        
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <div class="card">
                 <div class="body">
@@ -376,6 +382,59 @@
                             </div>
                         </div>
                     </div>
+       
+                    <div class="block-header">
+                        <div class="card">
+                            <div class="body">
+                                <h2>Изберете дата за която искате да видите данни:</h2>
+                                <div class="btn-group">
+                                    <button type="button" class="btn bg-purple dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <span class="caret"></span>
+                                        <span class="sr-only" id="setDateButton"><?php echo $selectDate ?></span>
+                                    </button>
+
+                                    <ul class="dropdown-menu">
+                                        <?php if($dates):?>
+                                            <?php foreach(array_slice($dates, 1) as $date):?>
+                                                <li data-id="<?php echo $date ?>" data-role="setDate"><a href="javascript:void(0);" class="waves-effect waves-block"><?php echo $date?></a></li>
+                                                <li role="separator" class="divider"></li>
+                                            <?php endforeach;?>
+                                        <?php endif;?>
+                                    </ul>
+                                
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid">
+            <div class="row clearfix">
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div class="info-box bg-deep-orange hover-expand-effect">
+                        <div class="icon">
+                            <i class="material-icons">equalizer</i>
+                        </div>
+                        <div class="content">
+                            <div class="text">ПОСЛЕДОВАТЕЛИ</div>
+                            <div class="number"><?php echo number_format($tiktokerDataForSpecificDate["followers_count"]) ?></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div class="info-box bg-deep-purple hover-expand-effect">
+                        <div class="icon">
+                            <i class="material-icons">equalizer</i>
+                        </div>
+                        <div class="content">
+                            <div class="text">ПОСЛЕДОВАТЕЛИ ОТ <?php echo date("Y") ?></div>
+                            <div class="number"><?php echo number_format($tiktokerDataForSpecificDate["followers_this_year"]) ?></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -384,7 +443,7 @@
             <div class="card">
                 <div class="header">
                     <h2>
-                        ИЗМЕНЕНИЕ НА ПОСЛЕДОВАТЕЛИТЕ НА <?php echo $tiktokerMainData["tiktoker"] ?>
+                        ИЗМЕНЕНИЕ НА ПОСЛЕДОВАТЕЛИТЕ
                     </h2>
                     <ul class="header-dropdown m-r--5">
                         <li class="dropdown">
@@ -411,7 +470,7 @@
             <div class="card">
                 <div class="header">
                     <h2>
-                        ИЗМЕНЕНИЕ НА ПОСЛЕДОВАТЕЛИТЕ ЗА ТАЗИ ГОДИНА НА <?php echo $tiktokerMainData["tiktoker"] ?>
+                        ИЗМЕНЕНИЕ НА ПОСЛЕДОВАТЕЛИТЕ ОТ <?php echo date("Y") ?>
                     </h2>
                     <ul class="header-dropdown m-r--5">
                         <li class="dropdown">
@@ -453,7 +512,7 @@
                 labels: dates, //x
                 datasets: [
                     {
-                        label: 'Последователи за тази година',
+                        label: 'Последователи от тази година',
                         data: followersThisYear, //y
                         borderColor: 'rgba(159, 90, 253, 1)',
                         backgroundColor: 'rgba(159, 90, 253, 0.3)',
@@ -499,6 +558,28 @@
                     }
                 }
             });
+    </script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $(document).on("click", "li[data-role=setDate]", function(){
+
+                let date = $(this).data('id');
+
+                $.ajax({
+                    type: "POST",
+                    url: "../selectDate.php",
+                    data: {setDate: date},
+                    success: function(data){
+                        $("#setDateButton").html(data);
+                        window.location.reload();
+                    }
+                });
+
+            });
+        });
+
     </script>
 
 <!-- Jquery Core Js -->

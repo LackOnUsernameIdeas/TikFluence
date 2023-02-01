@@ -24,7 +24,7 @@
     $top200SongsGlobal = $db->listTop200Songs($selectDate);
     $top200SongsBG = $db->listTop200SongsBG($selectDate);
 
-    $topSongsGlobal = $db->listTopSongs($selectDate);
+    $topSongsGlobal = $db->listTopSongsGlobal($selectDate);
 
 
     $songsNamesGlobal = [];
@@ -36,6 +36,7 @@
             $songsPopularitiesGlobal[] = $song["number_of_videos_last_14days"];
         }    
     }
+
 
     function setGrowth($sid, $db, $selectDate) {
 
@@ -589,7 +590,7 @@
                             </div>
                             <div class="body">
                                 <div class="body">
-                                    <canvas id="barChart2"></canvas>
+                                    <canvas id="barChartGlobal"></canvas>
                                 </div>
                             </div>
                         </div>
@@ -696,8 +697,11 @@
     
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
+
+    //Статистика за някои от първите песни глобално
+
         // съставяне 
-        const data = {
+        const dataGlobal = {
             labels: JSON.parse('<?php echo json_encode($songsNamesGlobal) ?>'),
             datasets: [{
                 label: 'ПОПУЛЯРНОСТ',
@@ -726,9 +730,9 @@
         };
 
         // кофигуриране 
-        const config = {
+        const configGlobal = {
             type: 'bar',
-            data: data,
+            data: dataGlobal,
             options: {
                 indexAxis: 'y',
                     scales: {
@@ -740,9 +744,9 @@
         };
 
         // слагаме статистиката в html елемента
-        const myChart = new Chart(
-            document.getElementById('barChart2'),
-            config
+        const myChartGlobal = new Chart(
+            document.getElementById('barChartGlobal'),
+            configGlobal
         );
 
     </script>

@@ -250,3 +250,51 @@ function fetchTikTokUserData($id){
 
     return $decoded;
 }
+
+function fetchTikTokUserSecUid($username){
+
+    $ch = curl_init();
+
+    curl_setopt($ch, CURLOPT_URL, "https://countik.com/api/exist/$username");
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+    $headers = [];
+
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
+    $resp = curl_exec($ch);
+    $decoded = json_decode($resp, true);
+
+    $error_message = curl_error($ch);
+    if($error_message != ''){
+        die($error_message);
+    };
+
+    curl_close($ch);
+
+    return $decoded["sec_uid"];
+}
+
+function fetchTikTokUserMoreDescriptiveData($sec_uid){
+
+    $ch = curl_init();
+
+    curl_setopt($ch, CURLOPT_URL, "https://countik.com/api/analyze/?sec_user_id=$sec_uid");
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+    $headers = [];
+
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
+    $resp = curl_exec($ch);
+    $decoded = json_decode($resp, true);
+
+    $error_message = curl_error($ch);
+    if($error_message != ''){
+        die($error_message);
+    };
+
+    curl_close($ch);
+
+    return $decoded;
+}

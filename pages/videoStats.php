@@ -1,6 +1,7 @@
 <?php
 
     //Вмъкване на нужните файлове
+    include "../selectDate.php";
     include '../includes/databaseManager.php';
     include '../includes/common.php';
 
@@ -15,6 +16,11 @@
     $videoDatapoints = $db->getVideoData($vid);
 
     //Осигуряваме си необходимите данни
+
+    $selectDate = isset($_SESSION["setDate"]) ? $_SESSION["setDate"] : date("Y-m-d");
+
+    $videoDataForSpecificDate = $db->getVideoDataForSpecificDate($vid, $selectDate);
+
 
     $dates = [];
 
@@ -371,10 +377,75 @@
                             </div>
                         </div>
                     </div>
+       
+                    <div class="block-header">
+                        <div class="card">
+                            <div class="body">
+                                <h2>Изберете дата за която искате да видите данни:</h2>
+                                <div class="btn-group">
+                                    <button type="button" class="btn bg-purple dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <span class="caret"></span>
+                                        <span class="sr-only" id="setDateButton"><?php echo $selectDate ?></span>
+                                    </button>
+
+                                    <ul class="dropdown-menu">
+                                        <?php if($dates):?>
+                                            <?php foreach(array_slice($dates, 1) as $date):?>
+                                                <li data-id="<?php echo $date ?>" data-role="setDate"><a href="javascript:void(0);" class="waves-effect waves-block"><?php echo $date?></a></li>
+                                                <li role="separator" class="divider"></li>
+                                            <?php endforeach;?>
+                                        <?php endif;?>
+                                    </ul>
+                                
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            
                 </div>
             </div>
         </div>
-        
+
+        <div class="container-fluid">
+            <div class="row clearfix">
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div class="info-box bg-pink hover-expand-effect">
+                        <div class="icon">
+                            <i class="material-icons">equalizer</i>
+                        </div>
+                        <div class="content">
+                            <div class="text">ГЛЕДАНИЯ</div>
+                            <div class="number"><?php echo number_format($videoDataForSpecificDate["plays_count"]) ?></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div class="info-box bg-brown hover-expand-effect">
+                        <div class="icon">
+                            <i class="material-icons">equalizer</i>
+                        </div>
+                        <div class="content">
+                            <div class="text">СПОДЕЛЯНИЯ</div>
+                            <div class="number"><?php echo number_format($videoDataForSpecificDate["shares_count"]) ?></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div class="info-box bg-deep-orange hover-expand-effect">
+                        <div class="icon">
+                            <i class="material-icons">equalizer</i>
+                        </div>
+                        <div class="content">
+                            <div class="text">ХАРЕСВАНИЯ</div>
+                            <div class="number"><?php echo number_format($videoDataForSpecificDate["likes_count"]) ?></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
             <div class="card">
                 <div class="header">
@@ -566,6 +637,28 @@
                 }
             }
         });
+    </script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $(document).on("click", "li[data-role=setDate]", function(){
+
+                let date = $(this).data('id');
+
+                $.ajax({
+                    type: "POST",
+                    url: "../selectDate.php",
+                    data: {setDate: date},
+                    success: function(data){
+                        $("#setDateButton").html(data);
+                        window.location.reload();
+                    }
+                });
+
+            });
+        });
+
     </script>
 
 <!-- Jquery Core Js -->
