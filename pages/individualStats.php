@@ -37,16 +37,51 @@
 
     function getUserData($username){
         //Взимаме id на потребителя за да можем да вземем информацията за него
-        $id = fetchTikTokUserId($username);
+
+        // $id = fetchTikTokUserId($username);
         $sec_uid = fetchTikTokUserSecUid($username);
 
         //Връщаме информацията за потребителя като краен резултат
+
         // return fetchTikTokUserData($id);
         return fetchTikTokUserMoreDescriptiveData($sec_uid);
     }
 
     //Показваме профилната снимка на потребителя ако е въвел името си
-    $profpic = isset($userData) ? $userData["author"]["avatarThumb"] : false;
+
+    $isVerified = false;
+
+    if(isset($userData)){
+        if($userData["author"]["verified"] == true){
+            $isVerified = $userData["author"]["verified"];
+        }
+
+        $videosCount = [];
+
+        $likes = [];
+        $views = [];
+        $shares = [];
+        $comments = [];
+
+        for($i=0; $i<count($userData["videos"]);$i++){
+            array_push($videosCount, $i + 1);
+
+            array_push($likes, $userData["videos"][$i]["likes"]);
+            array_push($views, $userData["videos"][$i]["plays"]);
+            array_push($shares, $userData["videos"][$i]["shares"]);
+            array_push($comments, $userData["videos"][$i]["comments"]);
+        }
+
+        $hashtags = [];
+        $hashtagsTimesUsed = [];
+
+        foreach($userData["hashtags"] as $ht){
+            $hashtags[] = $ht["name"];
+            $hashtagsTimesUsed[] = $ht["count"];
+        }
+        
+    }
+
 
 ?>
 <!DOCTYPE html>
@@ -72,6 +107,9 @@
 
     <!-- Animation Css -->
     <link href="../plugins/animate-css/animate.css" rel="stylesheet" />
+
+    <!-- Morris Chart Css-->
+    <link href="../plugins/morrisjs/morris.css" rel="stylesheet" />
 
     <!-- Custom Css -->
     <link href="../css/style.css" rel="stylesheet">
@@ -127,15 +165,7 @@
             <!-- User Info -->
             <div class="user-info">
                 <div class="body">
-                    <?php if($profpic != false): ?>
-                        <div class="image">
-                            <img src="<?php echo $profpic?>" width="48" height="48" alt="User" />
-                        </div>
-                    <?php endif;?>
-                    <div class="info-container">
-                        <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?= isset($username) ? $username : null ?></div>
-                        <div class="email" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?= isset($userData) ? "Followers: ". number_format($userData["author"]["followerCount"]) : null ?></div>
-                    </div>
+
                 </div>
 
             </div>
@@ -395,34 +425,434 @@
                     <input type="text" id="tiktokUser" name="tiktokUser"><br><br>
                     <button>Get Data</button>
                 </form> 
-                
-            <?php isset($userData) ? var_dump($userData) : null ?>
+
+                <br>
+                <?php if(isset($userData)): ?>
+                    <div class="row clearfix">
+
+                        <div class="col-lg-6 col-md-8 col-sm-8 col-xs-8">
+                            <div class="card">
+                                <div class="body">
+                                    <!-- User Info -->
+                                    <div class="row clearfix">
+                                        <div class="container-fluid">
+
+                                            <div class="user-info">
+                                                <div class="body">
+                                                    
+                                                        <div class="image">
+                                                            <img src="<?php echo $userData["author"]["avatarLarger"]?>" width="68" height="68" alt="User" />
+                                                        </div>
+                                                        
+                                                        <div class="info-container">
+                                                            <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                <?= isset($userData) ? $userData["author"]["uniqueId"] : null ?> <img src="<?= $isVerified ? "../images/verified.png" : ""?>" width="10px" height="10px">
+                                                            </div>
+                                                            <div class="email" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                <?= isset($userData) ? $userData["author"]["nickname"] . " |" : null ?> <?= isset($userData) ? $userData["author"]["country"] : null ?>
+                                                            </div>
+                                                        </div>
+                                                </div>
+                                                
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <!-- #User Info -->
+                                </div>
+                            </div>
+                        </div>      
+                        
+                        
+                    
+                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                            <div class="info-box bg-deep-purple hover-zoom-effect">
+                                <div class="icon">
+                                    <i class="material-icons">person</i>
+                                </div>
+                                <div class="content">
+                                    <div class="text">Последователи</div>
+                                    <!-- <div class="number">wcw</div>  -->
+                                    <div class="number count-to" data-from="0" data-to="<?php echo $userData["author"]["followerCount"] ?>" data-speed="3000" data-fresh-interval="20"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                            <div class="info-box bg-red hover-zoom-effect">
+                                <div class="icon">
+                                    <i class="material-icons">person_outline</i>
+                                </div>
+                                <div class="content">
+                                    <div class="text">Последвани</div>
+                                    <div class="number count-to" data-from="0" data-to="<?php echo $userData["author"]["followingCount"] ?>" data-speed="3000" data-fresh-interval="20"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                            <div class="info-box bg-deep-orange hover-zoom-effect">
+                                <div class="icon">
+                                    <i class="material-icons">video_library</i>
+                                </div>
+                                <div class="content">
+                                    <div class="text">Брой видеа</div>
+                                    <div class="number count-to" data-from="0" data-to="<?php echo $userData["author"]["videoCount"] ?>" data-speed="3000" data-fresh-interval="20"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                            <div class="info-box bg-yellow hover-zoom-effect">
+                                <div class="icon">
+                                    <i class="material-icons">thumb_up</i>
+                                </div>
+                                <div class="content">
+                                    <div class="text">Брой харесвания</div>
+                                    <div class="number count-to" data-from="0" data-to="<?php echo $userData["author"]["heartCount"] ?>" data-speed="3000" data-fresh-interval="20"></div> 
+                                </div>
+                            </div>
+                        </div>
+        
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            <div class="card">
+                                <div class="header">
+                                    <h2>
+                                        ХАРЕСВАНИЯ НА СКОРО КАЧЕНИ ВИДЕА
+                                    </h2>
+                                    <ul class="header-dropdown m-r--5">
+                                        <li class="dropdown">
+                                            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                                <i class="material-icons">more_vert</i>
+                                            </a>
+                                            <ul class="dropdown-menu pull-right">
+                                                <li><a href="javascript:void(0);">Action</a></li>
+                                                <li><a href="javascript:void(0);">Another action</a></li>
+                                                <li><a href="javascript:void(0);">Something else here</a></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="body">
+                                    <div class="content">
+                                        <canvas id="LikesChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            <div class="card">
+                                <div class="header">
+                                    <h2>
+                                        ГЛЕДАНИЯ НА СКОРО КАЧЕНИ ВИДЕА
+                                    </h2>
+                                    <ul class="header-dropdown m-r--5">
+                                        <li class="dropdown">
+                                            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                                <i class="material-icons">more_vert</i>
+                                            </a>
+                                            <ul class="dropdown-menu pull-right">
+                                                <li><a href="javascript:void(0);">Action</a></li>
+                                                <li><a href="javascript:void(0);">Another action</a></li>
+                                                <li><a href="javascript:void(0);">Something else here</a></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="body">
+                                    <div class="content">
+                                        <canvas id="ViewsChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            <div class="card">
+                                <div class="header">
+                                    <h2>
+                                        СПОДЕЛЯНИЯ НА СКОРО КАЧЕНИ ВИДЕА
+                                    </h2>
+                                    <ul class="header-dropdown m-r--5">
+                                        <li class="dropdown">
+                                            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                                <i class="material-icons">more_vert</i>
+                                            </a>
+                                            <ul class="dropdown-menu pull-right">
+                                                <li><a href="javascript:void(0);">Action</a></li>
+                                                <li><a href="javascript:void(0);">Another action</a></li>
+                                                <li><a href="javascript:void(0);">Something else here</a></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="body">
+                                    <div class="content">
+                                        <canvas id="SharesChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            <div class="card">
+                                <div class="header">
+                                    <h2>
+                                        КОМЕНТАРИ НА СКОРО КАЧЕНИ ВИДЕА
+                                    </h2>
+                                    <ul class="header-dropdown m-r--5">
+                                        <li class="dropdown">
+                                            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                                <i class="material-icons">more_vert</i>
+                                            </a>
+                                            <ul class="dropdown-menu pull-right">
+                                                <li><a href="javascript:void(0);">Action</a></li>
+                                                <li><a href="javascript:void(0);">Another action</a></li>
+                                                <li><a href="javascript:void(0);">Something else here</a></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="body">
+                                    <div class="content">
+                                        <canvas id="CommentsChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="card">
+                                <div class="header">
+                                    <h2>
+                                        НАЙ-ИЗПОЛЗВАНИТЕ ХАШТАГОВЕ (СПОРЕД ПОСЛЕДНИТЕ ВИДЕА)
+                                    </h2>
+                                    <ul class="header-dropdown m-r--5">
+                                        <li class="dropdown">
+                                            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                                <i class="material-icons">more_vert</i>
+                                            </a>
+                                            <ul class="dropdown-menu pull-right">
+                                                <li><a href="javascript:void(0);">Action</a></li>
+                                                <li><a href="javascript:void(0);">Another action</a></li>
+                                                <li><a href="javascript:void(0);">Something else here</a></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="body">
+                                    <div class="content">
+                                        <canvas id="HashtagsChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                <?php endif;?>
+
             </div>
 
         </div>
     </section>
 
-    <!-- Jquery Core Js -->
-    <script src="../plugins/jquery/jquery.min.js"></script>
 
-    <!-- Bootstrap Core Js -->
-    <script src="../plugins/bootstrap/js/bootstrap.js"></script>
+</body>   
 
-    <!-- Select Plugin Js -->
-    <script src="../plugins/bootstrap-select/js/bootstrap-select.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js" integrity="sha512-JPcRR8yFa8mmCsfrw4TNte1ZvF1e3+1SdGMslZvmrzDYxS69J7J49vkFL8u6u8PlPJK+H3voElBtUCzaXj+6ig==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<!-- Статистики -->
+<script>
 
-    <!-- Slimscroll Plugin Js -->
-    <script src="../plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
+    //Данни за ползване
+    let videosCount =  JSON.parse('<?php echo json_encode($videosCount) ?>');
 
-    <!-- Waves Effect Plugin Js -->
-    <script src="../plugins/node-waves/waves.js"></script>
+    let likes =  JSON.parse('<?php echo json_encode($likes) ?>');
+    let views =  JSON.parse('<?php echo json_encode($views) ?>');
+    let comments =  JSON.parse('<?php echo json_encode($comments) ?>');
+    let shares =  JSON.parse('<?php echo json_encode($shares) ?>');
 
-    <!-- Custom Js -->
-    <script src="../js/admin.js"></script>
+    let hashtags = JSON.parse('<?php echo json_encode($hashtags) ?>');
+    let hashtagsTimesUsed = JSON.parse('<?php echo json_encode($hashtagsTimesUsed) ?>');
 
-    <!-- Demo Js -->
-    <script src="../js/demo.js"></script>
 
-</body>
+    //Харесвания
+    new Chart(document.getElementById('LikesChart'), {
+        type: 'bar',
+        data: {
+            labels: videosCount, //x
+            datasets: [
+                {
+                    label: 'Харесвания',
+                    data: likes, //y
+                    borderColor: 'rgb(255, 240, 0)',
+                    backgroundColor: 'rgba(255, 240, 0, 0.7)',
+                    fill: true,
+                    tension: 0.4
+                }
+            ]
+        },
+        options: {
+            scales: {
+                y: {
+                    type: 'linear',
+                    display: true,
+                    position: "left"
+                }
+            }
+        }
+    });
+
+    //Гледания
+    new Chart(document.getElementById('ViewsChart'), {
+        type: 'bar',
+        data: {
+            labels: videosCount, //x
+            datasets: [
+                {
+                    label: 'Гледания',
+                    data: views, //y
+                    borderColor: 'rgb(159, 90, 253)',
+                    backgroundColor: 'rgba(159, 90, 253, 0.7)',
+                    fill: true,
+                    tension: 0.4
+                }
+            ]
+        },
+        options: {
+            scales: {
+                y: {
+                    type: 'linear',
+                    display: true,
+                    position: "left"
+                }
+            }
+        }
+    });
+
+    //Споделяния
+    new Chart(document.getElementById('SharesChart'), {
+        type: 'bar',
+        data: {
+            labels: videosCount, //x
+            datasets: [
+                {
+                    label: 'Споделяния',
+                    data: views, //y
+                    borderColor: 'rgb(255, 0, 0)',
+                    backgroundColor: 'rgba(255, 0, 0, 0.7)',
+                    fill: true,
+                    tension: 0.4
+                }
+            ]
+        },
+        options: {
+            scales: {
+                y: {
+                    type: 'linear',
+                    display: true,
+                    position: "left"
+                }
+            }
+        }
+    });
+
+    //Коментари
+    new Chart(document.getElementById('CommentsChart'), {
+        type: 'bar',
+        data: {
+            labels: videosCount, //x
+            datasets: [
+                {
+                    label: 'Коментари',
+                    data: comments, //y
+                    borderColor: 'rgb(241, 90, 34)',
+                    backgroundColor: 'rgba(241, 90, 34, 0.7)',
+                    fill: true,
+                    tension: 0.4
+                }
+            ]
+        },
+        options: {
+            scales: {
+                y: {
+                    type: 'linear',
+                    display: true,
+                    position: "left"
+                }
+            }
+        }
+    });
+
+    //Хаштагове
+    new Chart(document.getElementById('HashtagsChart'), {
+        type: 'bar',
+        data: {
+            labels: hashtags, //x
+            datasets: [
+                {
+                    label: 'Хаштагове',
+                    data: hashtagsTimesUsed, //y
+                    borderColor: 'rgb(139, 69, 19)',
+                    backgroundColor: 'rgb(139, 69, 19, 0.7)',
+                    fill: true,
+                    tension: 0.4
+                }
+            ]
+        },
+        options: {
+            scales: {
+                y: {
+                    type: 'linear',
+                    display: true,
+                    position: "left"
+                }
+            }
+        }
+    });
+</script>
+
+<!-- Jquery Core Js -->
+<script src="../plugins/jquery/jquery.min.js"></script>
+
+<!-- Bootstrap Core Js -->
+<script src="../plugins/bootstrap/js/bootstrap.js"></script>
+
+<!-- Select Plugin Js -->
+<script src="../plugins/bootstrap-select/js/bootstrap-select.js"></script>
+
+<!-- Slimscroll Plugin Js -->
+<script src="../plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
+
+<!-- Waves Effect Plugin Js -->
+<script src="../plugins/node-waves/waves.js"></script>
+
+<!-- Jquery CountTo Plugin Js -->
+<script src="../plugins/jquery-countto/jquery.countTo.js"></script>
+
+<!-- Morris Plugin Js -->
+<script src="../plugins/raphael/raphael.min.js"></script>
+<script src="../plugins/morrisjs/morris.js"></script>
+
+<!-- ChartJs -->
+<script src="../plugins/chartjs/Chart.bundle.js"></script>
+
+<!-- Flot Charts Plugin Js -->
+<script src="../plugins/flot-charts/jquery.flot.js"></script>
+<script src="../plugins/flot-charts/jquery.flot.resize.js"></script>
+<script src="../plugins/flot-charts/jquery.flot.pie.js"></script>
+<script src="../plugins/flot-charts/jquery.flot.categories.js"></script>
+<script src="../plugins/flot-charts/jquery.flot.time.js"></script>
+
+<!-- Sparkline Chart Plugin Js -->
+<script src="../plugins/jquery-sparkline/jquery.sparkline.js"></script>
+
+<!-- Custom Js -->
+<script src="../js/admin.js"></script>
+<script src="../js/pages/index.js"></script>
+
+<!-- Demo Js -->
+<script src="../js/demo.js"></script>
 
 </html>

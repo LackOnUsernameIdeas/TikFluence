@@ -411,7 +411,7 @@
                 <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
                     <div class="info-box bg-pink hover-expand-effect">
                         <div class="icon">
-                            <i class="material-icons">equalizer</i>
+                            <i class="material-icons">visibility</i>
                         </div>
                         <div class="content">
                             <div class="text">ГЛЕДАНИЯ</div>
@@ -423,7 +423,7 @@
                 <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
                     <div class="info-box bg-brown hover-expand-effect">
                         <div class="icon">
-                            <i class="material-icons">equalizer</i>
+                            <i class="material-icons">share</i>
                         </div>
                         <div class="content">
                             <div class="text">СПОДЕЛЯНИЯ</div>
@@ -435,7 +435,7 @@
                 <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
                     <div class="info-box bg-deep-orange hover-expand-effect">
                         <div class="icon">
-                            <i class="material-icons">equalizer</i>
+                            <i class="material-icons">thumb_up</i>
                         </div>
                         <div class="content">
                             <div class="text">ХАРЕСВАНИЯ</div>
