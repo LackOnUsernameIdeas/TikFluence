@@ -180,6 +180,38 @@ class DatabaseManager {
         return count($result_array) > 0 ? $result_array : false;
     }
 
+    //Дърпаме цялата информация за най-слушаната песен глобално
+    public function listTheFirstSongGlobal($date) {
+        $sql = "SELECT * 
+                FROM tiktok_records 
+                JOIN tiktok_songs 
+                ON tiktok_records.song_id = tiktok_songs.id
+                WHERE DATE(`fetch_date`) = DATE(:date) AND rank = 1";
+
+        $query = $this->pdo->prepare($sql);
+        $query->bindValue('date', $date);
+        $query->execute();
+        $result_array = $query->fetch();
+
+        return count($result_array) > 0 ? $result_array : false;
+    }
+
+    //Дърпаме цялата информация за най-слушаната песен за България
+    public function listTheFirstSongBG($date) {
+        $sql = "SELECT * 
+                FROM tiktok_records_bulgaria 
+                JOIN tiktok_songs_bulgaria 
+                ON tiktok_records_bulgaria.song_id = tiktok_songs_bulgaria.id
+                WHERE DATE(`fetch_date`) = DATE(:date) AND rank = 1";
+
+        $query = $this->pdo->prepare($sql);
+        $query->bindValue('date', $date);
+        $query->execute();
+        $result_array = $query->fetch();
+
+        return count($result_array) > 0 ? $result_array : false;
+    }
+
     //Дърпаме цялата информация за топ 200те песни(за България)
     public function listTop200SongsBG($date) {
         $sql = "SELECT * 
@@ -296,6 +328,34 @@ class DatabaseManager {
         $result = $query->fetch(PDO::FETCH_ASSOC);
 
         return $result;
+    }
+
+    //Дърпаме цялата информация за най-следвания тиктокър
+    public function listTheFirstTiktoker($date) {
+        $sql = "SELECT * 
+                FROM tiktokers
+                WHERE DATE(`fetch_date`) = DATE(:date)";
+
+        $query = $this->pdo->prepare($sql);
+        $query->bindValue('date', $date);
+        $query->execute();
+        $result_array = $query->fetch();
+
+        return count($result_array) > 0 ? $result_array : false;
+    }
+
+    //Дърпаме цялата информация за най-следвания тиктокър
+    public function listTheFirstVideo($date) {
+        $sql = "SELECT * 
+                FROM tiktok_top_videos
+                WHERE DATE(`fetch_date`) = DATE(:date)";
+
+        $query = $this->pdo->prepare($sql);
+        $query->bindValue('date', $date);
+        $query->execute();
+        $result_array = $query->fetch();
+
+        return count($result_array) > 0 ? $result_array : false;
     }
 
     //Създаваме нова песен ако findSongByTiktokId не намери такава

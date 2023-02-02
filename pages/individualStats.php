@@ -79,6 +79,14 @@
             $hashtags[] = $ht["name"];
             $hashtagsTimesUsed[] = $ht["count"];
         }
+
+        $mentions = [];
+        $timesPeopleAreMentioned = [];
+
+        foreach($userData["mentions"] as $ht){
+            $mentions[] = $ht["name"];
+            $timesPeopleAreMentioned[] = $ht["count"];
+        }
         
     }
 
@@ -461,9 +469,7 @@
                                     <!-- #User Info -->
                                 </div>
                             </div>
-                        </div>      
-                        
-                        
+                        </div>                            
                     
                         <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
                             <div class="info-box bg-deep-purple hover-zoom-effect">
@@ -648,6 +654,35 @@
                                 </div>
                             </div>
                         </div>
+
+                        
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="card">
+                                <div class="header">
+                                    <h2>
+                                        НАЙ-ОТБЕЛЯЗВАНИТЕ ПОТРЕБИТЕЛИ (СПОРЕД ПОСЛЕДНИТЕ ВИДЕА)
+                                    </h2>
+                                    <ul class="header-dropdown m-r--5">
+                                        <li class="dropdown">
+                                            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                                <i class="material-icons">more_vert</i>
+                                            </a>
+                                            <ul class="dropdown-menu pull-right">
+                                                <li><a href="javascript:void(0);">Action</a></li>
+                                                <li><a href="javascript:void(0);">Another action</a></li>
+                                                <li><a href="javascript:void(0);">Something else here</a></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="body">
+                                    <div class="content">
+                                        <canvas id="MentionsChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
                     </div>
 
                 <?php endif;?>
@@ -675,6 +710,9 @@
 
     let hashtags = JSON.parse('<?php echo json_encode($hashtags) ?>');
     let hashtagsTimesUsed = JSON.parse('<?php echo json_encode($hashtagsTimesUsed) ?>');
+
+    let mentions = JSON.parse('<?php echo json_encode($mentions) ?>');
+    let timesPeopleAreMentioned = JSON.parse('<?php echo json_encode($timesPeopleAreMentioned) ?>');
 
 
     //Харесвания
@@ -796,6 +834,33 @@
                     data: hashtagsTimesUsed, //y
                     borderColor: 'rgb(139, 69, 19)',
                     backgroundColor: 'rgb(139, 69, 19, 0.7)',
+                    fill: true,
+                    tension: 0.4
+                }
+            ]
+        },
+        options: {
+            scales: {
+                y: {
+                    type: 'linear',
+                    display: true,
+                    position: "left"
+                }
+            }
+        }
+    });
+
+    //Отбелязвания
+    new Chart(document.getElementById('MentionsChart'), {
+        type: 'bar',
+        data: {
+            labels: mentions, //x
+            datasets: [
+                {
+                    label: 'Отбелязвания',
+                    data: timesPeopleAreMentioned, //y
+                    borderColor: 'rgb(149, 53, 83)',
+                    backgroundColor: 'rgb(149, 53, 83)',
                     fill: true,
                     tension: 0.4
                 }
