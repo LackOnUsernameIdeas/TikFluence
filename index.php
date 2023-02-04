@@ -10,11 +10,10 @@
     $hashtagsDataForTheLast7Days = fetchTopHashtagsForTheLast7Days();
     $hashtagsDataForTheLast120Days = fetchTopHashtagsForTheLast120Days();
 
+
     $theFirstSongGlobal = $db->listTheFirstSongGlobal(date("Y-m-d"));
-    $theFirstSongBG = $db->listTheFirstSongBG(date("Y-m-d"));
     $theMostFollowedTikToker = $db->listTheFirstTikToker(date("Y-m-d"));
     $theMostWatchedVideo = $db->listTheFirstVideo(date("Y-m-d"));
-
 
 
     $hashtagsForTheLast7Days = [];
@@ -357,48 +356,49 @@
 
     <section class="content">
         <div class="container-fluid">
-            <div class="block-header">
-                <h2>ВИЖТЕ ПЕСЕНТА, ТИКТОКЪРА И ВИДЕОТО НА ПЪРВО МЯСТО В НАШИТЕ КЛАСАЦИИ:</h2>
-            </div>
-
-            <!-- Widgets -->
-            <div class="row clearfix">
-                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12" onClick="location.href='https://www.tiktok.com/music/-<?php echo $theFirstSongGlobal["tiktok_platform_id"] ?>'">
-                    <div class="info-box bg-pink hover-expand-effect">
-                        <div class="icon">
-                            <i class="material-icons">music_note</i>
-                        </div>
-                        <div class="content">
-                            <div class="text">ПЕСЕН: <?php echo $theFirstSongGlobal["song_name"] ?></div>
-                            <div class="number count-to" data-from="0" data-to="<?php echo $theFirstSongGlobal["number_of_videos_last_14days"] ?>" data-speed="3000" data-fresh-interval="20"></div>
+            <?php if($theFirstSongGlobal && $theMostFollowedTikToker && $theMostWatchedVideo):?>
+                <div class="block-header">
+                    <h2>ВИЖТЕ ПЕСЕНТА, ТИКТОКЪРА И ВИДЕОТО НА ПЪРВО МЯСТО В НАШИТЕ КЛАСАЦИИ:</h2>
+                </div>
+                <!-- Widgets -->
+                <div class="row clearfix">
+                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12" onClick="location.href='https://www.tiktok.com/music/-<?php echo $theFirstSongGlobal["tiktok_platform_id"] ?>'">
+                        <div class="info-box bg-pink hover-expand-effect">
+                            <div class="icon">
+                                <i class="material-icons">music_note</i>
+                            </div>
+                            <div class="content">
+                                <div class="text">ПЕСЕН: <?php echo $theFirstSongGlobal["song_name"] ?></div>
+                                <div class="number count-to" data-from="0" data-to="<?php echo $theFirstSongGlobal["number_of_videos_last_14days"] ?>" data-speed="3000" data-fresh-interval="20"></div>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12" onClick="location.href='https://www.tiktok.com/@<?php echo $theMostFollowedTikToker["platform_name"] ?>'">
-                    <div class="info-box bg-light-green hover-expand-effect">
-                        <div class="icon"><?php if($theMostFollowedTikToker["thumbnail"]):?><img src="<?php echo $theMostFollowedTikToker["thumbnail"]?>" alt="Prof pic" width="82px" height="82px" style="vertical-align:bottom"><?php endif;?></div>
-                        <div class="content">
-                            <div class="text">ТИКТОКЪР: <?php echo $theMostFollowedTikToker["platform_name"] ?></div>
-                            <div class="number count-to" data-from="0" data-to="<?php echo $theMostFollowedTikToker["followers_count"] ?>" data-speed="3000" data-fresh-interval="20"></div>
+                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12" onClick="location.href='https://www.tiktok.com/@<?php echo $theMostFollowedTikToker["platform_name"] ?>'">
+                        <div class="info-box bg-light-green hover-expand-effect">
+                            <div class="icon"><?php if($theMostFollowedTikToker["thumbnail"]):?><img src="<?php echo $theMostFollowedTikToker["thumbnail"]?>" alt="Prof pic" width="82px" height="82px" style="vertical-align:bottom"><?php endif;?></div>
+                            <div class="content">
+                                <div class="text">ТИКТОКЪР: <?php echo $theMostFollowedTikToker["platform_name"] ?></div>
+                                <div class="number count-to" data-from="0" data-to="<?php echo $theMostFollowedTikToker["followers_count"] ?>" data-speed="3000" data-fresh-interval="20"></div>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12" onClick="location.href='<?php echo $theMostWatchedVideo["video_url"] ?>'">
-                    <div class="info-box bg-orange hover-expand-effect">
-                        <div class="icon">
-                            <i class="material-icons">person_add</i>
-                        </div>
-                        <div class="content">
-                            <div class="text">ВИДЕОТО НА: <?php echo $theMostWatchedVideo["platform_name"] ?></div>
-                            <?php ?><div class="number count-to" data-from="0" data-to="<?php echo $theMostWatchedVideo["plays_count"] ?>" data-speed="3000" data-fresh-interval="20"></div>
+                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12" onClick="location.href='<?php echo $theMostWatchedVideo["video_url"] ?>'">
+                        <div class="info-box bg-orange hover-expand-effect">
+                            <div class="icon">
+                                <i class="material-icons">person_add</i>
+                            </div>
+                            <div class="content">
+                                <div class="text">ВИДЕОТО НА: <?php echo $theMostWatchedVideo["platform_name"] ?></div>
+                                <?php ?><div class="number count-to" data-from="0" data-to="<?php echo $theMostWatchedVideo["plays_count"] ?>" data-speed="3000" data-fresh-interval="20"></div>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-            </div>
-            <!-- #END# Widgets -->
+                </div>
+                <!-- #END# Widgets -->
+            <?php endif;?>
             <!-- Body Copy -->
             <div class="row clearfix">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">

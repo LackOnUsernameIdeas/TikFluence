@@ -29,7 +29,11 @@
     if(isset($_GET['tiktokUser'])){
         if($_GET['tiktokUser'] != null){
             $username = htmlspecialchars($_GET['tiktokUser']);
-            $userData = getUserData($username);
+            $userMoreDescriptiveData = getUserMoreDescriptiveData($username);
+
+            if($userMoreDescriptiveData == false){
+                $userBasicData = getUserData($username);
+            }
         }
     }
 
@@ -37,23 +41,28 @@
 
     function getUserData($username){
         //Взимаме id на потребителя за да можем да вземем информацията за него
+        $id = fetchTikTokUserId($username);
 
-        // $id = fetchTikTokUserId($username);
+        //Връщаме информацията за потребителя като краен резултат
+        return fetchTikTokUserData($id);
+    }
+
+    function getUserMoreDescriptiveData($username){
+        //Взимаме id на потребителя за да можем да вземем информацията за него
         $sec_uid = fetchTikTokUserSecUid($username);
 
         //Връщаме информацията за потребителя като краен резултат
-
-        // return fetchTikTokUserData($id);
         return fetchTikTokUserMoreDescriptiveData($sec_uid);
+       
     }
 
     //Показваме профилната снимка на потребителя ако е въвел името си
 
     $isVerified = false;
 
-    if(isset($userData)){
-        if($userData["author"]["verified"] == true){
-            $isVerified = $userData["author"]["verified"];
+    if(isset($userMoreDescriptiveData) && $userMoreDescriptiveData != false){
+        if($userMoreDescriptiveData["author"]["verified"] == true){
+            $isVerified = $userMoreDescriptiveData["author"]["verified"];
         }
 
         $videosCount = [];
@@ -63,19 +72,19 @@
         $shares = [];
         $comments = [];
 
-        for($i=0; $i<count($userData["videos"]);$i++){
+        for($i=0; $i<count($userMoreDescriptiveData["videos"]);$i++){
             array_push($videosCount, $i + 1);
 
-            array_push($likes, $userData["videos"][$i]["likes"]);
-            array_push($views, $userData["videos"][$i]["plays"]);
-            array_push($shares, $userData["videos"][$i]["shares"]);
-            array_push($comments, $userData["videos"][$i]["comments"]);
+            array_push($likes, $userMoreDescriptiveData["videos"][$i]["likes"]);
+            array_push($views, $userMoreDescriptiveData["videos"][$i]["plays"]);
+            array_push($shares, $userMoreDescriptiveData["videos"][$i]["shares"]);
+            array_push($comments, $userMoreDescriptiveData["videos"][$i]["comments"]);
         }
 
         $hashtags = [];
         $hashtagsTimesUsed = [];
 
-        foreach($userData["hashtags"] as $ht){
+        foreach($userMoreDescriptiveData["hashtags"] as $ht){
             $hashtags[] = $ht["name"];
             $hashtagsTimesUsed[] = $ht["count"];
         }
@@ -83,7 +92,7 @@
         $mentions = [];
         $timesPeopleAreMentioned = [];
 
-        foreach($userData["mentions"] as $ht){
+        foreach($userMoreDescriptiveData["mentions"] as $ht){
             $mentions[] = $ht["name"];
             $timesPeopleAreMentioned[] = $ht["count"];
         }
@@ -435,7 +444,7 @@
                 </form> 
 
                 <br>
-                <?php if(isset($userData)): ?>
+                <?php if(isset($userMoreDescriptiveData) && $userMoreDescriptiveData != false): ?>
                     <div class="row clearfix">
 
                         <div class="col-lg-6 col-md-8 col-sm-8 col-xs-8">
@@ -449,15 +458,15 @@
                                                 <div class="body">
                                                     
                                                         <div class="image">
-                                                            <img src="<?php echo $userData["author"]["avatarLarger"]?>" width="68" height="68" alt="User" />
+                                                            <img src="<?php echo $userMoreDescriptiveData["author"]["avatarLarger"]?>" width="68" height="68" alt="User" />
                                                         </div>
                                                         
                                                         <div class="info-container">
                                                             <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                <?= isset($userData) ? $userData["author"]["uniqueId"] : null ?> <img src="<?= $isVerified ? "../images/verified.png" : ""?>" width="10px" height="10px">
+                                                                <?= $userMoreDescriptiveData["author"]["uniqueId"] ?> <img src="<?= $isVerified ? "../images/verified.png" : ""?>" width="10px" height="10px">
                                                             </div>
                                                             <div class="email" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                <?= isset($userData) ? $userData["author"]["nickname"] . " |" : null ?> <?= isset($userData) ? $userData["author"]["country"] : null ?>
+                                                                <?= $userMoreDescriptiveData["author"]["nickname"] . " |"?> <?= $userMoreDescriptiveData["author"]["country"]?>
                                                             </div>
                                                         </div>
                                                 </div>
@@ -479,7 +488,7 @@
                                 <div class="content">
                                     <div class="text">Последователи</div>
                                     <!-- <div class="number">wcw</div>  -->
-                                    <div class="number count-to" data-from="0" data-to="<?php echo $userData["author"]["followerCount"] ?>" data-speed="3000" data-fresh-interval="20"></div>
+                                    <div class="number count-to" data-from="0" data-to="<?php echo $userMoreDescriptiveData["author"]["followerCount"] ?>" data-speed="3000" data-fresh-interval="20"></div>
                                 </div>
                             </div>
                         </div>
@@ -491,7 +500,7 @@
                                 </div>
                                 <div class="content">
                                     <div class="text">Последвани</div>
-                                    <div class="number count-to" data-from="0" data-to="<?php echo $userData["author"]["followingCount"] ?>" data-speed="3000" data-fresh-interval="20"></div>
+                                    <div class="number count-to" data-from="0" data-to="<?php echo $userMoreDescriptiveData["author"]["followingCount"] ?>" data-speed="3000" data-fresh-interval="20"></div>
                                 </div>
                             </div>
                         </div>
@@ -503,7 +512,7 @@
                                 </div>
                                 <div class="content">
                                     <div class="text">Брой видеа</div>
-                                    <div class="number count-to" data-from="0" data-to="<?php echo $userData["author"]["videoCount"] ?>" data-speed="3000" data-fresh-interval="20"></div>
+                                    <div class="number count-to" data-from="0" data-to="<?php echo $userMoreDescriptiveData["author"]["videoCount"] ?>" data-speed="3000" data-fresh-interval="20"></div>
                                 </div>
                             </div>
                         </div>
@@ -515,7 +524,7 @@
                                 </div>
                                 <div class="content">
                                     <div class="text">Брой харесвания</div>
-                                    <div class="number count-to" data-from="0" data-to="<?php echo $userData["author"]["heartCount"] ?>" data-speed="3000" data-fresh-interval="20"></div> 
+                                    <div class="number count-to" data-from="0" data-to="<?php echo $userMoreDescriptiveData["author"]["heartCount"] ?>" data-speed="3000" data-fresh-interval="20"></div> 
                                 </div>
                             </div>
                         </div>
@@ -632,7 +641,7 @@
                             <div class="card">
                                 <div class="header">
                                     <h2>
-                                        НАЙ-ИЗПОЛЗВАНИТЕ ХАШТАГОВЕ (СПОРЕД ПОСЛЕДНИТЕ ВИДЕА)
+                                        НАЙ-ИЗПОЛЗВАНИТЕ ХАШТАГОВЕ ОТ <?php echo $username ?> (СПОРЕД ПОСЛЕДНИТЕ ВИДЕА)
                                     </h2>
                                     <ul class="header-dropdown m-r--5">
                                         <li class="dropdown">
@@ -660,7 +669,7 @@
                             <div class="card">
                                 <div class="header">
                                     <h2>
-                                        НАЙ-ОТБЕЛЯЗВАНИТЕ ПОТРЕБИТЕЛИ (СПОРЕД ПОСЛЕДНИТЕ ВИДЕА)
+                                        НАЙ-ОТБЕЛЯЗВАНИТЕ ПОТРЕБИТЕЛИ ОТ <?php echo $username ?> (СПОРЕД ПОСЛЕДНИТЕ ВИДЕА)
                                     </h2>
                                     <ul class="header-dropdown m-r--5">
                                         <li class="dropdown">
@@ -685,6 +694,97 @@
                         
                     </div>
 
+                <?php elseif(isset($userBasicData) && $userBasicData != false):?>
+                    <div class="row clearfix">
+                        
+                    <div class="col-lg-6 col-md-8 col-sm-8 col-xs-8">
+                            <div class="card">
+                                <div class="body">
+                                    <!-- User Info -->
+                                    <div class="row clearfix">
+                                        <div class="container-fluid">
+
+                                            <div class="user-info">
+                                                <div class="body">
+                                                    
+                                                        <div class="image">
+                                                            <img src="<?php echo $userBasicData["avatarThumb"]?>" width="68" height="68" alt="User" />
+                                                        </div>
+                                                        
+                                                        <div class="info-container">
+                                                            <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                <?= $username ?> <img src="<?= $isVerified ? "../images/verified.png" : ""?>" width="10px" height="10px">
+                                                            </div>
+                                                        </div>
+                                                </div>
+                                                
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <!-- #User Info -->
+                                </div>
+                            </div>
+                        </div>                            
+                    
+                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                            <div class="info-box bg-deep-purple hover-zoom-effect">
+                                <div class="icon">
+                                    <i class="material-icons">person</i>
+                                </div>
+                                <div class="content">
+                                    <div class="text">Последователи</div>
+                                    <!-- <div class="number">wcw</div>  -->
+                                    <div class="number count-to" data-from="0" data-to="<?php echo $userBasicData["followerCount"] ?>" data-speed="3000" data-fresh-interval="20"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                            <div class="info-box bg-red hover-zoom-effect">
+                                <div class="icon">
+                                    <i class="material-icons">person_outline</i>
+                                </div>
+                                <div class="content">
+                                    <div class="text">Последвани</div>
+                                    <div class="number count-to" data-from="0" data-to="<?php echo $userBasicData["followingCount"] ?>" data-speed="3000" data-fresh-interval="20"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                            <div class="info-box bg-deep-orange hover-zoom-effect">
+                                <div class="icon">
+                                    <i class="material-icons">video_library</i>
+                                </div>
+                                <div class="content">
+                                    <div class="text">Брой видеа</div>
+                                    <div class="number count-to" data-from="0" data-to="<?php echo $userBasicData["videoCount"] ?>" data-speed="3000" data-fresh-interval="20"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                            <div class="info-box bg-yellow hover-zoom-effect">
+                                <div class="icon">
+                                    <i class="material-icons">thumb_up</i>
+                                </div>
+                                <div class="content">
+                                    <div class="text">Брой харесвания</div>
+                                    <div class="number count-to" data-from="0" data-to="<?php echo $userBasicData["heartCount"] ?>" data-speed="3000" data-fresh-interval="20"></div> 
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="card">
+                                <div class="body">
+                                    Въведеният профил трябва да е публичен, за да можете да видите повече статистики
+                                </div>
+                            </div>
+                        </div>
+        
+                    </div>
                 <?php endif;?>
 
             </div>

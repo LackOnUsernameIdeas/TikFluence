@@ -193,23 +193,7 @@ class DatabaseManager {
         $query->execute();
         $result_array = $query->fetch();
 
-        return count($result_array) > 0 ? $result_array : false;
-    }
-
-    //Дърпаме цялата информация за най-слушаната песен за България
-    public function listTheFirstSongBG($date) {
-        $sql = "SELECT * 
-                FROM tiktok_records_bulgaria 
-                JOIN tiktok_songs_bulgaria 
-                ON tiktok_records_bulgaria.song_id = tiktok_songs_bulgaria.id
-                WHERE DATE(`fetch_date`) = DATE(:date) AND rank = 1";
-
-        $query = $this->pdo->prepare($sql);
-        $query->bindValue('date', $date);
-        $query->execute();
-        $result_array = $query->fetch();
-
-        return count($result_array) > 0 ? $result_array : false;
+        return $result_array;
     }
 
     //Дърпаме цялата информация за топ 200те песни(за България)
@@ -341,7 +325,7 @@ class DatabaseManager {
         $query->execute();
         $result_array = $query->fetch();
 
-        return count($result_array) > 0 ? $result_array : false;
+        return $result_array;
     }
 
     //Дърпаме цялата информация за най-следвания тиктокър
@@ -355,7 +339,7 @@ class DatabaseManager {
         $query->execute();
         $result_array = $query->fetch();
 
-        return count($result_array) > 0 ? $result_array : false;
+        return $result_array;
     }
 
     //Създаваме нова песен ако findSongByTiktokId не намери такава

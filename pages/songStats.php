@@ -244,17 +244,39 @@
     $setConclusionPerfect = false;
     $setConclusionYT = false;
     $setConclusionSY = false;
+    $setConclusionTT = false;
+
+    $setConclusionPerfectWithoutTT = false;
+    $setConclusionYTWithoutTT = false;
+    $setConclusionSYWithoutTT = false;
+
+    $setConclusionWithoutAnything = false;
 
     if($growthTT){
+
         if($growthSY && $growthYT){
             $setConclusionPerfect = true;
         } elseif($growthSY == false || $growthYT){
             $setConclusionYT = true;
-        } else {
+        } elseif($growthSY || $growthYT == false) {
             $setConclusionSY = true;
+        } else {
+            $setConclusionTT = true;
         }
+
     } else {
-        
+
+        //Ако тази песен не е популярна последните два дни в TikTok
+        if($growthSY && $growthYT){
+            $setConclusionPerfectWithoutTT = true;
+        } elseif($growthSY == false || $growthYT){
+            $setConclusionYTWithoutTT = true;
+        } elseif($growthSY || $growthYT == false){
+            $setConclusionSYWithoutTT = true;
+        } else {
+            $setConclusionWithoutAnything = true;
+        }
+
     }
 
 ?>
@@ -641,8 +663,16 @@
                                         <h2>Тази песен е претърпяла ефекта на повлияване от TikTok. Днешната и вчерашната популярност е по-голяма от средната на всички дни. В този случай, TikTok е повлиял на популярността на песента в YouTube, но не е повлиял на популярността на песента в Spotify.</h2>
                                     <?php elseif($setConclusionSY):?>
                                         <h2>Тази песен е претърпяла ефекта на повлияване от TikTok. Днешната и вчерашната популярност е по-голяма от средната на всички дни. В този случай, TikTok е повлиял на популярността на песента в Spotify, но не е повлиял на популярността на песента в YouTube.</h2>
-                                    <?php else:?>
-                                        <h2>Тук не можем да видим ефекта на повлияване от TikTok, но можем да видим статистиките за песента.</h2>
+                                    <?php elseif($setConclusionSY):?>
+                                        <h2>Тук можем да видим нарастване само в TikTok.</h2>
+                                    <?php elseif($setConclusionPerfectWithoutTT):?>
+                                        <h2>Тук не можем да видим ефекта на повлияване от TikTok, но можем да видим нарастване на популярност в YouTube и Spotify.</h2>
+                                    <?php elseif($setConclusionYTWithoutTT):?>
+                                        <h2>Тук не можем да видим ефекта на повлияване от TikTok, но можем да видим нарастване на популярност само в YouTube, без Spotify.</h2>
+                                    <?php elseif($setConclusionSYWithoutTT):?>
+                                        <h2>Тук не можем да видим ефекта на повлияване от TikTok, но можем да видим нарастване на популярност само в Spotify, без YouTube.</h2>
+                                    <?php elseif($setConclusionWithoutAnything):?>
+                                        <h2>Тук не можем да видим ефекта на повлияване от TikTok, нито можем да видим нарастване на популярност в YouTube, нито в Spotify.</h2>
                                     <?php endif;?>
                                 </div>
                             </div>
