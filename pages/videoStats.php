@@ -122,81 +122,60 @@
             <!-- #User Info -->
             <!-- Menu -->
             <div class="menu">
-                <ul class="list">
+                <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 584px;"><ul class="list" style="overflow: hidden; width: auto; height: 584px;">
                     <li class="header">ГЛАВНО МЕНЮ</li>
                     <li>
-                        <a href="../index.php">
+                        <a href="../index.php" class="toggled waves-effect waves-block">
                             <i class="material-icons">home</i>
                             <span>НАЧАЛО</span>
                         </a>
                     </li>
-                    <li>
-                        <a href="songs.php">
-                            <i class="material-icons">music_note</i>
-                            <span>ПЕСНИ</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="javascript:void(0);" class="menu-toggle">
-                            <i class="material-icons">trending_down</i>
-                            <span>Multi Level Menu</span>
+                    <li class="active">
+                        <a href="javascript:void(0);" class="menu-toggle waves-effect waves-block">
+                            <i class="material-icons">insert_chart</i>
+                            <span>СТАТИСТИКИ</span>
                         </a>
                         <ul class="ml-menu">
                             <li>
-                                <a href="javascript:void(0);">
-                                    <span>Menu Item</span>
+                                <a href="songs.php" class="waves-effect waves-block">
+                                    <i class="material-icons">music_note</i>
+                                    <span>ТОП 200 TIKTOK ПЕСНИ ГЛОБАЛНО</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="javascript:void(0);">
-                                    <span>Menu Item - 2</span>
+                                <a href="songsBG.php" class="waves-effect waves-block">
+                                    <i class="material-icons">music_note</i>
+                                    <span>ТОП TIKTOK ПЕСНИ ЗА БЪЛГАРИЯ</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="javascript:void(0);" class="menu-toggle">
-                                    <span>Level - 2</span>
+                                <a href="tiktokers.php" class="waves-effect waves-block">
+                                    <i class="material-icons">person</i>
+                                    <span>ТОП 200 НАЙ-ИЗВЕСТНИ ТИКТОКЪРИ</span>
+                                </a>
+                            </li>
+                            <li class="active">
+                                <a href="topVideos.php" class="menu-toggle waves-effect waves-block">
+                                    <i class="material-icons">play_circle_outline</i>
+                                    <span>ТОП 200 НАЙ-ГЛЕДАНИ ВИДЕА В TIKTOK</span>
                                 </a>
                                 <ul class="ml-menu">
-                                    <li>
-                                        <a href="javascript:void(0);">
-                                            <span>Menu Item</span>
+                                    <li class="active">
+                                        <a href="#" class="waves-effect waves-block">
+                                            <span>СТАТИСТИКИ ЗА ВИДЕОТО НА <?php echo $videoDatapoints[0]["platform_name"] ?></span>
                                         </a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:void(0);" class="menu-toggle">
-                                            <span>Level - 3</span>
-                                        </a>
-                                        <ul class="ml-menu">
-                                            <li>
-                                                <a href="javascript:void(0);">
-                                                    <span>Level - 4</span>
-                                                </a>
-                                            </li>
-                                        </ul>
                                     </li>
                                 </ul>
                             </li>
+                            <li>
+                                <a href="individualStats.php" class=" waves-effect waves-block">
+                                    <i class="material-icons">person_outline</i>
+                                    <span>ИНДИВИДУАЛНИ СТАТИСТИКИ ЗА ПОТРЕБИТЕЛ</span>
+                                </a>
+                            </li>
                         </ul>
                     </li>
-                    <li>
-                        <a href="individualStats.php">
-                            <i class="material-icons">person_outline</i>
-                            <span>СТАТИСТИКИ ЗА ПОТРЕБИТЕЛЯ</span>
-                        </a>
-                    </li>
-                    <li class="active">
-                        <a href="additionalStats.php">
-                            <i class="material-icons">insert_chart</i>
-                            <span>ОЩЕ СТАТИСТИКИ</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="changelogs.php">
-                            <i class="material-icons">update</i>
-                            <span>Changelogs</span>
-                        </a>
-                    </li>
-                </ul>
+                </ul><div class="slimScrollBar" style="background: rgba(0, 0, 0, 0.5); width: 4px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 0px; z-index: 99; right: 1px; height: 584px;"></div><div class="slimScrollRail" style="width: 4px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 0px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div></div>
             </div>
             <!-- #Menu -->
             <!-- Footer -->
@@ -361,7 +340,7 @@
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <div class="card">
                 <div class="body">
-                    <button type="button" class="btn bg-purple waves-effect card" onclick="window.location.href='additionalStats.php'">
+                    <button type="button" class="btn bg-purple waves-effect card" onclick="window.location.href='topVideos.php'">
                         <i class="material-icons">arrow_back</i>
                         <span>НАЗАД</span>
                     </button>
@@ -371,8 +350,9 @@
                                 <h2>ВИЕ СЕ НАМИРАТЕ В:</h2>
                                 <ol class="breadcrumb breadcrumb-col-black">
                                     <li onclick="window.location.href='../index.php'"><a href="javascript:void(0);"><i class="material-icons">home</i>НАЧАЛО</a></li>
-                                    <li onclick="window.location.href='additionalStats.php'"><a href="javascript:void(0);"><i class="material-icons">insert_chart</i>ОЩЕ СТАТИСТИКИ</a></li>
-                                    <li class="active"><i class="material-icons">insert_chart</i>СТАТИСТИКИ ЗА ВИДЕОТО</li>
+                                    <li><a href="javascript:void(0);"><i class="material-icons">insert_chart</i>СТАТИСТИКИ</a></li>
+                                    <li onclick="window.location.href='topVideos.php'"><a href="javascript:void(0);"><i class="material-icons">play_circle_outline</i>ТОП 200 НАЙ-ГЛЕДАНИ ВИДЕА В TIKTOK</a></li>
+                                    <li class="active"><i class="material-icons">play_circle_outline</i>СТАТИСТИКИ ЗА ВИДЕОТО НА <?php echo $videoDatapoints[0]["platform_name"] ?></li>
                                 </ol>
                             </div>
                         </div>

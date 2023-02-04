@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
     //Вмъкване на нужните файлове
     include "../selectDate.php";
@@ -7,148 +7,49 @@
 
     //Създаваме връзката с базата данни
     $db = new DatabaseManager();
-    
+
     //Осигуряваме си необходимите данни
-    $dates = $db->listDatesSongs();
+    $dates = $db->listDatesTikTokers();
     $datesArray = [];
 
     foreach($dates as $date){
         $timestamp = new DateTime($date["fetch_date"]);
         $datesArray[] = $timestamp->format('Y-m-d');
     }
+    
+    $selectDate = isset($_SESSION["setDate"]) && $_SESSION["setDate"] >= '2023-01-08' ? $_SESSION["setDate"] : date("Y-m-d");
 
+    //Запазваме данните в променлива
+    $tiktokers = $db->getTiktokersTodayData($selectDate);
+    $tiktokersTop = $db->getTiktokersTodayDataTop($selectDate);
 
-    $selectDate = isset($_SESSION["setDate"]) ? $_SESSION["setDate"] : date("Y-m-d");
+    $topvideos = $db->getTopVideosTodayData($selectDate);
 
+    //Осигуряваме си необходимите данни
+    
+    $tiktokersArray = [];
+    $followers = [];
 
-    $top200SongsGlobal = $db->listTop200Songs($selectDate);
-    $topSongsGlobal = $db->listTopSongsGlobal($selectDate);
+    if($tiktokers != false){
+        foreach($tiktokersTop as $dp){
+            $tiktokersArray[] = $dp["tiktoker"];
+            $followers[] = $dp["followers_count"];
+        }
 
+        //Осигуряваме рангове за тиктокърите
+        for($i=0;$i<count($tiktokers);$i++){
+            $tiktokers[$i]["rank"] = $i + 1;
+        }
 
-    $songsNamesGlobal = [];
-    $songsPopularitiesGlobal = [];
-
-    if($topSongsGlobal != false){
-        foreach($topSongsGlobal as $song){
-            $songsNamesGlobal[] = $song["song_name"];
-            $songsPopularitiesGlobal[] = $song["number_of_videos_last_14days"];
-        }    
     }
 
-
-    function setGrowth($sid, $db, $selectDate) {
-
-        //Взимаме необходимите данни(числа) за последните 2 дни
-
-        $todayYesterdayDataGlobal = $db->getTodayYesterdayGlobalData($sid, $selectDate);
-
-        $ttLastTwoDaysPercents = [];
-        $ttLastTwoDaysNums = [];
-
-        $ytLastTwoDaysPercents = [];
-        $ytLastTwoDaysNums = [];
-
-        $syLastTwoDays = [];
-
-        foreach($todayYesterdayDataGlobal as $d){
-            $ttLastTwoDaysPercents[] = $d["number_of_videos_last_14days"];
-            $ttLastTwoDaysNums[] = $d["number_of_videos_last_14days"];
-
-            $ytLastTwoDaysPercents[] = $d["youtube_views"];
-            $ytLastTwoDaysNums[] = $d["youtube_views"];
-
-            $syLastTwoDays[] = $d["spotify_popularity"];
+    if($topvideos != false){
+        //Осигуряваме рангове за видеята
+        for($i=0;$i<count($topvideos);$i++){
+            $topvideos[$i]["rank"] = $i + 1;
         }
-
-
-
-
-        //TikTok
-        $yesterdayTT = $ttLastTwoDaysNums[0];
-
-        //YouTube
-        if($ytLastTwoDaysNums[0] != null || $ytLastTwoDaysNums[0] == 0){ 
-            $yesterdayYT = $ytLastTwoDaysNums[0];
-        } else { 
-            $yesterdayYT = "-";
-        }
-
-        //Spotify
-        if($syLastTwoDays[0] != null || $syLastTwoDays[0] == 0){ 
-            $yesterdaySY = $syLastTwoDays[0];
-        } else { 
-            $yesterdaySY = "-";
-        }
-
-
-        if(isset($ttLastTwoDaysNums[1])){
-            //TikTok
-            $todayTT = $ttLastTwoDaysNums[1];
-        } else {
-            //TikTok
-            $todayTT = null;
-        }
-
-        if(isset($ytLastTwoDaysNums[1])){
-            //YouTube
-            if($ytLastTwoDaysNums[0] != null || $ytLastTwoDaysNums[0] == 0){ 
-                $todayYT = $ytLastTwoDaysNums[1];
-            } else { 
-                $todayYT = "-";
-            }
-        } else {
-            //TikTok
-            $todayYT = null;
-        }
-
-        if(isset($syLastTwoDays[1])){
-            //Spotify
-            if($syLastTwoDays[0] != null || $syLastTwoDays[0] == 0){ 
-                $todaySY = $syLastTwoDays[1];
-            } else { 
-                $todaySY = "-";
-            }
-        } else {
-            //TikTok
-            $todaySY = null;
-        }
-    
-
-
-        $averageTT = $db->getAverageTT($sid, $selectDate)[0][0];
-        $averageYT = $db->getAverageYT($sid, $selectDate)[0][0];
-        $averageSY = $db->getAverageSY($sid, $selectDate)[0][0];
-
-        
-        if($todayTT <= $averageTT || $yesterdayTT <= $averageTT){
-            $growthTT = false;
-        } else {
-            $growthTT = true;
-        }
-
-        if($todayYT <= $averageYT || $yesterdayYT <= $averageYT){
-            $growthYT = false;
-        } else {
-            $growthYT = true;
-        }
-
-        if($todaySY <= $averageSY || $yesterdaySY <= $averageSY){
-            $growthSY = false;
-        } else {
-            $growthSY = true;
-        }
-
-
-        if($growthTT) {
-            if($growthSY || $growthYT) {
-                return "Вижте нарастване";
-            }
-        }
-        // return "Вижте детайли";
-        return "Вижте детайли";
     }
 
-    
 ?>
 <!DOCTYPE html>
 <html>
@@ -156,7 +57,7 @@
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <title>ПЕСНИ</title>
+    <title>ОЩЕ СТАТИСТИКИ</title>
     <!-- Favicon-->
     <link rel="icon" href="../favicon.ico" type="image/x-icon">
 
@@ -181,7 +82,6 @@
 
     <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
     <link href="../css/themes/all-themes.css" rel="stylesheet" />
-
 </head>
 
 <body class="theme-purple">
@@ -231,8 +131,8 @@
                             <span>СТАТИСТИКИ</span>
                         </a>
                         <ul class="ml-menu">
-                            <li class="active">
-                                <a href="#" class="waves-effect waves-block">
+                            <li>
+                                <a href="songs.php" class="waves-effect waves-block">
                                     <i class="material-icons">music_note</i>
                                     <span>ТОП 200 TIKTOK ПЕСНИ ГЛОБАЛНО</span>
                                 </a>
@@ -243,8 +143,8 @@
                                     <span>ТОП TIKTOK ПЕСНИ ЗА БЪЛГАРИЯ</span>
                                 </a>
                             </li>
-                            <li>
-                                <a href="tiktokers.php" class="waves-effect waves-block">
+                            <li class="active">
+                                <a href="#" class="waves-effect waves-block">
                                     <i class="material-icons">person</i>
                                     <span>ТОП 200 НАЙ-ИЗВЕСТНИ ТИКТОКЪРИ</span>
                                 </a>
@@ -263,6 +163,7 @@
                             </li>
                         </ul>
                     </li>
+                    <!-- <li class="header"></li> -->
                 </ul><div class="slimScrollBar" style="background: rgba(0, 0, 0, 0.5); width: 4px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 0px; z-index: 99; right: 1px; height: 584px;"></div><div class="slimScrollRail" style="width: 4px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 0px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div></div>
             </div>
             <!-- #Menu -->
@@ -434,12 +335,12 @@
                         <ol class="breadcrumb breadcrumb-col-black">
                             <li onclick="window.location.href='../index.php'"><a href="javascript:void(0);"><i class="material-icons">home</i>НАЧАЛО</a></li>
                             <li><a href="javascript:void(0);"><i class="material-icons">insert_chart</i>СТАТИСТИКИ</a></li>
-                            <li class="active"><i class="material-icons">music_note</i>ТОП 200 TIKTOK ПЕСНИ ГЛОБАЛНО</li>
+                            <li class="active"><i class="material-icons">person</i>ТОП 200 НАЙ-ИЗВЕСТНИ ТИКТОКЪРИ</li>
                         </ol>
                     </div>
                 </div>
             </div>
-
+        
             <div class="block-header">
                 <div class="card">
                     <div class="body">
@@ -465,14 +366,14 @@
                 </div>
             </div>
 
-            <?php if($topSongsGlobal != false):?>
-                <!-- Exportable Table -->
+            <?php if($tiktokers != false):?>
+                <!-- Second Exportable table -->
                 <div class="row clearfix">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <div class="card">
                             <div class="header">
                                 <h2>
-                                    ТОП 200 TIKTOK ПЕСНИ ГЛОБАЛНО
+                                    ТОП 200 НАЙ-ИЗВЕСТНИ ТИКТОКЪРИ
                                 </h2>
                                 <ul class="header-dropdown m-r--5">
                                     <li class="dropdown">
@@ -489,32 +390,29 @@
                             </div>
                             <div class="body">
                                 <div class="table-responsive">
-                                    <table class="table table-bordered table-striped table-hover dataTable js-exportable" id="globalDataTable">
+                                    <table class="table table-bordered table-striped table-hover dataTable js-exportable">
                                         <thead>
                                             <tr>
                                                 <th>РАНГ</th>
-                                                <th>ПЕСЕН</th>
-                                                <th>АВТОР НА ПЕСЕНТА</th>
-                                                <th>ВИДЕА НАПРАВЕНИ НАСКОРО</th>
-                                                <th>TIKTOK ХАРЕСВАНИЯ</th>
-                                                <th>YOUTUBE ГЛЕДАНИЯ</th>
-                                                <th>SPOTIFY ПОПУЛЯРНОСТ</th>
+                                                <th>ПРОФИЛНА СНИМКА</th>
+                                                <th>ТИКТОКЪР</th>
+                                                <th>ИМЕ В ТИКТОК</th>
+                                                <th>ПОСЛЕДОВАТЕЛИ ОБЩО</th>
+                                                <th>ПОСЛЕДОВАТЕЛИ ОТ ТАЗИ ГОДИНА</th>
                                                 <th></th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <?php if($top200SongsGlobal):?>
-                                                <?php foreach($top200SongsGlobal as $st):?>
-                                                    <?php $show = setGrowth($st["song_id"], $db, $selectDate)?>
+                                            <?php if($tiktokers):?>
+                                                <?php foreach($tiktokers as $st):?>
                                                     <tr>
                                                         <th><?php echo $st["rank"]?></th>
-                                                        <th><?php echo $st["song_name"]?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://www.tiktok.com/music/-<?php echo $st["tiktok_platform_id"] ?>" target="_blank"><i class="material-icons" title="Вижте песента в TikTok">remove_red_eye</i></a></th>
-                                                        <th><?php echo $st["artist_name"]?></th>
-                                                        <th><?php echo number_format($st["number_of_videos_last_14days"])?></th>
-                                                        <th><?php echo number_format($st["total_likes_count"])?></th>
-                                                        <th><?php echo number_format($st["youtube_views"])?></th>
-                                                        <th><?php echo $st["spotify_popularity"]?></th>
-                                                        <th><a href='./songStats.php?sid=<?php echo $st["song_id"]?>' class="btn bg-deep-purple waves-effect"><?php echo $show?></a></th>
+                                                        <th><?php if($st["thumbnail"]):?><img src="<?php echo $st["thumbnail"]?>" alt="Prof pic" width="42" height="42" style="vertical-align:bottom"><?php endif;?></th>
+                                                        <th><?php echo $st["tiktoker"]?></th>
+                                                        <th><?php echo $st["platform_name"]?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://www.tiktok.com/@<?php echo $st["platform_name"] ?>" target="_blank"><i class="material-icons" title="Вижте песента в TikTok">remove_red_eye</i></a></th>
+                                                        <th><?php echo number_format($st["followers_count"])?></th>
+                                                        <th><?php echo number_format($st["followers_this_year"])?></th>
+                                                        <th><a href='./tiktoker.php?tid=<?php echo $st["given_id"]?>' class="btn bg-deep-purple waves-effect">Вижте повече</a></th>
                                                     </tr>
                                                 <?php endforeach;?>
                                             <?php endif;?>
@@ -525,14 +423,14 @@
                         </div>
                     </div>
                 </div>
-                <!-- #END# Exportable Table -->
+                <!-- #END# Second Exportable table -->
 
                 <div class="row clearfix">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <div class="card">
-                        <div class="header">
+                            <div class="header">
                                 <h2>
-                                    СРАВНЕНИЕ МЕЖДУ ПЪРВИТЕ 10 ПЕСНИ
+                                    СРАВНЕНИЕ МЕЖДУ ПЪРВИТЕ 10 ТИКТОКЪРА
                                 </h2>
                                 <ul class="header-dropdown m-r--5">
                                     <li class="dropdown">
@@ -548,19 +446,19 @@
                                 </ul>
                             </div>
                             <div class="body">
-                                <div class="body">
-                                    <canvas id="barChartGlobal"></canvas>
+                                <div class="content">
+                                    <canvas id="barChart"></canvas>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             <?php else:?>
-                <div class="row clearfix">
+            <div class="row clearfix">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <div class="card">
                             <div class="body">
-                                Все още няма данни за топ 200 песни глобално за днес :(
+                                Все още няма данни за топ 200 тиктокъри за днес :(
                             </div>
                         </div>
                     </div>
@@ -569,18 +467,15 @@
 
         </div>
     </section>
-    
+
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-
-    //Статистика за някои от първите песни глобално
-
         // съставяне 
-        const dataGlobal = {
-            labels: JSON.parse('<?php echo json_encode($songsNamesGlobal) ?>'),
+        const data = {
+            labels: JSON.parse('<?php echo json_encode($tiktokersArray) ?>'),
             datasets: [{
-                label: 'ПОПУЛЯРНОСТ',
-                data: JSON.parse('<?php echo json_encode($songsPopularitiesGlobal) ?>'),
+                label: 'ПОСЛЕДОВАТЕЛИ',
+                data: JSON.parse('<?php echo json_encode($followers) ?>'),
                 backgroundColor: [
                     'rgba(255, 26, 104, 0.2)',
                     'rgba(54, 162, 235, 0.2)',
@@ -605,9 +500,9 @@
         };
 
         // кофигуриране 
-        const configGlobal = {
+        const config = {
             type: 'bar',
-            data: dataGlobal,
+            data: data,
             options: {
                 indexAxis: 'y',
                     scales: {
@@ -619,9 +514,9 @@
         };
 
         // слагаме статистиката в html елемента
-        const myChartGlobal = new Chart(
-            document.getElementById('barChartGlobal'),
-            configGlobal
+        const myChart = new Chart(
+            document.getElementById('barChart'),
+            config
         );
 
     </script>

@@ -95,6 +95,7 @@
             <div class="navbar-header">
                 <a href="javascript:void(0);" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false"></a>
                 <a href="javascript:void(0);" class="bars" style="display: block;"></a>
+                <!-- <img src="favicon.ico" width="37" height="37"> -->
                 <a class="navbar-brand" href="index.php">NOIT - НОИТ 2023</a>
             </div>
             <div class="collapse navbar-collapse" id="navbar-collapse">
@@ -128,70 +129,42 @@
                         </a>
                     </li>
                     <li>
-                        <a href="pages/songs.php" class=" waves-effect waves-block">
-                            <i class="material-icons">music_note</i>
-                            <span>ПЕСНИ</span>
-                        </a>
-                    </li>
-                    <li>
                         <a href="javascript:void(0);" class="menu-toggle waves-effect waves-block">
-                            <i class="material-icons">trending_down</i>
-                            <span>Multi Level Menu</span>
+                            <i class="material-icons">insert_chart</i>
+                            <span>СТАТИСТИКИ</span>
                         </a>
                         <ul class="ml-menu">
                             <li>
-                                <a href="javascript:void(0);" class=" waves-effect waves-block">
-                                    <span>Menu Item</span>
+                                <a href="pages/songs.php" class="waves-effect waves-block">
+                                    <i class="material-icons">music_note</i>
+                                    <span>ТОП 200 TIKTOK ПЕСНИ ГЛОБАЛНО</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="javascript:void(0);" class=" waves-effect waves-block">
-                                    <span>Menu Item - 2</span>
+                                <a href="pages/songsBG.php" class=" waves-effect waves-block">
+                                    <i class="material-icons">music_note</i>
+                                    <span>ТОП TIKTOK ПЕСНИ ЗА БЪЛГАРИЯ</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="javascript:void(0);" class="menu-toggle waves-effect waves-block">
-                                    <span>Level - 2</span>
+                                <a href="pages/tiktokers.php" class="waves-effect waves-block">
+                                    <i class="material-icons">person</i>
+                                    <span>ТОП 200 НАЙ-ИЗВЕСТНИ ТИКТОКЪРИ</span>
                                 </a>
-                                <ul class="ml-menu">
-                                    <li>
-                                        <a href="javascript:void(0);" class=" waves-effect waves-block">
-                                            <span>Menu Item</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:void(0);" class="menu-toggle waves-effect waves-block">
-                                            <span>Level - 3</span>
-                                        </a>
-                                        <ul class="ml-menu">
-                                            <li>
-                                                <a href="javascript:void(0);" class=" waves-effect waves-block">
-                                                    <span>Level - 4</span>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                </ul>
+                            </li>
+                            <li>
+                                <a href="pages/topVideos.php" class="waves-effect waves-block">
+                                    <i class="material-icons">play_circle_outline</i>
+                                    <span>ТОП 200 НАЙ-ГЛЕДАНИ ВИДЕА В TIKTOK</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="pages/individualStats.php" class=" waves-effect waves-block">
+                                    <i class="material-icons">person_outline</i>
+                                    <span>ИНДИВИДУАЛНИ СТАТИСТИКИ ЗА ПОТРЕБИТЕЛ</span>
+                                </a>
                             </li>
                         </ul>
-                    </li>
-                    <li>
-                        <a href="pages/individualStats.php" class=" waves-effect waves-block">
-                            <i class="material-icons">person_outline</i>
-                            <span>СТАТИСТИКИ ЗА ПОТРЕБИТЕЛЯ</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="pages/additionalStats.php" class=" waves-effect waves-block">
-                            <i class="material-icons">insert_chart</i>
-                            <span>ОЩЕ СТАТИСТИКИ</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="pages/changelogs.php" class=" waves-effect waves-block">
-                            <i class="material-icons">update</i>
-                            <span>Changelogs</span>
-                        </a>
                     </li>
                     <!-- <li class="header"></li> -->
                 </ul><div class="slimScrollBar" style="background: rgba(0, 0, 0, 0.5); width: 4px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 0px; z-index: 99; right: 1px; height: 584px;"></div><div class="slimScrollRail" style="width: 4px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 0px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div></div>

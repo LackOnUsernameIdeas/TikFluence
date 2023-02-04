@@ -66,6 +66,7 @@
         }
 
         $videosCount = [];
+        $videosPublishDates = [];
 
         $likes = [];
         $views = [];
@@ -74,6 +75,8 @@
 
         for($i=0; $i<count($userMoreDescriptiveData["videos"]);$i++){
             array_push($videosCount, $i + 1);
+
+            array_push($videosPublishDates, gmdate("Y-m-d", $userMoreDescriptiveData["videos"][$i]["create_date"]));
 
             array_push($likes, $userMoreDescriptiveData["videos"][$i]["likes"]);
             array_push($views, $userMoreDescriptiveData["videos"][$i]["plays"]);
@@ -189,81 +192,54 @@
             <!-- #User Info -->
             <!-- Menu -->
             <div class="menu">
-                <ul class="list">
+                <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 584px;"><ul class="list" style="overflow: hidden; width: auto; height: 584px;">
                     <li class="header">ГЛАВНО МЕНЮ</li>
                     <li>
-                        <a href="../index.php">
+                        <a href="../index.php" class="toggled waves-effect waves-block">
                             <i class="material-icons">home</i>
                             <span>НАЧАЛО</span>
                         </a>
                     </li>
-                    <li>
-                        <a href="songs.php">
-                            <i class="material-icons">music_note</i>
-                            <span>ПЕСНИ</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="javascript:void(0);" class="menu-toggle">
-                            <i class="material-icons">trending_down</i>
-                            <span>Multi Level Menu</span>
+                    <li class="active">
+                        <a href="javascript:void(0);" class="menu-toggle waves-effect waves-block">
+                            <i class="material-icons">insert_chart</i>
+                            <span>СТАТИСТИКИ</span>
                         </a>
                         <ul class="ml-menu">
                             <li>
-                                <a href="javascript:void(0);">
-                                    <span>Menu Item</span>
+                                <a href="songs.php" class="waves-effect waves-block">
+                                    <i class="material-icons">music_note</i>
+                                    <span>ТОП 200 TIKTOK ПЕСНИ ГЛОБАЛНО</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="javascript:void(0);">
-                                    <span>Menu Item - 2</span>
+                                <a href="songsBG.php" class=" waves-effect waves-block">
+                                    <i class="material-icons">music_note</i>
+                                    <span>ТОП TIKTOK ПЕСНИ ЗА БЪЛГАРИЯ</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="javascript:void(0);" class="menu-toggle">
-                                    <span>Level - 2</span>
+                                <a href="tiktokers.php" class="waves-effect waves-block">
+                                    <i class="material-icons">person</i>
+                                    <span>ТОП 200 НАЙ-ИЗВЕСТНИ ТИКТОКЪРИ</span>
                                 </a>
-                                <ul class="ml-menu">
-                                    <li>
-                                        <a href="javascript:void(0);">
-                                            <span>Menu Item</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:void(0);" class="menu-toggle">
-                                            <span>Level - 3</span>
-                                        </a>
-                                        <ul class="ml-menu">
-                                            <li>
-                                                <a href="javascript:void(0);">
-                                                    <span>Level - 4</span>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                </ul>
+                            </li>
+                            <li>
+                                <a href="topVideos.php" class="waves-effect waves-block">
+                                    <i class="material-icons">play_circle_outline</i>
+                                    <span>ТОП 200 НАЙ-ГЛЕДАНИ ВИДЕА В TIKTOK</span>
+                                </a>
+                            </li>
+                            <li class="active">
+                                <a href="#" class=" waves-effect waves-block">
+                                    <i class="material-icons">person_outline</i>
+                                    <span>ИНДИВИДУАЛНИ СТАТИСТИКИ ЗА ПОТРЕБИТЕЛ</span>
+                                </a>
                             </li>
                         </ul>
                     </li>
-                    <li class="active">
-                        <a href="#">
-                            <i class="material-icons">person_outline</i>
-                            <span>СТАТИСТИКИ ЗА ПОТРЕБИТЕЛЯ</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="additionalStats.php">
-                            <i class="material-icons">insert_chart</i>
-                            <span>ОЩЕ СТАТИСТИКИ</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="changelogs.php">
-                            <i class="material-icons">update</i>
-                            <span>Changelogs</span>
-                        </a>
-                    </li>
-                </ul>
+                    <!-- <li class="header"></li> -->
+                </ul><div class="slimScrollBar" style="background: rgba(0, 0, 0, 0.5); width: 4px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 0px; z-index: 99; right: 1px; height: 584px;"></div><div class="slimScrollRail" style="width: 4px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 0px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div></div>
             </div>
             <!-- #Menu -->
             <!-- Footer -->
@@ -432,7 +408,8 @@
                         <h2>ВИЕ СЕ НАМИРАТЕ В:</h2>
                         <ol class="breadcrumb breadcrumb-col-black">
                             <li onclick="window.location.href='../index.php'"><a href="javascript:void(0);"><i class="material-icons">home</i>НАЧАЛО</a></li>
-                            <li class="active"><i class="material-icons">person_outline</i>СТАТИСТИКИ ЗА ПОТРЕБИТЕЛЯ</li>
+                            <li><i class="material-icons">insert_chart</i>СТАТИСТИКИ</li>
+                            <li class="active"><i class="material-icons">person_outline</i>ИНДИВИДУАЛНИ СТАТИСТИКИ ЗА ПОТРЕБИТЕЛ</li>
                         </ol>
                     </div>
                 </div>
@@ -802,6 +779,7 @@
 
     //Данни за ползване
     let videosCount =  JSON.parse('<?php echo json_encode($videosCount) ?>');
+    let videosPublishDates =  JSON.parse('<?php echo json_encode($videosPublishDates) ?>');
 
     let likes =  JSON.parse('<?php echo json_encode($likes) ?>');
     let views =  JSON.parse('<?php echo json_encode($views) ?>');
@@ -819,7 +797,7 @@
     new Chart(document.getElementById('LikesChart'), {
         type: 'bar',
         data: {
-            labels: videosCount, //x
+            labels: videosPublishDates, //x
             datasets: [
                 {
                     label: 'Харесвания',
@@ -846,7 +824,7 @@
     new Chart(document.getElementById('ViewsChart'), {
         type: 'bar',
         data: {
-            labels: videosCount, //x
+            labels: videosPublishDates, //x
             datasets: [
                 {
                     label: 'Гледания',
@@ -873,7 +851,7 @@
     new Chart(document.getElementById('SharesChart'), {
         type: 'bar',
         data: {
-            labels: videosCount, //x
+            labels: videosPublishDates, //x
             datasets: [
                 {
                     label: 'Споделяния',
@@ -900,7 +878,7 @@
     new Chart(document.getElementById('CommentsChart'), {
         type: 'bar',
         data: {
-            labels: videosCount, //x
+            labels: videosPublishDates, //x
             datasets: [
                 {
                     label: 'Коментари',

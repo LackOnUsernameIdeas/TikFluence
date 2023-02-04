@@ -12,15 +12,25 @@
     //Създаваме връзката с базата данни
     $db = new DatabaseManager();
 
-    //Взимаме записите за всяка песен
-    $dataPoints = $db->getDatapointsForSong($sid);
-    if($dataPoints === false) redirect("songs.php");
-
     $songData = $db->getSongData($sid);
 
     //Взимаме необходимата информация и я превръщаме където е необходимо в проценти
     $selectDate = isset($_SESSION["setDate"]) ? $_SESSION["setDate"] : date("Y-m-d");
     $todayYesterdayData = $db->getTodayYesterdayData($sid, $selectDate);
+
+
+    //Взимаме записите за всяка песен
+    $dataPoints = $db->getDatapointsForSong($sid, $selectDate);
+    
+    $fetchDatesForButton = $db->listDatesForCurrentSong($sid);
+
+    $chooseDatesForButton = [];
+    foreach($fetchDatesForButton as $date){    
+        $timestamp = new DateTime($date["fetch_date"]);
+        $chooseDatesForButton[] = $timestamp->format('Y-m-d');
+    }
+
+    if($dataPoints === false) redirect("songs.php");
 
 
     $dates = [];
@@ -218,9 +228,9 @@
     }
 
 
-    $averageTT = $db->getAverageTT($sid)[0][0];
-    $averageYT = $db->getAverageYT($sid)[0][0];
-    $averageSY = $db->getAverageSY($sid)[0][0];
+    $averageTT = $db->getAverageTT($sid, $selectDate)[0][0];
+    $averageYT = $db->getAverageYT($sid, $selectDate)[0][0];
+    $averageSY = $db->getAverageSY($sid, $selectDate)[0][0];
 
     
     if($todayTT <= $averageTT || $yesterdayTT <= $averageTT){
@@ -362,81 +372,60 @@
             <!-- #User Info -->
             <!-- Menu -->
             <div class="menu">
-                <ul class="list">
+                <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 584px;"><ul class="list" style="overflow: hidden; width: auto; height: 584px;">
                     <li class="header">ГЛАВНО МЕНЮ</li>
                     <li>
-                        <a href="../index.php">
+                        <a href="../index.php" class="toggled waves-effect waves-block">
                             <i class="material-icons">home</i>
                             <span>НАЧАЛО</span>
                         </a>
                     </li>
                     <li class="active">
-                        <a href="songs.php">
-                            <i class="material-icons">music_note</i>
-                            <span>ПЕСНИ</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="javascript:void(0);" class="menu-toggle">
-                            <i class="material-icons">trending_down</i>
-                            <span>Multi Level Menu</span>
+                        <a href="javascript:void(0);" class="menu-toggle waves-effect waves-block">
+                            <i class="material-icons">insert_chart</i>
+                            <span>СТАТИСТИКИ</span>
                         </a>
                         <ul class="ml-menu">
-                            <li>
-                                <a href="javascript:void(0);">
-                                    <span>Menu Item</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="javascript:void(0);">
-                                    <span>Menu Item - 2</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="javascript:void(0);" class="menu-toggle">
-                                    <span>Level - 2</span>
+                            <li class="active">
+                                <a href="songs.php" class="menu-toggle waves-effect waves-block">
+                                    <i class="material-icons">music_note</i>
+                                    <span>ТОП 200 TIKTOK ПЕСНИ ГЛОБАЛНО</span>
                                 </a>
                                 <ul class="ml-menu">
-                                    <li>
-                                        <a href="javascript:void(0);">
-                                            <span>Menu Item</span>
+                                    <li class="active">
+                                        <a href="#" class="waves-effect waves-block">
+                                            <span>СТАТИСТИКИ ЗА <?php echo $songData["song_name"] ?></span>
                                         </a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:void(0);" class="menu-toggle">
-                                            <span>Level - 3</span>
-                                        </a>
-                                        <ul class="ml-menu">
-                                            <li>
-                                                <a href="javascript:void(0);">
-                                                    <span>Level - 4</span>
-                                                </a>
-                                            </li>
-                                        </ul>
                                     </li>
                                 </ul>
                             </li>
+                            <li>
+                                <a href="songsBG.php" class=" waves-effect waves-block">
+                                    <i class="material-icons">music_note</i>
+                                    <span>ТОП TIKTOK ПЕСНИ ЗА БЪЛГАРИЯ</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="tiktokers.php" class="waves-effect waves-block">
+                                    <i class="material-icons">person</i>
+                                    <span>ТОП 200 НАЙ-ИЗВЕСТНИ ТИКТОКЪРИ</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="topVideos.php" class="waves-effect waves-block">
+                                    <i class="material-icons">play_circle_outline</i>
+                                    <span>ТОП 200 НАЙ-ГЛЕДАНИ ВИДЕА В TIKTOK</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="individualStats.php" class=" waves-effect waves-block">
+                                    <i class="material-icons">person_outline</i>
+                                    <span>ИНДИВИДУАЛНИ СТАТИСТИКИ ЗА ПОТРЕБИТЕЛ</span>
+                                </a>
+                            </li>
                         </ul>
                     </li>
-                    <li>
-                        <a href="individualStats.php">
-                            <i class="material-icons">person_outline</i>
-                            <span>СТАТИСТИКИ ЗА ПОТРЕБИТЕЛЯ</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="additionalStats.php">
-                            <i class="material-icons">insert_chart</i>
-                            <span>ОЩЕ СТАТИСТИКИ</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="changelogs.php">
-                            <i class="material-icons">update</i>
-                            <span>Changelogs</span>
-                        </a>
-                    </li>
-                </ul>
+                </ul><div class="slimScrollBar" style="background: rgba(0, 0, 0, 0.5); width: 4px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 0px; z-index: 99; right: 1px; height: 584px;"></div><div class="slimScrollRail" style="width: 4px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 0px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div></div>
             </div>
             <!-- #Menu -->
             <!-- Footer -->
@@ -612,7 +601,8 @@
                                     <h2>ВИЕ СЕ НАМИРАТЕ В:</h2>
                                     <ol class="breadcrumb breadcrumb-col-black">
                                         <li onclick="window.location.href='../index.php'"><a href="javascript:void(0);"><i class="material-icons">home</i>НАЧАЛО</a></li>
-                                        <li onclick="window.location.href='songs.php'"><a href="javascript:void(0);"><i class="material-icons">music_note</i>ПЕСНИ</a></li>
+                                        <li><a href="javascript:void(0);"><i class="material-icons">insert_chart</i>СТАТИСТИКИ</a></li>
+                                        <li onclick="window.location.href='songs.php'"><a href="javascript:void(0);"><i class="material-icons">music_note</i>ТОП 200 TIKTOK ПЕСНИ ГЛОБАЛНО</a></li>
                                         <li class="active"><i class="material-icons">music_note</i>СТАТИСТИКИ ЗА: <?php echo $songData["song_name"]?></li>
                                     </ol>
                                 </div>
@@ -630,8 +620,8 @@
                                         </button>
 
                                         <ul class="dropdown-menu">
-                                            <?php if($dates):?>
-                                                <?php foreach(array_slice($dates, 1) as $date):?>
+                                            <?php if($chooseDatesForButton):?>
+                                                <?php foreach(array_slice($chooseDatesForButton, 1) as $date):?>
                                                     <li data-id="<?php echo $date ?>" data-role="setDate"><a href="javascript:void(0);" class="waves-effect waves-block"><?php echo $date?></a></li>
                                                     <li role="separator" class="divider"></li>
                                                 <?php endforeach;?>
@@ -648,9 +638,7 @@
                         <div class="card">
                             <div class="body">
                                 <div class="block-header">
-                                    <h2>СТАТИСТИКИ ЗА:</h2>
-                                    <h1><a href="https://www.tiktok.com/music/-<?php echo $songData["tiktok_platform_id"] ?>" target="_blank"><?php echo $songData["song_name"]?></a></h1>
-                                    <h2>НА</h2><h1><?php echo $songData["artist_name"] ?></h1>
+                                    <h3>СТАТИСТИКИ ЗА: <?php echo $songData["song_name"]?> на <?php echo $songData["artist_name"] ?></h3>
                                 </div>
                             </div>
                         </div>
@@ -658,7 +646,7 @@
                             <div class="body">
                                 <div class="block-header">
                                     <?php if($setConclusionPerfect):?>
-                                        <h2>Тази песен е претърпяла ефекта на повлияване от TikTok. Днешната и вчерашната популярност е по-голяма от средната на всички дни. В този случай, TikTok е повлиял на популярността на песента и в YouTube, и в Spotify.</h2>
+                                        <h2>Тази песен е претърпяла ефекта на повлияване от TikTok. Днешната и вчерашната популярност е по-голяма от средната за всички дни. За <?php echo $songData["song_name"] ?>, TikTok е повлиял на популярността на песента и в YouTube, и в Spotify.</h2>
                                     <?php elseif($setConclusionYT):?>
                                         <h2>Тази песен е претърпяла ефекта на повлияване от TikTok. Днешната и вчерашната популярност е по-голяма от средната на всички дни. В този случай, TikTok е повлиял на популярността на песента в YouTube, но не е повлиял на популярността на песента в Spotify.</h2>
                                     <?php elseif($setConclusionSY):?>

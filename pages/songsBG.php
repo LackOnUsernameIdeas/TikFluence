@@ -7,49 +7,23 @@
 
     //Създаваме връзката с базата данни
     $db = new DatabaseManager();
-
+    
     //Осигуряваме си необходимите данни
-    $dates = $db->listDatesTikTokersAndVideos();
+    $dates = $db->listDatesSongsBG();
     $datesArray = [];
 
     foreach($dates as $date){
         $timestamp = new DateTime($date["fetch_date"]);
         $datesArray[] = $timestamp->format('Y-m-d');
     }
-    
+
+
     $selectDate = isset($_SESSION["setDate"]) && $_SESSION["setDate"] >= '2023-01-08' ? $_SESSION["setDate"] : date("Y-m-d");
 
-    //Запазваме данните в променлива
-    $tiktokers = $db->getTiktokersTodayData($selectDate);
-    $tiktokersTop = $db->getTiktokersTodayDataTop($selectDate);
 
-    $topvideos = $db->getTopVideosTodayData($selectDate);
+    $top200SongsBG = $db->listTop200SongsBG($selectDate);
 
-    //Осигуряваме си необходимите данни
     
-    $tiktokersArray = [];
-    $followers = [];
-
-    if($tiktokers != false){
-        foreach($tiktokersTop as $dp){
-            $tiktokersArray[] = $dp["tiktoker"];
-            $followers[] = $dp["followers_count"];
-        }
-
-        //Осигуряваме рангове за тиктокърите
-        for($i=0;$i<count($tiktokers);$i++){
-            $tiktokers[$i]["rank"] = $i + 1;
-        }
-
-    }
-
-    if($topvideos != false){
-        //Осигуряваме рангове за видеята
-        for($i=0;$i<count($topvideos);$i++){
-            $topvideos[$i]["rank"] = $i + 1;
-        }
-    }
-
 ?>
 <!DOCTYPE html>
 <html>
@@ -57,7 +31,7 @@
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <title>ОЩЕ СТАТИСТИКИ</title>
+    <title>ПЕСНИ</title>
     <!-- Favicon-->
     <link rel="icon" href="../favicon.ico" type="image/x-icon">
 
@@ -82,6 +56,7 @@
 
     <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
     <link href="../css/themes/all-themes.css" rel="stylesheet" />
+
 </head>
 
 <body class="theme-purple">
@@ -117,81 +92,53 @@
             <!-- #User Info -->
             <!-- Menu -->
             <div class="menu">
-                <ul class="list">
+                <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 584px;"><ul class="list" style="overflow: hidden; width: auto; height: 584px;">
                     <li class="header">ГЛАВНО МЕНЮ</li>
                     <li>
-                        <a href="../index.php">
+                        <a href="../index.php" class="toggled waves-effect waves-block">
                             <i class="material-icons">home</i>
                             <span>НАЧАЛО</span>
                         </a>
                     </li>
-                    <li>
-                        <a href="./songs.php">
-                            <i class="material-icons">music_note</i>
-                            <span>ПЕСНИ</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="javascript:void(0);" class="menu-toggle">
-                            <i class="material-icons">trending_down</i>
-                            <span>Multi Level Menu</span>
+                    <li class="active">
+                        <a href="javascript:void(0);" class="menu-toggle waves-effect waves-block">
+                            <i class="material-icons">insert_chart</i>
+                            <span>СТАТИСТИКИ</span>
                         </a>
                         <ul class="ml-menu">
                             <li>
-                                <a href="javascript:void(0);">
-                                    <span>Menu Item</span>
+                                <a href="songs.php" class="waves-effect waves-block">
+                                    <i class="material-icons">music_note</i>
+                                    <span>ТОП 200 TIKTOK ПЕСНИ ГЛОБАЛНО</span>
+                                </a>
+                            </li>
+                            <li class="active">
+                                <a href="songsBG.php" class="waves-effect waves-block">
+                                    <i class="material-icons">music_note</i>
+                                    <span>ТОП TIKTOK ПЕСНИ ЗА БЪЛГАРИЯ</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="javascript:void(0);">
-                                    <span>Menu Item - 2</span>
+                                <a href="tiktokers.php" class="waves-effect waves-block">
+                                    <i class="material-icons">person</i>
+                                    <span>ТОП 200 НАЙ-ИЗВЕСТНИ ТИКТОКЪРИ</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="javascript:void(0);" class="menu-toggle">
-                                    <span>Level - 2</span>
+                                <a href="topVideos.php" class="waves-effect waves-block">
+                                    <i class="material-icons">play_circle_outline</i>
+                                    <span>ТОП 200 НАЙ-ГЛЕДАНИ ВИДЕА В TIKTOK</span>
                                 </a>
-                                <ul class="ml-menu">
-                                    <li>
-                                        <a href="javascript:void(0);">
-                                            <span>Menu Item</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:void(0);" class="menu-toggle">
-                                            <span>Level - 3</span>
-                                        </a>
-                                        <ul class="ml-menu">
-                                            <li>
-                                                <a href="javascript:void(0);">
-                                                    <span>Level - 4</span>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                </ul>
+                            </li>
+                            <li>
+                                <a href="individualStats.php" class=" waves-effect waves-block">
+                                    <i class="material-icons">person_outline</i>
+                                    <span>ИНДИВИДУАЛНИ СТАТИСТИКИ ЗА ПОТРЕБИТЕЛ</span>
+                                </a>
                             </li>
                         </ul>
                     </li>
-                    <li>
-                        <a href="individualStats.php">
-                            <i class="material-icons">person_outline</i>
-                            <span>СТАТИСТИКИ ЗА ПОТРЕБИТЕЛЯ</span>
-                        </a>
-                    </li>
-                    <li class="active">
-                        <a href="#">
-                            <i class="material-icons">insert_chart</i>
-                            <span>ОЩЕ СТАТИСТИКИ</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="./changelogs.php">
-                            <i class="material-icons">update</i>
-                            <span>Changelogs</span>
-                        </a>
-                    </li>
-                </ul>
+                </ul><div class="slimScrollBar" style="background: rgba(0, 0, 0, 0.5); width: 4px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 0px; z-index: 99; right: 1px; height: 584px;"></div><div class="slimScrollRail" style="width: 4px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 0px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div></div>
             </div>
             <!-- #Menu -->
             <!-- Footer -->
@@ -361,12 +308,13 @@
                         <h2>ВИЕ СЕ НАМИРАТЕ В:</h2>
                         <ol class="breadcrumb breadcrumb-col-black">
                             <li onclick="window.location.href='../index.php'"><a href="javascript:void(0);"><i class="material-icons">home</i>НАЧАЛО</a></li>
-                            <li class="active"><i class="material-icons">insert_chart</i>ОЩЕ СТАТИСТИКИ</li>
+                            <li><a href="javascript:void(0);"><i class="material-icons">insert_chart</i>СТАТИСТИКИ</a></li>
+                            <li class="active"><i class="material-icons">music_note</i>ТОП TIKTOK ПЕСНИ ЗА БЪЛГАРИЯ</li>
                         </ol>
                     </div>
                 </div>
             </div>
-        
+
             <div class="block-header">
                 <div class="card">
                     <div class="body">
@@ -392,14 +340,14 @@
                 </div>
             </div>
 
-            <?php if($tiktokers != false):?>
+            <?php if($top200SongsBG != false):?>
                 <!-- Second Exportable table -->
                 <div class="row clearfix">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <div class="card">
                             <div class="header">
                                 <h2>
-                                    ТОП 200 ТИКТОКЪРИ
+                                    ТОП TIKTOK ПЕСНИ ЗА БЪЛГАРИЯ
                                 </h2>
                                 <ul class="header-dropdown m-r--5">
                                     <li class="dropdown">
@@ -420,149 +368,27 @@
                                         <thead>
                                             <tr>
                                                 <th>РАНГ</th>
-                                                <th>ПРОФИЛНА СНИМКА</th>
-                                                <th>ТИКТОКЪР</th>
-                                                <th>ИМЕ В ТИКТОК</th>
-                                                <th>ПОСЛЕДОВАТЕЛИ ОБЩО</th>
-                                                <th>ПОСЛЕДОВАТЕЛИ ОТ ТАЗИ ГОДИНА</th>
+                                                <th>ПЕСЕН</th>
+                                                <th>АВТОР НА ПЕСЕНТА</th>
+                                                <th>ВИДЕА НАПРАВЕНИ НАСКОРО</th>
+                                                <th>TIKTOK ХАРЕСВАНИЯ</th>
+                                                <th>YOUTUBE ГЛЕДАНИЯ</th>
+                                                <th>SPOTIFY ПОПУЛЯРНОСТ</th>
                                                 <th></th>
                                             </tr>
                                         </thead>
-                                        <tfoot>
-                                            <tr>
-                                                <th>РАНГ</th>
-                                                <th>ПРОФИЛНА СНИМКА</th>
-                                                <th>ТИКТОКЪР</th>
-                                                <th>ИМЕ В ТИКТОК</th>
-                                                <th>ПОСЛЕДОВАТЕЛИ ОБЩО</th>
-                                                <th>ПОСЛЕДОВАТЕЛИ ОТ ТАЗИ ГОДИНА</th>
-                                                <th></th>
-                                            </tr>
-                                        </tfoot>
                                         <tbody>
-                                            <?php if($tiktokers):?>
-                                                <?php foreach($tiktokers as $st):?>
+                                            <?php if($top200SongsBG):?>
+                                                <?php foreach($top200SongsBG as $st):?>
                                                     <tr>
                                                         <th><?php echo $st["rank"]?></th>
-                                                        <th><?php if($st["thumbnail"]):?><img src="<?php echo $st["thumbnail"]?>" alt="Prof pic" width="42" height="42" style="vertical-align:bottom"><?php endif;?></th>
-                                                        <th><?php echo $st["tiktoker"]?></th>
-                                                        <th><?php echo $st["platform_name"]?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://www.tiktok.com/@<?php echo $st["platform_name"] ?>" target="_blank"><img src="../images/tiktok.png" width="24px" title="Вижте повече в TikTok"></a></th>
-                                                        <th><?php echo number_format($st["followers_count"])?></th>
-                                                        <th><?php echo number_format($st["followers_this_year"])?></th>
-                                                        <th><a href='./tiktoker.php?tid=<?php echo $st["given_id"]?>' class="btn bg-deep-purple waves-effect">Вижте повече</a></th>
-                                                    </tr>
-                                                <?php endforeach;?>
-                                            <?php endif;?>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- #END# Second Exportable table -->
-
-                <div class="row clearfix">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div class="card">
-                            <div class="header">
-                                <h2>
-                                    СРАВНЕНИЕ МЕЖДУ ПЪРВИТЕ 10 ТИКТОКЪРА
-                                </h2>
-                                <ul class="header-dropdown m-r--5">
-                                    <li class="dropdown">
-                                        <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                            <i class="material-icons">more_vert</i>
-                                        </a>
-                                        <ul class="dropdown-menu pull-right">
-                                            <li><a href="javascript:void(0);">Action</a></li>
-                                            <li><a href="javascript:void(0);">Another action</a></li>
-                                            <li><a href="javascript:void(0);">Something else here</a></li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="body">
-                                <div class="content">
-                                    <canvas id="barChart"></canvas>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            <?php else:?>
-            <div class="row clearfix">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div class="card">
-                            <div class="body">
-                                Все още няма данни за топ 200 тиктокъри за днес :(
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            <?php endif;?>
-
-            <?php if($topvideos != false):?>
-                <!-- Second Exportable table -->
-                <div class="row clearfix">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div class="card">
-                            <div class="header">
-                                <h2>
-                                    ТОП 200 НАЙ-ГЛЕДАНИ ВИДЕА В TIKTOK
-                                </h2>
-                                <ul class="header-dropdown m-r--5">
-                                    <li class="dropdown">
-                                        <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                            <i class="material-icons">more_vert</i>
-                                        </a>
-                                        <ul class="dropdown-menu pull-right">
-                                            <li><a href="javascript:void(0);">Action</a></li>
-                                            <li><a href="javascript:void(0);">Another action</a></li>
-                                            <li><a href="javascript:void(0);">Something else here</a></li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="body">
-                                <div class="table-responsive">
-                                    <table class="table table-bordered table-striped table-hover dataTable js-exportable">
-                                        <thead>
-                                            <tr>
-                                                <th>РАНГ</th>
-                                                <th>ЛИНК КЪМ ВИДЕО В TIKTOK</th>
-                                                <th>ГЛЕДАНИЯ</th>
-                                                <th>ХАРЕСВАНИЯ</th>
-                                                <th>СПОДЕЛЯНИЯ</th>
-                                                <th>ПЕСЕН НА КОЯТО Е НАПРАВЕНО ВИДЕОТО</th>
-                                                <th>СЪЗДАТЕЛ НА ВИДЕОТО</th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                        <tfoot>
-                                            <tr>
-                                                <th>РАНГ</th>
-                                                <th>ЛИНК КЪМ ВИДЕО В TIKTOK</th>
-                                                <th>ГЛЕДАНИЯ</th>
-                                                <th>ХАРЕСВАНИЯ</th>
-                                                <th>СПОДЕЛЯНИЯ</th>
-                                                <th>ПЕСЕН НА КОЯТО Е НАПРАВЕНО ВИДЕОТО</th>
-                                                <th>СЪЗДАТЕЛ НА ВИДЕОТО</th>
-                                                <th></th>
-                                            </tr>
-                                        </tfoot>
-                                        <tbody>
-                                            <?php if($topvideos):?>
-                                                <?php foreach($topvideos as $st):?>
-                                                    <tr>
-                                                        <th><?php echo $st["rank"]?></th>
-                                                        <th><a href="<?php echo $st["video_url"] ?>" target="_blank"><img src="../images/tiktok.png" width="24px" title="Вижте повече в TikTok"></a></th>
-                                                        <th><?php echo number_format($st["plays_count"])?></th>
-                                                        <th><?php echo number_format($st["likes_count"])?></th>
-                                                        <th><?php echo number_format($st["shares_count"])?></th>
-                                                        <th><?php echo $st["song_name"]?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://www.tiktok.com/music/-<?php echo $st["tiktok_platform_id"] ?>" target="_blank"><img src="../images/tiktok.png" width="24px" title="Вижте песента в TikTok"></a></th>
-                                                        <th><?php echo $st["platform_name"] ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://www.tiktok.com/@<?php echo $st["platform_name"] ?>" target="_blank"><img src="../images/tiktok.png" width="24px" title="Вижте повече в TikTok"></a></th>
-                                                        <th><a href='./videoStats.php?vid=<?php echo $st["user_id"]?>' class="btn bg-deep-purple waves-effect">Вижте повече</a></th>
+                                                        <th><?php echo $st["song_name"]?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://www.tiktok.com/music/-<?php echo $st["tiktok_platform_id"] ?>" target="_blank"><i class="material-icons" title="Вижте песента в TikTok">remove_red_eye</i></a></th>
+                                                        <th><?php echo $st["artist_name"]?></th>
+                                                        <th><?php echo number_format($st["number_of_videos_last_14days"])?></th>
+                                                        <th><?php echo number_format($st["total_likes_count"])?></th>
+                                                        <th><?php echo number_format($st["youtube_views"])?></th>
+                                                        <th><?php echo $st["spotify_popularity"]?></th>
+                                                        <th><a href='./songStatsBG.php?sid=<?php echo $st["id"]?>' class="btn bg-deep-purple waves-effect">Вижте детайли</a></th>
                                                     </tr>
                                                 <?php endforeach;?>
                                             <?php endif;?>
@@ -575,73 +401,20 @@
                 </div>
                 <!-- #END# Second Exportable table -->
             <?php else:?>
-            <div class="row clearfix">
+                <div class="row clearfix">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <div class="card">
                             <div class="body">
-                                Все още няма данни за топ 200 видеа за днес :(
+                                Все още няма данни за топ 200 песни за България за днес :(
                             </div>
                         </div>
                     </div>
                 </div>
             <?php endif;?>
+
         </div>
     </section>
 
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        // съставяне 
-        const data = {
-            labels: JSON.parse('<?php echo json_encode($tiktokersArray) ?>'),
-            datasets: [{
-                label: 'ПОСЛЕДОВАТЕЛИ',
-                data: JSON.parse('<?php echo json_encode($followers) ?>'),
-                backgroundColor: [
-                    'rgba(255, 26, 104, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(255, 159, 64, 0.2)',
-                    'rgba(0, 0, 0, 0.2)'
-                ],
-                borderColor: [
-                    'rgba(255, 26, 104, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)',
-                    'rgba(255, 159, 64, 1)',
-                    'rgba(0, 0, 0, 1)'
-                ],
-                borderWidth: 1,
-                borderRadius: 5
-            }]
-        };
-
-        // кофигуриране 
-        const config = {
-            type: 'bar',
-            data: data,
-            options: {
-                indexAxis: 'y',
-                    scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        };
-
-        // слагаме статистиката в html елемента
-        const myChart = new Chart(
-            document.getElementById('barChart'),
-            config
-        );
-
-    </script>
-
-    
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script>
         $(document).ready(function(){
