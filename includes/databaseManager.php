@@ -120,6 +120,70 @@ class DatabaseManager {
         return count($result_array) > 0 ? $result_array : false;
     }
 
+    public function getPeaksTT($sid){
+        $sql = "SELECT MAX(`number_of_videos_last_14days`), song_id
+                FROM `tiktok_records`
+                WHERE song_id=:song_id";
+
+        $query = $this->pdo->prepare($sql);
+        $query->bindValue('song_id', $sid);
+
+        $query->execute();
+        $result_array = $query->fetch();
+
+        return $result_array;
+    }
+
+    public function findSongByPeakTT($sid, $peak){
+        $sql = "SELECT song_id, fetch_date 
+                FROM tiktok_records 
+                JOIN tiktok_songs 
+                ON tiktok_records.song_id = tiktok_songs.id
+                WHERE song_id=:song_id AND number_of_videos_last_14days =:peak";
+
+        $query = $this->pdo->prepare($sql);
+        $query->bindValue('song_id', $sid);
+        $query->bindValue('peak', $peak);
+
+        $query->execute();
+
+        $result_array = $query->fetch();
+
+        return $result_array;
+    }
+
+    public function getPeaksSY($sid){
+        $sql = "SELECT MAX(`spotify_popularity`), song_id
+                FROM `tiktok_records`
+                WHERE song_id=:song_id";
+
+        $query = $this->pdo->prepare($sql);
+        $query->bindValue('song_id', $sid);
+
+        $query->execute();
+        $result_array = $query->fetch();
+
+        return $result_array;
+    }
+
+    public function findSongByPeakSY($sid, $peak){
+        $sql = "SELECT song_id, fetch_date 
+                FROM tiktok_records 
+                JOIN tiktok_songs 
+                ON tiktok_records.song_id = tiktok_songs.id
+                WHERE song_id=:song_id AND spotify_popularity =:peak";
+
+        $query = $this->pdo->prepare($sql);
+        $query->bindValue('song_id', $sid);
+        $query->bindValue('peak', $peak);
+
+        $query->execute();
+
+        $result_array = $query->fetch();
+
+        return $result_array;
+    }
+
     public function listDatesForCurrentSong($sid){
         $sql = "SELECT DISTINCT `fetch_date`  
                 FROM `tiktok_records`
@@ -189,6 +253,18 @@ class DatabaseManager {
 
         $query = $this->pdo->prepare($sql);
         $query->bindValue('date', $date);
+        $query->execute();
+        $result_array = $query->fetchAll(PDO::FETCH_ASSOC);
+
+        return count($result_array) > 0 ? $result_array : false;
+    }
+
+    public function listSongs() {
+        $sql = "SELECT * 
+                FROM `tiktok_songs`";
+
+        $query = $this->pdo->prepare($sql);
+
         $query->execute();
         $result_array = $query->fetchAll(PDO::FETCH_ASSOC);
 

@@ -7,8 +7,8 @@
     $db = new DatabaseManager();
 
     //Взимаме необходимите данни
-    $hashtagsDataForTheLast7Days = fetchTopHashtagsForTheLast7Days();
-    $hashtagsDataForTheLast120Days = fetchTopHashtagsForTheLast120Days();
+    // $hashtagsDataForTheLast7Days = fetchTopHashtagsForTheLast7Days();
+    // $hashtagsDataForTheLast120Days = fetchTopHashtagsForTheLast120Days();
 
 
     $theFirstSongGlobal = $db->listTheFirstSongGlobal(date("Y-m-d"));
@@ -16,23 +16,71 @@
     $theMostWatchedVideo = $db->listTheFirstVideo(date("Y-m-d"));
 
 
-    $hashtagsForTheLast7Days = [];
+    // $hashtagsForTheLast7Days = [];
 
-    for($i=0;$i<count($hashtagsDataForTheLast7Days);$i++){
-        if($i == 6){
-            break;
+    // for($i=0;$i<count($hashtagsDataForTheLast7Days);$i++){
+    //     if($i == 6){
+    //         break;
+    //     }
+    //     array_push($hashtagsForTheLast7Days, $hashtagsDataForTheLast7Days[$i]["hashtag_name"]);
+    // }
+
+    // $hashtagsForTheLast120Days = [];
+
+    // for($i=0;$i<count($hashtagsDataForTheLast120Days);$i++){
+    //     if($i == 6){
+    //         break;
+    //     }
+    //     array_push($hashtagsForTheLast120Days, $hashtagsDataForTheLast120Days[$i]["hashtag_name"]);
+    // }
+
+    function getPeaksTT($db){
+        $songs = $db->listSongs();
+
+        $peaksTT = [];
+        $peaksSY = [];
+    
+        foreach($songs as $sg){
+            $peaksTT[] = $db->getPeaksTT($sg["id"]);
+            $peaksSY[] = $db->getPeaksSY($sg["id"]);
         }
-        array_push($hashtagsForTheLast7Days, $hashtagsDataForTheLast7Days[$i]["hashtag_name"]);
+    
+        $peaksWithDataTT = [];
+        foreach($peaksTT as $pk){
+            $peaksWithDataTT[]["TikTok"] = $db->findSongByPeakTT($pk["song_id"], $pk["MAX(`number_of_videos_last_14days`)"]);
+            $peaksWithDataTT[]["Spotify"] = $db->findSongByPeakSY($pk["song_id"], $pk["MAX(`spotify_popularity`)"]);
+        }
+
+
+        return $peaksWithDataTT;
     }
 
-    $hashtagsForTheLast120Days = [];
+    function getPeaksSY($db){
+        $songs = $db->listSongs();
 
-    for($i=0;$i<count($hashtagsDataForTheLast120Days);$i++){
-        if($i == 6){
-            break;
+        $peaksTT = [];
+        $peaksSY = [];
+    
+        foreach($songs as $sg){
+            $peaksTT[] = $db->getPeaksTT($sg["id"]);
+            $peaksSY[] = $db->getPeaksSY($sg["id"]);
         }
-        array_push($hashtagsForTheLast120Days, $hashtagsDataForTheLast120Days[$i]["hashtag_name"]);
+
+        $peaksWithDataSY = [];
+        foreach($peaksSY as $pk){
+            $peaksWithDataSY[] = $db->findSongByPeakSY($pk["song_id"], $pk["MAX(`spotify_popularity`)"]);
+        }
+
+        return $peaksWithDataSY;
     }
+
+    $peaksWithDataTT = getPeaksTT($db);
+    $peaksWithDataSY = getPeaksSY($db);
+
+    // $peaksMixture = array_merge($peaksWithDataSY, $peaksWithDataTT);
+
+    // $datediff = strtotime($peaksWithDataSY[9]["fetch_date"]) - strtotime($peaksWithDataTT[9]["fetch_date"]);
+    // $days = $datediff / (60 * 60 * 24);
 
 ?>
 <!DOCTYPE html>
@@ -410,7 +458,7 @@
             <!-- #END# Body Copy -->
             <div class="row clearfix">
                 <!-- Latest Social Trends -->
-                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                <!-- <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
                     <div class="card">
                         <div class="body bg-cyan">
                             <div class="m-b--35 font-bold">НАЙ-ИЗПОЛЗВАНИТЕ ХАШТАГОВЕ В МОМЕНТА</div>
@@ -423,10 +471,10 @@
                             </ul>
                         </div>
                     </div>
-                </div>
+                </div> -->
                 <!-- #END# Latest Social Trends -->
                 <!-- Latest Social Trends -->
-                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                <!-- <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
                     <div class="card">
                         <div class="body bg-cyan">
                             <div class="m-b--35 font-bold">НАЙ-ИЗПОЛЗВАНИТЕ ХАШТАГОВЕ ЗА ПОСЛЕДНИТЕ 120 ДНИ</div>
@@ -434,16 +482,17 @@
                                 <?php foreach($hashtagsForTheLast120Days as $ht):?>
                                     <li>
                                         #<?php echo $ht ?> 
-                                        <!-- <span class="pull-right">
+                                        <span class="pull-right">
                                             <i class="material-icons">trending_up</i>
-                                        </span> -->
+                                        </span>
                                     </li>
                                 <?php endforeach;?>
                             </ul>
                         </div>
                     </div>
-                </div>
+                </div> -->
                 <!-- #END# Latest Social Trends -->
+                <?php var_dump($peaksWithDataTT) ?>
                 <!-- Answered Tickets -->
                 <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
                     <div class="card">
