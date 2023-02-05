@@ -34,53 +34,37 @@
     //     array_push($hashtagsForTheLast120Days, $hashtagsDataForTheLast120Days[$i]["hashtag_name"]);
     // }
 
-    function getPeaksTT($db){
+    function getPeaks($db){
         $songs = $db->listSongs();
 
-        $peaksTT = [];
-        $peaksSY = [];
-    
+        $peaks = [];
         foreach($songs as $sg){
-            $peaksTT[] = $db->getPeaksTT($sg["id"]);
-            $peaksSY[] = $db->getPeaksSY($sg["id"]);
+            $peaks[] = $db->getPeaks($sg["id"]);
         }
     
-        $peaksWithDataTT = [];
-        foreach($peaksTT as $pk){
-            $peaksWithDataTT[]["TikTok"] = $db->findSongByPeakTT($pk["song_id"], $pk["MAX(`number_of_videos_last_14days`)"]);
-            $peaksWithDataTT[]["Spotify"] = $db->findSongByPeakSY($pk["song_id"], $pk["MAX(`spotify_popularity`)"]);
+        $peaksWithData = [];
+        foreach($peaks as $pk){
+            $peaksWithData[]["Spotify"] = $db->findSongByPeakSY($pk["song_id"], $pk["MAX(`spotify_popularity`)"]);
+            $peaksWithData[]["TikTok"] = $db->findSongByPeakTT($pk["song_id"], $pk["MAX(`number_of_videos_last_14days`)"]);
         }
 
 
-        return $peaksWithDataTT;
+        return $peaksWithData;
     }
 
-    function getPeaksSY($db){
-        $songs = $db->listSongs();
 
-        $peaksTT = [];
-        $peaksSY = [];
-    
-        foreach($songs as $sg){
-            $peaksTT[] = $db->getPeaksTT($sg["id"]);
-            $peaksSY[] = $db->getPeaksSY($sg["id"]);
-        }
+    $peaksWithData = getPeaks($db);
 
-        $peaksWithDataSY = [];
-        foreach($peaksSY as $pk){
-            $peaksWithDataSY[] = $db->findSongByPeakSY($pk["song_id"], $pk["MAX(`spotify_popularity`)"]);
-        }
+    $days = array();
 
-        return $peaksWithDataSY;
+    for($i=0;$i<count($peaksWithData);$i+=2){
+
+        $datediff = isset($peaksWithData[$i]["Spotify"]["fetch_date"]) ? 
+        strtotime($peaksWithData[$i]["Spotify"]["fetch_date"]) - strtotime($peaksWithData[$i + 1]["TikTok"]["fetch_date"]) : false;
+
+        array_push($days, $datediff != false ? $datediff / (60 * 60 * 24) : -100);
+        array_push($days, $datediff != false ? $peaksWithData[$i]["Spotify"]["song_id"] : "");
     }
-
-    $peaksWithDataTT = getPeaksTT($db);
-    $peaksWithDataSY = getPeaksSY($db);
-
-    // $peaksMixture = array_merge($peaksWithDataSY, $peaksWithDataTT);
-
-    // $datediff = strtotime($peaksWithDataSY[9]["fetch_date"]) - strtotime($peaksWithDataTT[9]["fetch_date"]);
-    // $days = $datediff / (60 * 60 * 24);
 
 ?>
 <!DOCTYPE html>
@@ -492,7 +476,7 @@
                     </div>
                 </div> -->
                 <!-- #END# Latest Social Trends -->
-                <?php var_dump($peaksWithDataTT) ?>
+                <?php var_dump($days) ?>
                 <!-- Answered Tickets -->
                 <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
                     <div class="card">

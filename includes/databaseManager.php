@@ -120,8 +120,8 @@ class DatabaseManager {
         return count($result_array) > 0 ? $result_array : false;
     }
 
-    public function getPeaksTT($sid){
-        $sql = "SELECT MAX(`number_of_videos_last_14days`), song_id
+    public function getPeaks($sid){
+        $sql = "SELECT MAX(`number_of_videos_last_14days`), MAX(`spotify_popularity`), song_id
                 FROM `tiktok_records`
                 WHERE song_id=:song_id";
 
@@ -147,20 +147,6 @@ class DatabaseManager {
 
         $query->execute();
 
-        $result_array = $query->fetch();
-
-        return $result_array;
-    }
-
-    public function getPeaksSY($sid){
-        $sql = "SELECT MAX(`spotify_popularity`), song_id
-                FROM `tiktok_records`
-                WHERE song_id=:song_id";
-
-        $query = $this->pdo->prepare($sql);
-        $query->bindValue('song_id', $sid);
-
-        $query->execute();
         $result_array = $query->fetch();
 
         return $result_array;
