@@ -356,3 +356,29 @@ function fetchTopHashtagsForTheLast120Days(){
 
     return $decoded["data"]["list"];
 }
+
+function generateTikTokAccessToken($code){
+
+    $client_key = 'awntkz3ma9o5eetl';
+    $client_secret = '5fa3ec534215877a15f3fa444976b5b5';
+
+    $ch = curl_init();
+
+    curl_setopt($ch, CURLOPT_URL, 'https://open-api.tiktok.com/oauth/access_token/?client_key='.$client_key.'&client_secret='.$client_secret.'&code='.$code.'&grant_type=authorization_code' );
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1 );
+    curl_setopt($ch, CURLOPT_POST, 1 );
+    curl_setopt($ch, CURLOPT_POSTFIELDS, 'grant_type=client_credentials' );
+
+    $result = curl_exec($ch);
+    $decoded = json_decode($result, true);
+
+    $error_message = curl_error($ch);
+    if($error_message != ''){
+        die($error_message);
+    };
+
+    curl_close($ch);
+
+    return $decoded;
+
+}

@@ -102,7 +102,7 @@
         
     }
 
-
+    $reqCallbackState = uniqid();
 ?>
 <!DOCTYPE html>
 <html>
@@ -419,6 +419,12 @@
                     <input type="text" id="tiktokUser" name="tiktokUser"><br><br>
                     <button>Get Data</button>
                 </form> 
+                <br>
+                <br>
+                <br>
+                <a href='https://www.tiktok.com/auth/authorize/?client_key=awntkz3ma9o5eetl&scope=user.info.basic,video.list&response_type=code&redirect_uri=https://fluence.noit.eu/&state=<?php echo $reqCallbackState ?>'>Continue with TikTok</a>
+
+                
 
                 <br>
                 <?php if(isset($userMoreDescriptiveData) && $userMoreDescriptiveData != false && !isset($userMoreDescriptiveData["message"])): ?>

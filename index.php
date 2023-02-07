@@ -7,8 +7,8 @@
     $db = new DatabaseManager();
 
     //Взимаме необходимите данни
-    // $hashtagsDataForTheLast7Days = fetchTopHashtagsForTheLast7Days();
-    // $hashtagsDataForTheLast120Days = fetchTopHashtagsForTheLast120Days();
+    $hashtagsDataForTheLast7Days = fetchTopHashtagsForTheLast7Days();
+    $hashtagsDataForTheLast120Days = fetchTopHashtagsForTheLast120Days();
 
 
     $theFirstSongGlobal = $db->listTheFirstSongGlobal(date("Y-m-d"));
@@ -16,23 +16,23 @@
     $theMostWatchedVideo = $db->listTheFirstVideo(date("Y-m-d"));
 
 
-    // $hashtagsForTheLast7Days = [];
+    $hashtagsForTheLast7Days = [];
 
-    // for($i=0;$i<count($hashtagsDataForTheLast7Days);$i++){
-    //     if($i == 6){
-    //         break;
-    //     }
-    //     array_push($hashtagsForTheLast7Days, $hashtagsDataForTheLast7Days[$i]["hashtag_name"]);
-    // }
+    for($i=0;$i<count($hashtagsDataForTheLast7Days);$i++){
+        if($i == 6){
+            break;
+        }
+        array_push($hashtagsForTheLast7Days, $hashtagsDataForTheLast7Days[$i]["hashtag_name"]);
+    }
 
-    // $hashtagsForTheLast120Days = [];
+    $hashtagsForTheLast120Days = [];
 
-    // for($i=0;$i<count($hashtagsDataForTheLast120Days);$i++){
-    //     if($i == 6){
-    //         break;
-    //     }
-    //     array_push($hashtagsForTheLast120Days, $hashtagsDataForTheLast120Days[$i]["hashtag_name"]);
-    // }
+    for($i=0;$i<count($hashtagsDataForTheLast120Days);$i++){
+        if($i == 6){
+            break;
+        }
+        array_push($hashtagsForTheLast120Days, $hashtagsDataForTheLast120Days[$i]["hashtag_name"]);
+    }
 
     function getPeaks($db){
         $songs = $db->listSongs();
@@ -55,7 +55,7 @@
 
     $peaksWithData = getPeaks($db);
 
-    $songsWithDays = array();
+    $songsWithDays = [];
 
     for($i=0;$i<count($peaksWithData);$i+=2){
 
@@ -67,6 +67,7 @@
         }
 
     }
+
 
     asort($songsWithDays);
     
@@ -445,8 +446,67 @@
             </div>
             <!-- #END# Body Copy -->
             <div class="row clearfix">
+
+                <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+                    <div class="card">
+                        <div class="header">
+                            <h2>ТОП 10 НАЙ-ПОВЛИЯНИ ПЕСНИ</h2>
+                            <ul class="header-dropdown m-r--5">
+                                <li class="dropdown">
+                                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                        <i class="material-icons">more_vert</i>
+                                    </a>
+                                    <ul class="dropdown-menu pull-right">
+                                        <li><a href="javascript:void(0);" class=" waves-effect waves-block">Action</a></li>
+                                        <li><a href="javascript:void(0);" class=" waves-effect waves-block">Another action</a></li>
+                                        <li><a href="javascript:void(0);" class=" waves-effect waves-block">Something else here</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="body">
+                            <div class="table-responsive">
+                                <table class="table table-hover dashboard-task-infos">
+                                    <thead>
+                                        <tr>
+                                            <th>Ранг</th>
+                                            <th>Песен</th>
+                                            <!-- <th>Status</th> -->
+                                            <th>Артист</th>
+                                            <!-- <th>Progress</th> -->
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php $iteration = 0;?>
+                                        <?php foreach($songsWithDays as $songId => $days):?>
+                                            <?php $iteration++?>
+                                            <?php if($iteration == 11):?>
+                                                <?php break;?>
+                                            <?php endif;?>
+
+                                            <?php $songData = $db->findSongById($songId) ?>
+                                            
+                                            <tr>
+                                                <td><?= $iteration?></td>
+                                                <td><?= $songData[0]["song_name"] ?></td>
+                                                <!-- <td><span class="label bg-green">Doing</span></td> -->
+                                                <td><?= $songData[0]["artist_name"] ?></td>
+                                                <!-- <td>
+                                                    <div class="progress">
+                                                        <div class="progress-bar bg-purple" role="progressbar" aria-valuenow="62" aria-valuemin="0" aria-valuemax="100" style="width: 62%"></div>
+                                                    </div>
+                                                </td> -->
+                                            </tr>
+                                        <?php endforeach;?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Latest Social Trends -->
-                <!-- <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
                     <div class="card">
                         <div class="body bg-cyan">
                             <div class="m-b--35 font-bold">НАЙ-ИЗПОЛЗВАНИТЕ ХАШТАГОВЕ В МОМЕНТА</div>
@@ -459,10 +519,10 @@
                             </ul>
                         </div>
                     </div>
-                </div> -->
+                </div>
                 <!-- #END# Latest Social Trends -->
                 <!-- Latest Social Trends -->
-                <!-- <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
                     <div class="card">
                         <div class="body bg-cyan">
                             <div class="m-b--35 font-bold">НАЙ-ИЗПОЛЗВАНИТЕ ХАШТАГОВЕ ЗА ПОСЛЕДНИТЕ 120 ДНИ</div>
@@ -478,9 +538,9 @@
                             </ul>
                         </div>
                     </div>
-                </div> -->
+                </div>
                 <!-- #END# Latest Social Trends -->
-                <?php var_dump($songsWithDays) ?>
+
                 <!-- Answered Tickets -->
                 <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
                     <div class="card">

@@ -170,6 +170,21 @@ class DatabaseManager {
         return $result_array;
     }
 
+    public function findSongById($sid){
+        $sql = "SELECT * 
+                FROM tiktok_songs 
+                WHERE id=:song_id";
+
+        $query = $this->pdo->prepare($sql);
+        $query->bindValue('song_id', $sid);
+
+        $query->execute();
+
+        $result = $query->fetchAll(PDO::FETCH_ASSOC);
+
+        return $result;
+    }
+
     public function listDatesForCurrentSong($sid){
         $sql = "SELECT DISTINCT `fetch_date`  
                 FROM `tiktok_records`
