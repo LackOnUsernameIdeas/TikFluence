@@ -272,7 +272,12 @@ function fetchTikTokUserSecUid($username){
 
     curl_close($ch);
 
-    return $decoded["sec_uid"];
+    if(isset($decoded["sec_uid"])){
+        return $decoded["sec_uid"];
+    } elseif(isset($decoded["message"])){
+        return $decoded["message"];
+    }
+
 }
 
 function fetchTikTokUserMoreDescriptiveData($sec_uid){

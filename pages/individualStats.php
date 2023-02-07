@@ -31,7 +31,7 @@
             $username = htmlspecialchars($_GET['tiktokUser']);
             $userMoreDescriptiveData = getUserMoreDescriptiveData($username);
 
-            if($userMoreDescriptiveData == false){
+            if($userMoreDescriptiveData == false || isset($userMoreDescriptiveData["message"])){
                 $userBasicData = getUserData($username);
             }
         }
@@ -60,7 +60,7 @@
 
     $isVerified = false;
 
-    if(isset($userMoreDescriptiveData) && $userMoreDescriptiveData != false){
+    if(isset($userMoreDescriptiveData) && $userMoreDescriptiveData != false && !isset($userMoreDescriptiveData["message"])){
         if($userMoreDescriptiveData["author"]["verified"] == true){
             $isVerified = $userMoreDescriptiveData["author"]["verified"];
         }
@@ -421,7 +421,7 @@
                 </form> 
 
                 <br>
-                <?php if(isset($userMoreDescriptiveData) && $userMoreDescriptiveData != false): ?>
+                <?php if(isset($userMoreDescriptiveData) && $userMoreDescriptiveData != false && !isset($userMoreDescriptiveData["message"])): ?>
                     <div class="row clearfix">
 
                         <div class="col-lg-6 col-md-8 col-sm-8 col-xs-8">
@@ -753,13 +753,23 @@
                             </div>
                         </div>
 
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                            <div class="card">
-                                <div class="body">
-                                    Въведеният профил трябва да е публичен, за да можете да видите повече статистики
+                        <?php if(isset($userMoreDescriptiveData["message"])): ?>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="card">
+                                    <div class="body">
+                                        Въведеният профил трябва да има качено поне 1 видео, за да можете да видите повече статистики
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        <?php else: ?>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="card">
+                                    <div class="body">
+                                        Въведеният профил трябва да е публичен, за да можете да видите повече статистики
+                                    </div>
+                                </div>
+                            </div>
+                        <?php endif; ?>
         
                     </div>
                 <?php endif;?>

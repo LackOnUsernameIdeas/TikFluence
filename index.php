@@ -55,17 +55,21 @@
 
     $peaksWithData = getPeaks($db);
 
-    $days = array();
+    $songsWithDays = array();
 
     for($i=0;$i<count($peaksWithData);$i+=2){
 
         $datediff = isset($peaksWithData[$i]["Spotify"]["fetch_date"]) ? 
         strtotime($peaksWithData[$i]["Spotify"]["fetch_date"]) - strtotime($peaksWithData[$i + 1]["TikTok"]["fetch_date"]) : false;
 
-        array_push($days, $datediff != false ? $datediff / (60 * 60 * 24) : -100);
-        array_push($days, $datediff != false ? $peaksWithData[$i]["Spotify"]["song_id"] : "");
+        if($datediff != false && $datediff > 0){
+            $songsWithDays[$peaksWithData[$i]["Spotify"]["song_id"]] = $datediff / (60 * 60 * 24);
+        }
+
     }
 
+    asort($songsWithDays);
+    
 ?>
 <!DOCTYPE html>
 <html>
@@ -476,7 +480,7 @@
                     </div>
                 </div> -->
                 <!-- #END# Latest Social Trends -->
-                <?php var_dump($days) ?>
+                <?php var_dump($songsWithDays) ?>
                 <!-- Answered Tickets -->
                 <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
                     <div class="card">

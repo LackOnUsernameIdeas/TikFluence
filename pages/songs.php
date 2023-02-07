@@ -141,7 +141,7 @@
 
         if($growthTT) {
             if($growthSY || $growthYT) {
-                return "Вижте нарастване";
+                return "Вижте повлияване";
             }
         }
         // return "Вижте детайли";
