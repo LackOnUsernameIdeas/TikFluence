@@ -453,6 +453,7 @@ $reqCallbackState = uniqid();
                 <a href='https://www.tiktok.com/auth/authorize/?client_key=awntkz3ma9o5eetl&scope=user.info.basic,video.list&response_type=code&redirect_uri=https://fluence.noit.eu/pages/individualStats.php&state=<?php echo $reqCallbackState ?>'>Continue with TikTok</a>
                 <br>
                 <br>
+                <?php var_dump($_GET["code"]) ?>
                 <br>
                 <?php if(isset($userMoreDescriptiveData) && $userMoreDescriptiveData != false && !isset($userMoreDescriptiveData["message"])): ?>
                     <div class="row clearfix">
