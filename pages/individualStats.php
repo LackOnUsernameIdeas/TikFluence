@@ -1,6 +1,6 @@
 <?php
 
-    session_start();
+    // session_start();
 
     //Вмъкване на нужните файлове
     include '../includes/databaseManager.php';
@@ -202,7 +202,7 @@ $reqCallbackState = uniqid();
 
                 <ul class="nav navbar-nav navbar-right">
                     <!-- TOP RIGHT -->
-                    <li><a href="javascript:void(0);" class="js-search" data-close="true"><button type="button" class="btn bg-deep-purple waves-effect" onclick="window.location.href='../logOut.php'">ИЗЛЕЗ ОТ ПРОФИЛА</button></a></li>
+                    <!-- <li><a href="javascript:void(0);" class="js-search" data-close="true"><button type="button" class="btn bg-deep-purple waves-effect" onclick="window.location.href='../logOut.php'">ИЗЛЕЗ ОТ ПРОФИЛА</button></a></li> -->
                     <li class="pull-right"><a href="javascript:void(0);" class="js-right-sidebar" data-close="true"><i class="material-icons">invert_colors</i></a></li>
                 </ul>
 
@@ -445,16 +445,10 @@ $reqCallbackState = uniqid();
                     </div>
                 </div>
 
-                <!-- <form action="#" method="GET">
-                    <label for="tiktokUser">TikTok потребител: </label>
-                    <input type="text" id="tiktokUser" name="tiktokUser"><br><br>
-                    <button>Get Data</button>
-                </form>  -->
-                <a href='https://www.tiktok.com/auth/authorize/?client_key=awntkz3ma9o5eetl&scope=user.info.basic,video.list&response_type=code&redirect_uri=https://fluence.noit.eu/pages/individualStats.php&state=<?php echo $reqCallbackState ?>'>Continue with TikTok</a>
-                <br>
-                <br>
-                <?php var_dump($_GET["code"]) ?>
-                <br>
+                <?php if(!isset($_GET["code"])): ?>
+                    <a href='https://www.tiktok.com/auth/authorize/?client_key=awntkz3ma9o5eetl&scope=user.info.basic,video.list&response_type=code&redirect_uri=https://fluence.noit.eu/pages/individualStats.php&state=<?php echo $reqCallbackState ?>'>Continue with TikTok</a>
+                <?php endif;?>
+
                 <?php if(isset($userMoreDescriptiveData) && $userMoreDescriptiveData != false && !isset($userMoreDescriptiveData["message"])): ?>
                     <div class="row clearfix">
 

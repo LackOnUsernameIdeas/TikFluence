@@ -416,7 +416,7 @@ function getUserOpenId($accessToken){
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1 );
 
     $headers = [
-        'Authorization: '.$accessToken
+        "Authorization: $accessToken"
     ];
 
     curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
@@ -431,6 +431,6 @@ function getUserOpenId($accessToken){
 
     curl_close($ch);
 
-    return $decoded["data"]["open_id"];
+    return $decoded["data"]["user"]["open_id"];
 
 }
