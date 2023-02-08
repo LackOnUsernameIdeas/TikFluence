@@ -11,24 +11,31 @@
     $db = new DatabaseManager();
 
     // Ако сте влезли в профила си, можете да продължите
-    // if (isset($_SESSION["user_id"])) {
-    //     $user_id = $_SESSION["user_id"];
-    //     $user = $db->getUserById($user_id);
-    // } else {
-    //     redirect("../logIn.php");
-    // }
+    if(isset($_SESSION["user_id"])) {
+        $user_id = $_SESSION["user_id"];
+        $user = $db->getUserById($user_id);
+    } else {
+        redirect("../logIn.php");
+    }
+
+    if(isset($username)){
+        if($username != null){
+            $_SESSION['tiktokUsername'] = $username;
+        }
+    }
+
 
     //Излиза информацията за потребителя
-    // if(isset($_SESSION['tiktokUsername'])){
-    //     if($_SESSION['tiktokUsername'] != null){
-    //         $username = htmlspecialchars($_SESSION['tiktokUsername']);
-    //         $userMoreDescriptiveData = getUserMoreDescriptiveData($username);
+    if(isset($_SESSION['tiktokUsername'])){
+        if($_SESSION['tiktokUsername'] != null){
+            $username = htmlspecialchars($_SESSION['tiktokUsername']);
+            $userMoreDescriptiveData = getUserMoreDescriptiveData($username);
 
-    //         if($userMoreDescriptiveData == false || isset($userMoreDescriptiveData["message"])){
-    //             $userBasicData = getUserData($username);
-    //         }
-    //     }
-    // }
+            if($userMoreDescriptiveData == false || isset($userMoreDescriptiveData["message"])){
+                $userBasicData = getUserData($username);
+            }
+        }
+    }
 
     // if(isset($_GET['tiktokUser'])){
     //     if($_GET['tiktokUser'] != null){
@@ -49,16 +56,7 @@
     $usernameLink = generateTikTokUsername("https://open-api.tiktok.com/shortlink/profile/?open_id=_000sFh7L1LUtskHp2F_eF3qt3xgUAl7Jpl1");
     $username = explode("?", explode('@', $usernameLink)[1])[0];
 
-    if(isset($username)){
-        if($username != null){
-            $username = htmlspecialchars($username);
-            $userMoreDescriptiveData = getUserMoreDescriptiveData($username);
 
-            if($userMoreDescriptiveData == false || isset($userMoreDescriptiveData["message"])){
-                $userBasicData = getUserData($username);
-            }
-        }
-    }
 
     function getUserData($username){
         //Взимаме id на потребителя за да можем да вземем информацията за него
