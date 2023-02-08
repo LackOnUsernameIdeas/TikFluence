@@ -140,11 +140,12 @@ foreach($tiktokers as $tt){
     $tiktokerData = $db->findTikTokerById($tt["id"]);
 
     if($tiktokerData[0]["thumbnail"] != null){
-        $dp["thumbnail"] = $tiktokerData[0]["thumbnail"];
+        $tt["thumbnail"] = $tiktokerData[0]["thumbnail"];
     }
 
     $tt["fetch_date"] = $date;
     $db->insertTikTokerDatapoint($tt);
+
 }
 
 //Качваме всичко в базата данни
