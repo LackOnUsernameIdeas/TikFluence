@@ -409,3 +409,30 @@ function generateTikTokUsername($profLink){
     return $result;
 
 }
+
+function getUserOpenId($accessToken){
+
+    $ch = curl_init();
+
+    curl_setopt($ch, CURLOPT_URL, 'https://open.tiktokapis.com/v2/user/info/?fields=open_id');
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1 );
+
+    $headers = [
+        'Authorization: '.$accessToken
+    ];
+
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
+    $result = curl_exec($ch);
+    $decoded = json_decode($result, true);
+
+    $error_message = curl_error($ch);
+    if($error_message != ''){
+        die($error_message);
+    };
+
+    curl_close($ch);
+
+    return $decoded["data"]["open_id"];
+
+}

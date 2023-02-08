@@ -19,12 +19,14 @@
     // }
 
     
+    if(isset($_GET["code"])){
+        $accessToken = generateTikTokAccessToken($_GET["code"]);
 
-    $accessToken = generateTikTokAccessToken("TLPf7P8ROqCdNgv-vnJtLesFP-gcSgmB6fbzCGmSydazpBmqNId9V_8g3CyI4j9LoFmc5d71aKVdKPzNKlWtT7vtul4Uhu7pNIHU-t2b62qlOnoA_wb4-lqa8NChdy3I1cdphGLjCAId1yTI2XN-4cKCiExmj6OesNLOMcgO91C1keMG5eLGnT7yhKOetztOAs_X7KH9Z-5BLgOGozMeqnU-KXnXSqi4zNNY3dgYfzRoSCHAjuygBIXb6xFK1TeKbOkh9hGzMiVfMv07VFHC-P0L5Yf0lqEaIp7KdkFzUUkLVDRr6eipH317yIvxYhc7o28ypk9SD5u7gwdGamqsOz8Ge24bGDDLMWRdNY91Zy7Bv2gvaZaJLEd4b_6srDQuF3-rBJMNhthlSiU2c8uqB2I-k484ulOg3i2vMfH1hoE3-TyiSYrPK4BE_sHRP6eKAi4bsmU0B0trMH1j9ozrJPJ9X-UdcQBmDSCzdGkcfP0%2A1%214506");
+        $openUserId = getUserOpenId($accessToken);
 
-    $usernameLink = generateTikTokUsername("https://open-api.tiktok.com/shortlink/profile/?open_id=_000sFh7L1LUtskHp2F_eF3qt3xgUAl7Jpl1");
-    $username = explode("?", explode('@', $usernameLink)[1])[0];
-
+        $usernameLink = generateTikTokUsername("https://open-api.tiktok.com/shortlink/profile/?open_id=$openUserId");
+        $username = explode("?", explode('@', $usernameLink)[1])[0];    
+    }
 
 
     if(isset($username)){
