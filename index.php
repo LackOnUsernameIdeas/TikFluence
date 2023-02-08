@@ -15,7 +15,7 @@
     $theMostFollowedTikToker = $db->listTheFirstTikToker(date("Y-m-d"));
     $theMostWatchedVideo = $db->listTheFirstVideo(date("Y-m-d"));
 
-
+    
     $hashtagsForTheLast7Days = [];
 
     for($i=0;$i<count($hashtagsDataForTheLast7Days);$i++){
@@ -208,14 +208,14 @@
             </div>
             <!-- #Menu -->
             <!-- Footer -->
-            <!-- <div class="legal">
+            <div class="legal">
                 <div class="copyright">
                     <a href="javascript:void(0);"><a href="pages/privacyPolicy.php">Privacy Policy</a> ,</a>
                 </div>
                 <div class="copyright">
                     <a href="javascript:void(0);"><a href="pages/termsAndConditions.php">Terms and Conditions</a></a>
                 </div>
-            </div> -->
+            </div>
             <!-- #Footer -->
         </aside>
         <!-- #END# Left Sidebar -->
@@ -366,6 +366,43 @@
 
     <section class="content">
         <div class="container-fluid">
+            <!-- Body Copy -->
+            <div class="row clearfix">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="card">
+                        <div class="header">
+                            <h1>
+                                WELCOME TO NOIT!
+                            </h1>
+                            <ul class="header-dropdown m-r--5">
+                                <li class="dropdown">
+                                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                        <i class="material-icons">more_vert</i>
+                                    </a>
+                                    <ul class="dropdown-menu pull-right">
+                                        <li><a href="javascript:void(0);" class=" waves-effect waves-block">Action</a></li>
+                                        <li><a href="javascript:void(0);" class=" waves-effect waves-block">Another action</a></li>
+                                        <li><a href="javascript:void(0);" class=" waves-effect waves-block">Something else here</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="body">
+                            <p class="lead">
+                                INTRODUCTION
+                            </p>
+                            <p>
+                                A web page intended to present information, mostly related to TikTok, in the format of interactive charts, tables and statistics.
+                            </p>
+                            <p>
+                                The information that the project shows is related to the most listened songs on TikTok recently and what it tries to prove is that TikTok sends the listens of the songs to other platforms by making a song more famous.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- #END# Body Copy -->
+
             <?php if($theFirstSongGlobal && $theMostFollowedTikToker && $theMostWatchedVideo):?>
                 <div class="block-header">
                     <h2>ВИЖТЕ ПЕСЕНТА, ТИКТОКЪРА И ВИДЕОТО НА ПЪРВО МЯСТО В НАШИТЕ КЛАСАЦИИ:</h2>
@@ -409,42 +446,7 @@
                 </div>
                 <!-- #END# Widgets -->
             <?php endif;?>
-            <!-- Body Copy -->
-            <div class="row clearfix">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="card">
-                        <div class="header">
-                            <h1>
-                                WELCOME TO NOIT!
-                            </h1>
-                            <ul class="header-dropdown m-r--5">
-                                <li class="dropdown">
-                                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                        <i class="material-icons">more_vert</i>
-                                    </a>
-                                    <ul class="dropdown-menu pull-right">
-                                        <li><a href="javascript:void(0);" class=" waves-effect waves-block">Action</a></li>
-                                        <li><a href="javascript:void(0);" class=" waves-effect waves-block">Another action</a></li>
-                                        <li><a href="javascript:void(0);" class=" waves-effect waves-block">Something else here</a></li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="body">
-                            <p class="lead">
-                                INTRODUCTION
-                            </p>
-                            <p>
-                                A web page intended to present information, mostly related to TikTok, in the format of interactive charts, tables and statistics.
-                            </p>
-                            <p>
-                                The information that the project shows is related to the most listened songs on TikTok recently and what it tries to prove is that TikTok sends the listens of the songs to other platforms by making a song more famous.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- #END# Body Copy -->
+
             <div class="row clearfix">
 
                 <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">

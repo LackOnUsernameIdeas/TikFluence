@@ -141,8 +141,13 @@
     // Изчисляваме разликата между днес и вчера:
 
     //TikTok
-    $subtractionTTPercents = $todayYesterdayTTDataArray[1] - $todayYesterdayTTDataArray[0];
-    $subtractionTTNums = $ttLastTwoDaysNums[1] - $ttLastTwoDaysNums[0];
+    if(isset($ttLastTwoDaysPercents[0]) || $ttLastTwoDaysPercents[0] == 0){ 
+        $subtractionTTPercents = $todayYesterdayTTDataArray[1] - $todayYesterdayTTDataArray[0];
+        $subtractionTTNums = $ttLastTwoDaysNums[1] - $ttLastTwoDaysNums[0];
+    } else { 
+        $subtractionTTPercents = "-";
+        $subtractionTTNums = "-";
+    }
 
     //YouTube
     if($ytLastTwoDaysPercents[0] != null || $ytLastTwoDaysPercents[0] == 0){ 

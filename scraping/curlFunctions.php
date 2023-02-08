@@ -379,6 +379,33 @@ function generateTikTokAccessToken($code){
 
     curl_close($ch);
 
-    return $decoded;
+    return $decoded["data"];
+
+}
+
+function generateTikTokRedirectLink($profLink){
+
+    $ch = curl_init();
+
+    curl_setopt($ch, CURLOPT_URL, $profLink);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+    $result = curl_exec($ch);
+
+    return $result;
+
+}
+
+function generateTikTokUsername($profLink){
+
+    $ch = curl_init();
+
+    curl_setopt($ch, CURLOPT_URL, $profLink);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+    $result = curl_exec($ch);
+
+
+    return $result;
 
 }

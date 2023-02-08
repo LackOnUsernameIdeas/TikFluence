@@ -91,6 +91,9 @@
                     <?php endif; ?>
                     <form id="sign_in" method="POST">
                         <div class="msg">Влезте във вашия профил</div>
+                        <a href='https://www.tiktok.com/auth/authorize/?client_key=awntkz3ma9o5eetl&scope=user.info.basic,video.list&response_type=code&redirect_uri=https://fluence.noit.eu/pages/individualStats.php&state=<?php echo $reqCallbackState ?>'>Continue with TikTok</a>
+                        <br>
+                        <br>
                         <div class="input-group">
                             <span class="input-group-addon">
                                 <i class="material-icons">person</i>
