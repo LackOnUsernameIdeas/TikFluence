@@ -11,24 +11,24 @@
     $db = new DatabaseManager();
 
     // Ако сте влезли в профила си, можете да продължите
-    if(isset($_SESSION["user_id"])) {
-        $user_id = $_SESSION["user_id"];
-        $user = $db->getUserById($user_id);
-    } else {
-        redirect("../logIn.php");
-    }
+    // if(isset($_SESSION["user_id"])) {
+    //     $user_id = $_SESSION["user_id"];
+    //     $user = $db->getUserById($user_id);
+    // } else {
+    //     redirect("../logIn.php");
+    // }
+
+    
+
+    $accessToken = generateTikTokAccessToken("TLPf7P8ROqCdNgv-vnJtLesFP-gcSgmB6fbzCGmSydazpBmqNId9V_8g3CyI4j9LoFmc5d71aKVdKPzNKlWtT7vtul4Uhu7pNIHU-t2b62qlOnoA_wb4-lqa8NChdy3I1cdphGLjCAId1yTI2XN-4cKCiExmj6OesNLOMcgO91C1keMG5eLGnT7yhKOetztOAs_X7KH9Z-5BLgOGozMeqnU-KXnXSqi4zNNY3dgYfzRoSCHAjuygBIXb6xFK1TeKbOkh9hGzMiVfMv07VFHC-P0L5Yf0lqEaIp7KdkFzUUkLVDRr6eipH317yIvxYhc7o28ypk9SD5u7gwdGamqsOz8Ge24bGDDLMWRdNY91Zy7Bv2gvaZaJLEd4b_6srDQuF3-rBJMNhthlSiU2c8uqB2I-k484ulOg3i2vMfH1hoE3-TyiSYrPK4BE_sHRP6eKAi4bsmU0B0trMH1j9ozrJPJ9X-UdcQBmDSCzdGkcfP0%2A1%214506");
+
+    $usernameLink = generateTikTokUsername("https://open-api.tiktok.com/shortlink/profile/?open_id=_000sFh7L1LUtskHp2F_eF3qt3xgUAl7Jpl1");
+    $username = explode("?", explode('@', $usernameLink)[1])[0];
+
+
 
     if(isset($username)){
         if($username != null){
-            $_SESSION['tiktokUsername'] = $username;
-        }
-    }
-
-
-    //Излиза информацията за потребителя
-    if(isset($_SESSION['tiktokUsername'])){
-        if($_SESSION['tiktokUsername'] != null){
-            $username = htmlspecialchars($_SESSION['tiktokUsername']);
             $userMoreDescriptiveData = getUserMoreDescriptiveData($username);
 
             if($userMoreDescriptiveData == false || isset($userMoreDescriptiveData["message"])){
@@ -36,6 +36,20 @@
             }
         }
     }
+    
+
+
+    //Излиза информацията за потребителя
+    // if(isset($_SESSION['tiktokUsername'])){
+    //     if($_SESSION['tiktokUsername'] != null){
+    //         $username = htmlspecialchars($_SESSION['tiktokUsername']);
+    //         $userMoreDescriptiveData = getUserMoreDescriptiveData($username);
+
+    //         if($userMoreDescriptiveData == false || isset($userMoreDescriptiveData["message"])){
+    //             $userBasicData = getUserData($username);
+    //         }
+    //     }
+    // }
 
     // if(isset($_GET['tiktokUser'])){
     //     if($_GET['tiktokUser'] != null){
@@ -49,13 +63,6 @@
     // }
 
     //Взимаме информация за потребителя и я показваме
-
-
-    $accessToken = generateTikTokAccessToken("TLPf7P8ROqCdNgv-vnJtLesFP-gcSgmB6fbzCGmSydazpBmqNId9V_8g3CyI4j9LoFmc5d71aKVdKPzNKlWtT7vtul4Uhu7pNIHU-t2b62qlOnoA_wb4-lqa8NChdy3I1cdphGLjCAId1yTI2XN-4cKCiExmj6OesNLOMcgO91C1keMG5eLGnT7yhKOetztOAs_X7KH9Z-5BLgOGozMeqnU-KXnXSqi4zNNY3dgYfzRoSCHAjuygBIXb6xFK1TeKbOkh9hGzMiVfMv07VFHC-P0L5Yf0lqEaIp7KdkFzUUkLVDRr6eipH317yIvxYhc7o28ypk9SD5u7gwdGamqsOz8Ge24bGDDLMWRdNY91Zy7Bv2gvaZaJLEd4b_6srDQuF3-rBJMNhthlSiU2c8uqB2I-k484ulOg3i2vMfH1hoE3-TyiSYrPK4BE_sHRP6eKAi4bsmU0B0trMH1j9ozrJPJ9X-UdcQBmDSCzdGkcfP0%2A1%214506");
-
-    $usernameLink = generateTikTokUsername("https://open-api.tiktok.com/shortlink/profile/?open_id=_000sFh7L1LUtskHp2F_eF3qt3xgUAl7Jpl1");
-    $username = explode("?", explode('@', $usernameLink)[1])[0];
-
 
 
     function getUserData($username){
@@ -121,7 +128,9 @@
         
     }
 
-    $reqCallbackState = uniqid();
+    
+$reqCallbackState = uniqid();
+
 
 ?>
 <!DOCTYPE html>
@@ -439,7 +448,7 @@
                     <input type="text" id="tiktokUser" name="tiktokUser"><br><br>
                     <button>Get Data</button>
                 </form>  -->
-                
+                <a href='https://www.tiktok.com/auth/authorize/?client_key=awntkz3ma9o5eetl&scope=user.info.basic,video.list&response_type=code&redirect_uri=https://fluence.noit.eu/pages/individualStats.php&state=<?php echo $reqCallbackState ?>'>Continue with TikTok</a>
                 <br>
                 <br>
                 <br>
