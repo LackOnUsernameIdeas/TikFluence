@@ -14,14 +14,7 @@
 
     $songData = $db->getSongData($sid);
 
-    //Взимаме необходимата информация и я превръщаме където е необходимо в проценти
-    $selectDate = isset($_SESSION["setDate"]) ? $_SESSION["setDate"] : date("Y-m-d");
-    $todayYesterdayData = $db->getTodayYesterdayData($sid, $selectDate);
-
-
-    //Взимаме записите за всяка песен
-    $dataPoints = $db->getDatapointsForSong($sid, $selectDate);
-    
+        
     $fetchDatesForButton = $db->listDatesForCurrentSong($sid);
 
     $chooseDatesForButton = [];
@@ -30,6 +23,19 @@
         $chooseDatesForButton[] = $timestamp->format('Y-m-d');
     }
 
+    //Взимаме необходимата информация и я превръщаме където е необходимо в проценти
+    $selectDate = isset($_SESSION["setDate"]) ? $_SESSION["setDate"] : date("Y-m-d");
+    
+    if(end($chooseDatesForButton) != $selectDate){
+        $selectDate = end($chooseDatesForButton);
+    }
+    
+    $todayYesterdayData = $db->getTodayYesterdayData($sid, $selectDate);
+
+
+    //Взимаме записите за всяка песен
+    $dataPoints = $db->getDatapointsForSong($sid, $selectDate);
+    
     if($dataPoints === false) redirect("songs.php");
 
 

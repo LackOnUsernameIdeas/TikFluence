@@ -227,7 +227,7 @@
             </ul>
             <div class="tab-content">
                 <div role="tabpanel" class="tab-pane fade in active in active" id="skins">
-                    <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 702px;"><ul class="demo-choose-skin" style="overflow: hidden; width: auto; height: 702px;">
+                <ul class="demo-choose-skin">
                         <li data-theme="purple" class="active">
                             <div class="purple"></div>
                             <span>Лилаво</span>
@@ -308,7 +308,7 @@
                             <div class="black"></div>
                             <span>Черно</span>
                         </li>
-                    </ul><div class="slimScrollBar" style="background: rgba(0, 0, 0, 0.5); width: 6px; position: absolute; top: 0px; opacity: 0.4; display: block; border-radius: 0px; z-index: 99; right: 1px; height: 547.56px;"></div><div class="slimScrollRail" style="width: 6px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 0px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div></div>
+                    </ul>
                 </div>
                 <div role="tabpanel" class="tab-pane fade" id="settings">
                     <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 702px;"><div class="demo-settings" style="overflow: hidden; width: auto; height: 702px;">
