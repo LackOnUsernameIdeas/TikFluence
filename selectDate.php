@@ -3,12 +3,16 @@
     session_start();
 
     function setDate(){
-        if(isset($_POST["setDate"])){
-            $_SESSION["setDate"] = $_POST["setDate"];
-            return $_POST["setDate"];
+        if(isset($_GET["setDate"])){
+            $_SESSION["setDate"] = $_GET["setDate"];
+            return $_GET["setDate"];
         }
     }
 
-    echo setDate();
-    
+    setDate();
+
+    if(isset($_GET["redirectURI"])){
+        header('Location: '.$_GET["redirectURI"]);
+        die();
+    }
 ?>

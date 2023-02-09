@@ -345,23 +345,12 @@
                 <div class="card">
                     <div class="body">
                         <h2>Изберете дата за която искате да видите данни:</h2>
-                        <div class="btn-group">
-                            <button type="button" class="btn bg-purple dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="caret"></span>
-                                <span class="sr-only" id="setDateButton"><?php echo $selectDate ?></span>
-                            </button>
-
-                            <ul class="dropdown-menu">
-                                <?php if($datesArray):?>
-                                    <?php foreach($datesArray as $date):?>
-                                        <li data-id="<?php echo $date ?>" data-role="setDate"><a href="javascript:void(0);" class="waves-effect waves-block"><?php echo $date?></a></li>
-                                        <li role="separator" class="divider"></li>
-                                    <?php endforeach;?>
-                                <?php endif;?>
-                            </ul>
-                        
-                        </div>
-
+                            <?php if($datesArray):?>
+                                <input type="date" id="start" name="trip-start"
+                                value="<?php echo $selectDate ?>"
+                                min="<?php echo $datesArray[0] ?>" max="<?php echo end($datesArray) ?>" data-id="<?php echo $date ?>" data-role="setDate" onchange=" window.location.replace('../selectDate.php?setDate=' + this.value + '&redirectURI=' + window.location.href)">
+                            <?php endif;?>
+            
                     </div>
                 </div>
             </div>
@@ -439,28 +428,6 @@
             <?php endif;?>
         </div>
     </section>
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-    <script>
-        $(document).ready(function(){
-            $(document).on("click", "li[data-role=setDate]", function(){
-
-                let date = $(this).data('id');
-
-                $.ajax({
-                    type: "POST",
-                    url: "../selectDate.php",
-                    data: {setDate: date},
-                    success: function(data){
-                        $("#setDateButton").html(data);
-                        window.location.reload();
-                    }
-                });
- 
-            });
-        });
-
-    </script>
 
     <!-- Jquery Core Js -->
     <script src="../plugins/jquery/jquery.min.js"></script>

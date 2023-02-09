@@ -368,25 +368,15 @@
                         <div class="card">
                             <div class="body">
                                 <h2>Изберете дата за която искате да видите данни:</h2>
-                                <div class="btn-group">
-                                    <button type="button" class="btn bg-purple dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <span class="caret"></span>
-                                        <span class="sr-only" id="setDateButton"><?php echo $selectDate ?></span>
-                                    </button>
-
-                                    <ul class="dropdown-menu">
-                                        <?php if($dates):?>
-                                            <?php foreach(array_slice($dates, 1) as $date):?>
-                                                <li data-id="<?php echo $date ?>" data-role="setDate"><a href="javascript:void(0);" class="waves-effect waves-block"><?php echo $date?></a></li>
-                                                <li role="separator" class="divider"></li>
-                                            <?php endforeach;?>
-                                        <?php endif;?>
-                                    </ul>
-                                
+                                    <?php if($dates):?>
+                                        <input type="date" id="start" name="trip-start"
+                                        value="<?php echo $_SESSION["setDate"] ?>"
+                                        min="<?php echo $dates[0] ?>" max="<?php echo end($dates) ?>" onchange=" window.location.replace('../selectDate.php?setDate=' + this.value + '&redirectURI=' + window.location.href)">
+                                    <?php endif;?>
+                        
                                 </div>
                             </div>
                         </div>
-                    </div>
             
                 </div>
             </div>

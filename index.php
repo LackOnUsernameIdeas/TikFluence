@@ -500,7 +500,7 @@
                                                 <td><?= $iteration?></td>
                                                 <td><?= $songData[0]["song_name"] ?></td>
                                                 <td><?= $songData[0]["artist_name"] ?></td>
-                                                <td><a href='./pages/fluencedSongs.php?sid=<?= $songData[0]["id"] ?>' class="btn bg-purple waves-effect">Вижте повече</a></td>
+                                                <td><a href='./pages/influencedSongs.php?sid=<?= $songData[0]["id"] ?>' class="btn bg-purple waves-effect">Вижте повече</a></td>
                                                 <!-- <td>
                                                     <div class="progress">
                                                         <div class="progress-bar bg-purple" role="progressbar" aria-valuenow="62" aria-valuemin="0" aria-valuemax="100" style="width: 62%"></div>
