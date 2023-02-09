@@ -10,6 +10,5 @@
     }
 
     echo setDate();
-    // echo $_SESSION["setDate"];
     
 ?>

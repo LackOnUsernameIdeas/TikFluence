@@ -120,6 +120,20 @@ class DatabaseManager {
         return count($result_array) > 0 ? $result_array : false;
     }
 
+    public function getEveryDatapointForSong($sid){
+        $sql = "SELECT * 
+                FROM `tiktok_records`
+                WHERE song_id=:mandja";
+
+        $query = $this->pdo->prepare($sql);
+        $query->bindValue('mandja', $sid);
+
+        $query->execute();
+        $result_array = $query->fetchAll(PDO::FETCH_ASSOC);
+
+        return count($result_array) > 0 ? $result_array : false;
+    }
+
     public function getPeaks($sid){
         $sql = "SELECT MAX(`number_of_videos_last_14days`), MAX(`spotify_popularity`), song_id
                 FROM `tiktok_records`

@@ -15,7 +15,7 @@
     $theMostFollowedTikToker = $db->listTheFirstTikToker(date("Y-m-d"));
     $theMostWatchedVideo = $db->listTheFirstVideo(date("Y-m-d"));
 
-    
+
     $hashtagsForTheLast7Days = [];
 
     for($i=0;$i<count($hashtagsDataForTheLast7Days);$i++){
@@ -57,10 +57,15 @@
 
     $songsWithDays = [];
 
+
+    $peaksDatesTT = [];
+
     for($i=0;$i<count($peaksWithData);$i+=2){
 
         $datediff = isset($peaksWithData[$i]["Spotify"]["fetch_date"]) ? 
         strtotime($peaksWithData[$i]["Spotify"]["fetch_date"]) - strtotime($peaksWithData[$i + 1]["TikTok"]["fetch_date"]) : false;
+
+        $peaksDatesTT[] = $peaksWithData[$i + 1]["TikTok"]["fetch_date"];
 
         if($datediff != false && $datediff > 0){
             $songsWithDays[$peaksWithData[$i]["Spotify"]["song_id"]] = $datediff / (60 * 60 * 24);
@@ -68,8 +73,32 @@
 
     }
 
-
     asort($songsWithDays);
+
+    foreach($songsWithDays as $key => $value){
+        $datapoints = $db->getEveryDatapointForSong($key);
+        
+        $ttNums = [];
+
+        foreach($datapoints as $dp){
+            $ttNums[] = $dp["number_of_videos_last_14days"];
+        }
+
+        
+        $plateauIndex = 0;
+        $previousVal = 0;
+        foreach($ttNums as $val){
+            if($val == $previousVal){
+                $plateauIndex++;
+            } else {
+                $plateauIndex = 0;
+            }
+            if($plateauIndex >= 10){
+                unset($songsWithDays[$key]);
+            } 
+            $previousVal = $val;
+        }
+    }
     
 ?>
 <!DOCTYPE html>
@@ -95,34 +124,14 @@
     <!-- Animation Css -->
     <link href="plugins/animate-css/animate.css" rel="stylesheet">
 
-    <!-- Morris Chart Css-->
-    <link href="plugins/morrisjs/morris.css" rel="stylesheet">
-
     <!-- Custom Css -->
     <link href="css/style.css" rel="stylesheet">
 
     <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
     <link href="css/themes/all-themes.css" rel="stylesheet">
-    <style type="text/css">.jqstooltip { position: absolute;left: 0px;top: 0px;visibility: hidden;background: rgb(0, 0, 0) transparent;background-color: rgba(0,0,0,0.6);filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000, endColorstr=#99000000);-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000, endColorstr=#99000000)";color: white;font: 10px arial, san serif;text-align: left;white-space: nowrap;padding: 5px;border: 1px solid white;box-sizing: content-box;z-index: 10000;}.jqsfield { color: white;font: 10px arial, san serif;text-align: left;}</style>
+    
 </head>
 <body class="theme-purple ls-closed">
-    <!-- Page Loader -->
-    <div class="page-loader-wrapper" style="display: none;">
-        <div class="loader">
-            <div class="preloader">
-                <div class="spinner-layer pl-red">
-                    <div class="circle-clipper left">
-                        <div class="circle"></div>
-                    </div>
-                    <div class="circle-clipper right">
-                        <div class="circle"></div>
-                    </div>
-                </div>
-            </div>
-            <p>Моля изчакайте...</p>
-        </div>
-    </div>
-    <!-- #END# Page Loader -->
     <!-- Overlay For Sidebars -->
     <div class="overlay"></div>
     <!-- #END# Overlay For Sidebars -->
@@ -133,7 +142,7 @@
                 <a href="javascript:void(0);" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false"></a>
                 <a href="javascript:void(0);" class="bars" style="display: block;"></a>
                 <!-- <img src="favicon.ico" width="37" height="37"> -->
-                <a class="navbar-brand" href="index.php">NOIT - НОИТ 2023</a>
+                <a class="navbar-brand" href="index.php">TIKFLUENCE</a>
             </div>
             <div class="collapse navbar-collapse" id="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
@@ -372,7 +381,7 @@
                     <div class="card">
                         <div class="header">
                             <h1>
-                                WELCOME TO NOIT!
+                                ДОБРЕ ДОШЛИ в TikFluence!
                             </h1>
                             <ul class="header-dropdown m-r--5">
                                 <li class="dropdown">
@@ -389,13 +398,13 @@
                         </div>
                         <div class="body">
                             <p class="lead">
-                                INTRODUCTION
+                                Какво е TikFluence?
                             </p>
                             <p>
-                                A web page intended to present information, mostly related to TikTok, in the format of interactive charts, tables and statistics.
+                                Проект, който изследва ефекта на TikTok върху различни музикални платформи, като се следи градацията и нарастващата популярност на публикуваните в него музикални и видео клипове и се прави съпоставка с други подобни и известни приложения. 
                             </p>
                             <p>
-                                The information that the project shows is related to the most listened songs on TikTok recently and what it tries to prove is that TikTok sends the listens of the songs to other platforms by making a song more famous.
+                                Данните са представени чрез интерактивни диаграми, таблици и статистики.
                             </p>
                         </div>
                     </div>
@@ -452,7 +461,7 @@
                 <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
                     <div class="card">
                         <div class="header">
-                            <h2>ТОП 10 НАЙ-ПОВЛИЯНИ ПЕСНИ</h2>
+                            <h2>TikFluence засече тези най-повлияни от TikTok песни</h2>
                             <ul class="header-dropdown m-r--5">
                                 <li class="dropdown">
                                     <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
@@ -473,9 +482,8 @@
                                         <tr>
                                             <th>Ранг</th>
                                             <th>Песен</th>
-                                            <!-- <th>Status</th> -->
                                             <th>Артист</th>
-                                            <!-- <th>Progress</th> -->
+                                            <th>Повлияване</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -491,8 +499,8 @@
                                             <tr>
                                                 <td><?= $iteration?></td>
                                                 <td><?= $songData[0]["song_name"] ?></td>
-                                                <!-- <td><span class="label bg-green">Doing</span></td> -->
                                                 <td><?= $songData[0]["artist_name"] ?></td>
+                                                <td><a href='./pages/fluencedSongs.php?sid=<?= $songData[0]["id"] ?>' class="btn bg-purple waves-effect">Вижте повече</a></td>
                                                 <!-- <td>
                                                     <div class="progress">
                                                         <div class="progress-bar bg-purple" role="progressbar" aria-valuenow="62" aria-valuemin="0" aria-valuemax="100" style="width: 62%"></div>

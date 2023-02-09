@@ -1,154 +1,305 @@
-﻿<?php
+<?php
 
     //Вмъкване на нужните файлове
     include "../selectDate.php";
-    include "../includes/databaseManager.php";
-    include "../includes/common.php";
+    include '../includes/databaseManager.php';
+    include '../includes/common.php';
+
+    //Ако няма такова id за песен, потребителят е върнат в songs.php
+    $sid = isset($_GET["sid"]) && ctype_digit($_GET['sid']) ? intval($_GET["sid"]) : -1;
+    if($sid < 0) redirect("songs.php");
 
     //Създаваме връзката с базата данни
     $db = new DatabaseManager();
-    
-    //Осигуряваме си необходимите данни
-    $dates = $db->listDatesSongs();
-    $datesArray = [];
 
-    foreach($dates as $date){
-        $timestamp = new DateTime($date["fetch_date"]);
-        $datesArray[] = $timestamp->format('Y-m-d');
-    }
-
-
-    $selectDate = isset($_SESSION["setDate"]) ? $_SESSION["setDate"] : date("Y-m-d");
-
-
-    $top200SongsGlobal = $db->listTop200Songs($selectDate);
-    $topSongsGlobal = $db->listTopSongsGlobal($selectDate);
-
-
-    $songsNamesGlobal = [];
-    $songsPopularitiesGlobal = [];
-
-    if($topSongsGlobal != false){
-        foreach($topSongsGlobal as $song){
-            $songsNamesGlobal[] = $song["song_name"];
-            $songsPopularitiesGlobal[] = $song["number_of_videos_last_14days"];
-        }    
-    }
-
-
-    function setGrowth($sid, $db, $selectDate) {
-
-        //Взимаме необходимите данни(числа) за последните 2 дни
-
-        $todayYesterdayDataGlobal = $db->getTodayYesterdayGlobalData($sid, $selectDate);
-
-        $ttLastTwoDaysPercents = [];
-        $ttLastTwoDaysNums = [];
-
-        $ytLastTwoDaysPercents = [];
-        $ytLastTwoDaysNums = [];
-
-        $syLastTwoDays = [];
-
-        foreach($todayYesterdayDataGlobal as $d){
-            $ttLastTwoDaysPercents[] = $d["number_of_videos_last_14days"];
-            $ttLastTwoDaysNums[] = $d["number_of_videos_last_14days"];
-
-            $ytLastTwoDaysPercents[] = $d["youtube_views"];
-            $ytLastTwoDaysNums[] = $d["youtube_views"];
-
-            $syLastTwoDays[] = $d["spotify_popularity"];
-        }
-
-
-
-
-        //TikTok
-        $yesterdayTT = $ttLastTwoDaysNums[0];
-
-        //YouTube
-        if($ytLastTwoDaysNums[0] != null || $ytLastTwoDaysNums[0] == 0){ 
-            $yesterdayYT = $ytLastTwoDaysNums[0];
-        } else { 
-            $yesterdayYT = "-";
-        }
-
-        //Spotify
-        if($syLastTwoDays[0] != null || $syLastTwoDays[0] == 0){ 
-            $yesterdaySY = $syLastTwoDays[0];
-        } else { 
-            $yesterdaySY = "-";
-        }
-
-
-        if(isset($ttLastTwoDaysNums[1])){
-            //TikTok
-            $todayTT = $ttLastTwoDaysNums[1];
-        } else {
-            //TikTok
-            $todayTT = null;
-        }
-
-        if(isset($ytLastTwoDaysNums[1])){
-            //YouTube
-            if($ytLastTwoDaysNums[0] != null || $ytLastTwoDaysNums[0] == 0){ 
-                $todayYT = $ytLastTwoDaysNums[1];
-            } else { 
-                $todayYT = "-";
-            }
-        } else {
-            //TikTok
-            $todayYT = null;
-        }
-
-        if(isset($syLastTwoDays[1])){
-            //Spotify
-            if($syLastTwoDays[0] != null || $syLastTwoDays[0] == 0){ 
-                $todaySY = $syLastTwoDays[1];
-            } else { 
-                $todaySY = "-";
-            }
-        } else {
-            //TikTok
-            $todaySY = null;
-        }
-    
-
-
-        $averageTT = $db->getAverageTT($sid, $selectDate)[0][0];
-        $averageYT = $db->getAverageYT($sid, $selectDate)[0][0];
-        $averageSY = $db->getAverageSY($sid, $selectDate)[0][0];
+    $songData = $db->getSongData($sid);
 
         
-        if($todayTT <= $averageTT || $yesterdayTT <= $averageTT){
-            $growthTT = false;
+    $fetchDatesForButton = $db->listDatesForCurrentSong($sid);
+
+    $chooseDatesForButton = [];
+    foreach($fetchDatesForButton as $date){    
+        $timestamp = new DateTime($date["fetch_date"]);
+        $chooseDatesForButton[] = $timestamp->format('Y-m-d');
+    }
+
+    //Взимаме необходимата информация и я превръщаме където е необходимо в проценти
+    $selectDate = isset($_SESSION["setDate"]) ? $_SESSION["setDate"] : date("Y-m-d");
+    
+    if(end($chooseDatesForButton) != $selectDate){
+        $selectDate = end($chooseDatesForButton);
+    }
+
+    $todayYesterdayData = $db->getTodayYesterdayData($sid, $selectDate);
+
+
+    //Взимаме записите за всяка песен
+    $dataPoints = $db->getDatapointsForSong($sid, $selectDate);
+    
+    if($dataPoints === false) redirect("songs.php");
+
+
+    $dates = [];
+
+    $ranks = [];
+
+    $likes = [];
+
+    $syPercents = [];
+    $ttPercents = [];
+    $ytPercents = [];
+
+    $ttNums = [];
+    $ytNums = [];
+    $syNums = [];
+
+
+    foreach($dataPoints as $dp){
+        
+        $timestamp = new DateTime($dp["fetch_date"]);
+        $dates[] = $timestamp->format('Y-m-d');
+
+        $ranks[] = $dp["rank"];
+
+        $likes[] = $dp["total_likes_count"];
+
+        $syNums[] = $dp["spotify_popularity"];
+        $syPercents[] = $dp["spotify_popularity"];
+
+        $ttNums[] = $dp["number_of_videos_last_14days"];
+        $ttPercents[] = $dp["number_of_videos_last_14days"];
+
+        $ytNums[] = $dp["youtube_views"];
+        $ytPercents[] = $dp["youtube_views"];
+    }
+
+
+    $ttNulls = array_keys($ttNums, null);
+    $ytNulls = array_keys($ytNums, null);
+    $syNulls = array_keys($syNums, null);
+
+
+    $maxTikTok = max($ttPercents);
+    $maxYouTube = max($ytPercents);
+    $maxSpotify = max($syPercents);
+
+    for($i=0; $i<count($ttPercents); $i++){
+        $ttPercents[$i] = $maxTikTok ? ($ttPercents[$i] * 100)/$maxTikTok : null;
+    }
+
+    for($i=0; $i<count($ytPercents); $i++){
+        $ytPercents[$i] = $maxYouTube ? ($ytPercents[$i] * 100)/$maxYouTube : null;
+    }
+
+    for($i=0; $i<count($syPercents); $i++){
+        $syPercents[$i] = $maxSpotify ? ($syPercents[$i] * 100)/$maxSpotify : null;
+    }
+
+
+
+    //Взимаме необходимите данни(числа) за последните 2 дни
+    $ttLastTwoDaysPercents = [];
+    $ttLastTwoDaysNums = [];
+
+    $ytLastTwoDaysPercents = [];
+    $ytLastTwoDaysNums = [];
+
+    $syLastTwoDays = [];
+
+    foreach($todayYesterdayData as $d){
+        $ttLastTwoDaysPercents[] = $d["number_of_videos_last_14days"];
+        $ttLastTwoDaysNums[] = $d["number_of_videos_last_14days"];
+
+        $ytLastTwoDaysPercents[] = $d["youtube_views"];
+        $ytLastTwoDaysNums[] = $d["youtube_views"];
+
+        $syLastTwoDays[] = $d["spotify_popularity"];
+    }
+
+    // Превръщаме числата в проценти
+
+    $todayYesterdayTTDataArray = [];
+
+    foreach($ttLastTwoDaysPercents as $TT){
+        array_push($todayYesterdayTTDataArray, ($TT * 100)/$ttLastTwoDaysPercents[0]);
+    }
+
+    $todayYesterdayYTDataArray = [];
+
+    foreach($ytLastTwoDaysPercents as $YT){
+        if($ytLastTwoDaysPercents[0] != null){ 
+            array_push($todayYesterdayYTDataArray, ($YT * 100)/$ytLastTwoDaysPercents[0]);
         } else {
-            $growthTT = true;
+            array_push($todayYesterdayYTDataArray, 0);
         }
+    }
 
-        if($todayYT <= $averageYT || $yesterdayYT <= $averageYT){
-            $growthYT = false;
+    $todayYesterdaySYDataArray = [];
+
+    foreach($syLastTwoDays as $SY){
+        if($syLastTwoDays[0] != null){ 
+            array_push($todayYesterdaySYDataArray, ($SY * 100)/$syLastTwoDays[0]);
         } else {
-            $growthYT = true;
+            array_push($todayYesterdaySYDataArray, 0);
         }
+    }
+    
+    // Изчисляваме разликата между днес и вчера:
 
-        if($todaySY <= $averageSY || $yesterdaySY <= $averageSY){
-            $growthSY = false;
-        } else {
-            $growthSY = true;
-        }
+    //TikTok
+    if(isset($ttLastTwoDaysPercents[0]) || $ttLastTwoDaysPercents[0] == 0){ 
+        $subtractionTTPercents = $todayYesterdayTTDataArray[1] - $todayYesterdayTTDataArray[0];
+        $subtractionTTNums = $ttLastTwoDaysNums[1] - $ttLastTwoDaysNums[0];
+    } else { 
+        $subtractionTTPercents = "-";
+        $subtractionTTNums = "-";
+    }
+
+    //YouTube
+    if($ytLastTwoDaysPercents[0] != null || $ytLastTwoDaysPercents[0] == 0){ 
+        $subtractionYTPercents = $todayYesterdayYTDataArray[1] - $todayYesterdayYTDataArray[0];
+        $subtractionYTNums = $ytLastTwoDaysNums[1] - $ytLastTwoDaysNums[0];
+    } else { 
+        $subtractionYTPercents = "-";
+        $subtractionYTNums = "-";
+    }
+
+    //Spotify
+    if($syLastTwoDays[0] != null || $syLastTwoDays[0] == 0){
+        $subtractionSY = $todayYesterdaySYDataArray[1] - $todayYesterdaySYDataArray[0];
+    } else { 
+        $subtractionSY = "-";
+    }
+
+    //Избираме подходяща икона за кутийките:
+    
+    $chooseIconTT = "";
+    $chooseIconYT = "";
+    $chooseIconSY = "";
+
+    if($subtractionTTPercents == 0){
+        $chooseIconTT = "trending_flat";
+    } else if($subtractionTTPercents > 0){
+        $chooseIconTT = "trending_up";
+    } else {
+        $chooseIconTT = "trending_down";
+    }
+
+    if($subtractionYTPercents == 0){
+        $chooseIconYT = "trending_flat";
+    } else if($subtractionYTPercents > 0){
+        $chooseIconYT = "trending_up";
+    } else {
+        $chooseIconYT = "trending_down";
+    }
+
+    if($subtractionSY > 0){
+        $chooseIconSY = "trending_up";
+    } else if($subtractionSY == 0){
+        $chooseIconSY = "trending_flat";
+    } else {
+        $chooseIconSY = "trending_down";
+    }
 
 
-        if($growthTT) {
-            if($growthSY || $growthYT) {
-                return "Вижте повлияване";
-            }
-        }
-        // дава като краен резултат "Вижте детайли";
-        return "Вижте детайли";
+    //TikTok
+    $todayTT = $ttLastTwoDaysNums[1];
+
+    //YouTube
+    if($ytLastTwoDaysPercents[0] != null || $ytLastTwoDaysPercents[0] == 0){ 
+        $todayYT = $ytLastTwoDaysPercents[1];
+    } else { 
+        $todayYT = "-";
+    }
+
+    //Spotify
+    if($syLastTwoDays[0] != null || $syLastTwoDays[0] == 0){ 
+        $todaySY = $syLastTwoDays[1];
+    } else { 
+        $todaySY = "-";
     }
 
     
+
+    //TikTok
+    $yesterdayTT = $ttLastTwoDaysNums[0];
+
+    //YouTube
+    if($ytLastTwoDaysPercents[0] != null || $ytLastTwoDaysPercents[0] == 0){ 
+        $yesterdayYT = $ytLastTwoDaysPercents[0];
+    } else { 
+        $yesterdayYT = "-";
+    }
+
+    //Spotify
+    if($syLastTwoDays[0] != null || $syLastTwoDays[0] == 0){ 
+        $yesterdaySY = $syLastTwoDays[0];
+    } else { 
+        $yesterdaySY = "-";
+    }
+
+
+    // $averageTT = $db->getAverageTT($sid, $selectDate)[0][0];
+    // $averageYT = $db->getAverageYT($sid, $selectDate)[0][0];
+    // $averageSY = $db->getAverageSY($sid, $selectDate)[0][0];
+
+    
+    // if($todayTT <= $averageTT || $yesterdayTT <= $averageTT){
+    //     $growthTT = false;
+    // } else {
+    //     $growthTT = true;
+    // }
+
+    // if($todayYT <= $averageYT || $yesterdayYT <= $averageYT){
+    //     $growthYT = false;
+    // } else {
+    //     $growthYT = true;
+    // }
+
+    // if($todaySY <= $averageSY || $yesterdaySY <= $averageSY){
+    //     $growthSY = false;
+    // } else {
+    //     $growthSY = true;
+    // }
+
+    // $setConclusionPerfect = false;
+    // $setConclusionYT = false;
+    // $setConclusionSY = false;
+    // $setConclusionTT = false;
+
+    // $setConclusionPerfectWithoutTT = false;
+    // $setConclusionYTWithoutTT = false;
+    // $setConclusionSYWithoutTT = false;
+
+    // $setConclusionWithoutAnything = false;
+
+    // if($growthTT){
+
+    //     if($growthSY && $growthYT){
+    //         $setConclusionPerfect = true;
+    //     } elseif($growthSY == false || $growthYT){
+    //         $setConclusionYT = true;
+    //     } elseif($growthSY || $growthYT == false) {
+    //         $setConclusionSY = true;
+    //     } else {
+    //         $setConclusionTT = true;
+    //     }
+
+    // } else {
+
+    //     //Ако тази песен не е популярна последните два дни в TikTok
+    //     if($growthSY && $growthYT){
+    //         $setConclusionPerfectWithoutTT = true;
+    //     } elseif($growthSY == false || $growthYT){
+    //         $setConclusionYTWithoutTT = true;
+    //     } elseif($growthSY || $growthYT == false){
+    //         $setConclusionSYWithoutTT = true;
+    //     } else {
+    //         $setConclusionWithoutAnything = true;
+    //     }
+
+    // }
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -156,7 +307,7 @@
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <title>ПЕСНИ</title>
+    <title>Статистики за <?= htmlspecialchars($songData["song_name"]); ?></title>
     <!-- Favicon-->
     <link rel="icon" href="../favicon.ico" type="image/x-icon">
 
@@ -173,15 +324,11 @@
     <!-- Animation Css -->
     <link href="../plugins/animate-css/animate.css" rel="stylesheet" />
 
-    <!-- JQuery DataTable Css -->
-    <link href="../plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css" rel="stylesheet">
-
     <!-- Custom Css -->
     <link href="../css/style.css" rel="stylesheet">
 
     <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
     <link href="../css/themes/all-themes.css" rel="stylesheet" />
-
 </head>
 
 <body class="theme-purple">
@@ -197,10 +344,12 @@
                 <a class="navbar-brand" href="../index.php">TIKFLUENCE</a>
             </div>
             <div class="collapse navbar-collapse" id="navbar-collapse">
+
                 <ul class="nav navbar-nav navbar-right">
                     <!-- TOP RIGHT -->
                     <li class="pull-right"><a href="javascript:void(0);" class="js-right-sidebar" data-close="true"><i class="material-icons">invert_colors</i></a></li>
                 </ul>
+
             </div>
         </div>
     </nav>
@@ -210,7 +359,7 @@
         <aside id="leftsidebar" class="sidebar">
             <!-- User Info -->
             <div class="user-info">
-                <div class="body">
+                <div class="body m-l-85 m-t-25">
 
                 </div>
             </div>
@@ -232,10 +381,17 @@
                         </a>
                         <ul class="ml-menu">
                             <li class="active">
-                                <a href="#" class="waves-effect waves-block">
+                                <a href="songs.php" class="menu-toggle waves-effect waves-block">
                                     <i class="material-icons">music_note</i>
                                     <span>ТОП 200 TIKTOK ПЕСНИ ГЛОБАЛНО</span>
                                 </a>
+                                <ul class="ml-menu">
+                                    <li class="active">
+                                        <a href="#" class="waves-effect waves-block">
+                                            <span>СТАТИСТИКИ ЗА <?php echo $songData["song_name"] ?></span>
+                                        </a>
+                                    </li>
+                                </ul>
                             </li>
                             <li>
                                 <a href="songsBG.php" class=" waves-effect waves-block">
@@ -369,7 +525,6 @@
                         </li>
                     </ul>
                 </div>
-
                 <div role="tabpanel" class="tab-pane fade" id="settings">
                     <div class="demo-settings">
                         <p>GENERAL SETTINGS</p>
@@ -419,7 +574,6 @@
                         </ul>
                     </div>
                 </div>
-
             </div>
         </aside>
         <!-- #END# Right Sidebar -->
@@ -427,52 +581,80 @@
 
     <section class="content">
         <div class="container-fluid">
-            <div class="block-header">
-                <div class="body">
-                    <div class="block-header card p-t-10 p-l-10">
-                        <h2>ВИЕ СЕ НАМИРАТЕ В:</h2>
-                        <ol class="breadcrumb breadcrumb-col-black">
-                            <li onclick="window.location.href='../index.php'"><a href="javascript:void(0);"><i class="material-icons">home</i>НАЧАЛО</a></li>
-                            <li><a href="javascript:void(0);"><i class="material-icons">insert_chart</i>СТАТИСТИКИ</a></li>
-                            <li class="active"><i class="material-icons">music_note</i>ТОП 200 TIKTOK ПЕСНИ ГЛОБАЛНО</li>
-                        </ol>
-                    </div>
-                </div>
-            </div>
 
-            <div class="block-header">
+            <div class="col-lg-14 col-md-14 col-sm-14 col-xs-14">
                 <div class="card">
                     <div class="body">
-                        <h2>Изберете дата за която искате да видите данни:</h2>
-                        <div class="btn-group">
-                            <button type="button" class="btn bg-purple dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="caret"></span>
-                                <span class="sr-only" id="setDateButton"><?php echo $selectDate ?></span>
-                            </button>
+                        <button type="button" class="btn bg-purple waves-effect card" onclick="window.location.href='songs.php'">
+                            <i class="material-icons">arrow_back</i>
+                            <span>НАЗАД</span>
+                        </button>
+                        <div class="block-header">
+                            <div class="card">
+                                <div class="body">
+                                    <h2>ВИЕ СЕ НАМИРАТЕ В:</h2>
+                                    <ol class="breadcrumb breadcrumb-col-black">
+                                        <li onclick="window.location.href='../index.php'"><a href="javascript:void(0);"><i class="material-icons">home</i>НАЧАЛО</a></li>
+                                        <li class="active"><i class="material-icons">music_note</i>ПОВЛИЯВАНЕ НА: <?php echo $songData["song_name"]?> от TikTok</li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
 
-                            <ul class="dropdown-menu">
-                                <?php if($datesArray):?>
-                                    <?php foreach($datesArray as $date):?>
-                                        <li data-id="<?php echo $date ?>" data-role="setDate"><a href="javascript:void(0);" class="waves-effect waves-block"><?php echo $date?></a></li>
-                                        <li role="separator" class="divider"></li>
-                                    <?php endforeach;?>
-                                <?php endif;?>
-                            </ul>
-
+                        <div class="card">
+                            <div class="body">
+                                <div class="block-header">
+                                    <h3>ПОВЛИЯВАНЕ НА: <?php echo $songData["song_name"]?> на <?php echo $songData["artist_name"] ?> от TikTok</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="body">
+                                <div class="block-header">
+                                    <h2>Според нашата система, тази песен е претърпяла ефекта на повлияване от TikTok, защото пикът на популярност на <strong><?php echo $songData["song_name"] ?></strong> в TikTok е преди този на Spotify.</h2>
+                                </div>
+                            </div>
                         </div>
 
                     </div>
                 </div>
             </div>
 
-            <?php if($topSongsGlobal != false):?>
-                <!-- Exportable Table -->
+            <div class="row clearfix">
+ 
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <div class="card">
+                        <div class="header">
+                            <h2>
+                                ИЗМЕНЕНИЕ НА ПОПУЛЯРНОСТ В TIKTOK
+                            </h2>
+                            <ul class="header-dropdown m-r--5">
+                                <li class="dropdown">
+                                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                        <i class="material-icons">more_vert</i>
+                                    </a>
+                                    <ul class="dropdown-menu pull-right">
+                                        <li><a href="javascript:void(0);">Action</a></li>
+                                        <li><a href="javascript:void(0);">Another action</a></li>
+                                        <li><a href="javascript:void(0);">Something else here</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="body">
+                            <div class="content">
+                                <canvas id="TikTokGraphChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="row clearfix">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                         <div class="card">
                             <div class="header">
                                 <h2>
-                                    ТОП 200 TIKTOK ПЕСНИ ГЛОБАЛНО
+                                    ИЗМЕНЕНИЕ НА ПОПУЛЯРНОСТ В SPOTIFY
                                 </h2>
                                 <ul class="header-dropdown m-r--5">
                                     <li class="dropdown">
@@ -488,145 +670,105 @@
                                 </ul>
                             </div>
                             <div class="body">
-                                <div class="table-responsive">
-                                    <table class="table table-bordered table-striped table-hover dataTable js-exportable" id="globalDataTable">
-                                        <thead>
-                                            <tr>
-                                                <th>РАНГ</th>
-                                                <th>ПЕСЕН</th>
-                                                <th>АВТОР НА ПЕСЕНТА</th>
-                                                <th>ВИДЕА НАПРАВЕНИ НАСКОРО</th>
-                                                <th>TIKTOK ХАРЕСВАНИЯ</th>
-                                                <th>YOUTUBE ГЛЕДАНИЯ</th>
-                                                <th>SPOTIFY ПОПУЛЯРНОСТ</th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php if($top200SongsGlobal):?>
-                                                <?php foreach($top200SongsGlobal as $st):?>
-                                                    <?php $show = setGrowth($st["song_id"], $db, $selectDate)?>
-                                                    <tr>
-                                                        <th><?php echo $st["rank"]?></th>
-                                                        <th><?php echo $st["song_name"]?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://www.tiktok.com/music/-<?php echo $st["tiktok_platform_id"] ?>" target="_blank"><i class="material-icons" title="Вижте песента в TikTok">remove_red_eye</i></a></th>
-                                                        <th><?php echo $st["artist_name"]?></th>
-                                                        <th><?php echo number_format($st["number_of_videos_last_14days"])?></th>
-                                                        <th><?php echo number_format($st["total_likes_count"])?></th>
-                                                        <th><?php echo number_format($st["youtube_views"])?></th>
-                                                        <th><?php echo $st["spotify_popularity"]?></th>
-                                                        <th><a href='./songStats.php?sid=<?php echo $st["song_id"]?>' class="btn bg-purple waves-effect"><?php echo $show?></a></th>
-                                                    </tr>
-                                                <?php endforeach;?>
-                                            <?php endif;?>
-                                        </tbody>
-                                    </table>
+                                <div class="content">
+                                    <canvas id="SpotifyGraphChart"></canvas>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <!-- #END# Exportable Table -->
 
-                <div class="row clearfix">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div class="card">
-                        <div class="header">
-                                <h2>
-                                    СРАВНЕНИЕ МЕЖДУ ПЪРВИТЕ 10 ПЕСНИ
-                                </h2>
-                                <ul class="header-dropdown m-r--5">
-                                    <li class="dropdown">
-                                        <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                            <i class="material-icons">more_vert</i>
-                                        </a>
-                                        <ul class="dropdown-menu pull-right">
-                                            <li><a href="javascript:void(0);">Action</a></li>
-                                            <li><a href="javascript:void(0);">Another action</a></li>
-                                            <li><a href="javascript:void(0);">Something else here</a></li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="body">
-                                <div class="body">
-                                    <canvas id="barChartGlobal"></canvas>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
-            <?php else:?>
-                <div class="row clearfix">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div class="card">
-                            <div class="body">
-                                Все още няма данни за топ 200 песни глобално за днес :(
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            <?php endif;?>
+
+            </div>
+
 
         </div>
     </section>
-    
+
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js" integrity="sha512-JPcRR8yFa8mmCsfrw4TNte1ZvF1e3+1SdGMslZvmrzDYxS69J7J49vkFL8u6u8PlPJK+H3voElBtUCzaXj+6ig==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- Статистики -->
     <script>
 
-    //Статистика за някои от първите песни глобално
+    //Данни за ползване
+    let dates =  JSON.parse('<?php echo json_encode($dates) ?>');
 
-        // съставяне 
-        const dataGlobal = {
-            labels: JSON.parse('<?php echo json_encode($songsNamesGlobal) ?>'),
-            datasets: [{
-                label: 'ПОПУЛЯРНОСТ',
-                data: JSON.parse('<?php echo json_encode($songsPopularitiesGlobal) ?>'),
-                backgroundColor: [
-                    'rgba(255, 26, 104, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(255, 159, 64, 0.2)',
-                    'rgba(0, 0, 0, 0.2)'
-                ],
-                borderColor: [
-                    'rgba(255, 26, 104, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)',
-                    'rgba(255, 159, 64, 1)',
-                    'rgba(0, 0, 0, 1)'
-                ],
-                borderWidth: 1,
-                borderRadius: 5
-            }]
-        };
+    let ranks = JSON.parse('<?php echo json_encode($ranks) ?>');
+    let likes = JSON.parse('<?php echo json_encode($likes) ?>');
 
-        // кофигуриране 
-        const configGlobal = {
-            type: 'bar',
-            data: dataGlobal,
+    let ytDataNums = JSON.parse('<?php echo json_encode($ytNums) ?>');
+    let syDataNums = JSON.parse('<?php echo json_encode($syNums) ?>');
+    let ttDataNums = JSON.parse('<?php echo json_encode($ttNums) ?>');
+
+    let ytDataPercents = JSON.parse('<?php echo json_encode($ytPercents) ?>');
+    let syDataPercents = JSON.parse('<?php echo json_encode($syPercents) ?>');
+    let ttDataPercents = JSON.parse('<?php echo json_encode($ttPercents) ?>');
+
+    let ytDataNulls = JSON.parse('<?php echo json_encode($ytNulls) ?>');
+    let syDataNulls = JSON.parse('<?php echo json_encode($syNulls) ?>');
+
+    
+    // Линейни статистики
+
+        //TikTok
+        new Chart(document.getElementById('TikTokGraphChart'), {
+        type: 'line',
+        data: {
+            labels: dates, //x
+            datasets: [
+                {
+                    label: 'TikTok видеа',
+                    data: ttDataNums, //y
+                    borderColor: 'rgba(159, 90, 253, 1)',
+                    backgroundColor: 'rgba(159, 90, 253, 0.3)',
+                    fill: true,
+                    tension: 0.4
+                }
+            ]
+        },
             options: {
-                indexAxis: 'y',
-                    scales: {
+                scales: {
                     y: {
-                        beginAtZero: true
+                        type: 'linear',
+                        display: true,
+                        position: "left"
                     }
                 }
             }
-        };
+        });
 
-        // слагаме статистиката в html елемента
-        const myChartGlobal = new Chart(
-            document.getElementById('barChartGlobal'),
-            configGlobal
-        );
+        //Spotify
+        if(syDataNulls.length != syDataNums.length){
+            new Chart(document.getElementById('SpotifyGraphChart'), {
+            type: 'line',
+            data: {
+                labels: dates, //x
+                datasets: [
+                    {
+                        label: 'Spotify популярност',
+                        data: syDataNums, //y
+                        borderColor: 'rgba(147, 250, 165, 1)',
+                        backgroundColor: 'rgba(147, 250, 165, 0.4)',
+                        fill: true,
+                        tension: 0.4,
+                        spanGaps: true
+                    }
+                ]
+            },  
+                options: {
+                    scales: {
+                        y: {
+                            type: 'linear',
+                            display: true,
+                            position: "left"
+                        }
+                    }
+                }
+            });
+        }
 
     </script>
 
-    
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script>
         $(document).ready(function(){
@@ -664,20 +806,8 @@
     <!-- Waves Effect Plugin Js -->
     <script src="../plugins/node-waves/waves.js"></script>
 
-    <!-- Jquery DataTable Plugin Js -->
-    <script src="../plugins/jquery-datatable/jquery.dataTables.js"></script>
-    <script src="../plugins/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js"></script>
-    <script src="../plugins/jquery-datatable/extensions/export/dataTables.buttons.min.js"></script>
-    <script src="../plugins/jquery-datatable/extensions/export/buttons.flash.min.js"></script>
-    <script src="../plugins/jquery-datatable/extensions/export/jszip.min.js"></script>
-    <script src="../plugins/jquery-datatable/extensions/export/pdfmake.min.js"></script>
-    <script src="../plugins/jquery-datatable/extensions/export/vfs_fonts.js"></script>
-    <script src="../plugins/jquery-datatable/extensions/export/buttons.html5.min.js"></script>
-    <script src="../plugins/jquery-datatable/extensions/export/buttons.print.min.js"></script>
-
     <!-- Custom Js -->
     <script src="../js/admin.js"></script>
-    <script src="../js/pages/tables/jquery-datatable.js"></script>
 
     <!-- Demo Js -->
     <script src="../js/demo.js"></script>
