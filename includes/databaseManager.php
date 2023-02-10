@@ -439,7 +439,7 @@ class DatabaseManager {
         $query->bindValue('nababatifurchiloto', $pesho);
         $query->execute();
 
-        $result = $query->fetch(PDO::FETCH_ASSOC);
+        $result = $query->fetch();
 
         return $result;
     }

@@ -345,11 +345,6 @@
             </div>
             <div class="collapse navbar-collapse" id="navbar-collapse">
 
-                <ul class="nav navbar-nav navbar-right">
-                    <!-- TOP RIGHT -->
-                    <li class="pull-right"><a href="javascript:void(0);" class="js-right-sidebar" data-close="true"><i class="material-icons">invert_colors</i></a></li>
-                </ul>
-
             </div>
         </div>
     </nav>
@@ -368,25 +363,25 @@
             <div class="menu">
                 <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 584px;"><ul class="list" style="overflow: hidden; width: auto; height: 584px;">
                     <li class="header">ГЛАВНО МЕНЮ</li>
-                    <li>
+                    <li class="active">
                         <a href="../index.php" class="toggled waves-effect waves-block">
                             <i class="material-icons">home</i>
                             <span>НАЧАЛО</span>
                         </a>
                     </li>
-                    <li class="active">
+                    <li>
                         <a href="javascript:void(0);" class="menu-toggle waves-effect waves-block">
                             <i class="material-icons">insert_chart</i>
                             <span>СТАТИСТИКИ</span>
                         </a>
                         <ul class="ml-menu">
-                            <li class="active">
+                            <li>
                                 <a href="songs.php" class="menu-toggle waves-effect waves-block">
                                     <i class="material-icons">music_note</i>
                                     <span>ТОП 200 TIKTOK ПЕСНИ ГЛОБАЛНО</span>
                                 </a>
                                 <ul class="ml-menu">
-                                    <li class="active">
+                                    <li>
                                         <a href="#" class="waves-effect waves-block">
                                             <span>СТАТИСТИКИ ЗА <?php echo $songData["song_name"] ?></span>
                                         </a>

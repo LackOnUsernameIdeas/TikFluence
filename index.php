@@ -144,13 +144,7 @@
                 <!-- <img src="favicon.ico" width="37" height="37"> -->
                 <a class="navbar-brand" href="index.php">TIKFLUENCE</a>
             </div>
-            <div class="collapse navbar-collapse" id="navbar-collapse">
-                <ul class="nav navbar-nav navbar-right">
-                    <!-- TOP RIGHT -->
-                    <!-- <li><a href="javascript:void(0);" class="js-search" data-close="true"><button type="button" class="btn bg-deep-purple waves-effect" onclick="window.location.href='logOut.php'">ИЗЛЕЗ ОТ ПРОФИЛА</button></a></li> -->
-                    <li class="pull-right"><a href="javascript:void(0);" class="js-right-sidebar" data-close="true"><i class="material-icons">invert_colors</i></a></li>
-                </ul>
-            </div>
+            
         </div>
     </nav>
     <!-- #Top Bar -->
@@ -228,149 +222,7 @@
             <!-- #Footer -->
         </aside>
         <!-- #END# Left Sidebar -->
-        <!-- Right Sidebar -->
-        <aside id="rightsidebar" class="right-sidebar">
-            <ul class="nav nav-tabs tab-nav-right" role="tablist">
-                <li role="presentation" class="active"><a href="#skins" data-toggle="tab">ФОН</a></li>
-                <li role="presentation"><a href="#settings" data-toggle="tab">НАСТРОЙКИ</a></li>
-            </ul>
-            <div class="tab-content">
-                <div role="tabpanel" class="tab-pane fade in active in active" id="skins">
-                <ul class="demo-choose-skin">
-                        <li data-theme="purple" class="active">
-                            <div class="purple"></div>
-                            <span>Лилаво</span>
-                        </li>
-                        <li data-theme="red">
-                            <div class="red"></div>
-                            <span>Червено</span>
-                        </li>
-                        <li data-theme="pink">
-                            <div class="pink"></div>
-                            <span>Розово</span>
-                        </li>
-                        <li data-theme="deep-purple">
-                            <div class="deep-purple"></div>
-                            <span>Тъмно Лилаво</span>
-                        </li>
-                        <li data-theme="indigo">
-                            <div class="indigo"></div>
-                            <span>Индиго</span>
-                        </li>
-                        <li data-theme="blue">
-                            <div class="blue"></div>
-                            <span>Синьо</span>
-                        </li>
-                        <li data-theme="light-blue">
-                            <div class="light-blue"></div>
-                            <span>Светло синьо</span>
-                        </li>
-                        <li data-theme="cyan">
-                            <div class="cyan"></div>
-                            <span>Циан</span>
-                        </li>
-                        <li data-theme="teal">
-                            <div class="teal"></div>
-                            <span>Синьозелен</span>
-                        </li>
-                        <li data-theme="green">
-                            <div class="green"></div>
-                            <span>Зелено</span>
-                        </li>
-                        <li data-theme="light-green">
-                            <div class="light-green"></div>
-                            <span>Светло зелено</span>
-                        </li>
-                        <li data-theme="lime">
-                            <div class="lime"></div>
-                            <span>Лайм</span>
-                        </li>
-                        <li data-theme="yellow">
-                            <div class="yellow"></div>
-                            <span>Жълто</span>
-                        </li>
-                        <li data-theme="amber">
-                            <div class="amber"></div>
-                            <span>Кехлибарено</span>
-                        </li>
-                        <li data-theme="orange">
-                            <div class="orange"></div>
-                            <span>Оранжево</span>
-                        </li>
-                        <li data-theme="deep-orange">
-                            <div class="deep-orange"></div>
-                            <span>Тъмно оранжево</span>
-                        </li>
-                        <li data-theme="brown">
-                            <div class="brown"></div>
-                            <span>Кафяво</span>
-                        </li>
-                        <li data-theme="grey">
-                            <div class="grey"></div>
-                            <span>Сиво</span>
-                        </li>
-                        <li data-theme="blue-grey">
-                            <div class="blue-grey"></div>
-                            <span>Тъмно сиво</span>
-                        </li>
-                        <li data-theme="black">
-                            <div class="black"></div>
-                            <span>Черно</span>
-                        </li>
-                    </ul>
-                </div>
-                <div role="tabpanel" class="tab-pane fade" id="settings">
-                    <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 702px;"><div class="demo-settings" style="overflow: hidden; width: auto; height: 702px;">
-                        <p>GENERAL SETTINGS</p>
-                        <ul class="setting-list">
-                            <li>
-                                <span>Report Panel Usage</span>
-                                <div class="switch">
-                                    <label><input type="checkbox" checked=""><span class="lever"></span></label>
-                                </div>
-                            </li>
-                            <li>
-                                <span>Email Redirect</span>
-                                <div class="switch">
-                                    <label><input type="checkbox"><span class="lever"></span></label>
-                                </div>
-                            </li>
-                        </ul>
-                        <p>SYSTEM SETTINGS</p>
-                        <ul class="setting-list">
-                            <li>
-                                <span>Notifications</span>
-                                <div class="switch">
-                                    <label><input type="checkbox" checked=""><span class="lever"></span></label>
-                                </div>
-                            </li>
-                            <li>
-                                <span>Auto Updates</span>
-                                <div class="switch">
-                                    <label><input type="checkbox" checked=""><span class="lever"></span></label>
-                                </div>
-                            </li>
-                        </ul>
-                        <p>ACCOUNT SETTINGS</p>
-                        <ul class="setting-list">
-                            <li>
-                                <span>Offline</span>
-                                <div class="switch">
-                                    <label><input type="checkbox"><span class="lever"></span></label>
-                                </div>
-                            </li>
-                            <li>
-                                <span>Location Permission</span>
-                                <div class="switch">
-                                    <label><input type="checkbox" checked=""><span class="lever"></span></label>
-                                </div>
-                            </li>
-                        </ul>
-                    </div><div class="slimScrollBar" style="background: rgba(0, 0, 0, 0.5); width: 6px; position: absolute; top: 0px; opacity: 0.4; display: block; border-radius: 0px; z-index: 99; right: 1px;"></div><div class="slimScrollRail" style="width: 6px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 0px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div></div>
-                </div>
-            </div>
-        </aside>
-        <!-- #END# Right Sidebar -->
+
     </section>
 
     <section class="content">
@@ -500,7 +352,7 @@
                                                 <td><?= $iteration?></td>
                                                 <td><?= $songData[0]["song_name"] ?></td>
                                                 <td><?= $songData[0]["artist_name"] ?></td>
-                                                <td><a href='./pages/influencedSongs.php?sid=<?= $songData[0]["id"] ?>' class="btn bg-purple waves-effect">Вижте повече</a></td>
+                                                <td><a href='./pages/influencedSong.php?sid=<?= $songData[0]["id"] ?>' class="btn bg-purple waves-effect">Вижте повече</a></td>
                                                 <!-- <td>
                                                     <div class="progress">
                                                         <div class="progress-bar bg-purple" role="progressbar" aria-valuenow="62" aria-valuemin="0" aria-valuemax="100" style="width: 62%"></div>

@@ -139,8 +139,8 @@ foreach($tiktokers as $tt){
 
     $tiktokerData = $db->findTikTokerById($tt["id"]);
 
-    if($tiktokerData[0]["thumbnail"] != null){
-        $tt["thumbnail"] = $tiktokerData[0]["thumbnail"];
+    if($tiktokerData["thumbnail"] != null){
+        $tt["thumbnail"] = $tiktokerData["thumbnail"];
     }
 
     $tt["fetch_date"] = $date;
