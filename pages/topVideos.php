@@ -150,13 +150,14 @@
                                     <span>ТОП 200 НАЙ-ГЛЕДАНИ ВИДЕА В TIKTOK</span>
                                 </a>
                             </li>
-                            <li>
-                                <a href="individualStats.php" class=" waves-effect waves-block">
-                                    <i class="material-icons">person_outline</i>
-                                    <span>ИНДИВИДУАЛНИ СТАТИСТИКИ ЗА ПОТРЕБИТЕЛ</span>
-                                </a>
-                            </li>
+
                         </ul>
+                    </li>
+                    <li>
+                        <a href="individualStats.php" class=" waves-effect waves-block">
+                            <i class="material-icons">person_outline</i>
+                            <span>МОИТЕ СТАТИСТИКИ В TIKTOK</span>
+                        </a>
                     </li>
                     <!-- <li class="header"></li> -->
                 </ul><div class="slimScrollBar" style="background: rgba(0, 0, 0, 0.5); width: 4px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 0px; z-index: 99; right: 1px; height: 584px;"></div><div class="slimScrollRail" style="width: 4px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 0px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div></div>
@@ -205,6 +206,16 @@
                     </div>
                 </div>
             </div>
+
+            <?php if($_SESSION["setDate"] == "2023-01-13"):?>
+                <div class="card">
+                    <div class="body">
+                        <div class="block-header">
+                            <h2>Извиняваме се, но за 13 януари 2023 година липсват данни! Моля изберете друга дата.</h2>
+                        </div>
+                    </div>
+                </div>
+            <?php endif;?>
 
             <?php if($topvideos != false):?>
                 <!-- Second Exportable table -->
@@ -267,12 +278,22 @@
                 </div>
                 <!-- #END# Second Exportable table -->
             <?php else:?>
-            <div class="row clearfix">
+                <div class="row clearfix">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <div class="card">
-                            <div class="body">
-                                Все още няма данни за топ 200 видеа за днес :(
-                            </div>
+                            <?php if($selectDate != "" && $selectDate != "2023-01-13"):?>
+                                <div class="body">
+                                    Все още няма данни за топ 200 песни глобално за днес :(
+                                </div>
+                            <?php elseif($selectDate == ""):?>
+                                <div class="body">
+                                    Трябва да изберете валидна дата!
+                                </div>
+                            <?php else: ?>
+                                <div class="body">
+                                    Съжаляваме за причиненото неудобство. Нямаме данни за 13 януари 2023 година!
+                                </div>
+                            <?php endif;?>
                         </div>
                     </div>
                 </div>

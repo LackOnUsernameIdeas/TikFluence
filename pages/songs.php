@@ -250,13 +250,13 @@
                                     <span>ТОП 200 НАЙ-ГЛЕДАНИ ВИДЕА В TIKTOK</span>
                                 </a>
                             </li>
-                            <li>
-                                <a href="individualStats.php" class=" waves-effect waves-block">
-                                    <i class="material-icons">person_outline</i>
-                                    <span>ИНДИВИДУАЛНИ СТАТИСТИКИ ЗА ПОТРЕБИТЕЛ</span>
-                                </a>
-                            </li>
                         </ul>
+                    </li>
+                    <li>
+                        <a href="individualStats.php" class=" waves-effect waves-block">
+                            <i class="material-icons">person_outline</i>
+                            <span>МОИТЕ СТАТИСТИКИ В TIKTOK</span>
+                        </a>
                     </li>
                 </ul><div class="slimScrollBar" style="background: rgba(0, 0, 0, 0.5); width: 4px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 0px; z-index: 99; right: 1px; height: 584px;"></div><div class="slimScrollRail" style="width: 4px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 0px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div></div>
             </div>
@@ -297,7 +297,7 @@
                         <h2>Изберете дата за която искате да видите данни:</h2>
                             <?php if($datesArray):?>
                                 <input type="date" id="start" name="trip-start"
-                                value="<?php echo $selectDate ?>"
+                                value="<?php echo $_SESSION["setDate"] ?>"
                                 min="<?php echo $datesArray[0] ?>" max="<?php echo end($datesArray) ?>" onchange=" window.location.replace('../selectDate.php?setDate=' + this.value + '&redirectURI=' + window.location.href)">
                             <?php endif;?>
             
@@ -399,13 +399,17 @@
                 <div class="row clearfix">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <div class="card">
-                            <?php if($selectDate != ""):?>
+                            <?php if($selectDate != "" && $selectDate != "2023-01-13"):?>
                                 <div class="body">
                                     Все още няма данни за топ 200 песни глобално за днес :(
                                 </div>
-                            <?php else:?>
+                            <?php elseif($selectDate == ""):?>
                                 <div class="body">
                                     Трябва да изберете валидна дата!
+                                </div>
+                            <?php else: ?>
+                                <div class="body">
+                                    Съжаляваме за причиненото неудобство. Нямаме данни за 13 януари 2023 година!
                                 </div>
                             <?php endif;?>
                         </div>
@@ -423,10 +427,10 @@
 
         // съставяне 
         const dataGlobal = {
-            labels: JSON.parse('<?php echo json_encode($songsNamesGlobal) ?>'),
+            labels: JSON.parse(`<?php echo json_encode($songsNamesGlobal) ?>`),
             datasets: [{
                 label: 'ПОПУЛЯРНОСТ',
-                data: JSON.parse('<?php echo json_encode($songsPopularitiesGlobal) ?>'),
+                data: JSON.parse(`<?php echo json_encode($songsPopularitiesGlobal) ?>`),
                 backgroundColor: [
                     'rgba(255, 26, 104, 0.2)',
                     'rgba(54, 162, 235, 0.2)',

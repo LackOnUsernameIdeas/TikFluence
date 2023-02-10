@@ -183,7 +183,7 @@ class DatabaseManager {
 
         return $result_array;
     }
-
+    
     public function findSongById($sid){
         $sql = "SELECT * 
                 FROM tiktok_songs 
@@ -199,6 +199,24 @@ class DatabaseManager {
         return $result;
     }
 
+    public function findSongAndSongsTodayDataById($sid){
+        $sql = "SELECT * 
+                FROM tiktok_songs 
+                JOIN tiktok_records
+                ON tiktok_records.song_id = tiktok_songs.id
+                WHERE tiktok_songs.id=:song_id
+                ORDER BY fetch_date DESC";
+
+        $query = $this->pdo->prepare($sql);
+        $query->bindValue('song_id', $sid);
+
+        $query->execute();
+
+        $result = $query->fetch();
+
+        return $result;
+    }
+
     public function listDatesForCurrentSong($sid){
         $sql = "SELECT DISTINCT `fetch_date`  
                 FROM `tiktok_records`
@@ -206,6 +224,48 @@ class DatabaseManager {
 
         $query = $this->pdo->prepare($sql);
         $query->bindValue('mandja', $sid);
+
+        $query->execute();
+        $result_array = $query->fetchAll(PDO::FETCH_ASSOC);
+
+        return count($result_array) > 0 ? $result_array : false;
+    }
+
+    public function listDatesForCurrentSongBG($sid){
+        $sql = "SELECT DISTINCT `fetch_date`  
+                FROM `tiktok_records_bulgaria`
+                WHERE song_id=:mandja";
+
+        $query = $this->pdo->prepare($sql);
+        $query->bindValue('mandja', $sid);
+
+        $query->execute();
+        $result_array = $query->fetchAll(PDO::FETCH_ASSOC);
+
+        return count($result_array) > 0 ? $result_array : false;
+    }
+
+    public function listDatesForCurrentTikToker($tid){
+        $sql = "SELECT DISTINCT `fetch_date`  
+                FROM `tiktokers`
+                WHERE given_id=:mandja";
+
+        $query = $this->pdo->prepare($sql);
+        $query->bindValue('mandja', $tid);
+
+        $query->execute();
+        $result_array = $query->fetchAll(PDO::FETCH_ASSOC);
+
+        return count($result_array) > 0 ? $result_array : false;
+    }
+
+    public function listDatesForCurrentVideo($vid){
+        $sql = "SELECT DISTINCT `fetch_date`  
+                FROM `tiktok_top_videos`
+                WHERE user_id=:mandja";
+
+        $query = $this->pdo->prepare($sql);
+        $query->bindValue('mandja', $vid);
 
         $query->execute();
         $result_array = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -244,13 +304,14 @@ class DatabaseManager {
     }
 
     //Дърпаме всички записи за дадена песен(топ 200 за България)
-    public function getDatapointsForSongBG($sid){
+    public function getDatapointsForSongBG($sid, $date){
         $sql = "SELECT * 
                 FROM `tiktok_records_bulgaria`
-                WHERE song_id=:mandja";
+                WHERE song_id=:mandja AND DATE(`fetch_date`) <= DATE(:date)";
 
         $query = $this->pdo->prepare($sql);
         $query->bindValue('mandja', $sid);
+        $query->bindValue('date', $date);
 
         $query->execute();
         $result_array = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -980,13 +1041,14 @@ class DatabaseManager {
     }
 
     //Дърпаме информацията за дадено видео
-    public function getVideoData($vid){
+    public function getVideosData($vid, $date){
         $sql = "SELECT * 
                 FROM `tiktok_top_videos`
-                WHERE user_id=:mandja";
+                WHERE user_id=:mandja AND DATE(`fetch_date`) <= DATE(:datee)";
 
         $query = $this->pdo->prepare($sql);
         $query->bindValue('mandja', $vid);
+        $query->bindValue('datee', $date);
 
         $query->execute();
         $result_array = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -998,25 +1060,27 @@ class DatabaseManager {
     public function getVideoDataForSpecificDate($vid, $date){
         $sql = "SELECT * 
                 FROM `tiktok_top_videos`
-                WHERE user_id=:mandja AND DATE(`fetch_date`) = DATE(:date)";
+                WHERE user_id=:mandja AND DATE(`fetch_date`) = DATE(:datee)";
 
         $query = $this->pdo->prepare($sql);
         $query->bindValue('mandja', $vid);
-        $query->bindValue('date', $date);
-        $query->execute();
-        $result_array = $query->fetch();
+        $query->bindValue('datee', $date);
 
-        return count($result_array) > 0 ? $result_array : false;
+        $query->execute();
+        $result = $query->fetch();
+
+        return $result;
     }
 
     //Дърпаме информацията за даден тиктокър
-    public function getTikTokerData($tid){
+    public function getTikTokerData($tid, $date){
         $sql = "SELECT * 
                 FROM `tiktokers`
-                WHERE given_id=:mandja";
+                WHERE given_id=:mandja AND DATE(`fetch_date`) <= DATE(:date)";
 
         $query = $this->pdo->prepare($sql);
         $query->bindValue('mandja', $tid);
+        $query->bindValue('date', $date);
 
         $query->execute();
         $result_array = $query->fetch();
@@ -1040,13 +1104,14 @@ class DatabaseManager {
     }
 
     //Дърпаме информацията за всеки ден за даден тиктокър
-    public function getTikTokerDatapoints($tid){
+    public function getTikTokerDatapoints($tid, $date){
         $sql = "SELECT * 
                 FROM `tiktokers`
-                WHERE given_id=:mandja";
+                WHERE given_id=:mandja AND DATE(`fetch_date`) <= DATE(:date)";
 
         $query = $this->pdo->prepare($sql);
         $query->bindValue('mandja', $tid);
+        $query->bindValue('date', $date);
 
         $query->execute();
         $result_array = $query->fetchAll(PDO::FETCH_ASSOC);

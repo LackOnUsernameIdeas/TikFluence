@@ -12,11 +12,8 @@
     //Създаваме връзката с базата данни
     $db = new DatabaseManager();
 
-    //Взимаме записите за всяка песен
-    $dataPoints = $db->getDatapointsForSongBG($sid);
-
-
-    $fetchDatesForButton = $db->listDatesForCurrentSong($sid);
+    
+    $fetchDatesForButton = $db->listDatesForCurrentSongBG($sid);
 
     $chooseDatesForButton = [];
     foreach($fetchDatesForButton as $date){    
@@ -24,13 +21,24 @@
         $chooseDatesForButton[] = $timestamp->format('Y-m-d');
     }
 
+    //Взимаме необходимата информация и я превръщаме където е необходимо в проценти
+    $selectDate = isset($_SESSION["setDate"]) && $_SESSION["setDate"] > $chooseDatesForButton[0] ? $_SESSION["setDate"] : date("Y-m-d");
+    
+    if($selectDate == "2023-01-13"){
+        $selectDate = "2023-01-12";
+    }
+
+    //Взимаме записите за всяка песен
+    $dataPoints = $db->getDatapointsForSongBG($sid, $selectDate);
+
+
+
     
     if($dataPoints === false) redirect("songs.php");
 
     $songData = $db->getSongDataBG($sid);
 
-    //Взимаме необходимата информация и я превръщаме където е необходимо в проценти
-    $selectDate = isset($_SESSION["setDate"]) ? $_SESSION["setDate"] : date("Y-m-d");
+
     $todayYesterdayData = $db->getTodayYesterdayDataBG($sid, $selectDate);
 
 
@@ -334,13 +342,14 @@
                                     <span>ТОП 200 НАЙ-ГЛЕДАНИ ВИДЕА В TIKTOK</span>
                                 </a>
                             </li>
-                            <li>
-                                <a href="individualStats.php" class=" waves-effect waves-block">
-                                    <i class="material-icons">person_outline</i>
-                                    <span>ИНДИВИДУАЛНИ СТАТИСТИКИ ЗА ПОТРЕБИТЕЛ</span>
-                                </a>
-                            </li>
+
                         </ul>
+                    </li>
+                    <li>
+                        <a href="individualStats.php" class=" waves-effect waves-block">
+                            <i class="material-icons">person_outline</i>
+                            <span>МОИТЕ СТАТИСТИКИ В TIKTOK</span>
+                        </a>
                     </li>
                 </ul><div class="slimScrollBar" style="background: rgba(0, 0, 0, 0.5); width: 4px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 0px; z-index: 99; right: 1px; height: 584px;"></div><div class="slimScrollRail" style="width: 4px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 0px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div></div>
             </div>
@@ -391,13 +400,24 @@
                                     <h2>Изберете дата за която искате да видите данни:</h2>
                                         <?php if($chooseDatesForButton):?>
                                             <input type="date" id="start" name="trip-start"
-                                            value="<?php echo $_SESSION["setDate"] ?>"
-                                            min="<?php echo $chooseDatesForButton[0] ?>" max="<?php echo end($chooseDatesForButton) ?>" onchange=" window.location.replace('../selectDate.php?setDate=' + this.value + '&redirectURI=' + window.location.href)">
+                                            value="<?php echo $selectDate ?>"
+                                            min="<?php echo $chooseDatesForButton[1] ?>" max="<?php echo end($chooseDatesForButton) ?>" onchange=" window.location.replace('../selectDate.php?setDate=' + this.value + '&redirectURI=' + window.location.href)">
                                         <?php endif;?>
                         
                                 </div>
                             </div>
                         </div>
+                        
+                        <?php if($_SESSION["setDate"] == "2023-01-13"):?>
+                            <div class="card">
+                                <div class="body">
+                                    <div class="block-header">
+                                        <h2>Извиняваме се, но за 13 януари 2023 година липсват данни! Моля изберете друга дата.</h2>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php endif;?>
+
 
                         <div class="card">
                             <div class="body">

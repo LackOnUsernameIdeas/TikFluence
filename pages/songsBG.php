@@ -22,7 +22,17 @@
 
 
     $top200SongsBG = $db->listTop200SongsBG($selectDate);
+    $topSongsBG = $db->listTopSongsBG($selectDate);
 
+    $songsNamesBG = [];
+    $songsPopularitiesBG = [];
+
+    if($topSongsBG != false){
+        foreach($topSongsBG as $song){
+            $songsNamesBG[] = $song["song_name"];
+            $songsPopularitiesBG[] = $song["number_of_videos"];
+        }    
+    }
     
 ?>
 <!DOCTYPE html>
@@ -125,13 +135,14 @@
                                     <span>ТОП 200 НАЙ-ГЛЕДАНИ ВИДЕА В TIKTOK</span>
                                 </a>
                             </li>
-                            <li>
-                                <a href="individualStats.php" class=" waves-effect waves-block">
-                                    <i class="material-icons">person_outline</i>
-                                    <span>ИНДИВИДУАЛНИ СТАТИСТИКИ ЗА ПОТРЕБИТЕЛ</span>
-                                </a>
-                            </li>
+
                         </ul>
+                    </li>
+                    <li>
+                        <a href="individualStats.php" class=" waves-effect waves-block">
+                            <i class="material-icons">person_outline</i>
+                            <span>МОИТЕ СТАТИСТИКИ В TIKTOK</span>
+                        </a>
                     </li>
                 </ul><div class="slimScrollBar" style="background: rgba(0, 0, 0, 0.5); width: 4px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 0px; z-index: 99; right: 1px; height: 584px;"></div><div class="slimScrollRail" style="width: 4px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 0px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div></div>
             </div>
@@ -240,13 +251,52 @@
                     </div>
                 </div>
                 <!-- #END# Second Exportable table -->
+                
+                <div class="row clearfix">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="card">
+                        <div class="header">
+                                <h2>
+                                    СРАВНЕНИЕ МЕЖДУ ПЪРВИТЕ 10 ПЕСНИ
+                                </h2>
+                                <ul class="header-dropdown m-r--5">
+                                    <li class="dropdown">
+                                        <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                            <i class="material-icons">more_vert</i>
+                                        </a>
+                                        <ul class="dropdown-menu pull-right">
+                                            <li><a href="javascript:void(0);">Action</a></li>
+                                            <li><a href="javascript:void(0);">Another action</a></li>
+                                            <li><a href="javascript:void(0);">Something else here</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="body">
+                                <div class="body">
+                                    <canvas id="barChartBG"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             <?php else:?>
                 <div class="row clearfix">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <div class="card">
-                            <div class="body">
-                                Все още няма данни за топ 200 песни за България за днес :(
-                            </div>
+                            <?php if($selectDate != "" && $selectDate != "2023-01-13"):?>
+                                <div class="body">
+                                    Все още няма данни за топ 200 песни глобално за днес :(
+                                </div>
+                            <?php elseif($selectDate == ""):?>
+                                <div class="body">
+                                    Трябва да изберете валидна дата!
+                                </div>
+                            <?php else: ?>
+                                <div class="body">
+                                    Съжаляваме за причиненото неудобство. Нямаме данни за 13 януари 2023 година!
+                                </div>
+                            <?php endif;?>
                         </div>
                     </div>
                 </div>
@@ -254,6 +304,62 @@
 
         </div>
     </section>
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+
+    //Статистика за някои от първите песни глобално
+
+        // съставяне 
+        const dataBG = {
+            labels: JSON.parse(`<?php echo json_encode($songsNamesBG) ?>`),
+            datasets: [{
+                label: 'ПОПУЛЯРНОСТ',
+                data: JSON.parse(`<?php echo json_encode($songsPopularitiesBG) ?>`),
+                backgroundColor: [
+                    'rgba(255, 26, 104, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(0, 0, 0, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 26, 104, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(0, 0, 0, 1)'
+                ],
+                borderWidth: 1,
+                borderRadius: 5
+            }]
+        };
+
+        // кофигуриране 
+        const configBG = {
+            type: 'bar',
+            data: dataBG,
+            options: {
+                indexAxis: 'y',
+                    scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        };
+
+        // слагаме статистиката в html елемента
+        const myChartBG = new Chart(
+            document.getElementById('barChartBG'),
+            configBG
+        );
+
+    </script>
 
     <!-- Jquery Core Js -->
     <script src="../plugins/jquery/jquery.min.js"></script>

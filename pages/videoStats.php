@@ -12,12 +12,25 @@
     //Създаваме връзката с базата данни
     $db = new DatabaseManager();
 
-    //Запазваме данните за видеото в променлива
-    $videoDatapoints = $db->getVideoData($vid);
 
     //Осигуряваме си необходимите данни
 
-    $selectDate = isset($_SESSION["setDate"]) ? $_SESSION["setDate"] : date("Y-m-d");
+    $selectDate = isset($_SESSION["setDate"]) && $_SESSION["setDate"] >= '2023-01-12' ? $_SESSION["setDate"] : date("Y-m-d");
+
+    if($selectDate == "2023-01-13"){
+        $selectDate = "2023-01-12";
+    }
+
+    $fetchDatesForButton = $db->listDatesForCurrentVideo($vid);
+
+    $chooseDatesForButton = [];
+    foreach($fetchDatesForButton as $date){    
+        $timestamp = new DateTime($date["fetch_date"]);
+        $chooseDatesForButton[] = $timestamp->format('Y-m-d');
+    }
+
+    //Запазваме данните за видеото в променлива
+    $videoDatapoints = $db->getVideosData($vid, $selectDate);
 
     $videoDataForSpecificDate = $db->getVideoDataForSpecificDate($vid, $selectDate);
 
@@ -160,13 +173,14 @@
                                     </li>
                                 </ul>
                             </li>
-                            <li>
-                                <a href="individualStats.php" class=" waves-effect waves-block">
-                                    <i class="material-icons">person_outline</i>
-                                    <span>ИНДИВИДУАЛНИ СТАТИСТИКИ ЗА ПОТРЕБИТЕЛ</span>
-                                </a>
-                            </li>
+
                         </ul>
+                    </li>
+                    <li>
+                        <a href="individualStats.php" class=" waves-effect waves-block">
+                            <i class="material-icons">person_outline</i>
+                            <span>МОИТЕ СТАТИСТИКИ В TIKTOK</span>
+                        </a>
                     </li>
                 </ul><div class="slimScrollBar" style="background: rgba(0, 0, 0, 0.5); width: 4px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 0px; z-index: 99; right: 1px; height: 584px;"></div><div class="slimScrollRail" style="width: 4px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 0px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div></div>
             </div>
@@ -213,16 +227,26 @@
                         <div class="card">
                             <div class="body">
                                 <h2>Изберете дата за която искате да видите данни:</h2>
-                                    <?php if($dates):?>
+                                    <?php if($chooseDatesForButton):?>
                                         <input type="date" id="start" name="trip-start"
-                                        value="<?php echo $_SESSION["setDate"] ?>"
-                                        min="<?php echo $dates[0] ?>" max="<?php echo end($dates) ?>" onchange=" window.location.replace('../selectDate.php?setDate=' + this.value + '&redirectURI=' + window.location.href)">
+                                        value="<?php echo $selectDate ?>"
+                                        min="<?php echo $chooseDatesForButton[1] ?>" max="<?php echo end($chooseDatesForButton) ?>" onchange=" window.location.replace('../selectDate.php?setDate=' + this.value + '&redirectURI=' + window.location.href)">
                                     <?php endif;?>
                         
+                            </div>
+                        </div>
+                    </div>
+
+                    <?php if($_SESSION["setDate"] == "2023-01-13"):?>
+                        <div class="card">
+                            <div class="body">
+                                <div class="block-header">
+                                    <h2>Извиняваме се, но за 13 януари 2023 година липсват данни! Моля изберете друга дата.</h2>
                                 </div>
                             </div>
                         </div>
-            
+                    <?php endif;?>
+
                 </div>
             </div>
         </div>
