@@ -305,10 +305,16 @@
                             <span>НАЧАЛО</span>
                         </a>
                     </li>
+                    <li>
+                        <a href="individualStats.php" class=" waves-effect waves-block">
+                            <i class="material-icons">person_outline</i>
+                            <span>МОИТЕ СТАТИСТИКИ В TIKTOK</span>
+                        </a>
+                    </li>
                     <li class="active">
                         <a href="javascript:void(0);" class="menu-toggle waves-effect waves-block">
                             <i class="material-icons">insert_chart</i>
-                            <span>СТАТИСТИКИ</span>
+                            <span>ОЩЕ СТАТИСТИКИ</span>
                         </a>
                         <ul class="ml-menu">
                             <li>
@@ -346,9 +352,9 @@
                         </ul>
                     </li>
                     <li>
-                        <a href="individualStats.php" class=" waves-effect waves-block">
-                            <i class="material-icons">person_outline</i>
-                            <span>МОИТЕ СТАТИСТИКИ В TIKTOK</span>
+                        <a href="feedback.php" class=" waves-effect waves-block">
+                            <i class="material-icons">help</i>
+                            <span>ПОВЕЧЕ ЗА НАС</span>
                         </a>
                     </li>
                 </ul><div class="slimScrollBar" style="background: rgba(0, 0, 0, 0.5); width: 4px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 0px; z-index: 99; right: 1px; height: 584px;"></div><div class="slimScrollRail" style="width: 4px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 0px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div></div>
@@ -1029,8 +1035,22 @@
             }
         });
 
+
+        let pointsColor = [];
+
+        for(let i = 0; i < ttDataNums.length; i++){
+            pointsColor.push("rgba(159, 90, 253, 0.3)")
+        }
+
+        
+        const max_value = Math.max.apply(null, ttDataNums);
+        const max_index = ttDataNums.indexOf(max_value);
+        
+        pointsColor[max_index] = 'red';
+
+
         //TikTok
-        new Chart(document.getElementById('TikTokGraphChart'), {
+        let tt = new Chart(document.getElementById('TikTokGraphChart'), {
         type: 'line',
         data: {
             labels: dates, //x
@@ -1041,7 +1061,8 @@
                     borderColor: 'rgba(159, 90, 253, 1)',
                     backgroundColor: 'rgba(159, 90, 253, 0.3)',
                     fill: true,
-                    tension: 0.4
+                    tension: 0.4,
+                    pointBackgroundColor: pointsColor
                 }
             ]
         },
@@ -1055,6 +1076,7 @@
                 }
             }
         });
+
 
         //YouTube
         if(ytDataNulls.length != ytDataNums.length){
@@ -1088,7 +1110,21 @@
 
         //Spotify
         if(syDataNulls.length != syDataNums.length){
-            new Chart(document.getElementById('SpotifyGraphChart'), {
+
+            let pointsColor = [];
+
+            for(let i = 0; i < syDataNums.length; i++){
+                pointsColor.push("rgba(147, 250, 165, 1)")
+            }
+
+            
+            const max_value = Math.max.apply(null, syDataNums);
+            const max_index = syDataNums.indexOf(max_value);
+
+            pointsColor[max_index] = 'red';
+
+
+            let sy = new Chart(document.getElementById('SpotifyGraphChart'), {
             type: 'line',
             data: {
                 labels: dates, //x
@@ -1100,7 +1136,8 @@
                         backgroundColor: 'rgba(147, 250, 165, 0.4)',
                         fill: true,
                         tension: 0.4,
-                        spanGaps: true
+                        spanGaps: true,
+                        pointBackgroundColor: pointsColor
                     }
                 ]
             },  
@@ -1114,6 +1151,8 @@
                     }
                 }
             });
+
+
         }
 
         //TikTok и YouTube сравнение

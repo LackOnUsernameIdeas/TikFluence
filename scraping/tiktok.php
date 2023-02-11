@@ -69,11 +69,11 @@ $spotifyAccessToken = generateSpotifyToken();
 
 //Качваме всичко в базата данни
 foreach($dataPoints as $dp){
-    var_dump($dp);
-    echo "<hr>";
+    // var_dump($dp);
+    // echo "<hr>";
     $id = findSongIdForDatapoint($db, $dp);
 
-    var_dump($dp);
+    // var_dump($dp);
 
     $song = $db->findSongByTiktokId($dp["tiktok_platform_id"]);
 
@@ -103,11 +103,11 @@ foreach($dataPoints as $dp){
 
 //Качваме всичко в базата данни
 foreach($dataPointsBG as $dp){
-    var_dump($dp);
-    echo "<hr>";
+    // var_dump($dp);
+    // echo "<hr>";
     $id = findSongIdForDatapointBG($db, $dp);
 
-    var_dump($dp);
+    // var_dump($dp);
 
     $song = $db->findSongByTiktokIdBG($dp["tiktok_platform_id"]);
 
@@ -153,3 +153,5 @@ foreach($topvideos as $tt){
     $tt["fetch_date"] = $date;
     $db->insertTikTokVideo($tt);
 }
+
+echo "gotovo";

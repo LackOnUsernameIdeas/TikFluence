@@ -201,9 +201,15 @@
                         </a>
                     </li>
                     <li>
+                        <a href="pages/individualStats.php" class=" waves-effect waves-block">
+                            <i class="material-icons">person_outline</i>
+                            <span>МОИТЕ СТАТИСТИКИ В TIKTOK</span>
+                        </a>
+                    </li>
+                    <li>
                         <a href="javascript:void(0);" class="menu-toggle waves-effect waves-block">
                             <i class="material-icons">insert_chart</i>
-                            <span>СТАТИСТИКИ</span>
+                            <span>ОЩЕ СТАТИСТИКИ</span>
                         </a>
                         <ul class="ml-menu">
                             <li>
@@ -230,13 +236,13 @@
                                     <span>ТОП 200 НАЙ-ГЛЕДАНИ ВИДЕА В TIKTOK</span>
                                 </a>
                             </li>
-
                         </ul>
                     </li>
+
                     <li>
-                        <a href="pages/individualStats.php" class=" waves-effect waves-block">
-                            <i class="material-icons">person_outline</i>
-                            <span>МОИТЕ СТАТИСТИКИ В TIKTOK</span>
+                        <a href="pages/feedback.php" class=" waves-effect waves-block">
+                            <i class="material-icons">help</i>
+                            <span>ПОВЕЧЕ ЗА НАС</span>
                         </a>
                     </li>
                     <!-- <li class="header"></li> -->
@@ -299,7 +305,7 @@
 
             <?php if($theFirstSongGlobal && $theMostFollowedTikToker && $theMostWatchedVideo):?>
                 <div class="block-header">
-                    <h2>ТОП 3 НА НАЙ-ПОВЛИЯНИТЕ ПЕСНИ ОТ TIKTOK ЗА ДНЕС И ВКЛЮЧЕНИ В ТОП 200 НА ПЛАТФОРМАТА:</h2>
+                    <h2>ТОП 3 НА НАЙ-ПОВЛИЯНИТЕ ПЕСНИ ОТ TIKTOK ЗА ДНЕС И ВКЛЮЧЕНИ В ТОП 200 НА ПЛАТФОРМАТА И ТЕХНИТЕ ВИДЕА НАПРАВЕНИ НАСКОРО:</h2>
                 </div>
                 <!-- Widgets -->
 
@@ -476,23 +482,6 @@
                 </div>
             </div> -->
             <!-- #END# Answered Tickets -->
-
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <div class="card">
-                    <div class="body">
-                        <!-- Footer -->
-                        <div class="legal">
-                            <div class="copyright">
-                                <a href="javascript:void(0);"></a><a href="pages/privacyPolicy.php">Privacy Policy</a> ,
-                            </div>
-                            <div class="copyright">
-                                <a href="javascript:void(0);"></a><a href="pages/termsAndConditions.php">Terms and Conditions</a>
-                            </div>
-                        </div>
-                        <!-- #Footer -->
-                    </div>
-                </div>
-            </div>
 
         </div>
     </section>

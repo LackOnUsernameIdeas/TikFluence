@@ -223,10 +223,16 @@ $reqCallbackState = uniqid();
                             <span>НАЧАЛО</span>
                         </a>
                     </li>
+                    <li class="active">
+                        <a href="#" class=" waves-effect waves-block">
+                            <i class="material-icons">person_outline</i>
+                            <span>МОИТЕ СТАТИСТИКИ В TIKTOK</span>
+                        </a>
+                    </li>
                     <li>
                         <a href="javascript:void(0);" class="menu-toggle waves-effect waves-block">
                             <i class="material-icons">insert_chart</i>
-                            <span>СТАТИСТИКИ</span>
+                            <span>ОЩЕ СТАТИСТИКИ</span>
                         </a>
                         <ul class="ml-menu">
                             <li>
@@ -256,10 +262,10 @@ $reqCallbackState = uniqid();
 
                         </ul>
                     </li>
-                    <li class="active">
-                        <a href="#" class=" waves-effect waves-block">
-                            <i class="material-icons">person_outline</i>
-                            <span>МОИТЕ СТАТИСТИКИ В TIKTOK</span>
+                    <li>
+                        <a href="feedback.php" class=" waves-effect waves-block">
+                            <i class="material-icons">help</i>
+                            <span>ПОВЕЧЕ ЗА НАС</span>
                         </a>
                     </li>
                     <!-- <li class="header"></li> -->
@@ -744,7 +750,7 @@ $reqCallbackState = uniqid();
             datasets: [
                 {
                     label: 'Споделяния',
-                    data: views, //y
+                    data: shares, //y
                     borderColor: 'rgb(255, 0, 0)',
                     backgroundColor: 'rgba(255, 0, 0, 0.7)',
                     fill: true,
