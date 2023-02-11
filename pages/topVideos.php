@@ -212,7 +212,7 @@
                 </div>
             </div>
 
-            <?php if($_SESSION["setDate"] == "2023-01-13"):?>
+            <?php if(isset($_SESSION["setDate"]) && $_SESSION["setDate"] == "2023-01-13"):?>
                 <div class="card">
                     <div class="body">
                         <div class="block-header">

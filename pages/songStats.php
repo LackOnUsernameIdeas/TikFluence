@@ -497,7 +497,7 @@
                             </div>
                         </div>
 
-                        <?php if($_SESSION["setDate"] == "2023-01-13"):?>
+                        <?php if(isset($_SESSION["setDate"]) && $_SESSION["setDate"] == "2023-01-13"):?>
                             <div class="card">
                                 <div class="body">
                                     <div class="block-header">
@@ -1071,8 +1071,8 @@
     let likes = JSON.parse('<?php echo json_encode($likes) ?>');
 
     let ytDataNums = JSON.parse('<?php echo json_encode($ytNums) ?>');
-    let syDataNums = JSON.parse('<?php echo json_encode($syNums) ?>');
-    let ttDataNums = JSON.parse('<?php echo json_encode($ttNums) ?>');
+    let syDataNumsDirty = JSON.parse('<?php echo json_encode($syNums) ?>');
+    let ttDataNumsDirty = JSON.parse('<?php echo json_encode($ttNums) ?>');
 
     let ytDataPercents = JSON.parse('<?php echo json_encode($ytPercents) ?>');
     let syDataPercents = JSON.parse('<?php echo json_encode($syPercents) ?>');
@@ -1081,9 +1081,14 @@
     let ytDataNulls = JSON.parse('<?php echo json_encode($ytNulls) ?>');
     let syDataNulls = JSON.parse('<?php echo json_encode($syNulls) ?>');
 
-    
+    //Приравняваме стойностите, тъй като хостинга ги счита за стрингове, а localhost - за числа
+    let syDataNums = syDataNumsDirty.map(x => String(x));
+    let ttDataNums = ttDataNumsDirty.map(x => String(x)); 
+
+
     // Линейни статистики
 
+    
         //Статистика за проследяване на ранга на дадена песен
         new Chart(document.getElementById('RankChart'), {
             type: 'line',
@@ -1139,17 +1144,20 @@
             }
         });
 
+
         //TikTok
-        let pointsColor = [];
 
+        let TTpointsColor = [];
+ 
         for(let i = 0; i < ttDataNums.length; i++){
-            pointsColor.push("rgba(159, 90, 253, 1)")
+            TTpointsColor.push("rgba(159, 90, 253, 1)")
         }
+ 
+        let TTmax_value = String(Math.max.apply(null, ttDataNums));
+        let TTmax_index = ttDataNums.indexOf(TTmax_value);
+ 
+        TTpointsColor[TTmax_index] = "rgba(255, 0, 0, 1)";
 
-        const max_value = Math.max.apply(null, ttDataNums);
-        const max_index = ttDataNums.indexOf(max_value);
-        
-        pointsColor[max_index] = 'red';
 
         let tt = new Chart(document.getElementById('TikTokGraphChart'), {
         type: 'line',
@@ -1163,7 +1171,7 @@
                     backgroundColor: 'rgba(159, 90, 253, 0.3)',
                     fill: true,
                     tension: 0.4,
-                    pointBackgroundColor: pointsColor
+                    pointBackgroundColor: TTpointsColor
                 }
             ]
         },
@@ -1213,18 +1221,18 @@
         //Spotify
         if(syDataNulls.length != syDataNums.length){
 
-            let pointsColor = [];
-
+            let SYpointsColor = [];
+ 
             for(let i = 0; i < syDataNums.length; i++){
-                pointsColor.push("rgba(147, 250, 165, 1)")
+                SYpointsColor.push("rgba(147, 250, 165, 1)")
             }
 
-            
-            const max_value = Math.max.apply(null, syDataNums);
-            const max_index = syDataNums.indexOf(max_value);
-
-            pointsColor[max_index] = 'red';
-
+ 
+            let SYmax_value = String(Math.max.apply(null, syDataNums));
+            let SYmax_index = syDataNums.indexOf(SYmax_value);
+ 
+            SYpointsColor[SYmax_index] = "rgba(255, 0, 0, 1)";
+ 
 
             let sy = new Chart(document.getElementById('SpotifyGraphChart'), {
             type: 'line',
@@ -1239,7 +1247,7 @@
                         fill: true,
                         tension: 0.4,
                         spanGaps: true,
-                        pointBackgroundColor: pointsColor
+                        pointBackgroundColor: SYpointsColor
                     }
                 ]
             },  
