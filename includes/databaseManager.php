@@ -199,6 +199,60 @@ class DatabaseManager {
         return $result;
     }
 
+    public function findSongPeakDataTT($sid){
+        $sql = "SELECT * 
+                FROM tiktok_records 
+                JOIN tiktok_songs 
+                ON tiktok_records.song_id = tiktok_songs.id
+                WHERE song_id=:song_id 
+                ORDER BY `number_of_videos_last_14days` DESC";
+
+        $query = $this->pdo->prepare($sql);
+        $query->bindValue('song_id', $sid);
+
+        $query->execute();
+
+        $result = $query->fetch();
+
+        return $result;
+    }
+
+    public function findSongPeakDataSY($sid){
+        $sql = "SELECT * 
+                FROM tiktok_records 
+                JOIN tiktok_songs 
+                ON tiktok_records.song_id = tiktok_songs.id
+                WHERE song_id=:song_id 
+                ORDER BY `spotify_popularity` DESC";
+
+        $query = $this->pdo->prepare($sql);
+        $query->bindValue('song_id', $sid);
+
+        $query->execute();
+
+        $result = $query->fetch();
+
+        return $result;
+    }
+
+    public function findSongLastSavedData($sid){
+        $sql = "SELECT * 
+                FROM tiktok_records 
+                JOIN tiktok_songs 
+                ON tiktok_records.song_id = tiktok_songs.id
+                WHERE song_id=:song_id 
+                ORDER BY `fetch_date` DESC";
+
+        $query = $this->pdo->prepare($sql);
+        $query->bindValue('song_id', $sid);
+
+        $query->execute();
+
+        $result = $query->fetch();
+
+        return $result;
+    }
+
     public function findSongAndSongsTodayDataById($sid){
         $sql = "SELECT * 
                 FROM tiktok_songs 

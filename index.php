@@ -379,6 +379,10 @@
                                         <th>Ранг</th>
                                         <th>Песен</th>
                                         <th>Артист</th>
+                                        <th>Дата на пик в TikTok</th>
+                                        <th>Дата на пик в Spotify</th>
+                                        <th>TikTok видеа последно</th>
+                                        <th>Spotify популярност последно</th>
                                         <th>Повлияване</th>
                                     </tr>
                                 </thead>
@@ -391,11 +395,18 @@
                                         <?php endif;?>
 
                                         <?php $songData = $db->findSongById($songId) ?>
+                                        <?php $songPeakDataTT = $db->findSongPeakDataTT($songId) ?>
+                                        <?php $songPeakDataSY = $db->findSongPeakDataSY($songId) ?>
+                                        <?php $songLastSavedData = $db->findSongLastSavedData($songId) ?>
                                         
                                         <tr>
                                             <td><?= $iteration?></td>
                                             <td><?= $songData[0]["song_name"] ?></td>
                                             <td><?= $songData[0]["artist_name"] ?></td>
+                                            <th><?= $songPeakDataTT["fetch_date"] ?></th>
+                                            <th><?= $songPeakDataSY["fetch_date"] ?></th>
+                                            <th><?= $songLastSavedData["number_of_videos_last_14days"] ?></th>
+                                            <th><?= $songLastSavedData["spotify_popularity"] ?></th>
                                             <td><a href='./pages/influencedSong.php?sid=<?= $songData[0]["id"] ?>' class="btn bg-purple waves-effect">Вижте повече</a></td>
                                             <!-- <td>
                                                 <div class="progress">

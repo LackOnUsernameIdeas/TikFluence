@@ -624,7 +624,35 @@
             </div>
 
             <div class="row clearfix">
- 
+
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 m-b-10">
+                    <div class="info-box bg-purple hover-zoom-effect">
+                        <div class="icon">
+                            <i class="material-icons">music_note</i>
+                        </div>
+                        <div class="content">
+                            <div class="text">Брой видеа</div>
+                            <div class="number"><?php echo number_format(end($ttNums)) ?></div> 
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 m-b-10">
+                    <div class="info-box bg-green hover-zoom-effect">
+                        <div class="icon">
+                            <i class="material-icons">playlist_play</i>
+                        </div>
+                        <div class="content">
+                            <div class="text">Spotify популярност</div>
+                            <div class="number"><?php echo number_format(end($syNums)) ?></div> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row clearfix">
+
+
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                     <div class="card">
                         <div class="header">
@@ -681,6 +709,7 @@
                     </div>
 
                 </div>
+
 
             </div>
 

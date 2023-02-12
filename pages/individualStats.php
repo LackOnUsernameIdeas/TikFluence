@@ -378,18 +378,6 @@ $reqCallbackState = uniqid();
                                 </div>
                             </div>
                         </div>
-
-                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                            <div class="info-box bg-yellow hover-zoom-effect">
-                                <div class="icon">
-                                    <i class="material-icons">thumb_up</i>
-                                </div>
-                                <div class="content">
-                                    <div class="text">Брой харесвания</div>
-                                    <div class="number count-to" data-from="0" data-to="<?php echo $userMoreDescriptiveData["author"]["heartCount"] ?>" data-speed="3000" data-fresh-interval="20"></div> 
-                                </div>
-                            </div>
-                        </div>
         
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                             <div class="card">
