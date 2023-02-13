@@ -59,7 +59,7 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <title>ОЩЕ СТАТИСТИКИ</title>
     <!-- Favicon-->
-    <link rel="icon" href="../favicon.ico" type="image/x-icon">
+    <link rel="icon" href="../favicon1.ico" type="image/x-icon">
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet" type="text/css">
@@ -82,6 +82,9 @@
 
     <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
     <link href="../css/themes/all-themes.css" rel="stylesheet" />
+    
+    <!-- Cloudflare -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
 <body class="theme-purple">
@@ -103,13 +106,8 @@
     <section>
         <!-- Left Sidebar -->
         <aside id="leftsidebar" class="sidebar">
-            <!-- User Info -->
-            <div class="user-info">
-                <div class="body">
+            <img src="../images/logo.jpg" width="300"> 
 
-                </div>
-            </div>
-            <!-- #User Info -->
             <!-- Menu -->
             <div class="menu">
                 <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 584px;"><ul class="list" style="overflow: hidden; width: auto; height: 584px;">
@@ -264,13 +262,13 @@
                                                 <?php foreach($topvideos as $st):?>
                                                     <tr>
                                                         <th><?php echo $st["rank"]?></th>
-                                                        <th><a href="<?php echo $st["video_url"] ?>" target="_blank"><img src="../images/tiktok.png" width="24px" title="Вижте повече в TikTok"></a></th>
+                                                        <th><a href="<?php echo $st["video_url"] ?>" target="_blank"><i class="fa fa-eye" title="Вижте повече в TikTok"></i></a></th>
                                                         <th><?php echo number_format($st["plays_count"])?></th>
                                                         <th><?php echo number_format($st["likes_count"])?></th>
                                                         <th><?php echo number_format($st["shares_count"])?></th>
-                                                        <th><?php echo $st["song_name"]?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://www.tiktok.com/music/-<?php echo $st["tiktok_platform_id"] ?>" target="_blank"><img src="../images/tiktok.png" width="24px" title="Вижте песента в TikTok"></a></th>
-                                                        <th><?php echo $st["platform_name"] ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://www.tiktok.com/@<?php echo $st["platform_name"] ?>" target="_blank"><img src="../images/tiktok.png" width="24px" title="Вижте повече в TikTok"></a></th>
-                                                        <th><a href='./videoStats.php?vid=<?php echo $st["user_id"]?>' class="btn bg-deep-purple waves-effect">Вижте повече</a></th>
+                                                        <th><?php echo $st["song_name"]?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://www.tiktok.com/music/-<?php echo $st["tiktok_platform_id"] ?>" target="_blank"><i class="fa fa-eye" title="Вижте повече в TikTok"></i></a></th>
+                                                        <th><?php echo $st["platform_name"] ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://www.tiktok.com/@<?php echo $st["platform_name"] ?>" target="_blank"><i class="fa fa-eye" title="Вижте повече в TikTok"></i></a></th>
+                                                        <th><a href='./videoStats.php?vid=<?php echo $st["user_id"]?>' class="btn bg-purple waves-effect">Вижте повече</a></th>
                                                     </tr>
                                                 <?php endforeach;?>
                                             <?php endif;?>

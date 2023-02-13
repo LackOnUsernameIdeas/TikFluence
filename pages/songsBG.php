@@ -43,7 +43,7 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <title>ПЕСНИ</title>
     <!-- Favicon-->
-    <link rel="icon" href="../favicon.ico" type="image/x-icon">
+    <link rel="icon" href="../favicon1.ico" type="image/x-icon">
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet" type="text/css">
@@ -67,6 +67,8 @@
     <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
     <link href="../css/themes/all-themes.css" rel="stylesheet" />
 
+    <!-- Cloudflare -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
 <body class="theme-purple">
@@ -88,13 +90,8 @@
     <section>
         <!-- Left Sidebar -->
         <aside id="leftsidebar" class="sidebar">
-            <!-- User Info -->
-            <div class="user-info">
-                <div class="body">
+            <img src="../images/logo.jpg" width="300"> 
 
-                </div>
-            </div>
-            <!-- #User Info -->
             <!-- Menu -->
             <div class="menu">
                 <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 584px;"><ul class="list" style="overflow: hidden; width: auto; height: 584px;">
@@ -239,13 +236,13 @@
                                                 <?php foreach($top200SongsBG as $st):?>
                                                     <tr>
                                                         <th><?php echo $st["rank"]?></th>
-                                                        <th><?php echo $st["song_name"]?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://www.tiktok.com/music/-<?php echo $st["tiktok_platform_id"] ?>" target="_blank"><i class="material-icons" title="Вижте песента в TikTok">remove_red_eye</i></a></th>
+                                                        <th><?php echo $st["song_name"]?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://www.tiktok.com/music/-<?php echo $st["tiktok_platform_id"] ?>" target="_blank"><i class="fa fa-eye" title="Вижте песента в TikTok"></i></a></th>
                                                         <th><?php echo $st["artist_name"]?></th>
                                                         <th><?php echo number_format($st["number_of_videos_last_14days"])?></th>
                                                         <th><?php echo number_format($st["total_likes_count"])?></th>
                                                         <th><?php echo number_format($st["youtube_views"])?></th>
                                                         <th><?php echo $st["spotify_popularity"]?></th>
-                                                        <th><a href='./songStatsBG.php?sid=<?php echo $st["id"]?>' class="btn bg-deep-purple waves-effect">Вижте детайли</a></th>
+                                                        <th><a href='./songStatsBG.php?sid=<?php echo $st["id"]?>' class="btn bg-purple waves-effect">Вижте детайли</a></th>
                                                     </tr>
                                                 <?php endforeach;?>
                                             <?php endif;?>

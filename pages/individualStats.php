@@ -144,7 +144,7 @@ $reqCallbackState = uniqid();
     <title>СТАТИСТИКИ ЗА ПОТРЕБИТЕЛЯ</title>
 
     <!-- Favicon-->
-    <link rel="icon" href="../favicon.ico" type="image/x-icon">
+    <link rel="icon" href="../favicon1.ico" type="image/x-icon">
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet" type="text/css">
@@ -205,14 +205,8 @@ $reqCallbackState = uniqid();
     <section>
         <!-- Left Sidebar -->
         <aside id="leftsidebar" class="sidebar">
-            <!-- User Info -->
-            <div class="user-info">
-                <div class="body">
+            <img src="../images/logo.jpg" width="300"> 
 
-                </div>
-
-            </div>
-            <!-- #User Info -->
             <!-- Menu -->
             <div class="menu">
                 <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 584px;"><ul class="list" style="overflow: hidden; width: auto; height: 584px;">
