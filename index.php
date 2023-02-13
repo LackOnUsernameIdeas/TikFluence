@@ -395,7 +395,7 @@
                                         <?php $songPeakDataSY = $db->findSongPeakDataSY($songId) ?>
                                         <?php $songLastSavedData = $db->findSongLastSavedData($songId) ?>
                                         
-                                        <tr>
+                                        <tr onClick="window.location.href=`./pages/influencedSong.php?sid=<?= $songData[0]["id"] ?>`">
                                             <td><?= $iteration?></td>
                                             <td><?= $songData[0]["song_name"] ?></td>
                                             <td><?= $songData[0]["artist_name"] ?></td>
