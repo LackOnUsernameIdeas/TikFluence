@@ -237,8 +237,8 @@
 
                     <li>
                         <a href="pages/feedback.php" class=" waves-effect waves-block">
-                            <i class="material-icons">help</i>
-                            <span>ПОВЕЧЕ ЗА НАС</span>
+                            <i class="material-icons">info</i>
+                            <span>ЗА КОНТАКТ</span>
                         </a>
                     </li>
                     <!-- <li class="header"></li> -->

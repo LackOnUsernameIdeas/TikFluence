@@ -1,3 +1,86 @@
+<?php
+
+$siteOwnersEmail = 'kaloyan.kostadinov2007@gmail.com';
+
+
+if($_POST) {
+
+    $name = trim(stripslashes($_POST['first_name']));
+    $family = trim(stripslashes($_POST['last_name']));
+    $email = trim(stripslashes($_POST['email']));
+    // $subject = trim(stripslashes($_POST['school']));
+    $contact_message = trim(stripslashes($_POST['message']));
+    $error = [];
+
+
+    if (strlen($name) < 3) {
+        $error['name'] = "Въведете име.";
+    }
+
+    if (strlen($family) < 3) {
+        $error['family'] = "Въведете фамилия.";
+    }
+
+    if (!preg_match('/^[a-z0-9&\'\.\-_\+]+@[a-z0-9\-]+\.([a-z0-9\-]+\.)*+[a-z]{2}/is', $email)) {
+        $error['email'] = "Въведете валиден имейл адрес.";
+    }
+
+    if (strlen($contact_message) < 1) {
+        $error['message'] = "Моля въведете вашето съобщение. То не трябва да бъде повече от 100 символа.";
+    }
+
+    // if ($subject == '') {
+    //     $subject = "Contact Form Submission";
+    // }
+
+    $message = "";
+
+    $message .= "Имейл от: " . $name . "<br />";
+    $message .= "Имейл адрес: " . $email . "<br />";
+    $message .= "Съобщение: <br />";
+    $message .= $contact_message;
+    $message .= "<br /> ----- <br /> Този имейл беше изпратен от сайта 'Олимпиометър - ПГИ - гр.Перник '. <br />";
+
+
+    $from =  $name . " <" . $email . ">";
+
+
+    $headers = "From: " . $from . "\r\n";
+    $headers .= "Reply-To: ". $email . "\r\n";
+    $headers .= "MIME-Version: 1.0\r\n";
+    $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
+
+    if (!$error) 
+    {
+        ini_set("sendmail_from", $siteOwnersEmail);
+        $mail = mail($siteOwnersEmail, $message, $headers); //, $subject
+
+        if ($mail) 
+        { 
+            echo "<div class='col-lg-6 col-md-6 col-sm-6 form-group contact-forms'>Вашето съобщение е изпратено.</div>"; 
+            
+        }
+        
+        else 
+        { 
+            echo "<p style='color: red'>Възникна грешка, моля опитайте отново по-късно!</p>"; 
+            
+        }
+    }
+
+    else 
+    {
+        $response = (isset($error['name'])) ? $error['name'] . "<br /> \n" : null;
+        $response = (isset($error['family'])) ? $error['family'] . "<br /> \n" : null;
+        $response .= (isset($error['email'])) ? $error['email'] . "<br /> \n" : null;
+        $response .= (isset($error['message'])) ? $error['message'] . "<br />" : null;
+
+        echo $response;
+    }
+
+}
+
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -101,8 +184,8 @@
                     </li>
                     <li class="active">
                         <a href="#" class=" waves-effect waves-block">
-                            <i class="material-icons">help</i>
-                            <span>ПОВЕЧЕ ЗА НАС</span>
+                            <i class="material-icons">info</i>
+                            <span>ЗА КОНТАКТ</span>
                         </a>
                     </li>
                     <!-- <li class="header"></li> -->
@@ -125,161 +208,108 @@
     </section>
 
     <section class="content">
+
         <div class="container-fluid">
             <div class="block-header">
-                <h2></h2>
-            </div>
-            <!-- Body Copy -->
-            <div class="row clearfix">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="card">
-                        <div class="header">
-                            <h2>
-                                Информация за нас
-                            </h2>
-                        </div>
-                        <div class="body">
-                            <p>
-                                Ние сме ученици от Професионална Гимназия по Икономика - ПГИ, гр.Перник. Николай Георгиев от 8б се погрижи за дизайна на страницата, а Калоян Костадинов от 9б, за софтуера.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- #END# Body Copy -->
-           
-            <!-- Blockquotes -->
-            <div class="row clearfix">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="card">
-                        <div class="header">
-                        <!-- contact -->
-                            <div class="container py-lg-5 py-md-5 py-sm-4 py-3">
-                                <div class="row">
-                                    <div class="col-lg-12 col-md-12">
-                                        <form action="#" method="post">
-                                            <div class="row">
-                                                <div class="col-lg-6 col-md-6 col-sm-6 form-group contact-forms">
-                                                    <input type="text" class="form-control" id="first_name" name="first_name" placeholder="Име" required="">
-                                                </div>
-                                                <div class="col-lg-6 col-md-6 col-sm-6 form-group contact-forms">
-                                                    <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Фамилия" required="">
-                                                </div>
-                                                <div class="col-lg-6 col-md-6 col-sm-6 form-group contact-forms">
-                                                    <input type="email" class="form-control" id="email" name="email" placeholder="Е-мейл" required="">
-                                                </div>
-                                            </div>
-                                            <div class=" form-group contact-forms">
-                                                <textarea class="form-control" rows="8" id="message" name="message" placeholder="Напиши съобщение" required=""></textarea>
-                                            </div>
-                                            
-                                            <button type="submit" class="btn btn-primary sent-butnn btn-lg">Изпрати</button>
-
-                                        </form>
-                                    </div>
-                                </div>
+                    
+                
+                <!-- Body Copy -->
+                <div class="row clearfix">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="card">
+                            <div class="header">
+                                <h1>
+                                    Информация за нас
+                                </h1>
+                            </div>
+                            <div class="body" style="font-size:18px;">
+                                <p>
+                                    Ние сме ученици от Vlllб и IXб клас на Професионална гимназия по икономика - гр.Перник. Специалност - Икономическа информатика. 
+                                </p>
+                                <p>
+                                    Калоян Костадинов се погрижи за софтуера, а Николай Георгиев за дизайна.
+                                </p>
                             </div>
                         </div>
-                        <!--//contact -->
-                        
-                        <?php
+                    </div>
+                </div>
+                <!-- #END# Body Copy -->
+                <!-- Body Copy -->
+                <div class="row clearfix">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="card">
+                            <div class="header">
+                                <h1>
+                                    Адрес: 2302, гр. Перник, ул. Г. Мамарчев 2 - ПГИ Перник 
+                                </h1>
+                            </div>
+                            <div class="body">
+                                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1234.6835304503172!2d23.048159630807987!3d42.60646545927766!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14aacadf4ba43b73%3A0x28028560258f88be!2sProfesionalna%20Gimnaziya%20PO%20Ikonomika!5e0!3m2!1sen!2sbg!4v1676395658037!5m2!1sen!2sbg" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- #END# Body Copy -->
+            
+                <!-- Blockquotes -->
+                <div class="row clearfix">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="card">
+                            <div class="header">
+                                <h1>Свържете се с нас:</h1>
+                            </div>
+                            <div class="body">
+                                <!-- contact -->
+                                    <div class="container py-lg-5 py-md-5 py-sm-4 py-3">
+                                        <div class="row">
+                                            <div class="col-lg-7 col-md-7">
+                                                <form action="#" method="post">
+                                                    <div class="row">
+                                                        <div class="col-lg-12 col-md-12 col-sm-12 form-group contact-forms">
+                                                            <input type="text" class="form-control" id="first_name" name="first_name" placeholder="Име" required="">
+                                                        </div>
+                                                        <div class="col-lg-6 col-md-6 col-sm-6 form-group contact-forms">
+                                                            <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Фамилия" required="">
+                                                        </div>
+                                                        <div class="col-lg-6 col-md-6 col-sm-6 form-group contact-forms">
+                                                            <input type="email" class="form-control" id="email" name="email" placeholder="Е-мейл" required="">
+                                                        </div>
+                                                    </div>
+                                                    <div class=" form-group contact-forms">
+                                                        <textarea class="form-control" rows="8" id="message" name="message" placeholder="Напиши съобщение" required=""></textarea>
+                                                    </div>
+                                                    
+                                                    <button type="submit" class="btn btn-primary sent-butnn btn-lg">Изпрати</button>
 
-                    $siteOwnersEmail = 'nemabizenesnemapari@gmail.com';
-
-
-                    if($_POST) {
-
-                        $name = trim(stripslashes($_POST['first_name']));
-                        $family = trim(stripslashes($_POST['last_name']));
-                        $email = trim(stripslashes($_POST['email']));
-                        $contact_message = trim(stripslashes($_POST['message']));
-                        $error = [];
-
-
-                        if (strlen($name) < 3) {
-                            $error['name'] = "Въведете име.";
-                        }
-
-                        if (strlen($family) < 3) {
-                            $error['family'] = "Въведете фамилия.";
-                        }
-
-                        if (!preg_match('/^[a-z0-9&\'\.\-_\+]+@[a-z0-9\-]+\.([a-z0-9\-]+\.)*+[a-z]{2}/is', $email)) {
-                            $error['email'] = "Въведете валиден имейл адрес.";
-                        }
-
-                        if (strlen($contact_message) < 1) {
-                            $error['message'] = "Моля въведете вашето съобщение. То не трябва да бъде повече от 100 символа.";
-                        }
-
-                        $message = "";
-
-                        $message .= "Имейл от: " . $name . "<br />";
-                        $message .= "Имейл адрес: " . $email . "<br />";
-                        $message .= "Съобщение: <br />";
-                        $message .= $contact_message;
-                        $message .= "<br /> ----- <br /> Този имейл беше изпратен от сайта 'TikFluence'. <br />";
-
-
-                        $from =  $name . " <" . $email . ">";
-
-
-                        $headers = "From: " . $from . "\r\n";
-                        $headers .= "Reply-To: ". $email . "\r\n";
-                        $headers .= "MIME-Version: 1.0\r\n";
-                        $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
-
-                        if (!$error) 
-                        {
-                            ini_set("sendmail_from", $siteOwnersEmail);
-                            $mail = mail($siteOwnersEmail, $subject, $message, $headers);
-
-                            if ($mail) 
-                            { 
-                                echo "<div class='col-lg-6 col-md-6 col-sm-6 form-group contact-forms'>Вашето съобщение е изпратено.</div>"; 
-                                
-                            }
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--//contact -->
                             
-                            else 
-                            { 
-                                echo "<p style='color: red'>Възникна грешка, моля опитайте отново по-късно!</p>"; 
-                                
-                            }
-                        }
 
-                        else 
-                        {
-                            $response = (isset($error['name'])) ? $error['name'] . "<br /> \n" : null;
-                            $response = (isset($error['family'])) ? $error['family'] . "<br /> \n" : null;
-                            $response .= (isset($error['email'])) ? $error['email'] . "<br /> \n" : null;
-                            $response .= (isset($error['message'])) ? $error['message'] . "<br />" : null;
-
-                            echo $response;
-                        }
-
-                    }
-
-                    ?>
-                        </div>
+                            </div>
                     </div>
                 </div>
+                <!-- #END# Blockquotes -->
+ 
             </div>
-            <!-- #END# Blockquotes -->
-           
-            <!-- Footer -->
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <div class="card bg-puple">
-                    <div class="body">
-                        
-                        <div class="legal">
-                            <?php include '../footer.php';?>
-                        </div>
-                                
-                    </div>
-                </div>
-            </div>
-            <!-- #Footer -->
+            
         </div>
+        <!-- Footer -->
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="card bg-puple">
+                <div class="body">
+                    
+                    <div class="legal">
+                        <?php include '../footer.php';?>
+                    </div>
+                            
+                </div>
+            </div>
+        </div>
+        <!-- #Footer -->  
     </section>
 
     <!-- Jquery Core Js -->

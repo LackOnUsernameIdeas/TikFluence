@@ -237,8 +237,8 @@ $reqCallbackState = uniqid();
                     </li>
                     <li>
                         <a href="feedback.php" class=" waves-effect waves-block">
-                            <i class="material-icons">help</i>
-                            <span>ПОВЕЧЕ ЗА НАС</span>
+                            <i class="material-icons">info</i>
+                            <span>ЗА КОНТАКТ</span>
                         </a>
                     </li>
                     <!-- <li class="header"></li> -->
@@ -305,7 +305,7 @@ $reqCallbackState = uniqid();
                             <div class="card">
                                 <div class="header">
                                     <h2>
-                                        <strong>1.</strong> След като натиснете бутонa, вие бивате изпратени в страница, в която трябва да изберете по какъв начин да влезете във вашия профил в TikTok.
+                                        <strong>1.</strong> След като натиснете бутонa, вие бивате изпратени в страница, в която трябва да изберете по какъв начин да влезете във вашия профил в TikTok. В случай че нямате профил, трябва да натиснете опцията - "Sign up", посочена с червена стрелка, най-отдолу и да си изберате начина на създаване на профил.
                                     </h2>
                                 </div>
                                 <div class="body">
@@ -318,7 +318,7 @@ $reqCallbackState = uniqid();
                             <div class="card">
                                 <div class="header">
                                     <h2>
-                                        <strong>2.</strong> В случай че нямате профил в TikTok, трябва да натиснете опцията - "Sign up", оцветена в червено най-отдолу, за да си направите профил.
+                                        <strong>2.</strong> Ако вече имате направен профил и сте избрали опцията - "Use phone / email / username" от стъпка <strong>1</strong>, вие бивате изпратени в страница, в която можете да влезете чрез телефонния ви номер. Можете и да изберете опцията да влезете чрез имейл или потребителско име, посочена със стрелка на снимката.
                                     </h2>
                                 </div>
                                 <div class="body">
@@ -329,11 +329,12 @@ $reqCallbackState = uniqid();
                     </div>
 
                     <div class="row clearfix">
+
                         <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
                             <div class="card">
                                 <div class="header">
                                     <h2>
-                                        <strong>3.</strong> След като натиснете опцията - "Sign up", вие бивате изпратени в страница, в която си избирате начина на създаване на профил, който най-много ви устройва.
+                                        <strong>3.</strong> Въвеждате вашите данни за имейл/потребителско име и парола и натискате - "Log in", за да влезете във вашия профил.
                                     </h2>
                                 </div>
                                 <div class="body">
@@ -346,7 +347,7 @@ $reqCallbackState = uniqid();
                             <div class="card">
                                 <div class="header">
                                     <h2>
-                                        <strong>4.</strong> Ако вече имате направен профил и сте избрали опцията - "Use phone / email / username" от стъпка <strong>1</strong>, вие бивате изпратени в страница, в която можете да влезете чрез телефонния ви номер. Можете и да изберете опцията да влезете чрез имейл или потребителско име, посочена със стрелка на снимката.
+                                        <strong>4.</strong> След като успешно сте влезли в профила си, натискате на - "Authorize" като по този начин се съгласявате, че TikFluence може да използва вашите данни за статистики.
                                     </h2>
                                 </div>
                                 <div class="body">
@@ -354,14 +355,15 @@ $reqCallbackState = uniqid();
                                 </div>
                             </div>
                         </div>
+
                     </div>
 
                     <div class="row clearfix">
-                        <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                             <div class="card">
                                 <div class="header">
                                     <h2>
-                                        <strong>5.</strong> Въвеждате вашите данни за имейл/потребителско име и парола и натискате - "Log in", за да влезете във вашия профил.
+                                        <strong>5.</strong> Ако сте се справили успешно, това трябва да е страницата, която виждате!
                                     </h2>
                                 </div>
                                 <div class="body">
@@ -369,22 +371,7 @@ $reqCallbackState = uniqid();
                                 </div>
                             </div>
                         </div>
-
-                        <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
-                            <div class="card">
-                                <div class="header">
-                                    <h2>
-                                        <strong>6.</strong> След като успешно сте влезли в профила си, натискате на - "Authorize" като по този начин се съгласявате, че TikFluence може да използва вашите данни за статистики.
-                                    </h2>
-                                </div>
-                                <div class="body">
-                                    <img src="../images/sixthStep.png" width="100%">
-                                </div>
-                            </div>
-                        </div>
-
                     </div>
-
                 <?php endif;?>
 
                 <!-- <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
@@ -668,34 +655,34 @@ $reqCallbackState = uniqid();
                     <div class="row clearfix">
 
                     <div class="col-lg-6 col-md-8 col-sm-8 col-xs-8">
-                            <div class="card">
-                                <div class="body">
-                                    <!-- User Info -->
-                                    <div class="row clearfix">
-                                        <div class="container-fluid">
+                        <div class="card">
+                            <div class="body">
+                                <!-- User Info -->
+                                <div class="row clearfix">
+                                    <div class="container-fluid">
 
-                                            <div class="user-info">
-                                                <div class="body">
+                                        <div class="user-info">
+                                            <div class="body">
 
-                                                        <div class="image">
-                                                            <img src="<?php echo $userBasicData["avatarLarger"]?>" width="68" height="68" alt="User" />
+                                                    <div class="image">
+                                                        <img src="<?php echo $userBasicData["avatarLarger"]?>" width="68" height="68" alt="User" />
+                                                    </div>
+
+                                                    <div class="info-container">
+                                                        <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                            <?= $username ?> <img src="<?= $isVerified ? "../images/verified.png" : ""?>" width="10px" height="10px">
                                                         </div>
-
-                                                        <div class="info-container">
-                                                            <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                <?= $username ?> <img src="<?= $isVerified ? "../images/verified.png" : ""?>" width="10px" height="10px">
-                                                            </div>
-                                                        </div>
-                                                </div>
-
+                                                    </div>
                                             </div>
 
                                         </div>
+
                                     </div>
-                                    <!-- #User Info -->
                                 </div>
+                                <!-- #User Info -->
                             </div>
                         </div>
+                    </div>
 
                         <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
                             <div class="info-box bg-deep-purple hover-zoom-effect">
