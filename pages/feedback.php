@@ -156,7 +156,7 @@
                         <!-- contact -->
                             <div class="container py-lg-5 py-md-5 py-sm-4 py-3">
                                 <div class="row">
-                                    <div class="col-lg-7 col-md-7">
+                                    <div class="col-lg-12 col-md-12">
                                         <form action="#" method="post">
                                             <div class="row">
                                                 <div class="col-lg-6 col-md-6 col-sm-6 form-group contact-forms">
@@ -167,9 +167,6 @@
                                                 </div>
                                                 <div class="col-lg-6 col-md-6 col-sm-6 form-group contact-forms">
                                                     <input type="email" class="form-control" id="email" name="email" placeholder="Е-мейл" required="">
-                                                </div>
-                                                <div class="col-lg-6 col-md-6 col-sm-6 form-group contact-forms">
-                                                    <input type="text" class="form-control" id="school" name="school" placeholder="Училище" required="">
                                                 </div>
                                             </div>
                                             <div class=" form-group contact-forms">
@@ -195,7 +192,6 @@
                         $name = trim(stripslashes($_POST['first_name']));
                         $family = trim(stripslashes($_POST['last_name']));
                         $email = trim(stripslashes($_POST['email']));
-                        $subject = trim(stripslashes($_POST['school']));
                         $contact_message = trim(stripslashes($_POST['message']));
                         $error = [];
 
@@ -216,17 +212,13 @@
                             $error['message'] = "Моля въведете вашето съобщение. То не трябва да бъде повече от 100 символа.";
                         }
 
-                        if ($subject == '') {
-                            $subject = "Contact Form Submission";
-                        }
-
                         $message = "";
 
                         $message .= "Имейл от: " . $name . "<br />";
                         $message .= "Имейл адрес: " . $email . "<br />";
                         $message .= "Съобщение: <br />";
                         $message .= $contact_message;
-                        $message .= "<br /> ----- <br /> Този имейл беше изпратен от сайта 'Олимпиометър - ПГИ - гр.Перник '. <br />";
+                        $message .= "<br /> ----- <br /> Този имейл беше изпратен от сайта 'TikFluence'. <br />";
 
 
                         $from =  $name . " <" . $email . ">";
