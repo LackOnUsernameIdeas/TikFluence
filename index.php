@@ -454,6 +454,20 @@
             </div>
             <!-- #END# Latest Social Trends -->
 
+            <!-- Footer -->
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="card bg-puple">
+                    <div class="body">
+                      
+                        <div class="legal">
+                            <?php include 'footer.php';?>
+                        </div>
+                                
+                    </div>
+                </div>
+            </div>
+            <!-- #Footer -->
+
             <!-- Answered Tickets -->
             <!-- <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
                 <div class="card">

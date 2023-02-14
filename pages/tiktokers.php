@@ -320,6 +320,20 @@
             <?php endif;?>
 
         </div>
+        <!-- Footer -->
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="card bg-puple">
+                <div class="body">
+                    
+                    <div class="legal">
+                        <?php include '../footer.php';?>
+                    </div>
+                            
+                </div>
+            </div>
+        </div>
+        <!-- #Footer -->   
+             
     </section>
 
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js"></script>

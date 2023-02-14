@@ -1052,6 +1052,19 @@
             <?php endif;?>
 
         </div>
+        <!-- Footer -->
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="card bg-puple">
+                <div class="body">
+                    
+                    <div class="legal">
+                        <?php include '../footer.php';?>
+                    </div>
+                            
+                </div>
+            </div>
+        </div>
+        <!-- #Footer -->
     </section>
 
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -1060,7 +1073,7 @@
     <script>
 
     //Данни за ползване
-    let dates =  JSON.parse('<?php echo json_encode($dates) ?>');
+    let dates = JSON.parse('<?php echo json_encode($dates) ?>');
 
     let ranks = JSON.parse('<?php echo json_encode($ranks) ?>');
     let likes = JSON.parse('<?php echo json_encode($likes) ?>');

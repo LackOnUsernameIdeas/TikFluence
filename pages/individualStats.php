@@ -10,23 +10,17 @@
     //Създаваме връзката с базата данни
     $db = new DatabaseManager();
 
-    // Ако сте влезли в профила си, можете да продължите
-    // if(isset($_SESSION["user_id"])) {
-    //     $user_id = $_SESSION["user_id"];
-    //     $user = $db->getUserById($user_id);
-    // } else {
-    //     redirect("../logIn.php");
-    // }
 
-    
     if(isset($_GET["code"])){
         $accessToken = generateTikTokAccessToken($_GET["code"]);
 
         $openUserId = getUserOpenId($accessToken);
 
         $usernameLink = generateTikTokUsername("https://open-api.tiktok.com/shortlink/profile/?open_id=$openUserId");
-        $username = explode("?", explode('@', $usernameLink)[1])[0];    
+        $username = explode("?", explode('@', $usernameLink)[1])[0];
     }
+
+    // $username = "kfw_goldstriker";
 
 
     if(isset($username)){
@@ -38,31 +32,6 @@
             }
         }
     }
-    
-
-
-    //Излиза информацията за потребителя
-    // if(isset($_SESSION['tiktokUsername'])){
-    //     if($_SESSION['tiktokUsername'] != null){
-    //         $username = htmlspecialchars($_SESSION['tiktokUsername']);
-    //         $userMoreDescriptiveData = getUserMoreDescriptiveData($username);
-
-    //         if($userMoreDescriptiveData == false || isset($userMoreDescriptiveData["message"])){
-    //             $userBasicData = getUserData($username);
-    //         }
-    //     }
-    // }
-
-    // if(isset($_GET['tiktokUser'])){
-    //     if($_GET['tiktokUser'] != null){
-    //         $username = htmlspecialchars($_GET['tiktokUser']);
-    //         $userMoreDescriptiveData = getUserMoreDescriptiveData($username);
-
-    //         if($userMoreDescriptiveData == false || isset($userMoreDescriptiveData["message"])){
-    //             $userBasicData = getUserData($username);
-    //         }
-    //     }
-    // }
 
     //Взимаме информация за потребителя и я показваме
 
@@ -75,13 +44,23 @@
         return fetchTikTokUserData($id);
     }
 
+    function getUserFollowers($username){
+        // //Взимаме id на потребителя за да можем да вземем информацията за него
+        // $id = fetchTikTokUserId($username);
+
+        // //Връщаме информацията за потребителя като краен резултат
+        // $userData = fetchTikTokUserData($id);
+
+        // return $userData["followerCount"];
+    }
+
     function getUserMoreDescriptiveData($username){
         //Взимаме id на потребителя за да можем да вземем информацията за него
         $sec_uid = fetchTikTokUserSecUid($username);
 
         //Връщаме информацията за потребителя като краен резултат
         return fetchTikTokUserMoreDescriptiveData($sec_uid);
-       
+
     }
 
     //Показваме профилната снимка на потребителя ако е въвел името си
@@ -127,10 +106,10 @@
             $mentions[] = $ht["name"];
             $timesPeopleAreMentioned[] = $ht["count"];
         }
-        
+
     }
 
-    
+
 $reqCallbackState = uniqid();
 
 
@@ -205,7 +184,7 @@ $reqCallbackState = uniqid();
     <section>
         <!-- Left Sidebar -->
         <aside id="leftsidebar" class="sidebar">
-            <img src="../images/logo.jpg" width="300"> 
+            <img src="../images/logo.jpg" width="300">
 
             <!-- Menu -->
             <div class="menu">
@@ -375,7 +354,7 @@ $reqCallbackState = uniqid();
                                 </div>
                             </div>
                         </div>
-                    </div>  
+                    </div>
 
                     <div class="row clearfix">
                         <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
@@ -404,10 +383,36 @@ $reqCallbackState = uniqid();
                             </div>
                         </div>
 
-                    </div>  
+                    </div>
 
-                    
                 <?php endif;?>
+
+                <!-- <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <div class="card">
+                        <div class="header">
+                            <h2>
+                                wfwffwfwf                            
+                            </h2>
+                            <ul class="header-dropdown m-r--5">
+                                <li class="dropdown">
+                                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                        <i class="material-icons">more_vert</i>
+                                    </a>
+                                    <ul class="dropdown-menu pull-right">
+                                        <li><a href="javascript:void(0);">Action</a></li>
+                                        <li><a href="javascript:void(0);">Another action</a></li>
+                                        <li><a href="javascript:void(0);">Something else here</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="body">
+                            <div class="content">
+                                <canvas id="LiveLikesChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
 
                 <?php if(isset($userMoreDescriptiveData) && $userMoreDescriptiveData != false && !isset($userMoreDescriptiveData["message"])): ?>
                     <div class="row clearfix">
@@ -421,11 +426,11 @@ $reqCallbackState = uniqid();
 
                                             <div class="user-info">
                                                 <div class="body">
-                                                    
+
                                                         <div class="image">
                                                             <img src="<?php echo $userMoreDescriptiveData["author"]["avatarLarger"]?>" width="68" height="68" alt="User" />
                                                         </div>
-                                                        
+
                                                         <div class="info-container">
                                                             <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                                 <?= $userMoreDescriptiveData["author"]["uniqueId"] ?> <img src="<?= $isVerified ? "../images/verified.png" : ""?>" width="10px" height="10px">
@@ -435,7 +440,7 @@ $reqCallbackState = uniqid();
                                                             </div>
                                                         </div>
                                                 </div>
-                                                
+
                                             </div>
 
                                         </div>
@@ -443,8 +448,8 @@ $reqCallbackState = uniqid();
                                     <!-- #User Info -->
                                 </div>
                             </div>
-                        </div>                            
-                    
+                        </div>
+
                         <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
                             <div class="info-box bg-deep-purple hover-zoom-effect">
                                 <div class="icon">
@@ -457,7 +462,7 @@ $reqCallbackState = uniqid();
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
                             <div class="info-box bg-red hover-zoom-effect">
                                 <div class="icon">
@@ -489,11 +494,11 @@ $reqCallbackState = uniqid();
                                 </div>
                                 <div class="content">
                                     <div class="text">Брой харесвания</div>
-                                    <div class="number count-to" data-from="0" data-to="<?php echo $userMoreDescriptiveData["author"]["heartCount"] ?>" data-speed="3000" data-fresh-interval="20"></div> 
+                                    <div class="number count-to" data-from="0" data-to="<?php echo $userMoreDescriptiveData["author"]["heartCount"] ?>" data-speed="3000" data-fresh-interval="20"></div>
                                 </div>
                             </div>
                         </div>
-        
+
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                             <div class="card">
                                 <div class="header">
@@ -629,7 +634,7 @@ $reqCallbackState = uniqid();
                             </div>
                         </div>
 
-                        
+
                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                             <div class="card">
                                 <div class="header">
@@ -656,12 +661,12 @@ $reqCallbackState = uniqid();
                                 </div>
                             </div>
                         </div>
-                        
+
                     </div>
 
                 <?php elseif(isset($userBasicData) && $userBasicData != false):?>
                     <div class="row clearfix">
-                        
+
                     <div class="col-lg-6 col-md-8 col-sm-8 col-xs-8">
                             <div class="card">
                                 <div class="body">
@@ -671,18 +676,18 @@ $reqCallbackState = uniqid();
 
                                             <div class="user-info">
                                                 <div class="body">
-                                                    
+
                                                         <div class="image">
                                                             <img src="<?php echo $userBasicData["avatarLarger"]?>" width="68" height="68" alt="User" />
                                                         </div>
-                                                        
+
                                                         <div class="info-container">
                                                             <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                                 <?= $username ?> <img src="<?= $isVerified ? "../images/verified.png" : ""?>" width="10px" height="10px">
                                                             </div>
                                                         </div>
                                                 </div>
-                                                
+
                                             </div>
 
                                         </div>
@@ -690,8 +695,8 @@ $reqCallbackState = uniqid();
                                     <!-- #User Info -->
                                 </div>
                             </div>
-                        </div>                            
-                    
+                        </div>
+
                         <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
                             <div class="info-box bg-deep-purple hover-zoom-effect">
                                 <div class="icon">
@@ -704,7 +709,7 @@ $reqCallbackState = uniqid();
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
                             <div class="info-box bg-red hover-zoom-effect">
                                 <div class="icon">
@@ -736,7 +741,7 @@ $reqCallbackState = uniqid();
                                 </div>
                                 <div class="content">
                                     <div class="text">Брой харесвания</div>
-                                    <div class="number count-to" data-from="0" data-to="<?php echo $userBasicData["heartCount"] ?>" data-speed="3000" data-fresh-interval="20"></div> 
+                                    <div class="number count-to" data-from="0" data-to="<?php echo $userBasicData["heartCount"] ?>" data-speed="3000" data-fresh-interval="20"></div>
                                 </div>
                             </div>
                         </div>
@@ -758,20 +763,37 @@ $reqCallbackState = uniqid();
                                 </div>
                             </div>
                         <?php endif; ?>
-        
+
                     </div>
                 <?php endif;?>
 
             </div>
 
         </div>
+        <!-- Footer -->
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="card bg-puple">
+                <div class="body">
+                    
+                    <div class="legal">
+                        <?php include '../footer.php';?>
+                    </div>
+                            
+                </div>
+            </div>
+        </div>
+        <!-- #Footer -->
     </section>
 
 
-</body>   
+</body>
 
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js" integrity="sha512-JPcRR8yFa8mmCsfrw4TNte1ZvF1e3+1SdGMslZvmrzDYxS69J7J49vkFL8u6u8PlPJK+H3voElBtUCzaXj+6ig==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<!-- <script src="https://cdn.jsdelivr.net/npm/luxon@3.2.1/build/global/luxon.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@1.3.1/dist/chartjs-adapter-luxon.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-streaming@2.0.0/dist/chartjs-plugin-streaming.min.js"></script> -->
 <!-- Статистики -->
 <script>
 
@@ -790,6 +812,77 @@ $reqCallbackState = uniqid();
     let mentions = JSON.parse('<?php echo json_encode($mentions) ?>');
     let timesPeopleAreMentioned = JSON.parse('<?php echo json_encode($timesPeopleAreMentioned) ?>');
 
+
+    // let followers = JSON.parse("<?php //echo json_encode(getUserFollowers($username)) ?>")
+
+    // function followersInRealTime(){
+    //     let followers = JSON.parse("<?php //echo json_encode(getUserFollowers($username)) ?>");
+    // }
+
+    // setInterval(followersInRealTime, 10000);
+
+    // съставяне 
+    // const data = {
+    //     labels: [],
+    //     datasets: [{
+    //         label: 'ПОСЛЕДОВАТЕЛИ',
+    //         data: [],
+    //         backgroundColor: 'rgba(159, 90, 253, 0.7)',
+    //         borderColor: 'rgba(159, 90, 253, 0.7)',
+    //         borderWidth: 1,
+    //         borderRadius: 5
+    //     }]
+    // };
+
+    // // кофигуриране 
+    // const config = {
+    //     type: 'line',
+    //     data: data,
+    //     options: {
+    //         indexAxis: 'x',
+    //         plugins: {
+    //             streaming: {
+    //                 refresh: 10000,
+    //                 frameRate: 1
+    //             }
+    //         },
+    //         scales: {
+    //             x: {
+    //                 type: 'realtime',
+    //                 realtime: {
+    //                     onRefresh: chart => {
+    //                         chart.data.datasets.forEach(dataset => {
+    //                             dataset.data.push({
+    //                                 x: Date.now(),
+    //                                 y: followers
+    //                             });
+    //                         });
+    //                     }
+    //                 }
+    //             },
+    //             y: {
+    //                 beginAtZero: false,
+    //                 min: followers - 5,
+    //                 max: followers + 5,
+    //                 ticks: {
+    //                     stepSize: 5
+    //                 }
+    //             }
+    //         }
+    //     }
+    // };
+
+    // //слагаме статистиката в html елемента
+    // const myChart = new Chart(
+    //     document.getElementById('LiveLikesChart'),
+    //     config
+    // );
+
+    // function updateChart(){
+    //     myChart.data.datasets[0].data = [12,22];
+
+    //     myChart.update();
+    // }
 
     //Харесвания
     new Chart(document.getElementById('LikesChart'), {
