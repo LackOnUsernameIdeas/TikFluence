@@ -309,7 +309,7 @@
                         <?php $influencedSongsData[] = $db->findSongAndSongsTodayDataById($songId) ?>
                     <?php endforeach;?>
 
-                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12" onClick="window.location.href=`./pages/influencedSong.php?sid=<?= $influencedSongsData[0]["song_id"] ?>`">
                             <div class="info-box bg-green hover-expand-effect">
                                 <div class="icon">
                                     <i class="material-icons">filter_1</i>
@@ -321,7 +321,7 @@
                             </div>
                         </div>
 
-                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12" onClick="window.location.href=`./pages/influencedSong.php?sid=<?= $influencedSongsData[1]["song_id"] ?>`">
                             <div class="info-box bg-yellow hover-expand-effect">
                                 <div class="icon">
                                     <i class="material-icons">filter_2</i>
@@ -333,7 +333,7 @@
                             </div>
                         </div>
 
-                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12" onClick="window.location.href=`./pages/influencedSong.php?sid=<?= $influencedSongsData[2]["song_id"] ?>`">
                             <div class="info-box bg-red hover-expand-effect">
                                 <div class="icon">
                                     <i class="material-icons">filter_3</i>

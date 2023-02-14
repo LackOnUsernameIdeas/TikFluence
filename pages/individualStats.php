@@ -297,7 +297,116 @@ $reqCallbackState = uniqid();
                 </div>
 
                 <?php if(!isset($_GET["code"])): ?>
-                    <a href='https://www.tiktok.com/auth/authorize/?client_key=awntkz3ma9o5eetl&scope=user.info.basic,video.list&response_type=code&redirect_uri=https://fluence.noit.eu/pages/individualStats.php&state=<?php echo $reqCallbackState ?>'>Continue with TikTok</a>
+
+                    <div class="row clearfix">
+
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="card">
+
+                                <div class="body">
+                                    <p class="lead">
+                                        В тази страница, имате възможността да видите статистиките на вашия собствен профил!
+                                    </p>
+                                    <p>
+                                        За да бъде максималко улеснено за вас, по-долу има предоставени стъпки за действие.
+                                    </p>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <a href='https://www.tiktok.com/auth/authorize/?client_key=awntkz3ma9o5eetl&scope=user.info.basic,video.list&response_type=code&redirect_uri=https://fluence.noit.eu/pages/individualStats.php&state=<?php echo $reqCallbackState ?>' target="_blank"><img src="../images/logInButton.png" style="border-radius:10px;"></a>
+                    <br>
+                    <br>
+
+                    <div class="row clearfix">
+
+                        <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                            <div class="card">
+                                <div class="header">
+                                    <h2>
+                                        <strong>1.</strong> След като натиснете бутонът над тази стъпка, вие бивате изпратени в страница, в която трябва да изберете по какъв начин да влезете във вашия профил в TikTok.
+                                    </h2>
+                                </div>
+                                <div class="body">
+                                    <img src="../images/firstStep.png" width="100%">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                            <div class="card">
+                                <div class="header">
+                                    <h2>
+                                        <strong>2.</strong> В случай че нямате профил в TikTok, трябва да натиснете опцията - "Sign up", оцветена в червено най-отдолу, за да си направите профил.
+                                    </h2>
+                                </div>
+                                <div class="body">
+                                    <img src="../images/secondStep.png" width="100%">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row clearfix">
+                        <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                            <div class="card">
+                                <div class="header">
+                                    <h2>
+                                        <strong>3.</strong> След като натиснете опцията - "Sign up", вие бивате изпратени в страница, в която си избирате начина на създаване на профил, който най-много ви устройва.
+                                    </h2>
+                                </div>
+                                <div class="body">
+                                    <img src="../images/thirdStep.png" width="100%">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                            <div class="card">
+                                <div class="header">
+                                    <h2>
+                                        <strong>4.</strong> Ако вече имате направен профил и сте избрали опцията - "Use phone / email / username" от стъпка <strong>1</strong>, вие бивате изпратени в страница, в която можете да влезете чрез телефонния ви номер. Можете и да изберете опцията да влезете чрез имейл или потребителско име, посочена със стрелка на снимката.
+                                    </h2>
+                                </div>
+                                <div class="body">
+                                    <img src="../images/fourthStep.png" width="100%">
+                                </div>
+                            </div>
+                        </div>
+                    </div>  
+
+                    <div class="row clearfix">
+                        <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                            <div class="card">
+                                <div class="header">
+                                    <h2>
+                                        <strong>5.</strong> Въвеждате вашите данни за имейл/потребителско име и парола и натискате - "Log in", за да влезете във вашия профил.
+                                    </h2>
+                                </div>
+                                <div class="body">
+                                    <img src="../images/fifthStep.png" width="100%">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                            <div class="card">
+                                <div class="header">
+                                    <h2>
+                                        <strong>6.</strong> След като успешно сте влезли в профила си, натискате на - "Authorize" като по този начин се съгласявате, че TikFluence може да използва вашите данни за статистики.
+                                    </h2>
+                                </div>
+                                <div class="body">
+                                    <img src="../images/sixthStep.png" width="100%">
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>  
+
+                    
                 <?php endif;?>
 
                 <?php if(isset($userMoreDescriptiveData) && $userMoreDescriptiveData != false && !isset($userMoreDescriptiveData["message"])): ?>
@@ -564,7 +673,7 @@ $reqCallbackState = uniqid();
                                                 <div class="body">
                                                     
                                                         <div class="image">
-                                                            <img src="<?php echo $userBasicData["avatarThumb"]?>" width="68" height="68" alt="User" />
+                                                            <img src="<?php echo $userBasicData["avatarLarger"]?>" width="68" height="68" alt="User" />
                                                         </div>
                                                         
                                                         <div class="info-container">
