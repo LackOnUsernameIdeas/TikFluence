@@ -13,7 +13,7 @@
     if(isset($_GET["code"])){
         $accessToken = generateTikTokAccessToken($_GET["code"]);
 
-        if($accesToken != false){
+        if($accessToken != false){
             $openUserId = getUserOpenId($accessToken);
 
             $usernameLink = generateTikTokUsername("https://open-api.tiktok.com/shortlink/profile/?open_id=$openUserId");
@@ -274,6 +274,19 @@ $reqCallbackState = uniqid();
                         </ol>
                     </div>
                 </div>
+
+                <?php if($accessToken != false): ?>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="card">
+
+                            <div class="body">
+                                <p class="lead">
+                                    За да видите отново вашите статистики, трябва да се върнете в страницата с бутона за влизане и пак да влезете в профила си!
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                <?php endif; ?>
 
                 <?php if(!isset($_GET["code"])): ?>
 
