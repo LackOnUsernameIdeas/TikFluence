@@ -13,7 +13,7 @@
     if(isset($_GET["code"])){
         $accessToken = generateTikTokAccessToken($_GET["code"]);
 
-        if($accesToken != false){
+        if($accessToken != false){
             $openUserId = getUserOpenId($accessToken);
 
             $usernameLink = generateTikTokUsername("https://open-api.tiktok.com/shortlink/profile/?open_id=$openUserId");
