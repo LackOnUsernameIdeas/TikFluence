@@ -18,6 +18,7 @@
 
     if($selectDate == "2023-01-13"){
         $selectDate = "2023-01-12";
+        $whyIsThis = true;
     }
 
     $fetchDatesForButton = $db->listDatesForCurrentTikToker($tid);
@@ -243,7 +244,7 @@
                         </div>
                     </div>
 
-                    <?php if($_SESSION["setDate"] == "2023-01-13"):?>
+                    <?php if(isset($whyIsThis) && $whyIsThis):?>
                         <div class="card">
                             <div class="body">
                                 <div class="block-header">
