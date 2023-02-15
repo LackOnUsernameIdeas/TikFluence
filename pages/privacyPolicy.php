@@ -1,174 +1,174 @@
-<h1>Privacy Policy</h1>
-<p>This Privacy Policy describes Our policies and procedures on the collection, use and disclosure of Your information when You use the Service and tells You about Your privacy rights and how the law protects You.</p>
-<p>We use Your Personal data to provide and improve the Service. By using the Service, You agree to the collection and use of information in accordance with this Privacy Policy. This Privacy Policy has been created with the help of the <a href="https://www.termsfeed.com/privacy-policy-generator/" target="_blank">TermsFeed Privacy Policy Generator</a>.</p>
-<h1>Interpretation and Definitions</h1>
-<h2>Interpretation</h2>
-<p>The words of which the initial letter is capitalized have meanings defined under the following conditions. The following definitions shall have the same meaning regardless of whether they appear in singular or in plural.</p>
-<h2>Definitions</h2>
-<p>For the purposes of this Privacy Policy:</p>
+<h1>Политика за поверителност</h1>
+<p>Настоящата Политика за поверителност описва нашите политики и процедури за събиране, използване и разкриване на Вашата информация, когато използвате Услугата, и Ви разказва за Вашите права на поверителност и за това как Ви защитава законът.</p>
+<p>Използваме Вашите Лични данни, за да предоставяме и подобряваме Услугата. Използвайки Услугата, Вие се съгласявате със събирането и използването на информация в съответствие с настоящата Политика за поверителност. Настоящата Политика за поверителност е създадена с помощта на <a href="https://www.termsfeed.com/privacy-policy-generator/" target="_blank">TermsFeed Privacy Policy Generator</a>.</p>
+<h1>Тълкуване и определения</h1>
+<h2>Тълкуване </h2>
+<p>Думите, чиито начални букви са изписани с главна буква, имат значения, определени при следните условия. Следните определения имат едно и също значение, независимо дали се срещат в единствено или в множествено число.</p>
+<h2>Определения</h2>
+<p>За целите на тази Политика за поверителност:</p>
 <ul>
 <li>
-<p><strong>Account</strong> means a unique account created for You to access our Service or parts of our Service.</p>
+<p><strong>Акаунт</strong> означава уникален акаунт, създаден за Вас за достъп до нашата Услуга или части от нея.</p>
 </li>
 <li>
-<p><strong>Company</strong> (referred to as either &quot;the Company&quot;, &quot;We&quot;, &quot;Us&quot; or &quot;Our&quot; in this Agreement) refers to tikFluence.</p>
+<p><strong>Дружеството</strong> (наричани или &quot;Дружеството&quot;, &quot;Ние&quot;, &quot;Нас&quot; или &quot;Нашият&quot; в настоящото Споразумение) се отнася до tikFluence.</p>
 </li>
 <li>
-<p><strong>Cookies</strong> are small files that are placed on Your computer, mobile device or any other device by a website, containing the details of Your browsing history on that website among its many uses.</p>
+<p><strong>Бисквитки</strong> са малки файлове, които се поставят на Вашия компютър, мобилно устройство или друго устройство от даден уебсайт и съдържат подробности за историята на Вашето сърфиране в този уебсайт, наред с многото други приложения.</p>
 </li>
 <li>
-<p><strong>Country</strong> refers to: Bulgaria</p>
+<p><strong>Страната</strong> се отнася до: България</p>
 </li>
 <li>
-<p><strong>Device</strong> means any device that can access the Service such as a computer, a cellphone or a digital tablet.</p>
+<p><strong>Устройство</strong> означава всяко устройство, което има достъп до Услугата, като например компютър, мобилен телефон или цифров таблет.</p>
 </li>
 <li>
-<p><strong>Personal Data</strong> is any information that relates to an identified or identifiable individual.</p>
+<p><strong>Лични данни</strong> е всяка информация, която се отнася до идентифицирано или подлежащо на идентифициране лице.</p>
 </li>
 <li>
-<p><strong>Service</strong> refers to the Website.</p>
+<p><strong>Услуга</strong> се отнася за Уебсайта.</p>
 </li>
 <li>
-<p><strong>Service Provider</strong> means any natural or legal person who processes the data on behalf of the Company. It refers to third-party companies or individuals employed by the Company to facilitate the Service, to provide the Service on behalf of the Company, to perform services related to the Service or to assist the Company in analyzing how the Service is used.</p>
+<p><strong>Доставчик на услуги</strong> означава всяко физическо или юридическо лице, което обработва данните от името на Дружеството. То се отнася до дружества или физически лица от трети страни, наети от Дружеството за улесняване на Услугата, за предоставяне на Услугата от името на Дружеството, за извършване на услуги, свързани с Услугата, или за подпомагане на Дружеството при анализа на начина на използване на Услугата.</p>
 </li>
 <li>
-<p><strong>Third-party Social Media Service</strong> refers to any website or any social network website through which a User can log in or create an account to use the Service.</p>
+<p><strong>Услуга на трета страна за социални медии</strong> се отнася до всеки уебсайт или уебсайт на социална мрежа, чрез който Потребителят може да влезе или да създаде акаунт, за да използва Услугата.</p>
 </li>
 <li>
 <p><strong>Usage Data</strong> refers to data collected automatically, either generated by the use of the Service or from the Service infrastructure itself (for example, the duration of a page visit).</p>
 </li>
 <li>
-<p><strong>Website</strong> refers to tikFluence, accessible from <a href="tiktok.noit.eu" rel="external nofollow noopener" target="_blank">tiktok.noit.eu</a></p>
+<p><strong>Уебсайтът</strong> се отнася до tikFluence, достъпен на <a href="fluence.noit.eu" rel="external nofollow noopener" target="_blank">fluence.noit.eu</a></p>
 </li>
 <li>
-<p><strong>You</strong> means the individual accessing or using the Service, or the company, or other legal entity on behalf of which such individual is accessing or using the Service, as applicable.</p>
+<p><strong>Вие</strong> означава физическото лице, което осъществява достъп до Услугата или я използва, или компанията, или друго юридическо лице, от името на което това лице осъществява достъп до Услугата или я използва, според случая.</p>
 </li>
 </ul>
-<h1>Collecting and Using Your Personal Data</h1>
-<h2>Types of Data Collected</h2>
-<h3>Personal Data</h3>
-<p>While using Our Service, We may ask You to provide Us with certain personally identifiable information that can be used to contact or identify You. Personally identifiable information may include, but is not limited to:</p>
+<h1>Събиране и използване на Вашите лични данни</h1>
+<h2>Видове събрани данни</h2>
+<h3>Лични данни</h3>
+<p>Докато използвате нашата Услуга, може да поискаме от Вас да ни предоставите определена лична информация, която може да бъде използвана за връзка с Вас или за идентифициране. Личната информация може да включва, но не се ограничава до:</p>
 <ul>
-<li>Usage Data</li>
+<li>Данни за използване</li>
 </ul>
-<h3>Usage Data</h3>
-<p>Usage Data is collected automatically when using the Service.</p>
-<p>Usage Data may include information such as Your Device's Internet Protocol address (e.g. IP address), browser type, browser version, the pages of our Service that You visit, the time and date of Your visit, the time spent on those pages, unique device identifiers and other diagnostic data.</p>
-<p>When You access the Service by or through a mobile device, We may collect certain information automatically, including, but not limited to, the type of mobile device You use, Your mobile device unique ID, the IP address of Your mobile device, Your mobile operating system, the type of mobile Internet browser You use, unique device identifiers and other diagnostic data.</p>
-<p>We may also collect information that Your browser sends whenever You visit our Service or when You access the Service by or through a mobile device.</p>
-<h3>Information from Third-Party Social Media Services</h3>
-<p>The Company allows You to create an account and log in to use the Service through the following Third-party Social Media Services:</p>
+<h3>Данни за използване</h3>
+<p>Данните за използване се събират автоматично при използване на Услугата.</p>
+<p>Данните за използване могат да включват информация като адреса на интернет протокола на Вашето устройство (напр. IP адрес), типа на браузъра, версията на браузъра, страниците на нашата Услуга, които посещавате, часа и датата на Вашето посещение, времето, прекарано на тези страници, уникални идентификатори на устройства и други диагностични данни.</p>
+<p>Когато осъществявате достъп до Услугата от или чрез мобилно устройство, Ние може да събираме определена информация автоматично, включително, но не само, вида на използваното от Вас мобилно устройство, уникалния идентификатор на мобилното Ви устройство, IP адреса на мобилното Ви устройство, мобилната Ви операционна система, вида на използвания от Вас мобилен интернет браузър, уникалните идентификатори на устройството и други диагностични данни.</p>
+<p>Възможно е също така да събираме информация, която Вашият браузър изпраща, когато посещавате нашата Услуга или когато получавате достъп до Услугата от или чрез мобилно устройство.</p>
+<h3>Информация от социални медийни услуги на трети страни</h3>
+<p>Дружеството Ви позволява да създадете акаунт и да влезете в профила си, за да използвате Услугата чрез следните Услуги за социални медии на трети страни:</p>
 <ul>
 <li>TikTok</li>
 </ul>
-<p>If You decide to register through or otherwise grant us access to a Third-Party Social Media Service, We may collect Personal data that is already associated with Your Third-Party Social Media Service's account, such as Your name, Your email address, Your activities or Your contact list associated with that account.</p>
-<p>You may also have the option of sharing additional information with the Company through Your Third-Party Social Media Service's account. If You choose to provide such information and Personal Data, during registration or otherwise, You are giving the Company permission to use, share, and store it in a manner consistent with this Privacy Policy.</p>
-<h3>Tracking Technologies and Cookies</h3>
-<p>We use Cookies and similar tracking technologies to track the activity on Our Service and store certain information. Tracking technologies used are beacons, tags, and scripts to collect and track information and to improve and analyze Our Service. The technologies We use may include:</p>
+<p>Ако решите да се регистрирате чрез или по друг начин да ни предоставите достъп до Услуга на социална медия на трета страна, ние може да събираме Лични данни, които вече са свързани с Вашия акаунт в Услугата на социална медия на трета страна, като например Вашето име, Вашия имейл адрес, Вашите дейности или Вашия списък с контакти, свързани с този акаунт.</p>
+<p>Възможно е също така да имате възможност да споделяте допълнителна информация с Дружеството чрез акаунта си в Услугата на трета страна за социални медии. Ако решите да предоставите такава информация и Лични данни по време на регистрацията или по друг начин, Вие давате разрешение на Дружеството да ги използва, споделя и съхранява по начин, съответстващ на настоящата Политика за поверителност.</p>
+<h3>Технологии за проследяване и бисквитки</h3>
+<p>Използваме "бисквитки" и подобни технологии за проследяване, за да проследяваме активността в Услугата ни и да съхраняваме определена информация. Използваните технологии за проследяване са маяци, тагове и скриптове за събиране и проследяване на информация и за подобряване и анализиране на Нашата услуга. Технологиите, които използваме, могат да включват:</p>
 <ul>
-<li><strong>Cookies or Browser Cookies.</strong> A cookie is a small file placed on Your Device. You can instruct Your browser to refuse all Cookies or to indicate when a Cookie is being sent. However, if You do not accept Cookies, You may not be able to use some parts of our Service. Unless you have adjusted Your browser setting so that it will refuse Cookies, our Service may use Cookies.</li>
-<li><strong>Web Beacons.</strong> Certain sections of our Service and our emails may contain small electronic files known as web beacons (also referred to as clear gifs, pixel tags, and single-pixel gifs) that permit the Company, for example, to count users who have visited those pages or opened an email and for other related website statistics (for example, recording the popularity of a certain section and verifying system and server integrity).</li>
+<li><strong>Бисквитки или Бисквитки на браузъра.</strong> Бисквитката е малък файл, който се поставя на Вашето устройство. Можете да инструктирате Вашия браузър да отказва всички "бисквитки" или да показва кога се изпраща "бисквитка". Въпреки това, ако не приемате Бисквитките, е възможно да не можете да използвате някои части от нашата Услуга. Освен ако не сте променили настройките на Вашия браузър така, че да отказва Бисквитки, нашата Услуга може да използва Бисквитки.</li>
+<li><strong>Пикселен маркер</strong> Някои раздели на нашата Услуга и нашите имейли могат да съдържат малки електронни файлове, известни като уеб маяци (наричани също ясни подаръци, пикселни маркери и еднопикселни подаръци), които позволяват на Дружеството например да брои потребителите, които са посетили тези страници или са отворили имейл, както и за други свързани със статистиката на уебсайта (например регистриране на популярността на определен раздел и проверка на целостта на системата и сървъра).</li>
 </ul>
-<p>Cookies can be &quot;Persistent&quot; or &quot;Session&quot; Cookies. Persistent Cookies remain on Your personal computer or mobile device when You go offline, while Session Cookies are deleted as soon as You close Your web browser. You can learn more about cookies on <a href="https://www.termsfeed.com/blog/cookies/#What_Are_Cookies" target="_blank">TermsFeed website</a> article.</p>
-<p>We use both Session and Persistent Cookies for the purposes set out below:</p>
+<p>Бисквитките могат да бъдат&quot;Постоянен&quot; или &quot;Сесия&quot; Бисквитки. Постоянните "бисквитки" остават на Вашия персонален компютър или мобилно устройство, когато сте офлайн, докато сесийните "бисквитки" се изтриват веднага щом затворите Вашия уеб браузър. Можете да научите повече за бисквитките на <a href="https://www.termsfeed.com/blog/cookies/#What_Are_Cookies" target="_blank">TermsFeed уебсайт</a> статия.</p>
+<p>Използваме както сесийни, така и постоянни бисквитки за целите, изложени по-долу:</p>
 <ul>
 <li>
-<p><strong>Necessary / Essential Cookies</strong></p>
-<p>Type: Session Cookies</p>
-<p>Administered by: Us</p>
-<p>Purpose: These Cookies are essential to provide You with services available through the Website and to enable You to use some of its features. They help to authenticate users and prevent fraudulent use of user accounts. Without these Cookies, the services that You have asked for cannot be provided, and We only use these Cookies to provide You with those services.</p>
+<p><strong>Необходими/съществени бисквитки</strong></p>
+<p>Тип: Сесийни бисквитки</p>
+<p>Администрира се от: Us</p>
+<p>Цел: Тези "бисквитки" са от съществено значение за предоставянето на услуги, достъпни чрез Уебсайта, и за да Ви позволят да използвате някои от неговите функции. Те помагат за удостоверяване на автентичността на потребителите и за предотвратяване на измамно използване на потребителски акаунти. Без тези Бисквитки услугите, които сте поискали, не могат да бъдат предоставени и Ние използваме тези Бисквитки само за да Ви предоставим тези услуги.</p>
 </li>
 <li>
-<p><strong>Cookies Policy / Notice Acceptance Cookies</strong></p>
-<p>Type: Persistent Cookies</p>
-<p>Administered by: Us</p>
-<p>Purpose: These Cookies identify if users have accepted the use of cookies on the Website.</p>
+<p><strong>Политика за бисквитките / Известие Приемане на бисквитките</strong></p>
+<p>Тип: Постоянни бисквитки</p>
+<p>Администрира се от: Us</p>
+<p>Цел: Тези "бисквитки" идентифицират дали потребителите са приели използването на "бисквитки" на Уебсайта.</p>
 </li>
 <li>
-<p><strong>Functionality Cookies</strong></p>
-<p>Type: Persistent Cookies</p>
-<p>Administered by: Us</p>
-<p>Purpose: These Cookies allow us to remember choices You make when You use the Website, such as remembering your login details or language preference. The purpose of these Cookies is to provide You with a more personal experience and to avoid You having to re-enter your preferences every time You use the Website.</p>
-</li>
-</ul>
-<p>For more information about the cookies we use and your choices regarding cookies, please visit our Cookies Policy or the Cookies section of our Privacy Policy.</p>
-<h2>Use of Your Personal Data</h2>
-<p>The Company may use Personal Data for the following purposes:</p>
-<ul>
-<li>
-<p><strong>To provide and maintain our Service</strong>, including to monitor the usage of our Service.</p>
-</li>
-<li>
-<p><strong>To manage Your Account:</strong> to manage Your registration as a user of the Service. The Personal Data You provide can give You access to different functionalities of the Service that are available to You as a registered user.</p>
-</li>
-<li>
-<p><strong>For the performance of a contract:</strong> the development, compliance and undertaking of the purchase contract for the products, items or services You have purchased or of any other contract with Us through the Service.</p>
-</li>
-<li>
-<p><strong>To contact You:</strong> To contact You by email, telephone calls, SMS, or other equivalent forms of electronic communication, such as a mobile application's push notifications regarding updates or informative communications related to the functionalities, products or contracted services, including the security updates, when necessary or reasonable for their implementation.</p>
-</li>
-<li>
-<p><strong>To provide You</strong> with news, special offers and general information about other goods, services and events which we offer that are similar to those that you have already purchased or enquired about unless You have opted not to receive such information.</p>
-</li>
-<li>
-<p><strong>To manage Your requests:</strong> To attend and manage Your requests to Us.</p>
-</li>
-<li>
-<p><strong>For business transfers:</strong> We may use Your information to evaluate or conduct a merger, divestiture, restructuring, reorganization, dissolution, or other sale or transfer of some or all of Our assets, whether as a going concern or as part of bankruptcy, liquidation, or similar proceeding, in which Personal Data held by Us about our Service users is among the assets transferred.</p>
-</li>
-<li>
-<p><strong>For other purposes</strong>: We may use Your information for other purposes, such as data analysis, identifying usage trends, determining the effectiveness of our promotional campaigns and to evaluate and improve our Service, products, services, marketing and your experience.</p>
+<p><strong>Функционални бисквитки</strong></p>
+<p>Тип: Постоянни бисквитки</p>
+<p>Администрира се от: Нас</p>
+<p>Цел: Тези бисквитки ни позволяват да запомним изборите, които правите, когато използвате Уебсайта, като например запомняне на данните Ви за вход или езиковите Ви предпочитания. Целта на тези Бисквитки е да Ви предоставим по-персонално преживяване и да избегнем необходимостта да въвеждате отново предпочитанията си всеки път, когато използвате Уебсайта.</p>
 </li>
 </ul>
-<p>We may share Your personal information in the following situations:</p>
+<p>За повече информация относно бисквитките, които използваме, и вашия избор по отношение на бисквитките, моля, посетете нашата Политика за бисквитките или раздел "Бисквитки" в нашата Политика за поверителност.</p>
+<h2>Използване на Вашите лични данни</h2>
+<p>Дружеството може да използва Лични данни за следните цели:</p>
 <ul>
-<li><strong>With Service Providers:</strong> We may share Your personal information with Service Providers to monitor and analyze the use of our Service, to contact You.</li>
-<li><strong>For business transfers:</strong> We may share or transfer Your personal information in connection with, or during negotiations of, any merger, sale of Company assets, financing, or acquisition of all or a portion of Our business to another company.</li>
-<li><strong>With Affiliates:</strong> We may share Your information with Our affiliates, in which case we will require those affiliates to honor this Privacy Policy. Affiliates include Our parent company and any other subsidiaries, joint venture partners or other companies that We control or that are under common control with Us.</li>
-<li><strong>With business partners:</strong> We may share Your information with Our business partners to offer You certain products, services or promotions.</li>
-<li><strong>With other users:</strong> when You share personal information or otherwise interact in the public areas with other users, such information may be viewed by all users and may be publicly distributed outside. If You interact with other users or register through a Third-Party Social Media Service, Your contacts on the Third-Party Social Media Service may see Your name, profile, pictures and description of Your activity. Similarly, other users will be able to view descriptions of Your activity, communicate with You and view Your profile.</li>
-<li><strong>With Your consent</strong>: We may disclose Your personal information for any other purpose with Your consent.</li>
+<li>
+<p><strong>Да предоставяме и поддържаме нашата услуга</strong>, включително за наблюдение на използването на нашата Услуга.</p>
+</li>
+<li>
+<p><strong>За управление на Вашия акаунт:</strong> за управление на Вашата регистрация като потребител на Услугата. Предоставените от Вас лични данни могат да Ви дадат достъп до различни функционалности на Услугата, които са достъпни за Вас като регистриран потребител.</p>
+</li>
+<li>
+<p><strong>За изпълнение на договор:</strong> разработването, спазването и изпълнението на договора за покупка на продукти, артикули или услуги, които сте закупили, или на всеки друг договор, сключен с нас чрез Услугата.</p>
+</li>
+<li>
+<p><strong>За да се свържем с Вас:</strong> Да се свързваме с Вас чрез електронна поща, телефонни обаждания, SMS или други еквивалентни форми на електронна комуникация, като например известия за натискане на мобилно приложение относно актуализации или информационни съобщения, свързани с функционалностите, продуктите или договорените услуги, включително актуализации на сигурността, когато това е необходимо или разумно за тяхното изпълнение.</p>
+</li>
+<li>
+<p><strong>За да Ви предоставим</strong> с новини, специални оферти и обща информация за други стоки, услуги и събития, които предлагаме и които са подобни на тези, които вече сте закупили или за които сте направили запитване, освен ако не сте избрали да не получавате такава информация.</p>
+</li>
+<li>
+<p><strong>За да управляваме Вашите заявки:</strong>  За да обслужваме и управляваме Вашите заявки към Нас.</p>
+</li>
+<li>
+<p><strong>За бизнес трансфери:</strong> Можем да използваме Вашата информация, за да оценим или проведем сливане, продажба, преструктуриране, реорганизация, разпускане или друга продажба или прехвърляне на някои или всички Наши активи, независимо дали като действащо предприятие или като част от процедура по несъстоятелност, ликвидация или друга подобна процедура, при която Личните данни, съхранявани от Нас за потребителите на нашите Услуги, са сред прехвърлените активи.</p>
+</li>
+<li>
+<p><strong>За други цели</strong>: Можем да използваме Вашата информация за други цели, като например анализ на данни, идентифициране на тенденции в използването, определяне на ефективността на нашите промоционални кампании, както и за оценка и подобряване на нашата Услуга, продукти, услуги, маркетинг и Вашето преживяване.</p>
+</li>
 </ul>
-<h2>Retention of Your Personal Data</h2>
-<p>The Company will retain Your Personal Data only for as long as is necessary for the purposes set out in this Privacy Policy. We will retain and use Your Personal Data to the extent necessary to comply with our legal obligations (for example, if we are required to retain your data to comply with applicable laws), resolve disputes, and enforce our legal agreements and policies.</p>
-<p>The Company will also retain Usage Data for internal analysis purposes. Usage Data is generally retained for a shorter period of time, except when this data is used to strengthen the security or to improve the functionality of Our Service, or We are legally obligated to retain this data for longer time periods.</p>
-<h2>Transfer of Your Personal Data</h2>
-<p>Your information, including Personal Data, is processed at the Company's operating offices and in any other places where the parties involved in the processing are located. It means that this information may be transferred to — and maintained on — computers located outside of Your state, province, country or other governmental jurisdiction where the data protection laws may differ than those from Your jurisdiction.</p>
-<p>Your consent to this Privacy Policy followed by Your submission of such information represents Your agreement to that transfer.</p>
-<p>The Company will take all steps reasonably necessary to ensure that Your data is treated securely and in accordance with this Privacy Policy and no transfer of Your Personal Data will take place to an organization or a country unless there are adequate controls in place including the security of Your data and other personal information.</p>
-<h2>Delete Your Personal Data</h2>
-<p>You have the right to delete or request that We assist in deleting the Personal Data that We have collected about You.</p>
-<p>Our Service may give You the ability to delete certain information about You from within the Service.</p>
-<p>You may update, amend, or delete Your information at any time by signing in to Your Account, if you have one, and visiting the account settings section that allows you to manage Your personal information. You may also contact Us to request access to, correct, or delete any personal information that You have provided to Us.</p>
-<p>Please note, however, that We may need to retain certain information when we have a legal obligation or lawful basis to do so.</p>
-<h2>Disclosure of Your Personal Data</h2>
-<h3>Business Transactions</h3>
-<p>If the Company is involved in a merger, acquisition or asset sale, Your Personal Data may be transferred. We will provide notice before Your Personal Data is transferred and becomes subject to a different Privacy Policy.</p>
-<h3>Law enforcement</h3>
-<p>Under certain circumstances, the Company may be required to disclose Your Personal Data if required to do so by law or in response to valid requests by public authorities (e.g. a court or a government agency).</p>
-<h3>Other legal requirements</h3>
-<p>The Company may disclose Your Personal Data in the good faith belief that such action is necessary to:</p>
+<p>Можем да споделяме Вашата лична информация в следните ситуации:</p>
 <ul>
-<li>Comply with a legal obligation</li>
-<li>Protect and defend the rights or property of the Company</li>
-<li>Prevent or investigate possible wrongdoing in connection with the Service</li>
-<li>Protect the personal safety of Users of the Service or the public</li>
-<li>Protect against legal liability</li>
+<li><strong>С доставчиците на услуги:</strong> Можем да споделяме Вашата лична информация с Доставчици на услуги, за да наблюдаваме и анализираме използването на нашата Услуга, да се свързваме с Вас.</li>
+<li><strong>За бизнес трансфери:</strong> Можем да споделим или да прехвърлим Вашата лична информация във връзка с или по време на преговори за сливане, продажба на активи на Компанията, финансиране или придобиване на целия или част от нашия бизнес от друга компания.</li>
+<li><strong>С партньори:</strong> Възможно е да споделим Вашата информация с Наши партньори, като в този случай ще изискаме от тях да спазват тази Политика за поверителност. Свързаните дружества включват Нашата компания майка и всички други дъщерни дружества, партньори в съвместни предприятия или други компании, които контролираме или които са под общ контрол с Нас.</li>
+<li><strong>С бизнес партньори:</strong> Възможно е да споделим Вашата информация с Наши бизнес партньори, за да Ви предложим определени продукти, услуги или промоции.</li>
+<li><strong>С други потребители:</strong> Когато споделяте лична информация или взаимодействате по друг начин в публичните зони с други потребители, тази информация може да бъде видяна от всички потребители и да бъде публично разпространена навън. Ако взаимодействате с други потребители или се регистрирате чрез Услуга на трета страна в социална медия, Вашите контакти в Услугата на трета страна в социална медия могат да видят Вашето име, профил, снимки и описание на Вашата дейност. По същия начин други потребители ще могат да виждат описания на Вашата дейност, да общуват с Вас и да разглеждат Вашия профил.</li>
+<li><strong>С Вашето съгласие</strong>: Можем да разкрием Вашата лична информация за всякакви други цели с Вашето съгласие.</li>
 </ul>
-<h2>Security of Your Personal Data</h2>
-<p>The security of Your Personal Data is important to Us, but remember that no method of transmission over the Internet, or method of electronic storage is 100% secure. While We strive to use commercially acceptable means to protect Your Personal Data, We cannot guarantee its absolute security.</p>
-<h1>Children's Privacy</h1>
-<p>Our Service does not address anyone under the age of 13. We do not knowingly collect personally identifiable information from anyone under the age of 13. If You are a parent or guardian and You are aware that Your child has provided Us with Personal Data, please contact Us. If We become aware that We have collected Personal Data from anyone under the age of 13 without verification of parental consent, We take steps to remove that information from Our servers.</p>
-<p>If We need to rely on consent as a legal basis for processing Your information and Your country requires consent from a parent, We may require Your parent's consent before We collect and use that information.</p>
-<h1>Links to Other Websites</h1>
-<p>Our Service may contain links to other websites that are not operated by Us. If You click on a third party link, You will be directed to that third party's site. We strongly advise You to review the Privacy Policy of every site You visit.</p>
-<p>We have no control over and assume no responsibility for the content, privacy policies or practices of any third party sites or services.</p>
-<h1>Changes to this Privacy Policy</h1>
-<p>We may update Our Privacy Policy from time to time. We will notify You of any changes by posting the new Privacy Policy on this page.</p>
-<p>We will let You know via email and/or a prominent notice on Our Service, prior to the change becoming effective and update the &quot;Last updated&quot; date at the top of this Privacy Policy.</p>
-<p>You are advised to review this Privacy Policy periodically for any changes. Changes to this Privacy Policy are effective when they are posted on this page.</p>
-<h1>Contact Us</h1>
-<p>If you have any questions about this Privacy Policy, You can contact us:</p>
+<h2>Запазване на Вашите лични данни</h2>
+<p>Дружеството ще съхранява Вашите Лични данни само толкова дълго, колкото е необходимо за целите, посочени в настоящата Политика за поверителност. Ние ще запазим и използваме Вашите Лични данни до степента, необходима за изпълнение на нашите правни задължения (например, ако сме длъжни да запазим Вашите данни, за да спазим приложимите закони), за разрешаване на спорове и за прилагане на нашите правни споразумения и политики.</p>
+<p>Дружеството също така запазва Данни за използване за целите на вътрешен анализ. Данните за ползване обикновено се съхраняват за по-кратък период от време, освен когато тези данни се използват за укрепване на сигурността или подобряване на функционалността на Нашата услуга или когато сме законово задължени да съхраняваме тези данни за по-дълъг период от време.</p>
+<h2>Прехвърляне на Вашите лични данни</h2>
+<p>Вашата информация, включително Лични данни, се обработва в оперативните офиси на Дружеството и на всички други места, където се намират страните, участващи в обработката. Това означава, че тази информация може да бъде прехвърлена към - и поддържана на - компютри, разположени извън Вашия щат, провинция, страна или друга правителствена юрисдикция, където законите за защита на данните могат да се различават от тези на Вашата юрисдикция.</p>
+<p>Съгласието Ви с тази Политика за поверителност, последвано от предоставянето на такава информация, представлява Вашето съгласие с това прехвърляне..</p>
+<p>Дружеството ще предприеме всички разумно необходими стъпки, за да гарантира, че Вашите данни се обработват сигурно и в съответствие с тази Политика за поверителност, и няма да се извършва прехвърляне на Вашите лични данни към организация или държава, освен ако не са въведени адекватни мерки за контрол, включително сигурността на Вашите данни и друга лична информация.</p>
+<h2>Изтриване на Вашите лични данни</h2>
+<p>Имате право да изтриете или да поискате от Нас да Ви помогнем да изтриете Личните данни, които сме събрали за Вас.</p>
+<p>Нашата Услуга може да Ви даде възможност да изтриете определена информация за Вас в рамките на Услугата.</p>
+<p>Можете да актуализирате, променяте или изтривате информацията си по всяко време, като влезете в профила си, ако имате такъв, и посетите раздела с настройки на профила, който ви позволява да управлявате личната си информация. Можете също така да се свържете с Нас, за да поискате достъп, да коригирате или да изтриете лична информация, която сте ни предоставили.</p>
+<p>Все пак имайте предвид, че може да се наложи да запазим определена информация, когато имаме правно задължение или законно основание да го направим.</p>
+<h2>Разкриване на Вашите лични данни</h2>
+<h3>Бизнес транзакции</h3>
+<p>Ако Дружеството участва в сливане, придобиване или продажба на активи, Вашите Лични данни могат да бъдат прехвърлени. Ние ще Ви уведомим преди прехвърлянето на Вашите Лични данни, които стават обект на различна Политика за поверителност.</p>
+<h3>Правоприлагане</h3>
+<p>При определени обстоятелства Дружеството може да бъде задължено да разкрие Вашите Лични данни, ако това се изисква по закон или в отговор на валидни искания от публични органи (напр. съд или държавна агенция).При определени обстоятелства Дружеството може да бъде задължено да разкрие Вашите Лични данни, ако това се изисква по закон или в отговор на валидни искания от публични органи (напр. съд или държавна агенция).</p>
+<h3>Други законови изисквания</h3>
+<p>Дружеството може да разкрие Вашите Лични данни при добросъвестно убеждение, че такова действие е необходимо, за да:</p>
 <ul>
-<li>By email: kaloyan.kostadinov2007@abv.bg</li>
+<li>Спазване на правно задължение</li>
+<li>Защита и защита на правата или собствеността на Дружеството</li>
+<li>Предотвратяване или разследване на възможни нарушения във връзка с Услугата</li>
+<li>защита на личната безопасност на Потребителите на услугата или на обществеността</li>
+<li>Защита от правна отговорност</li>
+</ul>
+<h2>Сигурност на Вашите лични данни</h2>
+<p>Сигурността на Вашите Лични данни е важна за Нас, но не забравяйте, че нито един метод на предаване по интернет или метод на електронно съхранение не е 100% сигурен. Въпреки че се стремим да използваме търговски приемливи средства за защита на Вашите Лични данни, не можем да гарантираме абсолютната им сигурност.</p>
+<h1>Поверителност на децата</h1>
+<p>Услугата ни не е предназначена за лица под 13-годишна възраст. Ние не събираме съзнателно лична информация от лица под 13-годишна възраст. Ако сте родител или настойник и знаете, че Вашето дете ни е предоставило лични данни, моля, свържете се с Нас. Ако узнаем, че сме събрали Лични данни от лица под 13-годишна възраст без проверка на родителското съгласие, Ние предприемаме стъпки за премахване на тази информация от Нашите сървъри.</p>
+<p>Ако трябва да разчитаме на съгласие като правно основание за обработване на Вашата информация и Вашата държава изисква съгласие от родител, можем да поискаме съгласието на Вашия родител, преди да събираме и използваме тази информация.</p>
+<h1>Връзки към други уебсайтове</h1>
+<p>Нашата Услуга може да съдържа връзки към други уебсайтове, които не се управляват от Нас. Ако кликнете върху връзка на трета страна, ще бъдете пренасочени към сайта на тази трета страна. Настоятелно Ви съветваме да преглеждате Политиката за поверителност на всеки сайт, който посещавате.</p>
+<p>Нямаме контрол и не поемаме отговорност за съдържанието, политиките за поверителност или практиките на сайтове или услуги на трети страни.</p>
+<h1>Промени в тази Политика за поверителност</h1>
+<p>Можем да актуализираме Политиката си за поверителност от време на време. Ние ще Ви уведомим за всички промени, като публикуваме новата Политика за поверителност на тази страница.</p>
+<p>Преди промяната да влезе в сила, ние ще Ви уведомим за това по имейл и/или на видно място в нашата услуга и ще актуализираме &quot;Последна актуализация&quot; датата в горната част на настоящата Политика за поверителност.</p>
+<p>Препоръчваме ви периодично да преглеждате тази Политика за поверителност за евентуални промени. Промените в тази Политика за поверителност влизат в сила от момента на публикуването им на тази страница.</p>
+<h1>Свържете се с нас</h1>
+<p>Ако имате въпроси относно тази Политика за поверителност, можете да се свържете с нас:</p>
+<ul>
+<li>По имейл: kaloyan.kostadinov2007@abv.bg</li>
 </ul>

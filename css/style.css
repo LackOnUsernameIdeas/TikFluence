@@ -2490,7 +2490,7 @@ section.content {
   -ms-border-radius: 2px;
   border-radius: 2px;
   border: none;
-  font-size: 18px;
+  font-size: 16px;
   outline: none; }
   .btn:not(.btn-link):not(.btn-circle):hover {
     outline: none; }
@@ -2991,7 +2991,7 @@ section.content {
     .card .header .col-xs-12 h2 {
       margin-top: 5px; }
   .card .body {
-    font-size: 14px;
+    font-size: 16px;
     color: #555;
     padding: 20px; }
     .card .body .col-xs-1,

@@ -195,10 +195,10 @@ if($_POST) {
             <!-- Footer -->
             <div class="legal">
                 <div class="copyright">
-                    <a href="javascript:void(0);"><a href="pages/privacyPolicy.php">Privacy Policy</a> ,</a>
+                    <a href="javascript:void(0);"><a href="privacyPolicy.php">Политика за поверителност</a> ,</a>
                 </div>
                 <div class="copyright">
-                    <a href="javascript:void(0);"><a href="pages/termsAndConditions.php">Terms and Conditions</a></a>
+                    <a href="javascript:void(0);"><a href="termsAndConditions.php">Правила и Условия</a></a>
                 </div>
             </div>
             <!-- #Footer -->
@@ -279,7 +279,7 @@ if($_POST) {
                                                         <textarea class="form-control" rows="8" id="message" name="message" placeholder="Напиши съобщение" required=""></textarea>
                                                     </div>
                                                     
-                                                    <button type="submit" class="btn btn-primary sent-butnn btn-lg">Изпрати</button>
+                                                    <button type="submit" class="btn btn-primary sent-butnn btn-lg" style="font-size:18px;">Изпрати</button>
 
                                                 </form>
                                             </div>

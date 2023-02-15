@@ -153,10 +153,10 @@
             <!-- Footer -->
             <div class="legal">
                 <div class="copyright">
-                    <a href="javascript:void(0);"><a href="privacyPolicy.php">Privacy Policy</a> ,</a>
+                    <a href="javascript:void(0);"><a href="privacyPolicy.php">Политика за поверителност</a> ,</a>
                 </div>
                 <div class="copyright">
-                    <a href="javascript:void(0);"><a href="termsAndConditions.php">Terms and Conditions</a></a>
+                    <a href="javascript:void(0);"><a href="termsAndConditions.php">Правила и Условия</a></a>
                 </div>
             </div>
             <!-- #Footer -->
@@ -203,18 +203,6 @@
                                 <h2>
                                     ТОП TIKTOK ПЕСНИ ЗА БЪЛГАРИЯ
                                 </h2>
-                                <ul class="header-dropdown m-r--5">
-                                    <li class="dropdown">
-                                        <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                            <i class="material-icons">more_vert</i>
-                                        </a>
-                                        <ul class="dropdown-menu pull-right">
-                                            <li><a href="javascript:void(0);">Action</a></li>
-                                            <li><a href="javascript:void(0);">Another action</a></li>
-                                            <li><a href="javascript:void(0);">Something else here</a></li>
-                                        </ul>
-                                    </li>
-                                </ul>
                             </div>
                             <div class="body">
                                 <div class="table-responsive">
@@ -262,18 +250,6 @@
                                 <h2>
                                     СРАВНЕНИЕ МЕЖДУ ПЪРВИТЕ 10 ПЕСНИ
                                 </h2>
-                                <ul class="header-dropdown m-r--5">
-                                    <li class="dropdown">
-                                        <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                            <i class="material-icons">more_vert</i>
-                                        </a>
-                                        <ul class="dropdown-menu pull-right">
-                                            <li><a href="javascript:void(0);">Action</a></li>
-                                            <li><a href="javascript:void(0);">Another action</a></li>
-                                            <li><a href="javascript:void(0);">Something else here</a></li>
-                                        </ul>
-                                    </li>
-                                </ul>
                             </div>
                             <div class="body">
                                 <div class="body">

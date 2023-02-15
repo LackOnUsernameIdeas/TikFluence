@@ -20,7 +20,7 @@
         $username = explode("?", explode('@', $usernameLink)[1])[0];
     }
 
-    // $username = "kfw_goldstriker";
+    $username = null;
 
 
     if(isset($username)){
@@ -248,10 +248,10 @@ $reqCallbackState = uniqid();
             <!-- Footer -->
             <div class="legal">
                 <div class="copyright">
-                    <a href="javascript:void(0);"><a href="privacyPolicy.php">Privacy Policy</a> ,</a>
+                    <a href="javascript:void(0);"><a href="privacyPolicy.php">Политика за поверителност</a> ,</a>
                 </div>
                 <div class="copyright">
-                    <a href="javascript:void(0);"><a href="termsAndConditions.php">Terms and Conditions</a></a>
+                    <a href="javascript:void(0);"><a href="termsAndConditions.php">Правила и Условия</a></a>
                 </div>
             </div>
             <!-- #Footer -->
@@ -380,18 +380,6 @@ $reqCallbackState = uniqid();
                             <h2>
                                 wfwffwfwf                            
                             </h2>
-                            <ul class="header-dropdown m-r--5">
-                                <li class="dropdown">
-                                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                        <i class="material-icons">more_vert</i>
-                                    </a>
-                                    <ul class="dropdown-menu pull-right">
-                                        <li><a href="javascript:void(0);">Action</a></li>
-                                        <li><a href="javascript:void(0);">Another action</a></li>
-                                        <li><a href="javascript:void(0);">Something else here</a></li>
-                                    </ul>
-                                </li>
-                            </ul>
                         </div>
                         <div class="body">
                             <div class="content">
@@ -492,18 +480,6 @@ $reqCallbackState = uniqid();
                                     <h2>
                                         ХАРЕСВАНИЯ НА СКОРО КАЧЕНИ ВИДЕА
                                     </h2>
-                                    <ul class="header-dropdown m-r--5">
-                                        <li class="dropdown">
-                                            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                                <i class="material-icons">more_vert</i>
-                                            </a>
-                                            <ul class="dropdown-menu pull-right">
-                                                <li><a href="javascript:void(0);">Action</a></li>
-                                                <li><a href="javascript:void(0);">Another action</a></li>
-                                                <li><a href="javascript:void(0);">Something else here</a></li>
-                                            </ul>
-                                        </li>
-                                    </ul>
                                 </div>
                                 <div class="body">
                                     <div class="content">
@@ -519,18 +495,6 @@ $reqCallbackState = uniqid();
                                     <h2>
                                         ГЛЕДАНИЯ НА СКОРО КАЧЕНИ ВИДЕА
                                     </h2>
-                                    <ul class="header-dropdown m-r--5">
-                                        <li class="dropdown">
-                                            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                                <i class="material-icons">more_vert</i>
-                                            </a>
-                                            <ul class="dropdown-menu pull-right">
-                                                <li><a href="javascript:void(0);">Action</a></li>
-                                                <li><a href="javascript:void(0);">Another action</a></li>
-                                                <li><a href="javascript:void(0);">Something else here</a></li>
-                                            </ul>
-                                        </li>
-                                    </ul>
                                 </div>
                                 <div class="body">
                                     <div class="content">
@@ -546,18 +510,6 @@ $reqCallbackState = uniqid();
                                     <h2>
                                         СПОДЕЛЯНИЯ НА СКОРО КАЧЕНИ ВИДЕА
                                     </h2>
-                                    <ul class="header-dropdown m-r--5">
-                                        <li class="dropdown">
-                                            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                                <i class="material-icons">more_vert</i>
-                                            </a>
-                                            <ul class="dropdown-menu pull-right">
-                                                <li><a href="javascript:void(0);">Action</a></li>
-                                                <li><a href="javascript:void(0);">Another action</a></li>
-                                                <li><a href="javascript:void(0);">Something else here</a></li>
-                                            </ul>
-                                        </li>
-                                    </ul>
                                 </div>
                                 <div class="body">
                                     <div class="content">
@@ -573,18 +525,6 @@ $reqCallbackState = uniqid();
                                     <h2>
                                         КОМЕНТАРИ НА СКОРО КАЧЕНИ ВИДЕА
                                     </h2>
-                                    <ul class="header-dropdown m-r--5">
-                                        <li class="dropdown">
-                                            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                                <i class="material-icons">more_vert</i>
-                                            </a>
-                                            <ul class="dropdown-menu pull-right">
-                                                <li><a href="javascript:void(0);">Action</a></li>
-                                                <li><a href="javascript:void(0);">Another action</a></li>
-                                                <li><a href="javascript:void(0);">Something else here</a></li>
-                                            </ul>
-                                        </li>
-                                    </ul>
                                 </div>
                                 <div class="body">
                                     <div class="content">
@@ -600,18 +540,6 @@ $reqCallbackState = uniqid();
                                     <h2>
                                         НАЙ-ИЗПОЛЗВАНИТЕ ХАШТАГОВЕ ОТ <?php echo $username ?> (СПОРЕД ПОСЛЕДНИТЕ ВИДЕА)
                                     </h2>
-                                    <ul class="header-dropdown m-r--5">
-                                        <li class="dropdown">
-                                            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                                <i class="material-icons">more_vert</i>
-                                            </a>
-                                            <ul class="dropdown-menu pull-right">
-                                                <li><a href="javascript:void(0);">Action</a></li>
-                                                <li><a href="javascript:void(0);">Another action</a></li>
-                                                <li><a href="javascript:void(0);">Something else here</a></li>
-                                            </ul>
-                                        </li>
-                                    </ul>
                                 </div>
                                 <div class="body">
                                     <div class="content">
@@ -628,18 +556,6 @@ $reqCallbackState = uniqid();
                                     <h2>
                                         НАЙ-ОТБЕЛЯЗВАНИТЕ ПОТРЕБИТЕЛИ ОТ <?php echo $username ?> (СПОРЕД ПОСЛЕДНИТЕ ВИДЕА)
                                     </h2>
-                                    <ul class="header-dropdown m-r--5">
-                                        <li class="dropdown">
-                                            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                                <i class="material-icons">more_vert</i>
-                                            </a>
-                                            <ul class="dropdown-menu pull-right">
-                                                <li><a href="javascript:void(0);">Action</a></li>
-                                                <li><a href="javascript:void(0);">Another action</a></li>
-                                                <li><a href="javascript:void(0);">Something else here</a></li>
-                                            </ul>
-                                        </li>
-                                    </ul>
                                 </div>
                                 <div class="body">
                                     <div class="content">

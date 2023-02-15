@@ -248,10 +248,10 @@
             <!-- Footer -->
             <div class="legal">
                 <div class="copyright">
-                    <a href="javascript:void(0);"><a href="pages/privacyPolicy.php">Privacy Policy</a> ,</a>
+                    <a href="javascript:void(0);"><a href="pages/privacyPolicy.php">Политика за поверителност</a> ,</a>
                 </div>
                 <div class="copyright">
-                    <a href="javascript:void(0);"><a href="pages/termsAndConditions.php">Terms and Conditions</a></a>
+                    <a href="javascript:void(0);"><a href="pages/termsAndConditions.php">Правила и Условия</a></a>
                 </div>
             </div>
             <!-- #Footer -->
@@ -270,18 +270,6 @@
                             <h1>
                                 ДОБРЕ ДОШЛИ в TikFluence!
                             </h1>
-                            <ul class="header-dropdown m-r--5">
-                                <li class="dropdown">
-                                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                        <i class="material-icons">more_vert</i>
-                                    </a>
-                                    <ul class="dropdown-menu pull-right">
-                                        <li><a href="javascript:void(0);" class=" waves-effect waves-block">Action</a></li>
-                                        <li><a href="javascript:void(0);" class=" waves-effect waves-block">Another action</a></li>
-                                        <li><a href="javascript:void(0);" class=" waves-effect waves-block">Something else here</a></li>
-                                    </ul>
-                                </li>
-                            </ul>
                         </div>
                         <div class="body">
                             <p class="lead">
@@ -354,18 +342,6 @@
                 <div class="card">
                     <div class="header">
                         <h2>TikFluence засече тези най-повлияни от TikTok песни</h2>
-                        <ul class="header-dropdown m-r--5">
-                            <li class="dropdown">
-                                <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                    <i class="material-icons">more_vert</i>
-                                </a>
-                                <ul class="dropdown-menu pull-right">
-                                    <li><a href="javascript:void(0);" class=" waves-effect waves-block">Action</a></li>
-                                    <li><a href="javascript:void(0);" class=" waves-effect waves-block">Another action</a></li>
-                                    <li><a href="javascript:void(0);" class=" waves-effect waves-block">Something else here</a></li>
-                                </ul>
-                            </li>
-                        </ul>
                     </div>
                     <div class="body">
                         <div class="table-responsive">

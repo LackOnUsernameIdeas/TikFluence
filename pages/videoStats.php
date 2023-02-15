@@ -19,6 +19,7 @@
 
     if($selectDate == "2023-01-13"){
         $selectDate = "2023-01-12";
+        $whyIsThis = true;
     }
 
     $fetchDatesForButton = $db->listDatesForCurrentVideo($vid);
@@ -189,10 +190,10 @@
             <!-- Footer -->
             <div class="legal">
                 <div class="copyright">
-                    <a href="javascript:void(0);"><a href="privacyPolicy.php">Privacy Policy</a> ,</a>
+                    <a href="javascript:void(0);"><a href="privacyPolicy.php">Политика за поверителност</a> ,</a>
                 </div>
                 <div class="copyright">
-                    <a href="javascript:void(0);"><a href="termsAndConditions.php">Terms and Conditions</a></a>
+                    <a href="javascript:void(0);"><a href="termsAndConditions.php">Правила и Условия</a></a>
                 </div>
             </div>
             <!-- #Footer -->
@@ -238,7 +239,7 @@
                         </div>
                     </div>
 
-                    <?php if($_SESSION["setDate"] == "2023-01-13"):?>
+                    <?php if(isset($whyIsThis) && $whyIsThis):?>
                         <div class="card">
                             <div class="body">
                                 <div class="block-header">
@@ -298,18 +299,6 @@
                     <h2>
                         ИЗМЕНЕНИЕ НА ГЛЕДАНИЯТА НА ВИДЕОТО
                     </h2>
-                    <ul class="header-dropdown m-r--5">
-                        <li class="dropdown">
-                            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                <i class="material-icons">more_vert</i>
-                            </a>
-                            <ul class="dropdown-menu pull-right">
-                                <li><a href="javascript:void(0);">Action</a></li>
-                                <li><a href="javascript:void(0);">Another action</a></li>
-                                <li><a href="javascript:void(0);">Something else here</a></li>
-                            </ul>
-                        </li>
-                    </ul>
                 </div>
                 <div class="body">
                     <div class="content">
@@ -340,18 +329,6 @@
                     <h2>
                         ИЗМЕНЕНИЕ НА СПОДЕЛЯНИЯТА НА ВИДЕОТО
                     </h2>
-                    <ul class="header-dropdown m-r--5">
-                        <li class="dropdown">
-                            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                <i class="material-icons">more_vert</i>
-                            </a>
-                            <ul class="dropdown-menu pull-right">
-                                <li><a href="javascript:void(0);">Action</a></li>
-                                <li><a href="javascript:void(0);">Another action</a></li>
-                                <li><a href="javascript:void(0);">Something else here</a></li>
-                            </ul>
-                        </li>
-                    </ul>
                 </div>
                 <div class="body">
                     <div class="content">
@@ -367,18 +344,6 @@
                     <h2>
                         ИЗМЕНЕНИЕ НА ХАРЕСВАНИЯТА НА ВИДЕОТО
                     </h2>
-                    <ul class="header-dropdown m-r--5">
-                        <li class="dropdown">
-                            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                <i class="material-icons">more_vert</i>
-                            </a>
-                            <ul class="dropdown-menu pull-right">
-                                <li><a href="javascript:void(0);">Action</a></li>
-                                <li><a href="javascript:void(0);">Another action</a></li>
-                                <li><a href="javascript:void(0);">Something else here</a></li>
-                            </ul>
-                        </li>
-                    </ul>
                 </div>
                 <div class="body">
                     <div class="content">
