@@ -345,7 +345,7 @@
                     </div>
                     <div class="body">
                         <div class="table-responsive">
-                            <table class="table table-hover dashboard-task-infos">
+                            <table class="table table-hover dashboard-task-infos" style="font-size:14px;">
                                 <thead>
                                     <tr>
                                         <th>Ранг</th>
@@ -379,7 +379,7 @@
                                             <th><?= $songPeakDataSY["fetch_date"] ?></th>
                                             <th><?= $songLastSavedData["number_of_videos_last_14days"] ?></th>
                                             <th><?= $songLastSavedData["spotify_popularity"] ?></th>
-                                            <td><a href='./pages/influencedSong.php?sid=<?= $songData[0]["id"] ?>' class="btn bg-purple waves-effect">Вижте повече</a></td>
+                                            <td><a href='./pages/influencedSong.php?sid=<?= $songData[0]["id"] ?>' class="btn bg-purple waves-effect" style="font-size:14px;">Вижте повече</a></td>
                                             <!-- <td>
                                                 <div class="progress">
                                                     <div class="progress-bar bg-purple" role="progressbar" aria-valuenow="62" aria-valuemin="0" aria-valuemax="100" style="width: 62%"></div>
