@@ -338,7 +338,7 @@
                 <!-- #END# Widgets -->
             <?php endif;?>
 
-            <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8">
                 <div class="card">
                     <div class="header">
                         <h2>TikFluence засече тези най-повлияни от TikTok песни</h2>

@@ -377,7 +377,7 @@ function generateTikTokAccessToken($code){
 
     curl_close($ch);
 
-    return $decoded["data"]["access_token"];
+    return isset($decoded["data"]["access_token"]) : $decoded["data"]["access_token"] ? false;
 
 }
 

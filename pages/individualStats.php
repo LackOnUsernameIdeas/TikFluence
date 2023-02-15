@@ -10,17 +10,17 @@
     //Създаваме връзката с базата данни
     $db = new DatabaseManager();
 
-
     if(isset($_GET["code"])){
         $accessToken = generateTikTokAccessToken($_GET["code"]);
 
-        $openUserId = getUserOpenId($accessToken);
+        if($accesToken != false){
+            $openUserId = getUserOpenId($accessToken);
 
-        $usernameLink = generateTikTokUsername("https://open-api.tiktok.com/shortlink/profile/?open_id=$openUserId");
-        $username = explode("?", explode('@', $usernameLink)[1])[0];
+            $usernameLink = generateTikTokUsername("https://open-api.tiktok.com/shortlink/profile/?open_id=$openUserId");
+            $username = explode("?", explode('@', $usernameLink)[1])[0];
+        }
     }
 
-    $username = null;
 
 
     if(isset($username)){
