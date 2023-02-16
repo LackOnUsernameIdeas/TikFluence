@@ -125,7 +125,7 @@
     $todayYesterdayTTDataArray = [];
 
     foreach($ttLastTwoDaysPercents as $TT){
-        if($ttLastTwoDaysPercents[0] != null){
+        if($ttLastTwoDaysPercents[0] != null && $ttLastTwoDaysPercents[0] != 0){
             array_push($todayYesterdayTTDataArray, ($TT * 100)/$ttLastTwoDaysPercents[0]);
         } else {
             array_push($todayYesterdayTTDataArray, 0);
@@ -135,7 +135,7 @@
     $todayYesterdayYTDataArray = [];
 
     foreach($ytLastTwoDaysPercents as $YT){
-        if($ytLastTwoDaysPercents[0] != null){ 
+        if($ytLastTwoDaysPercents[0] != null && $ytLastTwoDaysPercents[0] != 0){ 
             array_push($todayYesterdayYTDataArray, ($YT * 100)/$ytLastTwoDaysPercents[0]);
         } else {
             array_push($todayYesterdayYTDataArray, 0);
@@ -145,10 +145,10 @@
     $todayYesterdaySYDataArray = [];
 
     foreach($syLastTwoDays as $SY){
-        if($syLastTwoDays[0] != null){ 
+        if($syLastTwoDays[0] != null && $syLastTwoDays[0] != 0){ 
             array_push($todayYesterdaySYDataArray, ($SY * 100)/$syLastTwoDays[0]);
         } else {
-            array_push($todayYesterdaySYDataArray, 0);
+            array_push($todayYesterdaySYDataArray, 4);
         }
     }
     
@@ -479,6 +479,7 @@
                 </div>
             </div>
 
+            <?php var_dump($todayYesterdaySYDataArray) ?>
             <?php if(count($ytNulls) != count($ytNums)):?>
                 <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
                     <div class="info-box bg-red hover-zoom-effect">
