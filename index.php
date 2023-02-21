@@ -10,12 +10,10 @@
     $hashtagsDataForTheLast7Days = fetchTopHashtagsForTheLast7Days();
     $hashtagsDataForTheLast120Days = fetchTopHashtagsForTheLast120Days();
 
-
-    $theFirstSongGlobal = $db->listTheFirstSongGlobal(date("Y-m-d"));
-    $theMostFollowedTikToker = $db->listTheFirstTikToker(date("Y-m-d"));
-    $theMostWatchedVideo = $db->listTheFirstVideo(date("Y-m-d"));
+    //Взимаме необходимите данни
 
 
+    //Осигуряваме си необходимите данни
     $hashtagsForTheLast7Days = [];
 
     for($i=0;$i<count($hashtagsDataForTheLast7Days);$i++){
@@ -34,6 +32,7 @@
         array_push($hashtagsForTheLast120Days, $hashtagsDataForTheLast120Days[$i]["hashtag_name"]);
     }
 
+    //Алгоритъм на нарастване
     function getPeaks($db){
         $songs = $db->listSongs();
 
@@ -60,6 +59,7 @@
 
     $peaksDatesTT = [];
 
+    //Алгоритъм на нарастване
     for($i=0;$i<count($peaksWithData);$i+=2){
 
         $datediff = isset($peaksWithData[$i]["Spotify"]["fetch_date"]) ? 
@@ -77,7 +77,7 @@
 
     arsort($songsWithDays);
 
-    //Взимаме данни за таблицата
+    //Приготвяме данни за таблицата
     foreach($songsWithDays as $key => $value){
         $datapoints = $db->getEveryDatapointForSong($key);
         
@@ -104,7 +104,7 @@
         }
     }
 
-    //Взимаме данни за widget-и
+    //Приготвяме данни за widget-и
     foreach($songsWithDaysForWidgets as $key => $value){
         $datapoints = $db->getEveryDatapointForSong($key);
         
@@ -287,56 +287,59 @@
             </div>
             <!-- #END# Body Copy -->
 
-            <?php if($theFirstSongGlobal && $theMostFollowedTikToker && $theMostWatchedVideo):?>
                 <div class="block-header">
                     <h2>ТОП 3 НА НАЙ-ПОВЛИЯНИТЕ ПЕСНИ ОТ TIKTOK ЗА ДНЕС И ВКЛЮЧЕНИ В ТОП 200 НА ПЛАТФОРМАТА И ТЕХНИТЕ ВИДЕА НАПРАВЕНИ НАСКОРО:</h2>
                 </div>
                 <!-- Widgets -->
 
-                    <?php foreach($songsWithDaysForWidgets as $songId => $days):?>
-                        <?php $influencedSongsData[] = $db->findSongAndSongsTodayDataById($songId) ?>
-                    <?php endforeach;?>
+                <?php foreach($songsWithDaysForWidgets as $songId => $days):?>
+                    <?php $influencedSongsData[] = $db->findSongAndSongsTodayDataById($songId) ?>
+                <?php endforeach;?>
 
-                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12" onClick="window.location.href=`./pages/influencedSong.php?sid=<?= $influencedSongsData[0]["song_id"] ?>`">
-                            <div class="info-box bg-green hover-expand-effect">
-                                <div class="icon">
-                                    <i class="material-icons">filter_1</i>
-                                </div>
-                                <div class="content">
-                                    <div class="text"><?= $influencedSongsData[0]["song_name"] ?></div>
-                                    <div class="number count-to" data-from="0" data-to="<?= $influencedSongsData[0]["number_of_videos_last_14days"] ?>" data-speed="3000" data-fresh-interval="20"></div>
-                                </div>
+                <?php if(isset($influencedSongsData[0])): ?>
+                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12" onClick="window.location.href=`./pages/influencedSong.php?sid=<?= $influencedSongsData[0]["song_id"] ?>`">
+                        <div class="info-box bg-green hover-expand-effect">
+                            <div class="icon">
+                                <i class="material-icons">filter_1</i>
+                            </div>
+                            <div class="content">
+                                <div class="text"><?= $influencedSongsData[0]["song_name"] ?></div>
+                                <div class="number count-to" data-from="0" data-to="<?= $influencedSongsData[0]["number_of_videos_last_14days"] ?>" data-speed="3000" data-fresh-interval="20"></div>
                             </div>
                         </div>
+                    </div>
+                <?php endif; ?>
 
-                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12" onClick="window.location.href=`./pages/influencedSong.php?sid=<?= $influencedSongsData[1]["song_id"] ?>`">
-                            <div class="info-box bg-yellow hover-expand-effect">
-                                <div class="icon">
-                                    <i class="material-icons">filter_2</i>
-                                </div>
-                                <div class="content">
-                                    <div class="text"><?= $influencedSongsData[1]["song_name"] ?></div>
-                                    <div class="number count-to" data-from="0" data-to="<?= $influencedSongsData[1]["number_of_videos_last_14days"] ?>" data-speed="3000" data-fresh-interval="20"></div>
-                                </div>
+                <?php if(isset($influencedSongsData[1])): ?>
+                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12" onClick="window.location.href=`./pages/influencedSong.php?sid=<?= $influencedSongsData[1]["song_id"] ?>`">
+                        <div class="info-box bg-yellow hover-expand-effect">
+                            <div class="icon">
+                                <i class="material-icons">filter_2</i>
+                            </div>
+                            <div class="content">
+                                <div class="text"><?= $influencedSongsData[1]["song_name"] ?></div>
+                                <div class="number count-to" data-from="0" data-to="<?= $influencedSongsData[1]["number_of_videos_last_14days"] ?>" data-speed="3000" data-fresh-interval="20"></div>
                             </div>
                         </div>
+                    </div>
+                <?php endif; ?>
 
-                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12" onClick="window.location.href=`./pages/influencedSong.php?sid=<?= $influencedSongsData[2]["song_id"] ?>`">
-                            <div class="info-box bg-red hover-expand-effect">
-                                <div class="icon">
-                                    <i class="material-icons">filter_3</i>
-                                </div>
-                                <div class="content">
-                                    <div class="text"><?= $influencedSongsData[2]["song_name"] ?></div>
-                                    <div class="number count-to" data-from="0" data-to="<?= $influencedSongsData[2]["number_of_videos_last_14days"] ?>" data-speed="3000" data-fresh-interval="20"></div>
-                                </div>
+                <?php if(isset($influencedSongsData[2])): ?>
+                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12" onClick="window.location.href=`./pages/influencedSong.php?sid=<?= $influencedSongsData[2]["song_id"] ?>`">
+                        <div class="info-box bg-red hover-expand-effect">
+                            <div class="icon">
+                                <i class="material-icons">filter_3</i>
+                            </div>
+                            <div class="content">
+                                <div class="text"><?= $influencedSongsData[2]["song_name"] ?></div>
+                                <div class="number count-to" data-from="0" data-to="<?= $influencedSongsData[2]["number_of_videos_last_14days"] ?>" data-speed="3000" data-fresh-interval="20"></div>
                             </div>
                         </div>
+                    </div>
+                <?php endif; ?>
 
-
-                </div>
-                <!-- #END# Widgets -->
-            <?php endif;?>
+            </div>
+            <!-- #END# Widgets -->
 
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8">
                 <div class="card">

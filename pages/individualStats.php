@@ -3,114 +3,115 @@
     // session_start();
 
     //Вмъкване на нужните файлове
-    include '../includes/databaseManager.php';
-    include '../includes/common.php';
-    include '../scraping/curlFunctions.php';
+        include '../includes/databaseManager.php';
+        include '../includes/common.php';
+        include '../scraping/curlFunctions.php';
 
     //Създаваме връзката с базата данни
-    $db = new DatabaseManager();
+        $db = new DatabaseManager();
 
-    if(isset($_GET["code"])){
-        $accessToken = generateTikTokAccessToken($_GET["code"]);
+    //Извличаме името от данните, които ни дава TikTok API
+        if(isset($_GET["code"])){
+            $accessToken = generateTikTokAccessToken($_GET["code"]);
 
-        if($accessToken != false){
-            $openUserId = getUserOpenId($accessToken);
+            //Генерираме си подробни данни за потребителя, ако профилът му не е заключен и има видеа
+            if($accessToken != false){
+                $openUserId = getUserOpenId($accessToken);
 
-            $usernameLink = generateTikTokUsername("https://open-api.tiktok.com/shortlink/profile/?open_id=$openUserId");
-            $username = explode("?", explode('@', $usernameLink)[1])[0];
-        }
-    }
-
-
-
-    if(isset($username)){
-        if($username != null){
-            $userMoreDescriptiveData = getUserMoreDescriptiveData($username);
-
-            if($userMoreDescriptiveData == false || isset($userMoreDescriptiveData["message"])){
-                $userBasicData = getUserData($username);
+                $usernameLink = generateTikTokUsername("https://open-api.tiktok.com/shortlink/profile/?open_id=$openUserId");
+                $username = explode("?", explode('@', $usernameLink)[1])[0];
             }
         }
-    }
+
+
+    //Извличаме името от данните, които ни дава TikTok API
+        if(isset($username)){
+            if($username != null){
+                $userMoreDescriptiveData = getUserMoreDescriptiveData($username);
+
+                //Генерираме си основни данни за потребителя, ако профилът му е заключен и има видеа
+                if($userMoreDescriptiveData == false || isset($userMoreDescriptiveData["message"])){
+                    $userBasicData = getUserData($username);
+                }
+            }
+        }
 
     //Взимаме информация за потребителя и я показваме
 
 
-    function getUserData($username){
-        //Взимаме id на потребителя за да можем да вземем информацията за него
-        $id = fetchTikTokUserId($username);
+        function getUserData($username){
+            //Взимаме id на потребителя за да можем да вземем информацията за него
+            $id = fetchTikTokUserId($username);
 
-        //Връщаме информацията за потребителя като краен резултат
-        return fetchTikTokUserData($id);
-    }
-
-    function getUserFollowers($username){
-        // //Взимаме id на потребителя за да можем да вземем информацията за него
-        // $id = fetchTikTokUserId($username);
-
-        // //Връщаме информацията за потребителя като краен резултат
-        // $userData = fetchTikTokUserData($id);
-
-        // return $userData["followerCount"];
-    }
-
-    function getUserMoreDescriptiveData($username){
-        //Взимаме id на потребителя за да можем да вземем информацията за него
-        $sec_uid = fetchTikTokUserSecUid($username);
-
-        //Връщаме информацията за потребителя като краен резултат
-        return fetchTikTokUserMoreDescriptiveData($sec_uid);
-
-    }
-
-    //Показваме профилната снимка на потребителя ако е въвел името си
-
-    $isVerified = false;
-
-    if(isset($userMoreDescriptiveData) && $userMoreDescriptiveData != false && !isset($userMoreDescriptiveData["message"])){
-        if($userMoreDescriptiveData["author"]["verified"] == true){
-            $isVerified = $userMoreDescriptiveData["author"]["verified"];
+            //Връщаме информацията за потребителя като краен резултат
+            return fetchTikTokUserData($id);
         }
 
-        $videosCount = [];
-        $videosPublishDates = [];
+        function getUserFollowers($username){
+            //Взимаме id на потребителя за да можем да вземем информацията за него
+            $id = fetchTikTokUserId($username);
 
-        $likes = [];
-        $views = [];
-        $shares = [];
-        $comments = [];
+            //Връщаме информацията за потребителя като краен резултат
+            $userData = fetchTikTokUserData($id);
 
-        for($i=0; $i<count($userMoreDescriptiveData["videos"]);$i++){
-            array_push($videosCount, $i + 1);
-
-            array_push($videosPublishDates, gmdate("Y-m-d", $userMoreDescriptiveData["videos"][$i]["create_date"]));
-
-            array_push($likes, $userMoreDescriptiveData["videos"][$i]["likes"]);
-            array_push($views, $userMoreDescriptiveData["videos"][$i]["plays"]);
-            array_push($shares, $userMoreDescriptiveData["videos"][$i]["shares"]);
-            array_push($comments, $userMoreDescriptiveData["videos"][$i]["comments"]);
+            return $userData["followerCount"];
         }
 
-        $hashtags = [];
-        $hashtagsTimesUsed = [];
+        function getUserMoreDescriptiveData($username){
+            //Взимаме id на потребителя за да можем да вземем информацията за него
+            $sec_uid = fetchTikTokUserSecUid($username);
 
-        foreach($userMoreDescriptiveData["hashtags"] as $ht){
-            $hashtags[] = $ht["name"];
-            $hashtagsTimesUsed[] = $ht["count"];
+            //Връщаме информацията за потребителя като краен резултат
+            return fetchTikTokUserMoreDescriptiveData($sec_uid);
+
         }
 
-        $mentions = [];
-        $timesPeopleAreMentioned = [];
+    //Показваме профилната снимка на потребителя ако е въвел името си. Подсигуряме си информацията за потребителя под формата на масиви.
+        $isVerified = false;
+        if(isset($userMoreDescriptiveData) && $userMoreDescriptiveData != false && !isset($userMoreDescriptiveData["message"])){
+            if($userMoreDescriptiveData["author"]["verified"] == true){
+                $isVerified = $userMoreDescriptiveData["author"]["verified"];
+            }
 
-        foreach($userMoreDescriptiveData["mentions"] as $ht){
-            $mentions[] = $ht["name"];
-            $timesPeopleAreMentioned[] = $ht["count"];
+            $videosCount = [];
+            $videosPublishDates = [];
+
+            $likes = [];
+            $views = [];
+            $shares = [];
+            $comments = [];
+
+            for($i=0; $i<count($userMoreDescriptiveData["videos"]);$i++){
+                array_push($videosCount, $i + 1);
+
+                array_push($videosPublishDates, gmdate("Y-m-d", $userMoreDescriptiveData["videos"][$i]["create_date"]));
+
+                array_push($likes, $userMoreDescriptiveData["videos"][$i]["likes"]);
+                array_push($views, $userMoreDescriptiveData["videos"][$i]["plays"]);
+                array_push($shares, $userMoreDescriptiveData["videos"][$i]["shares"]);
+                array_push($comments, $userMoreDescriptiveData["videos"][$i]["comments"]);
+            }
+
+            $hashtags = [];
+            $hashtagsTimesUsed = [];
+
+            foreach($userMoreDescriptiveData["hashtags"] as $ht){
+                $hashtags[] = $ht["name"];
+                $hashtagsTimesUsed[] = $ht["count"];
+            }
+
+            $mentions = [];
+            $timesPeopleAreMentioned = [];
+
+            foreach($userMoreDescriptiveData["mentions"] as $ht){
+                $mentions[] = $ht["name"];
+                $timesPeopleAreMentioned[] = $ht["count"];
+            }
+
         }
 
-    }
-
-
-$reqCallbackState = uniqid();
+    //С помощта на това id, потребителят е сигурен, че не злоупотребяваме с неговите данни
+        $reqCallbackState = uniqid();
 
 
 ?>
@@ -714,19 +715,19 @@ $reqCallbackState = uniqid();
 <script>
 
     //Данни за ползване
-    let videosCount =  JSON.parse('<?php echo json_encode($videosCount) ?>');
-    let videosPublishDates =  JSON.parse('<?php echo json_encode($videosPublishDates) ?>');
+        let videosCount =  JSON.parse('<?php echo json_encode($videosCount) ?>');
+        let videosPublishDates =  JSON.parse('<?php echo json_encode($videosPublishDates) ?>');
 
-    let likes =  JSON.parse('<?php echo json_encode($likes) ?>');
-    let views =  JSON.parse('<?php echo json_encode($views) ?>');
-    let comments =  JSON.parse('<?php echo json_encode($comments) ?>');
-    let shares =  JSON.parse('<?php echo json_encode($shares) ?>');
+        let likes =  JSON.parse('<?php echo json_encode($likes) ?>');
+        let views =  JSON.parse('<?php echo json_encode($views) ?>');
+        let comments =  JSON.parse('<?php echo json_encode($comments) ?>');
+        let shares =  JSON.parse('<?php echo json_encode($shares) ?>');
 
-    let hashtags = JSON.parse('<?php echo json_encode($hashtags) ?>');
-    let hashtagsTimesUsed = JSON.parse('<?php echo json_encode($hashtagsTimesUsed) ?>');
+        let hashtags = JSON.parse('<?php echo json_encode($hashtags) ?>');
+        let hashtagsTimesUsed = JSON.parse('<?php echo json_encode($hashtagsTimesUsed) ?>');
 
-    let mentions = JSON.parse('<?php echo json_encode($mentions) ?>');
-    let timesPeopleAreMentioned = JSON.parse('<?php echo json_encode($timesPeopleAreMentioned) ?>');
+        let mentions = JSON.parse('<?php echo json_encode($mentions) ?>');
+        let timesPeopleAreMentioned = JSON.parse('<?php echo json_encode($timesPeopleAreMentioned) ?>');
 
 
     // let followers = JSON.parse("<?php //echo json_encode(getUserFollowers($username)) ?>")
@@ -800,167 +801,167 @@ $reqCallbackState = uniqid();
     //     myChart.update();
     // }
 
-    //Харесвания
-    new Chart(document.getElementById('LikesChart'), {
-        type: 'bar',
-        data: {
-            labels: videosPublishDates, //x
-            datasets: [
-                {
-                    label: 'Харесвания',
-                    data: likes, //y
-                    borderColor: 'rgb(255, 240, 0)',
-                    backgroundColor: 'rgba(255, 240, 0, 0.7)',
-                    fill: true,
-                    tension: 0.4
-                }
-            ]
-        },
-        options: {
-            scales: {
-                y: {
-                    type: 'linear',
-                    display: true,
-                    position: "left"
+    //Статистика за харесвания
+        new Chart(document.getElementById('LikesChart'), {
+            type: 'bar',
+            data: {
+                labels: videosPublishDates, //x
+                datasets: [
+                    {
+                        label: 'Харесвания',
+                        data: likes, //y
+                        borderColor: 'rgb(255, 240, 0)',
+                        backgroundColor: 'rgba(255, 240, 0, 0.7)',
+                        fill: true,
+                        tension: 0.4
+                    }
+                ]
+            },
+            options: {
+                scales: {
+                    y: {
+                        type: 'linear',
+                        display: true,
+                        position: "left"
+                    }
                 }
             }
-        }
-    });
+        });
 
-    //Гледания
-    new Chart(document.getElementById('ViewsChart'), {
-        type: 'bar',
-        data: {
-            labels: videosPublishDates, //x
-            datasets: [
-                {
-                    label: 'Гледания',
-                    data: views, //y
-                    borderColor: 'rgb(159, 90, 253)',
-                    backgroundColor: 'rgba(159, 90, 253, 0.7)',
-                    fill: true,
-                    tension: 0.4
-                }
-            ]
-        },
-        options: {
-            scales: {
-                y: {
-                    type: 'linear',
-                    display: true,
-                    position: "left"
+    //Статистика за гледания
+        new Chart(document.getElementById('ViewsChart'), {
+            type: 'bar',
+            data: {
+                labels: videosPublishDates, //x
+                datasets: [
+                    {
+                        label: 'Гледания',
+                        data: views, //y
+                        borderColor: 'rgb(159, 90, 253)',
+                        backgroundColor: 'rgba(159, 90, 253, 0.7)',
+                        fill: true,
+                        tension: 0.4
+                    }
+                ]
+            },
+            options: {
+                scales: {
+                    y: {
+                        type: 'linear',
+                        display: true,
+                        position: "left"
+                    }
                 }
             }
-        }
-    });
+        });
 
-    //Споделяния
-    new Chart(document.getElementById('SharesChart'), {
-        type: 'bar',
-        data: {
-            labels: videosPublishDates, //x
-            datasets: [
-                {
-                    label: 'Споделяния',
-                    data: shares, //y
-                    borderColor: 'rgb(255, 0, 0)',
-                    backgroundColor: 'rgba(255, 0, 0, 0.7)',
-                    fill: true,
-                    tension: 0.4
-                }
-            ]
-        },
-        options: {
-            scales: {
-                y: {
-                    type: 'linear',
-                    display: true,
-                    position: "left"
+    //Статистика за споделяния
+        new Chart(document.getElementById('SharesChart'), {
+            type: 'bar',
+            data: {
+                labels: videosPublishDates, //x
+                datasets: [
+                    {
+                        label: 'Споделяния',
+                        data: shares, //y
+                        borderColor: 'rgb(255, 0, 0)',
+                        backgroundColor: 'rgba(255, 0, 0, 0.7)',
+                        fill: true,
+                        tension: 0.4
+                    }
+                ]
+            },
+            options: {
+                scales: {
+                    y: {
+                        type: 'linear',
+                        display: true,
+                        position: "left"
+                    }
                 }
             }
-        }
-    });
+        });
 
-    //Коментари
-    new Chart(document.getElementById('CommentsChart'), {
-        type: 'bar',
-        data: {
-            labels: videosPublishDates, //x
-            datasets: [
-                {
-                    label: 'Коментари',
-                    data: comments, //y
-                    borderColor: 'rgb(241, 90, 34)',
-                    backgroundColor: 'rgba(241, 90, 34, 0.7)',
-                    fill: true,
-                    tension: 0.4
-                }
-            ]
-        },
-        options: {
-            scales: {
-                y: {
-                    type: 'linear',
-                    display: true,
-                    position: "left"
+    //Статистика за коментари
+        new Chart(document.getElementById('CommentsChart'), {
+            type: 'bar',
+            data: {
+                labels: videosPublishDates, //x
+                datasets: [
+                    {
+                        label: 'Коментари',
+                        data: comments, //y
+                        borderColor: 'rgb(241, 90, 34)',
+                        backgroundColor: 'rgba(241, 90, 34, 0.7)',
+                        fill: true,
+                        tension: 0.4
+                    }
+                ]
+            },
+            options: {
+                scales: {
+                    y: {
+                        type: 'linear',
+                        display: true,
+                        position: "left"
+                    }
                 }
             }
-        }
-    });
+        });
 
-    //Хаштагове
-    new Chart(document.getElementById('HashtagsChart'), {
-        type: 'bar',
-        data: {
-            labels: hashtags, //x
-            datasets: [
-                {
-                    label: 'Хаштагове',
-                    data: hashtagsTimesUsed, //y
-                    borderColor: 'rgb(139, 69, 19)',
-                    backgroundColor: 'rgb(139, 69, 19, 0.7)',
-                    fill: true,
-                    tension: 0.4
-                }
-            ]
-        },
-        options: {
-            scales: {
-                y: {
-                    type: 'linear',
-                    display: true,
-                    position: "left"
+    //Статистика за хаштагове
+        new Chart(document.getElementById('HashtagsChart'), {
+            type: 'bar',
+            data: {
+                labels: hashtags, //x
+                datasets: [
+                    {
+                        label: 'Хаштагове',
+                        data: hashtagsTimesUsed, //y
+                        borderColor: 'rgb(139, 69, 19)',
+                        backgroundColor: 'rgb(139, 69, 19, 0.7)',
+                        fill: true,
+                        tension: 0.4
+                    }
+                ]
+            },
+            options: {
+                scales: {
+                    y: {
+                        type: 'linear',
+                        display: true,
+                        position: "left"
+                    }
                 }
             }
-        }
-    });
+        });
 
-    //Отбелязвания
-    new Chart(document.getElementById('MentionsChart'), {
-        type: 'bar',
-        data: {
-            labels: mentions, //x
-            datasets: [
-                {
-                    label: 'Отбелязвания',
-                    data: timesPeopleAreMentioned, //y
-                    borderColor: 'rgb(149, 53, 83)',
-                    backgroundColor: 'rgb(149, 53, 83)',
-                    fill: true,
-                    tension: 0.4
-                }
-            ]
-        },
-        options: {
-            scales: {
-                y: {
-                    type: 'linear',
-                    display: true,
-                    position: "left"
+    //Статистика за отбелязвания
+        new Chart(document.getElementById('MentionsChart'), {
+            type: 'bar',
+            data: {
+                labels: mentions, //x
+                datasets: [
+                    {
+                        label: 'Отбелязвания',
+                        data: timesPeopleAreMentioned, //y
+                        borderColor: 'rgb(149, 53, 83)',
+                        backgroundColor: 'rgb(149, 53, 83)',
+                        fill: true,
+                        tension: 0.4
+                    }
+                ]
+            },
+            options: {
+                scales: {
+                    y: {
+                        type: 'linear',
+                        display: true,
+                        position: "left"
+                    }
                 }
             }
-        }
-    });
+        });
 </script>
 
 <!-- Jquery Core Js -->

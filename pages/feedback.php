@@ -1,84 +1,86 @@
 <?php
 
-$siteOwnersEmail = 'kaloyan.kostadinov2007@gmail.com';
+//PHP код да изпращане на съобщение
+
+    $siteOwnersEmail = 'nemabizenesnemapari@gmail.com';
 
 
-if($_POST) {
+    if($_POST) {
 
-    $name = trim(stripslashes($_POST['first_name']));
-    $family = trim(stripslashes($_POST['last_name']));
-    $email = trim(stripslashes($_POST['email']));
-    // $subject = trim(stripslashes($_POST['school']));
-    $contact_message = trim(stripslashes($_POST['message']));
-    $error = [];
-
-
-    if (strlen($name) < 3) {
-        $error['name'] = "Въведете име.";
-    }
-
-    if (strlen($family) < 3) {
-        $error['family'] = "Въведете фамилия.";
-    }
-
-    if (!preg_match('/^[a-z0-9&\'\.\-_\+]+@[a-z0-9\-]+\.([a-z0-9\-]+\.)*+[a-z]{2}/is', $email)) {
-        $error['email'] = "Въведете валиден имейл адрес.";
-    }
-
-    if (strlen($contact_message) < 1) {
-        $error['message'] = "Моля въведете вашето съобщение. То не трябва да бъде повече от 100 символа.";
-    }
-
-    // if ($subject == '') {
-    //     $subject = "Contact Form Submission";
-    // }
-
-    $message = "";
-
-    $message .= "Имейл от: " . $name . "<br />";
-    $message .= "Имейл адрес: " . $email . "<br />";
-    $message .= "Съобщение: <br />";
-    $message .= $contact_message;
-    $message .= "<br /> ----- <br /> Този имейл беше изпратен от сайта 'Олимпиометър - ПГИ - гр.Перник '. <br />";
+        $name = trim(stripslashes($_POST['first_name']));
+        $family = trim(stripslashes($_POST['last_name']));
+        $email = trim(stripslashes($_POST['email']));
+        // $subject = trim(stripslashes($_POST['school']));
+        $contact_message = trim(stripslashes($_POST['message']));
+        $error = [];
 
 
-    $from =  $name . " <" . $email . ">";
-
-
-    $headers = "From: " . $from . "\r\n";
-    $headers .= "Reply-To: ". $email . "\r\n";
-    $headers .= "MIME-Version: 1.0\r\n";
-    $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
-
-    if (!$error) 
-    {
-        ini_set("sendmail_from", $siteOwnersEmail);
-        $mail = mail($siteOwnersEmail, $message, $headers); //, $subject
-
-        if ($mail) 
-        { 
-            echo "<div class='col-lg-6 col-md-6 col-sm-6 form-group contact-forms'>Вашето съобщение е изпратено.</div>"; 
-            
+        if (strlen($name) < 3) {
+            $error['name'] = "Въведете име.";
         }
-        
+
+        if (strlen($family) < 3) {
+            $error['family'] = "Въведете фамилия.";
+        }
+
+        if (!preg_match('/^[a-z0-9&\'\.\-_\+]+@[a-z0-9\-]+\.([a-z0-9\-]+\.)*+[a-z]{2}/is', $email)) {
+            $error['email'] = "Въведете валиден имейл адрес.";
+        }
+
+        if (strlen($contact_message) < 1) {
+            $error['message'] = "Моля въведете вашето съобщение. То не трябва да бъде повече от 100 символа.";
+        }
+
+        // if ($subject == '') {
+        //     $subject = "Contact Form Submission";
+        // }
+
+        $message = "";
+
+        $message .= "Имейл от: " . $name . "<br />";
+        $message .= "Имейл адрес: " . $email . "<br />";
+        $message .= "Съобщение: <br />";
+        $message .= $contact_message;
+        $message .= "<br /> ----- <br /> Този имейл беше изпратен от сайта 'Олимпиометър - ПГИ - гр.Перник '. <br />";
+
+
+        $from =  $name . " <" . $email . ">";
+
+
+        $headers = "From: " . $from . "\r\n";
+        $headers .= "Reply-To: ". $email . "\r\n";
+        $headers .= "MIME-Version: 1.0\r\n";
+        $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
+
+        if (!$error) 
+        {
+            ini_set("sendmail_from", $siteOwnersEmail);
+            $mail = mail($siteOwnersEmail, $message, $headers); //, $subject
+
+            if ($mail) 
+            { 
+                echo "<div class='col-lg-6 col-md-6 col-sm-6 form-group contact-forms'>Вашето съобщение е изпратено.</div>"; 
+                
+            }
+            
+            else 
+            { 
+                echo "<p style='color: red'>Възникна грешка, моля опитайте отново по-късно!</p>"; 
+                
+            }
+        }
+
         else 
-        { 
-            echo "<p style='color: red'>Възникна грешка, моля опитайте отново по-късно!</p>"; 
-            
+        {
+            $response = (isset($error['name'])) ? $error['name'] . "<br /> \n" : null;
+            $response = (isset($error['family'])) ? $error['family'] . "<br /> \n" : null;
+            $response .= (isset($error['email'])) ? $error['email'] . "<br /> \n" : null;
+            $response .= (isset($error['message'])) ? $error['message'] . "<br />" : null;
+
+            echo $response;
         }
+
     }
-
-    else 
-    {
-        $response = (isset($error['name'])) ? $error['name'] . "<br /> \n" : null;
-        $response = (isset($error['family'])) ? $error['family'] . "<br /> \n" : null;
-        $response .= (isset($error['email'])) ? $error['email'] . "<br /> \n" : null;
-        $response .= (isset($error['message'])) ? $error['message'] . "<br />" : null;
-
-        echo $response;
-    }
-
-}
 
 ?>
 <!DOCTYPE html>

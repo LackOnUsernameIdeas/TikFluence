@@ -54,6 +54,7 @@ function fetchTiktokDatapointsBG(){
     return $decoded["results"];
 }
 
+// Генерираме си ключ за достъп до Spotify API
 function generateSpotifyToken(){
 
     $client_id = '011ae0a5a92045b38edf6051aeb21370';
@@ -176,7 +177,7 @@ function fetchTiktokTopUsers(){
     return $decoded["results"];
 }
 
-// Взимаме данните за най-гледаните видея
+// Взимаме данните за най-гледаните видеа
 function fetchTiktokTopVideos(){
 
     $ch = curl_init();
@@ -203,6 +204,7 @@ function fetchTiktokTopVideos(){
     return $decoded["results"];
 }
 
+// Взимаме id на потребител с потребителско име
 function fetchTikTokUserId($username){
 
     $ch = curl_init();
@@ -227,6 +229,7 @@ function fetchTikTokUserId($username){
     return $decoded["id"];
 }
 
+// Взимаме данни за потребителя с id
 function fetchTikTokUserData($id){
 
     $ch = curl_init();
@@ -251,6 +254,7 @@ function fetchTikTokUserData($id){
     return $decoded;
 }
 
+// Взимаме sec_id на потребител с потребителско име
 function fetchTikTokUserSecUid($username){
 
     $ch = curl_init();
@@ -280,6 +284,7 @@ function fetchTikTokUserSecUid($username){
 
 }
 
+// Взимаме данни за потребителя със sec_id
 function fetchTikTokUserMoreDescriptiveData($sec_uid){
 
     $ch = curl_init();
@@ -305,6 +310,7 @@ function fetchTikTokUserMoreDescriptiveData($sec_uid){
 
 }
 
+// Взимаме данни за най-използваните хаштагове за последните 7 дни
 function fetchTopHashtagsForTheLast7Days(){
 
     $ch = curl_init();
@@ -331,6 +337,7 @@ function fetchTopHashtagsForTheLast7Days(){
     return $decoded["data"]["list"];
 }
 
+// Взимаме данни за най-използваните хаштагове за последните 120 дни
 function fetchTopHashtagsForTheLast120Days(){
 
     $ch = curl_init();
@@ -357,6 +364,7 @@ function fetchTopHashtagsForTheLast120Days(){
     return $decoded["data"]["list"];
 }
 
+// Генерираме си ключ за достъп до TikTok API
 function generateTikTokAccessToken($code){
 
     $client_key = 'awntkz3ma9o5eetl';
@@ -381,6 +389,7 @@ function generateTikTokAccessToken($code){
 
 }
 
+// Генерираме си redirect link за да вземем потребителско име от TikTok API
 function generateTikTokRedirectLink($profLink){
 
     $ch = curl_init();
@@ -394,6 +403,7 @@ function generateTikTokRedirectLink($profLink){
 
 }
 
+// Сдобиваме се с потребителско име от TikTok API
 function generateTikTokUsername($profLink){
 
     $ch = curl_init();
@@ -408,6 +418,7 @@ function generateTikTokUsername($profLink){
 
 }
 
+// Взимаме open id-то на потребителя със access token
 function getUserOpenId($accessToken){
 
     $ch = curl_init();
