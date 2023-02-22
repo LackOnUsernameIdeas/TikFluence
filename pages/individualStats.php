@@ -1,118 +1,51 @@
 <?php
 
-    // session_start();
+//Вмъкване на нужните файлове
+    include '../includes/databaseManager.php';
+    include '../includes/common.php';
+    include '../scraping/curlFunctions.php';
 
-    //Вмъкване на нужните файлове
-        include '../includes/databaseManager.php';
-        include '../includes/common.php';
-        include '../scraping/curlFunctions.php';
+//Създаваме връзката с базата данни
+    $db = new DatabaseManager();
 
-    //Създаваме връзката с базата данни
-        $db = new DatabaseManager();
+//Извличаме името от данните, които ни дава TikTok API
+    if(isset($_GET["code"])){
+        $accessToken = generateTikTokAccessToken($_GET["code"]);
 
-    //Извличаме името от данните, които ни дава TikTok API
-        if(isset($_GET["code"])){
-            $accessToken = generateTikTokAccessToken($_GET["code"]);
 
-            //Генерираме си подробни данни за потребителя, ако профилът му не е заключен и има видеа
-            if($accessToken != false){
-                $openUserId = getUserOpenId($accessToken);
+        $userBasicData = getUserBasicData($accessToken);
+        $userVideoData = getUserVideoData($accessToken);
 
-                $usernameLink = generateTikTokUsername("https://open-api.tiktok.com/shortlink/profile/?open_id=$openUserId");
-                $username = explode("?", explode('@', $usernameLink)[1])[0];
-            }
+
+        //Генерираме си подробни данни за потребителя, ако профилът му не е заключен и има видеа
+        if($accessToken != false){
+            $openUserId = getUserOpenId($accessToken);
+
+            $usernameLink = generateTikTokUsername("https://open-api.tiktok.com/shortlink/profile/?open_id=$openUserId");
+            $username = explode("?", explode('@', $usernameLink)[1])[0];
         }
+    }
+
+//Показваме профилната снимка на потребителя ако е въвел името си. Подсигуряме си информацията за потребителя под формата на масиви.
+    $videosPublishDates = [];
+
+    $likes = [];
+    $views = [];
+    $shares = [];
+    $comments = [];
+
+    foreach($userVideoData as $vid){
+        $videosPublishDates[] = gmdate("Y-m-d", $vid["create_time"]);
+
+        $likes[] = $vid["like_count"];
+        $views[] = $vid["view_count"];
+        $shares[] = $vid["share_count"];
+        $comments[] = $vid["comment_count"];
+    }
 
 
-    //Извличаме името от данните, които ни дава TikTok API
-        if(isset($username)){
-            if($username != null){
-                $userMoreDescriptiveData = getUserMoreDescriptiveData($username);
-
-                //Генерираме си основни данни за потребителя, ако профилът му е заключен и има видеа
-                if($userMoreDescriptiveData == false || isset($userMoreDescriptiveData["message"])){
-                    $userBasicData = getUserData($username);
-                }
-            }
-        }
-
-    //Взимаме информация за потребителя и я показваме
-
-
-        function getUserData($username){
-            //Взимаме id на потребителя за да можем да вземем информацията за него
-            $id = fetchTikTokUserId($username);
-
-            //Връщаме информацията за потребителя като краен резултат
-            return fetchTikTokUserData($id);
-        }
-
-        function getUserFollowers($username){
-            //Взимаме id на потребителя за да можем да вземем информацията за него
-            $id = fetchTikTokUserId($username);
-
-            //Връщаме информацията за потребителя като краен резултат
-            $userData = fetchTikTokUserData($id);
-
-            return $userData["followerCount"];
-        }
-
-        function getUserMoreDescriptiveData($username){
-            //Взимаме id на потребителя за да можем да вземем информацията за него
-            $sec_uid = fetchTikTokUserSecUid($username);
-
-            //Връщаме информацията за потребителя като краен резултат
-            return fetchTikTokUserMoreDescriptiveData($sec_uid);
-
-        }
-
-    //Показваме профилната снимка на потребителя ако е въвел името си. Подсигуряме си информацията за потребителя под формата на масиви.
-        $isVerified = false;
-        if(isset($userMoreDescriptiveData) && $userMoreDescriptiveData != false && !isset($userMoreDescriptiveData["message"])){
-            if($userMoreDescriptiveData["author"]["verified"] == true){
-                $isVerified = $userMoreDescriptiveData["author"]["verified"];
-            }
-
-            $videosCount = [];
-            $videosPublishDates = [];
-
-            $likes = [];
-            $views = [];
-            $shares = [];
-            $comments = [];
-
-            for($i=0; $i<count($userMoreDescriptiveData["videos"]);$i++){
-                array_push($videosCount, $i + 1);
-
-                array_push($videosPublishDates, gmdate("Y-m-d", $userMoreDescriptiveData["videos"][$i]["create_date"]));
-
-                array_push($likes, $userMoreDescriptiveData["videos"][$i]["likes"]);
-                array_push($views, $userMoreDescriptiveData["videos"][$i]["plays"]);
-                array_push($shares, $userMoreDescriptiveData["videos"][$i]["shares"]);
-                array_push($comments, $userMoreDescriptiveData["videos"][$i]["comments"]);
-            }
-
-            $hashtags = [];
-            $hashtagsTimesUsed = [];
-
-            foreach($userMoreDescriptiveData["hashtags"] as $ht){
-                $hashtags[] = $ht["name"];
-                $hashtagsTimesUsed[] = $ht["count"];
-            }
-
-            $mentions = [];
-            $timesPeopleAreMentioned = [];
-
-            foreach($userMoreDescriptiveData["mentions"] as $ht){
-                $mentions[] = $ht["name"];
-                $timesPeopleAreMentioned[] = $ht["count"];
-            }
-
-        }
-
-    //С помощта на това id, потребителят е сигурен, че не злоупотребяваме с неговите данни
-        $reqCallbackState = uniqid();
-
+//С помощта на това id, потребителят е сигурен, че не злоупотребяваме с неговите данни
+    $reqCallbackState = uniqid();
 
 ?>
 <!DOCTYPE html>
@@ -276,19 +209,6 @@
                     </div>
                 </div>
 
-                <?php if(isset($accessToken) && $accessToken == false): ?>
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div class="card">
-
-                            <div class="body">
-                                <p class="lead">
-                                    За да видите отново вашите статистики, трябва да се върнете в страницата с бутона за влизане и пак да влезете в профила си!
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                <?php endif; ?>
-
                 <?php if(!isset($_GET["code"])): ?>
 
                     <div class="row clearfix">
@@ -403,7 +323,7 @@
                     </div>
                 </div> -->
 
-                <?php if(isset($userMoreDescriptiveData) && $userMoreDescriptiveData != false && !isset($userMoreDescriptiveData["message"])): ?>
+                <?php if(isset($_GET["code"])): ?>
                     <div class="row clearfix">
 
                         <div class="col-lg-6 col-md-8 col-sm-8 col-xs-8">
@@ -417,15 +337,15 @@
                                                 <div class="body">
 
                                                         <div class="image">
-                                                            <img src="<?php echo $userMoreDescriptiveData["author"]["avatarLarger"]?>" width="68" height="68" alt="User" />
+                                                            <img src="<?php echo $userBasicData["avatar_url"]?>" width="68" height="68" alt="User" />
                                                         </div>
 
                                                         <div class="info-container">
                                                             <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                <?= $userMoreDescriptiveData["author"]["uniqueId"] ?> <img src="<?= $isVerified ? "../images/verified.png" : ""?>" width="10px" height="10px">
+                                                                <?= $username ?> <img src="<?= $userBasicData["is_verified"] ? "../images/verified.png" : ""?>" width="10px" height="10px">
                                                             </div>
                                                             <div class="email" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                <?= $userMoreDescriptiveData["author"]["nickname"] . " |"?> <?= $userMoreDescriptiveData["author"]["country"]?>
+                                                                <?= $userBasicData["display_name"] . " |"?> <?= $userBasicData["bio_description"]?>
                                                             </div>
                                                         </div>
                                                 </div>
@@ -434,6 +354,7 @@
 
                                         </div>
                                     </div>
+
                                     <!-- #User Info -->
                                 </div>
                             </div>
@@ -447,7 +368,7 @@
                                 <div class="content">
                                     <div class="text">Последователи</div>
                                     <!-- <div class="number">wcw</div>  -->
-                                    <div class="number count-to" data-from="0" data-to="<?php echo $userMoreDescriptiveData["author"]["followerCount"] ?>" data-speed="3000" data-fresh-interval="20"></div>
+                                    <div class="number count-to" data-from="0" data-to="<?php echo $userBasicData["follower_count"] ?>" data-speed="3000" data-fresh-interval="20"></div>
                                 </div>
                             </div>
                         </div>
@@ -459,7 +380,7 @@
                                 </div>
                                 <div class="content">
                                     <div class="text">Последвани</div>
-                                    <div class="number count-to" data-from="0" data-to="<?php echo $userMoreDescriptiveData["author"]["followingCount"] ?>" data-speed="3000" data-fresh-interval="20"></div>
+                                    <div class="number count-to" data-from="0" data-to="<?php echo $userBasicData["following_count"] ?>" data-speed="3000" data-fresh-interval="20"></div>
                                 </div>
                             </div>
                         </div>
@@ -471,7 +392,7 @@
                                 </div>
                                 <div class="content">
                                     <div class="text">Брой видеа</div>
-                                    <div class="number count-to" data-from="0" data-to="<?php echo $userMoreDescriptiveData["author"]["videoCount"] ?>" data-speed="3000" data-fresh-interval="20"></div>
+                                    <div class="number count-to" data-from="0" data-to="<?php echo count($userVideoData) ?>" data-speed="3000" data-fresh-interval="20"></div>
                                 </div>
                             </div>
                         </div>
@@ -483,7 +404,7 @@
                                 </div>
                                 <div class="content">
                                     <div class="text">Брой харесвания</div>
-                                    <div class="number count-to" data-from="0" data-to="<?php echo $userMoreDescriptiveData["author"]["heartCount"] ?>" data-speed="3000" data-fresh-interval="20"></div>
+                                    <div class="number count-to" data-from="0" data-to="<?php echo $userBasicData["likes_count"] ?>" data-speed="3000" data-fresh-interval="20"></div>
                                 </div>
                             </div>
                         </div>
@@ -547,142 +468,7 @@
                                 </div>
                             </div>
                         </div>
-
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                            <div class="card">
-                                <div class="header">
-                                    <h2>
-                                        НАЙ-ИЗПОЛЗВАНИТЕ ХАШТАГОВЕ ОТ <?php echo $username ?> (СПОРЕД ПОСЛЕДНИТЕ ВИДЕА)
-                                    </h2>
-                                </div>
-                                <div class="body">
-                                    <div class="content">
-                                        <canvas id="HashtagsChart"></canvas>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                            <div class="card">
-                                <div class="header">
-                                    <h2>
-                                        НАЙ-ОТБЕЛЯЗВАНИТЕ ПОТРЕБИТЕЛИ ОТ <?php echo $username ?> (СПОРЕД ПОСЛЕДНИТЕ ВИДЕА)
-                                    </h2>
-                                </div>
-                                <div class="body">
-                                    <div class="content">
-                                        <canvas id="MentionsChart"></canvas>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-
-                <?php elseif(isset($userBasicData) && $userBasicData != false):?>
-                    <div class="row clearfix">
-
-                    <div class="col-lg-6 col-md-8 col-sm-8 col-xs-8">
-                        <div class="card">
-                            <div class="body">
-                                <!-- User Info -->
-                                <div class="row clearfix">
-                                    <div class="container-fluid">
-
-                                        <div class="user-info">
-                                            <div class="body">
-
-                                                    <div class="image">
-                                                        <img src="<?php echo $userBasicData["avatarLarger"]?>" width="68" height="68" alt="User" />
-                                                    </div>
-
-                                                    <div class="info-container">
-                                                        <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                            <?= $username ?> <img src="<?= $isVerified ? "../images/verified.png" : ""?>" width="10px" height="10px">
-                                                        </div>
-                                                    </div>
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-                                </div>
-                                <!-- #User Info -->
-                            </div>
-                        </div>
-                    </div>
-
-                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                            <div class="info-box bg-deep-purple hover-zoom-effect">
-                                <div class="icon">
-                                    <i class="material-icons">person</i>
-                                </div>
-                                <div class="content">
-                                    <div class="text">Последователи</div>
-                                    <!-- <div class="number">wcw</div>  -->
-                                    <div class="number count-to" data-from="0" data-to="<?php echo $userBasicData["followerCount"] ?>" data-speed="3000" data-fresh-interval="20"></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                            <div class="info-box bg-red hover-zoom-effect">
-                                <div class="icon">
-                                    <i class="material-icons">person_outline</i>
-                                </div>
-                                <div class="content">
-                                    <div class="text">Последвани</div>
-                                    <div class="number count-to" data-from="0" data-to="<?php echo $userBasicData["followingCount"] ?>" data-speed="3000" data-fresh-interval="20"></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                            <div class="info-box bg-deep-orange hover-zoom-effect">
-                                <div class="icon">
-                                    <i class="material-icons">video_library</i>
-                                </div>
-                                <div class="content">
-                                    <div class="text">Брой видеа</div>
-                                    <div class="number count-to" data-from="0" data-to="<?php echo $userBasicData["videoCount"] ?>" data-speed="3000" data-fresh-interval="20"></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                            <div class="info-box bg-yellow hover-zoom-effect">
-                                <div class="icon">
-                                    <i class="material-icons">thumb_up</i>
-                                </div>
-                                <div class="content">
-                                    <div class="text">Брой харесвания</div>
-                                    <div class="number count-to" data-from="0" data-to="<?php echo $userBasicData["heartCount"] ?>" data-speed="3000" data-fresh-interval="20"></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <?php if(isset($userMoreDescriptiveData["message"])): ?>
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                <div class="card">
-                                    <div class="body">
-                                        Въведеният профил трябва да има качено поне 1 видео, за да можете да видите повече статистики
-                                    </div>
-                                </div>
-                            </div>
-                        <?php else: ?>
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                <div class="card">
-                                    <div class="body">
-                                        Въведеният профил трябва да е публичен, за да можете да видите повече статистики
-                                    </div>
-                                </div>
-                            </div>
-                        <?php endif; ?>
-
-                    </div>
-                <?php endif;?>
+                    <?php endif;?>
 
             </div>
 
@@ -715,19 +501,12 @@
 <script>
 
     //Данни за ползване
-        let videosCount =  JSON.parse('<?php echo json_encode($videosCount) ?>');
-        let videosPublishDates =  JSON.parse('<?php echo json_encode($videosPublishDates) ?>');
+        let videosPublishDates = JSON.parse('<?php echo json_encode($videosPublishDates) ?>');
 
         let likes =  JSON.parse('<?php echo json_encode($likes) ?>');
         let views =  JSON.parse('<?php echo json_encode($views) ?>');
         let comments =  JSON.parse('<?php echo json_encode($comments) ?>');
         let shares =  JSON.parse('<?php echo json_encode($shares) ?>');
-
-        let hashtags = JSON.parse('<?php echo json_encode($hashtags) ?>');
-        let hashtagsTimesUsed = JSON.parse('<?php echo json_encode($hashtagsTimesUsed) ?>');
-
-        let mentions = JSON.parse('<?php echo json_encode($mentions) ?>');
-        let timesPeopleAreMentioned = JSON.parse('<?php echo json_encode($timesPeopleAreMentioned) ?>');
 
 
     // let followers = JSON.parse("<?php //echo json_encode(getUserFollowers($username)) ?>")
@@ -893,60 +672,6 @@
                         data: comments, //y
                         borderColor: 'rgb(241, 90, 34)',
                         backgroundColor: 'rgba(241, 90, 34, 0.7)',
-                        fill: true,
-                        tension: 0.4
-                    }
-                ]
-            },
-            options: {
-                scales: {
-                    y: {
-                        type: 'linear',
-                        display: true,
-                        position: "left"
-                    }
-                }
-            }
-        });
-
-    //Статистика за хаштагове
-        new Chart(document.getElementById('HashtagsChart'), {
-            type: 'bar',
-            data: {
-                labels: hashtags, //x
-                datasets: [
-                    {
-                        label: 'Хаштагове',
-                        data: hashtagsTimesUsed, //y
-                        borderColor: 'rgb(139, 69, 19)',
-                        backgroundColor: 'rgb(139, 69, 19, 0.7)',
-                        fill: true,
-                        tension: 0.4
-                    }
-                ]
-            },
-            options: {
-                scales: {
-                    y: {
-                        type: 'linear',
-                        display: true,
-                        position: "left"
-                    }
-                }
-            }
-        });
-
-    //Статистика за отбелязвания
-        new Chart(document.getElementById('MentionsChart'), {
-            type: 'bar',
-            data: {
-                labels: mentions, //x
-                datasets: [
-                    {
-                        label: 'Отбелязвания',
-                        data: timesPeopleAreMentioned, //y
-                        borderColor: 'rgb(149, 53, 83)',
-                        backgroundColor: 'rgb(149, 53, 83)',
                         fill: true,
                         tension: 0.4
                     }

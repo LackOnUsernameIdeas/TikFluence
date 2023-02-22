@@ -390,16 +390,60 @@ function generateTikTokAccessToken($code){
 }
 
 // Генерираме си redirect link за да вземем потребителско име от TikTok API
-function generateTikTokRedirectLink($profLink){
+// function generateTikTokRedirectLink($profLink){
+
+//     $ch = curl_init();
+
+//     curl_setopt($ch, CURLOPT_URL, $profLink);
+//     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+//     $result = curl_exec($ch);
+
+//     return $result;
+
+// }
+
+//Сдобиваме се с главната информация за потребителя
+function getUserBasicData($accessToken){
 
     $ch = curl_init();
 
-    curl_setopt($ch, CURLOPT_URL, $profLink);
+    curl_setopt($ch, CURLOPT_URL, "https://open.tiktokapis.com/v2/user/info/?fields=open_id,union_id,avatar_url,display_name,bio_description,is_verified,follower_count,following_count,likes_count,profile_deep_link");
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-    $result = curl_exec($ch);
+    $headers = [
+        "Authorization: Bearer $accessToken"
+    ];
 
-    return $result;
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
+    $result = curl_exec($ch);
+    $decoded = json_decode($result, true);
+
+    return $decoded["data"]["user"];
+
+}
+
+//Взимаме информацията за видеата на потребителя
+function getUserVideoData($accessToken){
+
+    $ch = curl_init();
+
+    curl_setopt($ch, CURLOPT_URL, "https://open.tiktokapis.com/v2/video/list/?fields=create_time,like_count,comment_count,share_count,view_count,cover_image_url,video_description,duration,title,embed_link");
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_POST, true);
+
+    $headers = [
+        "Authorization: Bearer $accessToken",
+        "Content-Type: application/json"
+    ];
+
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
+    $result = curl_exec($ch);
+    $decoded = json_decode($result, true);
+
+    return $decoded["data"]["videos"];
 
 }
 
