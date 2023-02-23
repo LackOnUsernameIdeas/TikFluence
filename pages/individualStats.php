@@ -34,13 +34,15 @@
     $shares = [];
     $comments = [];
 
-    foreach($userVideoData as $vid){
-        $videosPublishDates[] = gmdate("Y-m-d", $vid["create_time"]);
-
-        $likes[] = $vid["like_count"];
-        $views[] = $vid["view_count"];
-        $shares[] = $vid["share_count"];
-        $comments[] = $vid["comment_count"];
+    if(isset($userVideoData)){
+        foreach($userVideoData as $vid){
+            $videosPublishDates[] = gmdate("Y-m-d", $vid["create_time"]);
+    
+            $likes[] = $vid["like_count"];
+            $views[] = $vid["view_count"];
+            $shares[] = $vid["share_count"];
+            $comments[] = $vid["comment_count"];
+        }
     }
 
 
