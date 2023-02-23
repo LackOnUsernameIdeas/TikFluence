@@ -199,6 +199,21 @@ class DatabaseManager {
         return $result;
     }
 
+    public function checkIfSongHasData($sid){
+        $sql = "SELECT *
+                FROM influenced_songs
+                WHERE song_id=:song_id";
+
+        $query = $this->pdo->prepare($sql);
+        $query->bindValue('song_id', $sid);
+
+        $query->execute();
+
+        $result = $query->fetch();
+
+        return $result == false ? false : true;
+    }
+
     public function findSongPeakDataTT($sid){
         $sql = "SELECT * 
                 FROM tiktok_records 
@@ -945,6 +960,38 @@ class DatabaseManager {
         return $this->pdo->lastInsertId();
     }
 
+    //Качваме песните, на които се вижда ефекта от повлияване на TikTok
+    public function insertInfluencedSong($object){
+        $sql = "INSERT INTO `influenced_songs` ( 
+                    `song_id`, 
+                    `song_name`,
+                    `artist_name`,
+                    `tiktok_peak_date`, 
+                    `spotify_peak_date`,
+                    `report_date`
+                ) VALUES (
+                    :song_id, 
+                    :song_name,
+                    :artist_name,
+                    :tiktok_peak_date, 
+                    :spotify_peak_date,
+                    :report_date
+                )";
+
+        $query = $this->pdo->prepare($sql);
+
+        $query->bindValue('song_id', $object['song_id']);
+        $query->bindValue('song_name', $object['song_name']);
+        $query->bindValue('artist_name', $object['artist_name']);
+        $query->bindValue('tiktok_peak_date', $object['tiktok_peak_date']);
+        $query->bindValue('spotify_peak_date', $object['spotify_peak_date']);
+        $query->bindValue('report_date', $object['report_date']);
+
+        $query->execute();
+
+        return $this->pdo->lastInsertId();
+    }
+
     //Взимаме информацията за топ 200 тиктокъри
     public function getTiktokersTodayData($date){
         $sql = "SELECT * 
@@ -985,51 +1032,6 @@ class DatabaseManager {
         $result_array = $query->fetchAll(PDO::FETCH_ASSOC);
 
         return count($result_array) > 0 ? $result_array : false;
-    }
-
-    //Качваме песните, на които се вижда ефекта от повлияване на TikTok 
-    public function insertInfluencedRecord($object){
-        $sql = "INSERT INTO `tiktok_influenced_records` (
-                    `rank`, 
-                    `total_likes_count`, 
-                    `number_of_videos`,
-                    `number_of_videos_last_14days`,
-                    `song_id`,
-                    `fetch_date`,
-                    `source`,
-                    `spotify_popularity`,
-                    `youtube_views`,
-                    `youtube_popularity_change`,
-                    `spotify_popularity_change`
-                ) VALUES (
-                    :rank,  
-                    :total_likes_count, 
-                    :number_of_videos, 
-                    :number_of_videos_last_14days, 
-                    :song_id,
-                    :fetch_date,
-                    :source,
-                    :ushitesamigolemi,
-                    :youtube_views,
-                    :youtube_popularity_change,
-                    :spotify_popularity_change
-                )";
-
-        $query = $this->pdo->prepare($sql);
-
-        $query->bindValue('rank', $object['rank']);
-        $query->bindValue('total_likes_count', $object['total_likes_count']);
-        $query->bindValue('number_of_videos', $object['number_of_videos']);
-        $query->bindValue('number_of_videos_last_14days', $object['number_of_videos_last_14days']);
-        $query->bindValue('song_id', $object['song_id']);
-        $query->bindValue('fetch_date', $object['fetch_date']);
-        $query->bindValue('source', $object['source']);
-        $query->bindValue('ushitesamigolemi', $object['spotify_popularity']);
-        $query->bindValue('youtube_views', $object['youtube_views']);
-
-        $query->execute();
-
-        return $this->pdo->lastInsertId();
     }
 
     public function getAverageTT($sid, $date){

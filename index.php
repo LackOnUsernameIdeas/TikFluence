@@ -32,7 +32,7 @@
         array_push($hashtagsForTheLast120Days, $hashtagsDataForTheLast120Days[$i]["hashtag_name"]);
     }
 
-    //Алгоритъм на нарастване
+    //Алгоритъм на повлияване
     function getPeaks($db){
         $songs = $db->listSongs();
 
@@ -57,15 +57,12 @@
     $songsWithDays = [];
 
 
-    $peaksDatesTT = [];
 
-    //Алгоритъм на нарастване
+    //Алгоритъм на повлияване
     for($i=0;$i<count($peaksWithData);$i+=2){
 
         $datediff = isset($peaksWithData[$i]["Spotify"]["fetch_date"]) ? 
         strtotime($peaksWithData[$i]["Spotify"]["fetch_date"]) - strtotime($peaksWithData[$i + 1]["TikTok"]["fetch_date"]) : false;
-
-        $peaksDatesTT[] = $peaksWithData[$i + 1]["TikTok"]["fetch_date"];
 
         if($datediff != false && $datediff > 0){
             $songsWithDays[$peaksWithData[$i]["Spotify"]["song_id"]] = $datediff / (60 * 60 * 24);

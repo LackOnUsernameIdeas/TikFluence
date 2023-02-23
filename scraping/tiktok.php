@@ -153,4 +153,103 @@ foreach($topvideos as $tt){
     $db->insertTikTokVideo($tt);
 }
 
+
+
+//Запазване на повлияните песни в масива - songsWithDays
+    function getPeaks($db){
+        $songs = $db->listSongs();
+
+        $peaks = [];
+        foreach($songs as $sg){
+            $peaks[] = $db->getPeaks($sg["id"]);
+        }
+
+        $peaksWithData = [];
+        foreach($peaks as $pk){
+            $peaksWithData[]["Spotify"] = $db->findSongByPeakSY($pk["song_id"], $pk["MAX(`spotify_popularity`)"]);
+            $peaksWithData[]["TikTok"] = $db->findSongByPeakTT($pk["song_id"], $pk["MAX(`number_of_videos_last_14days`)"]);
+        }
+
+
+        return $peaksWithData;
+    }
+
+
+    $peaksWithData = getPeaks($db);
+
+    $songsWithDays = [];
+
+    for($i=0;$i<count($peaksWithData);$i+=2){
+
+        $datediff = isset($peaksWithData[$i]["Spotify"]["fetch_date"]) ? 
+        strtotime($peaksWithData[$i]["Spotify"]["fetch_date"]) - strtotime($peaksWithData[$i + 1]["TikTok"]["fetch_date"]) : false;
+
+        if($datediff != false && $datediff > 0){
+            $songsWithDays[$peaksWithData[$i]["Spotify"]["song_id"]] = $datediff / (60 * 60 * 24);
+        }
+
+    }
+
+//Промени, които масива - songsWithDays претърпява, за да съдържа само данните на песните, които имат плато, по-малко от 10 дни
+    arsort($songsWithDays);
+
+
+    foreach($songsWithDays as $key => $value){
+        $datapoints = $db->getEveryDatapointForSong($key);
+        
+        $ttNums = [];
+        $dates = [];
+
+        foreach($datapoints as $dp){
+            $ttNums[] = $dp["number_of_videos_last_14days"];
+            $dates[] = $dp["fetch_date"];
+        }
+
+        $plateauIndex = 0;
+        $previousVal = 0;
+        foreach($ttNums as $val){
+            if($val == $previousVal){
+                $plateauIndex++;
+            } else {
+                $plateauIndex = 0;
+            }
+            if($plateauIndex >= 10){
+                unset($songsWithDays[$key]);
+            } 
+            $previousVal = $val;
+        }
+    }
+
+//Как изглежда всеки индекс от масива - songsWithDays:
+//[id на песен] => int(разликата на датите на пийковете в 2те платформи)
+
+
+//Запазване на нужната информацията за повлияните песни в масива - influencedSongsData
+    $influencedSongsData = [];
+
+    foreach($songsWithDays as $songId => $days){
+
+        $songData = $db->findSongById($songId)[0];
+
+        array_push($influencedSongsData, [
+            "song_id" => $songId,
+            "song_name" => $songData["song_name"],
+            "artist_name" => $songData["artist_name"],
+            "tiktok_peak_date" => $db->findSongPeakDataTT($songId)["fetch_date"],
+            "spotify_peak_date" => $db->findSongPeakDataSY($songId)["fetch_date"],
+            "report_date" => $date
+        ]);
+    }
+
+//Качваме песните в базата данни като записваме и за коя дата отговарят данните
+    foreach($influencedSongsData as $is){
+
+        $song = $db->checkIfSongHasData($is["song_id"]);
+
+        if($song == false){
+            $db->insertInfluencedSong($is);
+        }
+        
+    }
+    
 echo "gotovo";
