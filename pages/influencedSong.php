@@ -41,16 +41,7 @@
 
     $dates = [];
 
-    $ranks = [];
-
-    $likes = [];
-
-    $syPercents = [];
-    $ttPercents = [];
-    $ytPercents = [];
-
     $ttNums = [];
-    $ytNums = [];
     $syNums = [];
 
 
@@ -59,246 +50,24 @@
         $timestamp = new DateTime($dp["fetch_date"]);
         $dates[] = $timestamp->format('Y-m-d');
 
-        $ranks[] = $dp["rank"];
-
-        $likes[] = $dp["total_likes_count"];
-
         $syNums[] = $dp["spotify_popularity"];
-        $syPercents[] = $dp["spotify_popularity"];
-
         $ttNums[] = $dp["number_of_videos_last_14days"];
-        $ttPercents[] = $dp["number_of_videos_last_14days"];
 
-        $ytNums[] = $dp["youtube_views"];
-        $ytPercents[] = $dp["youtube_views"];
     }
 
 
     $ttNulls = array_keys($ttNums, null);
-    $ytNulls = array_keys($ytNums, null);
     $syNulls = array_keys($syNums, null);
 
 
-    $maxTikTok = max($ttPercents);
-    $maxYouTube = max($ytPercents);
-    $maxSpotify = max($syPercents);
-
-    for($i=0; $i<count($ttPercents); $i++){
-        $ttPercents[$i] = $maxTikTok ? ($ttPercents[$i] * 100)/$maxTikTok : null;
-    }
-
-    for($i=0; $i<count($ytPercents); $i++){
-        $ytPercents[$i] = $maxYouTube ? ($ytPercents[$i] * 100)/$maxYouTube : null;
-    }
-
-    for($i=0; $i<count($syPercents); $i++){
-        $syPercents[$i] = $maxSpotify ? ($syPercents[$i] * 100)/$maxSpotify : null;
-    }
-
-
-
     //Взимаме необходимите данни(числа) за последните 2 дни
-    $ttLastTwoDaysPercents = [];
     $ttLastTwoDaysNums = [];
-
-    $ytLastTwoDaysPercents = [];
-    $ytLastTwoDaysNums = [];
-
     $syLastTwoDays = [];
 
     foreach($todayYesterdayData as $d){
-        $ttLastTwoDaysPercents[] = $d["number_of_videos_last_14days"];
         $ttLastTwoDaysNums[] = $d["number_of_videos_last_14days"];
-
-        $ytLastTwoDaysPercents[] = $d["youtube_views"];
-        $ytLastTwoDaysNums[] = $d["youtube_views"];
-
         $syLastTwoDays[] = $d["spotify_popularity"];
     }
-
-    // Превръщаме числата в проценти
-
-    $todayYesterdayTTDataArray = [];
-
-    foreach($ttLastTwoDaysPercents as $TT){
-        array_push($todayYesterdayTTDataArray, ($TT * 100)/$ttLastTwoDaysPercents[0]);
-    }
-
-    $todayYesterdayYTDataArray = [];
-
-    foreach($ytLastTwoDaysPercents as $YT){
-        if($ytLastTwoDaysPercents[0] != null){ 
-            array_push($todayYesterdayYTDataArray, ($YT * 100)/$ytLastTwoDaysPercents[0]);
-        } else {
-            array_push($todayYesterdayYTDataArray, 0);
-        }
-    }
-
-    $todayYesterdaySYDataArray = [];
-
-    foreach($syLastTwoDays as $SY){
-        if($syLastTwoDays[0] != null){ 
-            array_push($todayYesterdaySYDataArray, ($SY * 100)/$syLastTwoDays[0]);
-        } else {
-            array_push($todayYesterdaySYDataArray, 0);
-        }
-    }
-    
-    // Изчисляваме разликата между днес и вчера:
-
-    //TikTok
-    if(isset($ttLastTwoDaysPercents[0]) || $ttLastTwoDaysPercents[0] == 0){ 
-        $subtractionTTPercents = $todayYesterdayTTDataArray[1] - $todayYesterdayTTDataArray[0];
-        $subtractionTTNums = $ttLastTwoDaysNums[1] - $ttLastTwoDaysNums[0];
-    } else { 
-        $subtractionTTPercents = "-";
-        $subtractionTTNums = "-";
-    }
-
-    //YouTube
-    if($ytLastTwoDaysPercents[0] != null || $ytLastTwoDaysPercents[0] == 0){ 
-        $subtractionYTPercents = $todayYesterdayYTDataArray[1] - $todayYesterdayYTDataArray[0];
-        $subtractionYTNums = $ytLastTwoDaysNums[1] - $ytLastTwoDaysNums[0];
-    } else { 
-        $subtractionYTPercents = "-";
-        $subtractionYTNums = "-";
-    }
-
-    //Spotify
-    if($syLastTwoDays[0] != null || $syLastTwoDays[0] == 0){
-        $subtractionSY = $todayYesterdaySYDataArray[1] - $todayYesterdaySYDataArray[0];
-    } else { 
-        $subtractionSY = "-";
-    }
-
-    //Избираме подходяща икона за кутийките:
-    
-    $chooseIconTT = "";
-    $chooseIconYT = "";
-    $chooseIconSY = "";
-
-    if($subtractionTTPercents == 0){
-        $chooseIconTT = "trending_flat";
-    } else if($subtractionTTPercents > 0){
-        $chooseIconTT = "trending_up";
-    } else {
-        $chooseIconTT = "trending_down";
-    }
-
-    if($subtractionYTPercents == 0){
-        $chooseIconYT = "trending_flat";
-    } else if($subtractionYTPercents > 0){
-        $chooseIconYT = "trending_up";
-    } else {
-        $chooseIconYT = "trending_down";
-    }
-
-    if($subtractionSY > 0){
-        $chooseIconSY = "trending_up";
-    } else if($subtractionSY == 0){
-        $chooseIconSY = "trending_flat";
-    } else {
-        $chooseIconSY = "trending_down";
-    }
-
-
-    //TikTok
-    $todayTT = $ttLastTwoDaysNums[1];
-
-    //YouTube
-    if($ytLastTwoDaysPercents[0] != null || $ytLastTwoDaysPercents[0] == 0){ 
-        $todayYT = $ytLastTwoDaysPercents[1];
-    } else { 
-        $todayYT = "-";
-    }
-
-    //Spotify
-    if($syLastTwoDays[0] != null || $syLastTwoDays[0] == 0){ 
-        $todaySY = $syLastTwoDays[1];
-    } else { 
-        $todaySY = "-";
-    }
-
-    
-
-    //TikTok
-    $yesterdayTT = $ttLastTwoDaysNums[0];
-
-    //YouTube
-    if($ytLastTwoDaysPercents[0] != null || $ytLastTwoDaysPercents[0] == 0){ 
-        $yesterdayYT = $ytLastTwoDaysPercents[0];
-    } else { 
-        $yesterdayYT = "-";
-    }
-
-    //Spotify
-    if($syLastTwoDays[0] != null || $syLastTwoDays[0] == 0){ 
-        $yesterdaySY = $syLastTwoDays[0];
-    } else { 
-        $yesterdaySY = "-";
-    }
-
-
-    // $averageTT = $db->getAverageTT($sid, $selectDate)[0][0];
-    // $averageYT = $db->getAverageYT($sid, $selectDate)[0][0];
-    // $averageSY = $db->getAverageSY($sid, $selectDate)[0][0];
-
-    
-    // if($todayTT <= $averageTT || $yesterdayTT <= $averageTT){
-    //     $growthTT = false;
-    // } else {
-    //     $growthTT = true;
-    // }
-
-    // if($todayYT <= $averageYT || $yesterdayYT <= $averageYT){
-    //     $growthYT = false;
-    // } else {
-    //     $growthYT = true;
-    // }
-
-    // if($todaySY <= $averageSY || $yesterdaySY <= $averageSY){
-    //     $growthSY = false;
-    // } else {
-    //     $growthSY = true;
-    // }
-
-    // $setConclusionPerfect = false;
-    // $setConclusionYT = false;
-    // $setConclusionSY = false;
-    // $setConclusionTT = false;
-
-    // $setConclusionPerfectWithoutTT = false;
-    // $setConclusionYTWithoutTT = false;
-    // $setConclusionSYWithoutTT = false;
-
-    // $setConclusionWithoutAnything = false;
-
-    // if($growthTT){
-
-    //     if($growthSY && $growthYT){
-    //         $setConclusionPerfect = true;
-    //     } elseif($growthSY == false || $growthYT){
-    //         $setConclusionYT = true;
-    //     } elseif($growthSY || $growthYT == false) {
-    //         $setConclusionSY = true;
-    //     } else {
-    //         $setConclusionTT = true;
-    //     }
-
-    // } else {
-
-    //     //Ако тази песен не е популярна последните два дни в TikTok
-    //     if($growthSY && $growthYT){
-    //         $setConclusionPerfectWithoutTT = true;
-    //     } elseif($growthSY == false || $growthYT){
-    //         $setConclusionYTWithoutTT = true;
-    //     } elseif($growthSY || $growthYT == false){
-    //         $setConclusionSYWithoutTT = true;
-    //     } else {
-    //         $setConclusionWithoutAnything = true;
-    //     }
-
-    // }
 
 ?>
 <!DOCTYPE html>
@@ -709,18 +478,9 @@
     //Данни за ползване
     let dates =  JSON.parse('<?php echo json_encode($dates) ?>');
 
-    let ranks = JSON.parse('<?php echo json_encode($ranks) ?>');
-    let likes = JSON.parse('<?php echo json_encode($likes) ?>');
-
-    let ytDataNums = JSON.parse('<?php echo json_encode($ytNums) ?>');
     let syDataNumsDirty = JSON.parse('<?php echo json_encode($syNums) ?>');
     let ttDataNumsDirty = JSON.parse('<?php echo json_encode($ttNums) ?>');
 
-    let ytDataPercents = JSON.parse('<?php echo json_encode($ytPercents) ?>');
-    let syDataPercents = JSON.parse('<?php echo json_encode($syPercents) ?>');
-    let ttDataPercents = JSON.parse('<?php echo json_encode($ttPercents) ?>');
-
-    let ytDataNulls = JSON.parse('<?php echo json_encode($ytNulls) ?>');
     let syDataNulls = JSON.parse('<?php echo json_encode($syNulls) ?>');
 
     
