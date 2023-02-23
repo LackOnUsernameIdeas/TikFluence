@@ -432,6 +432,7 @@ function getUserVideoData($accessToken){
     curl_setopt($ch, CURLOPT_URL, "https://open.tiktokapis.com/v2/video/list/?fields=create_time,like_count,comment_count,share_count,view_count,cover_image_url,video_description,duration,title,embed_link");
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, '{"max_count": 20}'); 
 
     $headers = [
         "Authorization: Bearer $accessToken",
