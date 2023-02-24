@@ -237,6 +237,7 @@ foreach($topvideos as $tt){
             "artist_name" => $songData["artist_name"],
             "tiktok_peak_date" => $db->findSongPeakDataTT($songId)["fetch_date"],
             "spotify_peak_date" => $db->findSongPeakDataSY($songId)["fetch_date"],
+            "peaks_difference" => $days,
             "report_date" => $date
         ]);
     }
@@ -244,7 +245,7 @@ foreach($topvideos as $tt){
 //Качваме песните в базата данни като записваме и за коя дата отговарят данните
     foreach($influencedSongsData as $is){
 
-        $song = $db->checkIfSongHasData($is["song_id"]);
+        $song = $db->checkIfSongExists($is["song_id"]);
 
         if($song == false){
             $db->insertInfluencedSong($is);

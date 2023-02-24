@@ -199,7 +199,7 @@ class DatabaseManager {
         return $result;
     }
 
-    public function checkIfSongHasData($sid){
+    public function checkIfSongExists($sid){
         $sql = "SELECT *
                 FROM influenced_songs
                 WHERE song_id=:song_id";
@@ -211,7 +211,7 @@ class DatabaseManager {
 
         $result = $query->fetch();
 
-        return $result == false ? false : true;
+        return $result;
     }
 
     public function findSongPeakDataTT($sid){
@@ -220,6 +220,7 @@ class DatabaseManager {
                 JOIN tiktok_songs 
                 ON tiktok_records.song_id = tiktok_songs.id
                 WHERE song_id=:song_id 
+                GROUP BY `number_of_videos_last_14days`
                 ORDER BY `number_of_videos_last_14days` DESC";
 
         $query = $this->pdo->prepare($sql);
@@ -238,6 +239,7 @@ class DatabaseManager {
                 JOIN tiktok_songs 
                 ON tiktok_records.song_id = tiktok_songs.id
                 WHERE song_id=:song_id 
+                GROUP BY `spotify_popularity`
                 ORDER BY `spotify_popularity` DESC";
 
         $query = $this->pdo->prepare($sql);
@@ -968,6 +970,7 @@ class DatabaseManager {
                     `artist_name`,
                     `tiktok_peak_date`, 
                     `spotify_peak_date`,
+                    `peaks_difference`,
                     `report_date`
                 ) VALUES (
                     :song_id, 
@@ -975,6 +978,7 @@ class DatabaseManager {
                     :artist_name,
                     :tiktok_peak_date, 
                     :spotify_peak_date,
+                    :peaks_difference,
                     :report_date
                 )";
 
@@ -985,6 +989,7 @@ class DatabaseManager {
         $query->bindValue('artist_name', $object['artist_name']);
         $query->bindValue('tiktok_peak_date', $object['tiktok_peak_date']);
         $query->bindValue('spotify_peak_date', $object['spotify_peak_date']);
+        $query->bindValue('peaks_difference', $object['peaks_difference']);
         $query->bindValue('report_date', $object['report_date']);
 
         $query->execute();

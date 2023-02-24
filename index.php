@@ -70,9 +70,9 @@
 
     }
 
-    $songsWithDaysForWidgets = $songsWithDays;
-
     arsort($songsWithDays);
+
+    $songsWithDaysForWidgets = $songsWithDays;
 
     //Приготвяме данни за таблицата
     foreach($songsWithDays as $key => $value){
