@@ -247,7 +247,7 @@ foreach($topvideos as $tt){
 
         $song = $db->checkIfSongExists($is["song_id"]);
 
-        if($song == false){
+        if($song == false || $song["peaks_difference"] != $is["peaks_difference"]){
             $db->insertInfluencedSong($is);
         }
         
