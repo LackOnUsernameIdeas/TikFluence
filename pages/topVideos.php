@@ -119,6 +119,12 @@
                         </a>
                     </li>
                     <li>
+                        <a href="affectedSongs.php" class=" waves-effect waves-block">
+                            <i class="material-icons">music_note</i>
+                            <span>ПОВЛИЯНИ ПЕСНИ</span>
+                        </a>
+                    </li>
+                    <li>
                         <a href="individualStats.php" class=" waves-effect waves-block">
                             <i class="material-icons">person_outline</i>
                             <span>МОИТЕ СТАТИСТИКИ В TIKTOK</span>

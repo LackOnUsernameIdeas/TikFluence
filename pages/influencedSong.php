@@ -354,7 +354,7 @@
                     <div class="body">
                         <button type="button" class="btn bg-purple waves-effect card" onclick="window.location.href='../index.php'">
                             <i class="material-icons">arrow_back</i>
-                            <span>НАЗАД</span>
+                            <span>НАЗАД КЪМ НАЧАЛО</span>
                         </button>
                         <div class="block-header">
                             <div class="card">

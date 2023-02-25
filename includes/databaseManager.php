@@ -406,9 +406,24 @@ class DatabaseManager {
         return count($result_array) > 0 ? $result_array : false;
     }
 
+    //Дърпаме цялата информация за всички песни
     public function listSongs() {
         $sql = "SELECT * 
                 FROM `tiktok_songs`";
+
+        $query = $this->pdo->prepare($sql);
+
+        $query->execute();
+        $result_array = $query->fetchAll(PDO::FETCH_ASSOC);
+
+        return count($result_array) > 0 ? $result_array : false;
+    }
+
+    //Дърпаме цялата информация за всички повлияни песни
+    public function listAffectedSongs() {
+        $sql = "SELECT * 
+                FROM `influenced_songs`
+                ORDER BY `peaks_difference` DESC";
 
         $query = $this->pdo->prepare($sql);
 

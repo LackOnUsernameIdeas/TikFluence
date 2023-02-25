@@ -8,32 +8,16 @@
     //Създаваме връзката с базата данни
     $db = new DatabaseManager();
     
-    //Осигуряваме си необходимите данни
-    $dates = $db->listDatesSongsBG();
-    $datesArray = [];
 
-    foreach($dates as $date){
-        $timestamp = new DateTime($date["fetch_date"]);
-        $datesArray[] = $timestamp->format('Y-m-d');
+    $influencedSongs = $db->listAffectedSongs();
+
+    $songsNames = [];
+    $songsPeaksDiff = [];
+
+    foreach($influencedSongs as $sn){
+        $songsNames[] = $sn["song_name"];
+        $songsPeaksDiff[] = $sn["peaks_difference"];
     }
-
-
-    $selectDate = isset($_SESSION["setDate"]) && $_SESSION["setDate"] >= '2023-01-08' ? $_SESSION["setDate"] : date("Y-m-d");
-
-
-    $top200SongsBG = $db->listTop200SongsBG($selectDate);
-    $topSongsBG = $db->listTopSongsBG($selectDate);
-
-    $songsNamesBG = [];
-    $songsPopularitiesBG = [];
-
-    if($topSongsBG != false){
-        foreach($topSongsBG as $song){
-            $songsNamesBG[] = $song["song_name"];
-            $songsPopularitiesBG[] = $song["number_of_videos"];
-        }    
-    }
-    
 ?>
 <!DOCTYPE html>
 <html>
@@ -102,8 +86,8 @@
                             <span>НАЧАЛО</span>
                         </a>
                     </li>
-                    <li>
-                        <a href="affectedSongs.php" class=" waves-effect waves-block">
+                    <li class="active">
+                        <a href="#" class=" waves-effect waves-block">
                             <i class="material-icons">music_note</i>
                             <span>ПОВЛИЯНИ ПЕСНИ</span>
                         </a>
@@ -114,7 +98,7 @@
                             <span>МОИТЕ СТАТИСТИКИ В TIKTOK</span>
                         </a>
                     </li>
-                    <li class="active">
+                    <li>
                         <a href="javascript:void(0);" class="menu-toggle waves-effect waves-block">
                             <i class="material-icons">insert_chart</i>
                             <span>ОЩЕ СТАТИСТИКИ</span>
@@ -126,8 +110,8 @@
                                     <span>ТОП 200 TIKTOK ПЕСНИ ГЛОБАЛНО</span>
                                 </a>
                             </li>
-                            <li class="active">
-                                <a href="songsBG.php" class="waves-effect waves-block">
+                            <li>
+                                <a href="songsBG.php" class=" waves-effect waves-block">
                                     <i class="material-icons">music_note</i>
                                     <span>ТОП TIKTOK ПЕСНИ ЗА БЪЛГАРИЯ</span>
                                 </a>
@@ -180,112 +164,73 @@
                         <ol class="breadcrumb breadcrumb-col-black">
                             <li onclick="window.location.href='../index.php'"><a href="javascript:void(0);"><i class="material-icons">home</i>НАЧАЛО</a></li>
                             <li><a href="javascript:void(0);"><i class="material-icons">insert_chart</i>СТАТИСТИКИ</a></li>
-                            <li class="active"><i class="material-icons">music_note</i>ТОП TIKTOK ПЕСНИ ЗА БЪЛГАРИЯ</li>
+                            <li class="active"><i class="material-icons">music_note</i>ТОП 200 TIKTOK ПЕСНИ ГЛОБАЛНО</li>
                         </ol>
                     </div>
                 </div>
             </div>
 
-            <div class="block-header">
-                <div class="card">
-                    <div class="body">
-                        <h2>Изберете дата за която искате да видите данни:</h2>
-                            <?php if($datesArray):?>
-                                <input type="date" id="start" name="trip-start"
-                                value="<?php echo $selectDate ?>"
-                                min="<?php echo $datesArray[0] ?>" max="<?php echo end($datesArray) ?>" onchange=" window.location.replace('../selectDate.php?setDate=' + this.value + '&redirectURI=' + window.location.href)">
-                            <?php endif;?>
-            
+            <!-- Exportable Table -->
+            <div class="row clearfix">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2>
+                                ПОВЛИЯНИ ПЕСНИ
+                            </h2>
+                        </div>
+                        <div class="body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped table-hover dataTable js-exportable" id="globalDataTable">
+                                    <thead>
+                                        <tr>
+                                            <th>ПЕСЕН</th>
+                                            <th>АВТОР НА ПЕСЕНТА</th>
+                                            <th>ДАТА НА ПИК В TIKTOK</th>
+                                            <th>ДАТА НА ПИК В SPOTIFY</th>
+                                            <th>РАЗЛИКА МЕЖДУ ДАТИТЕ НА ПИЙКОВЕТЕ</th>
+                                            <th>ДАТА НА ЗАСИЧАНЕ ЗА ПОВЛИЯНА</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php foreach($influencedSongs as $song):?>
+                                            <tr>
+                                                <th><?php echo $song["song_name"]?></th>
+                                                <th><?php echo $song["artist_name"]?></th>
+                                                <th><?php echo $song["tiktok_peak_date"]?></th>
+                                                <th><?php echo $song["spotify_peak_date"]?></th>
+                                                <th><?php echo $song["peaks_difference"]?></th>
+                                                <th><?php echo $song["report_date"]?></th>
+                                                <th><a href='./influencedSong.php?sid=<?php echo $song["song_id"]?>' class="btn bg-purple waves-effect">Вижте повлияване</a></th>
+
+                                            </tr>
+                                        <?php endforeach;?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
+            <!-- #END# Exportable Table -->
 
-            <?php if($top200SongsBG != false):?>
-                <!-- Second Exportable table -->
-                <div class="row clearfix">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div class="card">
-                            <div class="header">
-                                <h2>
-                                    ТОП TIKTOK ПЕСНИ ЗА БЪЛГАРИЯ
-                                </h2>
-                            </div>
+            <div class="row clearfix">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="card">
+                    <div class="header">
+                            <h2>
+                                СРАВНЕНИЕ МЕЖДУ ПЪРВИТЕ 10 ПЕСНИ
+                            </h2>
+                        </div>
+                        <div class="body">
                             <div class="body">
-                                <div class="table-responsive">
-                                    <table class="table table-bordered table-striped table-hover dataTable js-exportable">
-                                        <thead>
-                                            <tr>
-                                                <th>РАНГ</th>
-                                                <th>ПЕСЕН</th>
-                                                <th>АВТОР НА ПЕСЕНТА</th>
-                                                <th>ВИДЕА НАПРАВЕНИ НАСКОРО</th>
-                                                <th>TIKTOK ХАРЕСВАНИЯ</th>
-                                                <th>YOUTUBE ГЛЕДАНИЯ</th>
-                                                <th>SPOTIFY ПОПУЛЯРНОСТ</th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php if($top200SongsBG):?>
-                                                <?php foreach($top200SongsBG as $st):?>
-                                                    <tr>
-                                                        <th><?php echo $st["rank"]?></th>
-                                                        <th><?php echo $st["song_name"]?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://www.tiktok.com/music/-<?php echo $st["tiktok_platform_id"] ?>" target="_blank"><i class="fa fa-eye" title="Вижте песента в TikTok"></i></a></th>
-                                                        <th><?php echo $st["artist_name"]?></th>
-                                                        <th><?php echo number_format($st["number_of_videos_last_14days"])?></th>
-                                                        <th><?php echo number_format($st["total_likes_count"])?></th>
-                                                        <th><?php echo number_format($st["youtube_views"])?></th>
-                                                        <th><?php echo $st["spotify_popularity"]?></th>
-                                                        <th><a href='./songStatsBG.php?sid=<?php echo $st["id"]?>' class="btn bg-purple waves-effect">Вижте детайли</a></th>
-                                                    </tr>
-                                                <?php endforeach;?>
-                                            <?php endif;?>
-                                        </tbody>
-                                    </table>
-                                </div>
+                                <canvas id="barChartGlobal"></canvas>
                             </div>
                         </div>
                     </div>
                 </div>
-                <!-- #END# Second Exportable table -->
-                
-                <div class="row clearfix">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div class="card">
-                        <div class="header">
-                                <h2>
-                                    СРАВНЕНИЕ МЕЖДУ ПЪРВИТЕ 10 ПЕСНИ
-                                </h2>
-                            </div>
-                            <div class="body">
-                                <div class="body">
-                                    <canvas id="barChartBG"></canvas>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            <?php else:?>
-                <div class="row clearfix">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div class="card">
-                            <?php if($selectDate != "" && $selectDate != "2023-01-13"):?>
-                                <div class="body">
-                                    Все още няма данни за топ 200 песни глобално за днес :(
-                                </div>
-                            <?php elseif($selectDate == ""):?>
-                                <div class="body">
-                                    Трябва да изберете валидна дата!
-                                </div>
-                            <?php else: ?>
-                                <div class="body">
-                                    Съжаляваме за причиненото неудобство. Нямаме данни за 13 януари 2023 година!
-                                </div>
-                            <?php endif;?>
-                        </div>
-                    </div>
-                </div>
-            <?php endif;?>
+            </div>
 
         </div>
         <!-- Footer -->
@@ -301,20 +246,19 @@
             </div>
         </div>
         <!-- #Footer -->
-
     </section>
-
+    
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
 
     //Статистика за някои от първите песни глобално
 
         // съставяне 
-        const dataBG = {
-            labels: JSON.parse(`<?php echo json_encode($songsNamesBG) ?>`),
+        const dataGlobal = {
+            labels: JSON.parse(`<?php echo json_encode($songsNames) ?>`),
             datasets: [{
                 label: 'ПОПУЛЯРНОСТ',
-                data: JSON.parse(`<?php echo json_encode($songsPopularitiesBG) ?>`),
+                data: JSON.parse(`<?php echo json_encode($songsPeaksDiff) ?>`),
                 backgroundColor: [
                     'rgba(255, 26, 104, 0.2)',
                     'rgba(54, 162, 235, 0.2)',
@@ -339,9 +283,9 @@
         };
 
         // кофигуриране 
-        const configBG = {
+        const configGlobal = {
             type: 'bar',
-            data: dataBG,
+            data: dataGlobal,
             options: {
                 indexAxis: 'y',
                     scales: {
@@ -353,9 +297,9 @@
         };
 
         // слагаме статистиката в html елемента
-        const myChartBG = new Chart(
-            document.getElementById('barChartBG'),
-            configBG
+        const myChartGlobal = new Chart(
+            document.getElementById('barChartGlobal'),
+            configGlobal
         );
 
     </script>

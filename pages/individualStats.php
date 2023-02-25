@@ -132,6 +132,12 @@
                             <span>НАЧАЛО</span>
                         </a>
                     </li>
+                    <li>
+                        <a href="affectedSongs.php" class=" waves-effect waves-block">
+                            <i class="material-icons">music_note</i>
+                            <span>ПОВЛИЯНИ ПЕСНИ</span>
+                        </a>
+                    </li>
                     <li class="active">
                         <a href="#" class=" waves-effect waves-block">
                             <i class="material-icons">person_outline</i>
