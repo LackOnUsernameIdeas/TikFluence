@@ -244,7 +244,7 @@
                                         <tbody>
                                             <?php if($topvideos):?>
                                                 <?php foreach($topvideos as $st):?>
-                                                    <tr>
+                                                    <tr onClick="window.location.href=`./videoStats.php?vid=<?php echo $st["user_id"]?>`">
                                                         <th><?php echo $st["rank"]?></th>
                                                         <th><a href="<?php echo $st["video_url"] ?>" target="_blank"><i class="fa fa-eye" title="Вижте повече в TikTok"></i></a></th>
                                                         <th><?php echo number_format($st["plays_count"])?></th>

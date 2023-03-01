@@ -444,7 +444,7 @@ function getUserVideoData($accessToken){
     $result = curl_exec($ch);
     $decoded = json_decode($result, true);
 
-    return $decoded["data"]["videos"];
+    return isset($decoded["data"]["videos"]) ? $decoded["data"]["videos"] : false;
 
 }
 

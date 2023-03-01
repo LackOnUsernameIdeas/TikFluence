@@ -344,14 +344,14 @@
                                             <?php if($top200SongsGlobal):?>
                                                 <?php foreach($top200SongsGlobal as $st):?>
                                                     <?php $show = setGrowth($st["song_id"], $db, $selectDate)?>
-                                                    <tr>
+                                                    <tr onClick="window.location.href=`./songStats.php?sid=<?php echo $st["song_id"]?>`">
                                                         <th><?php echo $st["rank"]?></th>
                                                         <th><?php echo $st["song_name"]?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://www.tiktok.com/music/-<?php echo $st["tiktok_platform_id"] ?>" target="_blank"><i class="fa fa-eye" title="Вижте песента в TikTok"></i></a></th>
                                                         <th><?php echo $st["artist_name"]?></th>
                                                         <th><?php echo number_format($st["number_of_videos_last_14days"])?></th>
                                                         <th><?php echo number_format($st["total_likes_count"])?></th>
-                                                        <th><?php echo number_format($st["youtube_views"])?></th>
-                                                        <th><?php echo $st["spotify_popularity"]?></th>
+                                                        <th><?php echo number_format($st["youtube_views"])?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://www.youtube.com/watch?v=<?php echo $st["youtube_platform_id"] ?>" target="_blank"><i class="fa fa-eye" title="Вижте песента в Spotify"></i></a></th>
+                                                        <th><?php echo $st["spotify_popularity"]?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://open.spotify.com/track/<?php echo $st["spotify_platform_id"] ?>" target="_blank"><i class="fa fa-eye" title="Вижте песента в YouTube"></i></a></th>
                                                         <th><a href='./songStats.php?sid=<?php echo $st["song_id"]?>' class="btn bg-purple waves-effect"><?php echo $show?></a></th>
                                                     </tr>
                                                 <?php endforeach;?>

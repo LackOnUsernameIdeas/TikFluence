@@ -243,7 +243,7 @@
                                         <tbody>
                                             <?php if($tiktokers):?>
                                                 <?php foreach($tiktokers as $st):?>
-                                                    <tr>
+                                                    <tr onClick="window.location.href=`./tiktoker.php?tid=<?php echo $st["given_id"]?>`">
                                                         <th><?php echo $st["rank"]?></th>
                                                         <th><?php if($st["thumbnail"]):?><img src="<?php echo $st["thumbnail"]?>" alt="Prof pic" width="42" height="42" style="vertical-align:bottom"><?php endif;?></th>
                                                         <th><?php echo $st["tiktoker"]?></th>

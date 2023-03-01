@@ -9,6 +9,9 @@
     $db = new DatabaseManager();
 
 //Извличаме името от данните, които ни дава TikTok API
+    $userBasicData = [];
+    $userVideoData = [];
+
     if(isset($_GET["code"])){
         $accessToken = generateTikTokAccessToken($_GET["code"]);
 
@@ -217,7 +220,7 @@
                     </div>
                 </div>
 
-                <?php if(!isset($_GET["code"])): ?>
+                <?php if(!isset($_GET["code"]) || $userBasicData == [] || $userVideoData == []): ?>
 
                     <div class="row clearfix">
 
@@ -330,10 +333,10 @@
                         </div>
                     </div>
                 </div> -->
-
-                <?php if(isset($_GET["code"])): ?>
+                <?php if(isset($_GET["code"]) && $userBasicData != [] && $userVideoData != []): ?>
                     <div class="row clearfix">
-
+                        <a href="https://www.tiktok.com/logout?redirect_url=http://fluence.noit.eu/pages/individualStats.php" class="btn bg-purple waves-effect" target="_blank">ИЗЛЕЗ ОТ ПРОФИЛА СИ</a>
+                        
                         <div class="col-lg-6 col-md-8 col-sm-8 col-xs-8">
                             <div class="card">
                                 <div class="body">
@@ -417,65 +420,68 @@
                             </div>
                         </div>
 
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                            <div class="card">
-                                <div class="header">
-                                    <h2>
-                                        ХАРЕСВАНИЯ НА СКОРО КАЧЕНИ ВИДЕА
-                                    </h2>
-                                </div>
-                                <div class="body">
-                                    <div class="content">
-                                        <canvas id="LikesChart"></canvas>
+                        <?php if($userVideoData != false): ?>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <div class="card">
+                                    <div class="header">
+                                        <h2>
+                                            ХАРЕСВАНИЯ НА СКОРО КАЧЕНИ ВИДЕА
+                                        </h2>
+                                    </div>
+                                    <div class="body">
+                                        <div class="content">
+                                            <canvas id="LikesChart"></canvas>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                            <div class="card">
-                                <div class="header">
-                                    <h2>
-                                        ГЛЕДАНИЯ НА СКОРО КАЧЕНИ ВИДЕА
-                                    </h2>
-                                </div>
-                                <div class="body">
-                                    <div class="content">
-                                        <canvas id="ViewsChart"></canvas>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <div class="card">
+                                    <div class="header">
+                                        <h2>
+                                            ГЛЕДАНИЯ НА СКОРО КАЧЕНИ ВИДЕА
+                                        </h2>
+                                    </div>
+                                    <div class="body">
+                                        <div class="content">
+                                            <canvas id="ViewsChart"></canvas>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                            <div class="card">
-                                <div class="header">
-                                    <h2>
-                                        СПОДЕЛЯНИЯ НА СКОРО КАЧЕНИ ВИДЕА
-                                    </h2>
-                                </div>
-                                <div class="body">
-                                    <div class="content">
-                                        <canvas id="SharesChart"></canvas>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <div class="card">
+                                    <div class="header">
+                                        <h2>
+                                            СПОДЕЛЯНИЯ НА СКОРО КАЧЕНИ ВИДЕА
+                                        </h2>
+                                    </div>
+                                    <div class="body">
+                                        <div class="content">
+                                            <canvas id="SharesChart"></canvas>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                            <div class="card">
-                                <div class="header">
-                                    <h2>
-                                        КОМЕНТАРИ НА СКОРО КАЧЕНИ ВИДЕА
-                                    </h2>
-                                </div>
-                                <div class="body">
-                                    <div class="content">
-                                        <canvas id="CommentsChart"></canvas>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <div class="card">
+                                    <div class="header">
+                                        <h2>
+                                            КОМЕНТАРИ НА СКОРО КАЧЕНИ ВИДЕА
+                                        </h2>
+                                    </div>
+                                    <div class="body">
+                                        <div class="content">
+                                            <canvas id="CommentsChart"></canvas>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        <?php endif;?>
+
                     <?php endif;?>
 
             </div>
