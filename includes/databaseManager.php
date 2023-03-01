@@ -1012,6 +1012,21 @@ class DatabaseManager {
         return $this->pdo->lastInsertId();
     }
 
+    //Изтриваме предния регистър на песен, която е претърпяла промяна
+    /**
+     * @param $Code
+     * @return false|array
+     */
+    public function deleteInfluencedSong($sid) {
+        $sql = "DELETE FROM `influenced_songs` WHERE `song_id`=:sid";
+
+        $query = $this->pdo->prepare($sql);
+        $query->bindValue('sid', $sid);
+        $query->execute();
+
+        return ($query->rowCount() > 0 ? true : false);
+    }
+
     //Взимаме информацията за топ 200 тиктокъри
     public function getTiktokersTodayData($date){
         $sql = "SELECT * 
