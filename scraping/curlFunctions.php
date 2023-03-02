@@ -420,7 +420,7 @@ function getUserBasicData($accessToken){
     $result = curl_exec($ch);
     $decoded = json_decode($result, true);
 
-    return $decoded["data"]["user"];
+    return isset($decoded["data"]["user"]) ? $decoded["data"]["user"] : false;
 
 }
 

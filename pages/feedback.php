@@ -4,13 +4,13 @@
 
     $siteOwnersEmail = 'nemabizenesnemapari@gmail.com';
 
+    $errorMessage = "";
 
     if($_POST) {
 
         $name = trim(stripslashes($_POST['first_name']));
         $family = trim(stripslashes($_POST['last_name']));
         $email = trim(stripslashes($_POST['email']));
-        // $subject = trim(stripslashes($_POST['school']));
         $contact_message = trim(stripslashes($_POST['message']));
         $error = [];
 
@@ -41,7 +41,7 @@
         $message .= "Имейл адрес: " . $email . "<br />";
         $message .= "Съобщение: <br />";
         $message .= $contact_message;
-        $message .= "<br /> ----- <br /> Този имейл беше изпратен от сайта 'Олимпиометър - ПГИ - гр.Перник '. <br />";
+        $message .= "<br /> ----- <br /> Този имейл беше изпратен от сайта 'TikFluence - ПГИ - гр.Перник '. <br />";
 
 
         $from =  $name . " <" . $email . ">";
@@ -59,13 +59,13 @@
 
             if ($mail) 
             { 
-                echo "<div class='col-lg-6 col-md-6 col-sm-6 form-group contact-forms'>Вашето съобщение е изпратено.</div>"; 
+                $errorMessage = "<div class='col-lg-6 col-md-6 col-sm-6 form-group contact-forms'>Вашето съобщение е изпратено.</div>"; 
                 
             }
             
             else 
             { 
-                echo "<p style='color: red'>Възникна грешка, моля опитайте отново по-късно!</p>"; 
+                $errorMessage = "<p style='color: red'>Възникна грешка, моля опитайте отново по-късно!</p>"; 
                 
             }
         }
@@ -77,7 +77,7 @@
             $response .= (isset($error['email'])) ? $error['email'] . "<br /> \n" : null;
             $response .= (isset($error['message'])) ? $error['message'] . "<br />" : null;
 
-            echo $response;
+            $errorMessage = $response;
         }
 
     }
@@ -265,6 +265,7 @@
                         <div class="card">
                             <div class="header">
                                 <h1>Свържете се с нас:</h1>
+                                <?php echo $errorMessage != "" ? $errorMessage : "" ?>
                             </div>
                             <div class="body">
                                 <!-- contact -->

@@ -37,7 +37,7 @@
     $shares = [];
     $comments = [];
 
-    if(isset($userVideoData)){
+    if(isset($userVideoData) && $userVideoData != false){
         foreach($userVideoData as $vid){
             $videosPublishDates[] = gmdate("Y-m-d", $vid["create_time"]);
     
@@ -210,17 +210,25 @@
 
             <div class="block-header">
                 <div class="body">
-                    <div class="block-header card p-t-10 p-l-10">
-                        <h2>ВИЕ СЕ НАМИРАТЕ В:</h2>
-                        <ol class="breadcrumb breadcrumb-col-black">
-                            <li onclick="window.location.href='../index.php'"><a href="javascript:void(0);"><i class="material-icons">home</i>НАЧАЛО</a></li>
-                            <li><i class="material-icons">insert_chart</i>СТАТИСТИКИ</li>
-                            <li class="active"><i class="material-icons">person_outline</i>ИНДИВИДУАЛНИ СТАТИСТИКИ ЗА ПОТРЕБИТЕЛ</li>
-                        </ol>
+                    <div class="col">
+                        <div class="block-header card p-t-10 p-l-10">
+                            <h2>ВИЕ СЕ НАМИРАТЕ В:</h2>
+                            <ol class="breadcrumb breadcrumb-col-black">
+                                <li onclick="window.location.href='../index.php'"><a href="javascript:void(0);"><i class="material-icons">home</i>НАЧАЛО</a></li>
+                                <li><i class="material-icons">insert_chart</i>СТАТИСТИКИ</li>
+                                <li class="active"><i class="material-icons">person_outline</i>ИНДИВИДУАЛНИ СТАТИСТИКИ ЗА ПОТРЕБИТЕЛ</li>
+                            </ol>
+                        </div>
                     </div>
+                    <?php if(isset($_GET["code"]) && $userBasicData != []): ?>
+                        <div class="col">
+                            <a href="https://www.tiktok.com/logout?redirect_url=https://fluence.noit.eu/pages/individualStats.php" class="btn bg-purple waves-effect" target="_blank" id="myLink">ИЗЛЕЗ ОТ ПРОФИЛА СИ</a>
+                        </div>
+                        <br>
+                    <?php endif; ?>
                 </div>
 
-                <?php if(!isset($_GET["code"]) || $userBasicData == [] || $userVideoData == []): ?>
+                <?php if(!isset($_GET["code"]) || $userBasicData == []): ?>
 
                     <div class="row clearfix">
 
@@ -333,9 +341,8 @@
                         </div>
                     </div>
                 </div> -->
-                <?php if(isset($_GET["code"]) && $userBasicData != [] && $userVideoData != []): ?>
-                    <div class="row clearfix">
-                        <a href="https://www.tiktok.com/logout?redirect_url=http://fluence.noit.eu/pages/individualStats.php" class="btn bg-purple waves-effect" target="_blank">ИЗЛЕЗ ОТ ПРОФИЛА СИ</a>
+                <?php if(isset($_GET["code"]) && $userBasicData != []): ?>
+                    <div class="row clearfix">  
                         
                         <div class="col-lg-6 col-md-8 col-sm-8 col-xs-8">
                             <div class="card">
@@ -481,11 +488,9 @@
                                 </div>
                             </div>
                         <?php endif;?>
+                    </div>
 
-                    <?php endif;?>
-
-            </div>
-
+                <?php endif;?>
         </div>
         <!-- Footer -->
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -512,6 +517,19 @@
 <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@1.3.1/dist/chartjs-adapter-luxon.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-streaming@2.0.0/dist/chartjs-plugin-streaming.min.js"></script> -->
 <!-- Статистики -->
+<script>
+  document.getElementById("myLink").addEventListener("click", function(event) {
+    event.preventDefault(); // Prevents the link from being followed immediately
+
+    // Open the TikTok logout page in a new tab
+    window.open('https://www.tiktok.com/logout?redirect_url=https://fluence.noit.eu/pages/individualStats.php', '_blank');
+
+    // Redirect the current tab to https://fluence.noit.eu/pages/individualStats.php after 3 seconds
+    setTimeout(function() {
+      window.location.href = "https://fluence.noit.eu/pages/individualStats.php";
+    }, 3000);
+  });
+</script>
 <script>
 
     //Данни за ползване

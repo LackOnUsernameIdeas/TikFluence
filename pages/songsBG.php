@@ -228,7 +228,7 @@
                                         <tbody>
                                             <?php if($top200SongsBG):?>
                                                 <?php foreach($top200SongsBG as $st):?>
-                                                    <tr onClick="window.location.href=`./songStats.php?sid=<?php echo $st["song_id"]?>`">
+                                                    <tr>
                                                         <th><?php echo $st["rank"]?></th>
                                                         <th><?php echo $st["song_name"]?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://www.tiktok.com/music/-<?php echo $st["tiktok_platform_id"] ?>" target="_blank"><i class="fa fa-eye" title="Вижте песента в TikTok"></i></a></th>
                                                         <th><?php echo $st["artist_name"]?></th>
