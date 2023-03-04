@@ -350,8 +350,8 @@
                                                         <th><?php echo $st["artist_name"]?></th>
                                                         <th><?php echo number_format($st["number_of_videos_last_14days"])?></th>
                                                         <th><?php echo number_format($st["total_likes_count"])?></th>
-                                                        <th><?php echo number_format($st["youtube_views"])?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://www.youtube.com/watch?v=<?php echo $st["youtube_platform_id"] ?>" target="_blank"><i class="fa fa-eye" title="Вижте песента в Spotify"></i></a></th>
-                                                        <th><?php echo $st["spotify_popularity"]?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://open.spotify.com/track/<?php echo $st["spotify_platform_id"] ?>" target="_blank"><i class="fa fa-eye" title="Вижте песента в YouTube"></i></a></th>
+                                                        <th><?php echo number_format($st["youtube_views"])?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://www.youtube.com/watch?v=<?php echo $st["youtube_platform_id"] ?>" target="_blank"><i class="fa fa-eye" title="Вижте песента в YouTube"></i></a></th>
+                                                        <th><?php echo $st["spotify_popularity"]?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://open.spotify.com/track/<?php echo $st["spotify_platform_id"] ?>" target="_blank"><i class="fa fa-eye" title="Вижте песента в Spotify"></i></a></th>
                                                         <th><a href='./songStats.php?sid=<?php echo $st["song_id"]?>' class="btn bg-purple waves-effect"><?php echo $show?></a></th>
                                                     </tr>
                                                 <?php endforeach;?>
@@ -406,7 +406,7 @@
         </div>
         <!-- Footer -->
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <div class="card bg-puple">
+            <div class="card">
                 <div class="body">
                     
                     <div class="legal">

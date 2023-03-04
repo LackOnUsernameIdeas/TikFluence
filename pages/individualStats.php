@@ -487,14 +487,34 @@
                                     </div>
                                 </div>
                             </div>
+                        <?php else:?>
+                            <div class="row clearfix">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="card">
+                                        <div class="header">
+                                            <h1>
+                                                Информация за нас
+                                            </h1>
+                                        </div>
+                                        <div class="body" style="font-size:18px;">
+                                            <p>
+                                                Ние сме ученици от Vlllб и IXб клас на Професионална гимназия по икономика - гр.Перник. Специалност - Икономическа информатика. 
+                                            </p>
+                                            <p>
+                                                Калоян Костадинов се погрижи за софтуера, а Николай Георгиев за дизайна.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         <?php endif;?>
                     </div>
 
                 <?php endif;?>
         </div>
         <!-- Footer -->
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <div class="card bg-puple">
+        <div class="col-xs-14 col-sm-14 col-md-14 col-lg-14">
+            <div class="card">
                 <div class="body">
                     
                     <div class="legal">
@@ -527,7 +547,7 @@
     // Redirect the current tab to https://fluence.noit.eu/pages/individualStats.php after 3 seconds
     setTimeout(function() {
       window.location.href = "https://fluence.noit.eu/pages/individualStats.php";
-    }, 3000);
+    }, 1000);
   });
 </script>
 <script>
