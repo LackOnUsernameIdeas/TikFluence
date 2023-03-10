@@ -219,7 +219,51 @@
 
         <div class="container-fluid">
             <div class="block-header">
-                    
+                
+                <!-- Blockquotes -->
+                <div class="row clearfix">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="card">
+                            <div class="header">
+                                <h1>Свържете се с нас:</h1>
+                                <h3 style="color:green;"><?php echo $errorMessage != "" ? $errorMessage : "" ?></h3>
+                                <br>
+                                <br>
+                            </div>
+                            <div class="body">
+                                <!-- contact -->
+                                    <div class="container py-lg-5 py-md-5 py-sm-4 py-3">
+                                        <div class="row">
+                                            <div class="col-lg-7 col-md-7">
+                                                <form action="#" method="post">
+                                                    <div class="row">
+                                                        <div class="col-lg-12 col-md-12 col-sm-12 form-group contact-forms">
+                                                            <input type="text" class="form-control" id="first_name" name="first_name" placeholder="Име" required="">
+                                                        </div>
+                                                        <div class="col-lg-6 col-md-6 col-sm-6 form-group contact-forms">
+                                                            <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Фамилия" required="">
+                                                        </div>
+                                                        <div class="col-lg-6 col-md-6 col-sm-6 form-group contact-forms">
+                                                            <input type="email" class="form-control" id="email" name="email" placeholder="Е-мейл" required="">
+                                                        </div>
+                                                    </div>
+                                                    <div class=" form-group contact-forms">
+                                                        <textarea class="form-control" rows="8" id="message" name="message" placeholder="Напиши съобщение" required=""></textarea>
+                                                    </div>
+                                                    
+                                                    <button type="submit" class="btn btn-primary sent-butnn btn-lg" style="font-size:18px;">Изпрати</button>
+
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <!--//contact -->
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- #END# Blockquotes -->
                 
                 <!-- Body Copy -->
                 <div class="row clearfix">
@@ -258,50 +302,6 @@
                     </div>
                 </div>
                 <!-- #END# Body Copy -->
-            
-                <!-- Blockquotes -->
-                <div class="row clearfix">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div class="card">
-                            <div class="header">
-                                <h1>Свържете се с нас:</h1>
-                                <?php echo $errorMessage != "" ? $errorMessage : "" ?>
-                            </div>
-                            <div class="body">
-                                <!-- contact -->
-                                    <div class="container py-lg-5 py-md-5 py-sm-4 py-3">
-                                        <div class="row">
-                                            <div class="col-lg-7 col-md-7">
-                                                <form action="#" method="post">
-                                                    <div class="row">
-                                                        <div class="col-lg-12 col-md-12 col-sm-12 form-group contact-forms">
-                                                            <input type="text" class="form-control" id="first_name" name="first_name" placeholder="Име" required="">
-                                                        </div>
-                                                        <div class="col-lg-6 col-md-6 col-sm-6 form-group contact-forms">
-                                                            <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Фамилия" required="">
-                                                        </div>
-                                                        <div class="col-lg-6 col-md-6 col-sm-6 form-group contact-forms">
-                                                            <input type="email" class="form-control" id="email" name="email" placeholder="Е-мейл" required="">
-                                                        </div>
-                                                    </div>
-                                                    <div class=" form-group contact-forms">
-                                                        <textarea class="form-control" rows="8" id="message" name="message" placeholder="Напиши съобщение" required=""></textarea>
-                                                    </div>
-                                                    
-                                                    <button type="submit" class="btn btn-primary sent-butnn btn-lg" style="font-size:18px;">Изпрати</button>
-
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!--//contact -->
-                            
-
-                            </div>
-                    </div>
-                </div>
-                <!-- #END# Blockquotes -->
  
             </div>
             

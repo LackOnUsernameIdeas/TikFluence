@@ -38,7 +38,7 @@
     
     if($dataPoints === false) redirect("songs.php");
 
-
+    //Взимаме всички дати и данни за всяка песен
     $dates = [];
 
     $ttNums = [];

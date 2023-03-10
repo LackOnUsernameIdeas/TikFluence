@@ -488,22 +488,12 @@
                                 </div>
                             </div>
                         <?php else:?>
-                            <div class="row clearfix">
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                    <div class="card">
-                                        <div class="header">
-                                            <h1>
-                                                Информация за нас
-                                            </h1>
-                                        </div>
-                                        <div class="body" style="font-size:18px;">
-                                            <p>
-                                                Ние сме ученици от Vlllб и IXб клас на Професионална гимназия по икономика - гр.Перник. Специалност - Икономическа информатика. 
-                                            </p>
-                                            <p>
-                                                Калоян Костадинов се погрижи за софтуера, а Николай Георгиев за дизайна.
-                                            </p>
-                                        </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="card">
+                                    <div class="body" style="font-size:18px;">
+                                        <h2 style="text-align: center;">
+                                            Трябва да имате качени видеа и отключен профил, за да можете да видите повече статистики!
+                                        </h2>
                                     </div>
                                 </div>
                             </div>

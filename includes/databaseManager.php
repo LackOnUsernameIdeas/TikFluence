@@ -423,7 +423,7 @@ class DatabaseManager {
     public function listAffectedSongs() {
         $sql = "SELECT * 
                 FROM `influenced_songs`
-                ORDER BY `peaks_difference` DESC";
+                ORDER BY `peaks_difference` DESC LIMIT 10";
 
         $query = $this->pdo->prepare($sql);
 
