@@ -325,6 +325,22 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="row clearfix">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="card">
+                                <div class="header">
+                                    <h2>
+                                        <strong>6.</strong> Не забравяйте накрая да излезете от профила си. След натискане на бутона за излизане ще бъдете препратени към страницата на TikTok. Можете да затворите страницата и да се върнете обратно към страницата на TikFluence!
+                                    </h2>
+                                </div>
+                                <div class="body">
+                                    <img src="../images/sixthStep.png" width="100%">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 <?php endif;?>
 
                 <!-- <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">

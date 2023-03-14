@@ -400,41 +400,65 @@
                 </div>
             </div>
 
-            <!-- Latest Social Trends -->
-            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                 <div class="card">
-                    <div class="body bg-cyan">
-                        <div class="m-b--35 font-bold">НАЙ-ИЗПОЛЗВАНИТЕ ХАШТАГОВЕ В МОМЕНТА</div>
-                        <ul class="dashboard-stat-list">
-                            <?php foreach($hashtagsForTheLast7Days as $ht):?>
-                                <li>
-                                    #<?php echo $ht ?>
-                                </li>
-                            <?php endforeach;?>
-                        </ul>
+                    <div class="header">
+                        <h2>
+                            НАЙ-ИЗПОЛЗВАНИТЕ ХАШТАГОВЕ
+                        </h2>
+                    </div>
+                    <div class="body">
+                        <div class="row clearfix">
+                            <div class="col-xs-12 ol-sm-12 col-md-12 col-lg-12">
+                                <div class="panel-group" id="accordion_1" role="tablist" aria-multiselectable="true">
+                                    <div class="panel panel-primary">
+                                        <div class="panel-heading" role="tab" id="headingOne_1">
+                                            <h4 class="panel-title">
+                                                <a role="button" data-toggle="collapse" data-parent="#accordion_1" href="#collapseOne_1" aria-expanded="false" aria-controls="collapseOne_1" class="collapsed">
+                                                    ПОНАСТОЯЩЕМ <i class="material-icons">keyboard_arrow_down</i>
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id="collapseOne_1" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne_1" aria-expanded="false" style="height: 0px;">
+                                            <div class="panel-body body bg-cyan">
+                                                <ul class="dashboard-stat-list">
+                                                    <?php foreach($hashtagsForTheLast7Days as $ht):?>
+                                                        <li>
+                                                            #<?php echo $ht ?>
+                                                        </li>
+                                                    <?php endforeach;?>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="panel panel-primary">
+                                        <div class="panel-heading" role="tab" id="headingTwo_1">
+                                            <h4 class="panel-title">
+                                                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion_1" href="#collapseTwo_1" aria-expanded="false" aria-controls="collapseTwo_1">
+                                                    ЗА ПОСЛЕДНИТЕ 120 ДНИ <i class="material-icons">keyboard_arrow_down</i>
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id="collapseTwo_1" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo_1" aria-expanded="false">
+                                            <div class="panel-body body bg-cyan">
+                                                <ul class="dashboard-stat-list">
+                                                    <?php foreach($hashtagsForTheLast120Days as $ht):?>
+                                                        <li>
+                                                            #<?php echo $ht ?> 
+                                                        </li>
+                                                    <?php endforeach;?>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <!-- #END# Latest Social Trends -->
-            <!-- Latest Social Trends -->
-            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-                <div class="card">
-                    <div class="body bg-cyan">
-                        <div class="m-b--35 font-bold">НАЙ-ИЗПОЛЗВАНИТЕ ХАШТАГОВЕ ЗА ПОСЛЕДНИТЕ 120 ДНИ</div>
-                        <ul class="dashboard-stat-list">
-                            <?php foreach($hashtagsForTheLast120Days as $ht):?>
-                                <li>
-                                    #<?php echo $ht ?> 
-                                    <!-- <span class="pull-right">
-                                        <i class="material-icons">trending_up</i>
-                                    </span> -->
-                                </li>
-                            <?php endforeach;?>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <!-- #END# Latest Social Trends -->
 
             <!-- Footer -->
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
