@@ -18,6 +18,20 @@
         $songsNames[] = $sn["song_name"];
         $songsPeaksDiff[] = $sn["peaks_difference"];
     }
+
+    $songsNamesUpTo10 = [];
+    $songsPeaksDiffUpTo10 = [];
+
+    for($i=0; $i < count($influencedSongs); $i++){
+
+        array_push($songsNamesUpTo10, $influencedSongs[$i]["song_name"]);
+        array_push($songsPeaksDiffUpTo10, $influencedSongs[$i]["peaks_difference"]);
+
+        if($i == 10){
+            break;
+        }
+    }
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -255,10 +269,10 @@
 
         // съставяне 
         const dataGlobal = {
-            labels: JSON.parse(`<?php echo json_encode($songsNames) ?>`),
+            labels: JSON.parse(`<?php echo json_encode($songsNamesUpTo10) ?>`),
             datasets: [{
                 label: 'ПОПУЛЯРНОСТ',
-                data: JSON.parse(`<?php echo json_encode($songsPeaksDiff) ?>`),
+                data: JSON.parse(`<?php echo json_encode($songsPeaksDiffUpTo10) ?>`),
                 backgroundColor: [
                     'rgba(255, 26, 104, 0.2)',
                     'rgba(54, 162, 235, 0.2)',
