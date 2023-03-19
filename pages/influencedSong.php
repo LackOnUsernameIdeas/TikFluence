@@ -7,30 +7,30 @@
 
     //Ако няма такова id за песен, потребителят е върнат в songs.php
     $sid = isset($_GET["sid"]) && ctype_digit($_GET['sid']) ? intval($_GET["sid"]) : -1;
-    if($sid < 0) redirect("songs.php");
+    if($sid < 0) redirect("affectedSongs.php");
 
     //Създаваме връзката с базата данни
     $db = new DatabaseManager();
 
     $songData = $db->getSongData($sid);
-
+    if($songData == false) redirect("affectedSongs.php");
         
-    $fetchDatesForButton = $db->listDatesForCurrentSong($sid);
+    // $fetchDatesForButton = $db->listDatesForCurrentSong($sid);
 
-    $chooseDatesForButton = [];
-    foreach($fetchDatesForButton as $date){    
-        $timestamp = new DateTime($date["fetch_date"]);
-        $chooseDatesForButton[] = $timestamp->format('Y-m-d');
-    }
+    // $chooseDatesForButton = [];
+    // foreach($fetchDatesForButton as $date){    
+    //     $timestamp = new DateTime($date["fetch_date"]);
+    //     $chooseDatesForButton[] = $timestamp->format('Y-m-d');
+    // }
 
     //Взимаме необходимата информация и я превръщаме където е необходимо в проценти
     $selectDate = isset($_SESSION["setDate"]) ? $_SESSION["setDate"] : date("Y-m-d");
     
-    if(end($chooseDatesForButton) != $selectDate){
-        $selectDate = end($chooseDatesForButton);
-    }
+    // if(end($chooseDatesForButton) != $selectDate){
+    //     $selectDate = end($chooseDatesForButton);
+    // }
 
-    $todayYesterdayData = $db->getTodayYesterdayData($sid, $selectDate);
+    // $todayYesterdayData = $db->getTodayYesterdayData($sid, $selectDate);
 
 
     //Взимаме записите за всяка песен
@@ -60,14 +60,14 @@
     $syNulls = array_keys($syNums, null);
 
 
-    //Взимаме необходимите данни(числа) за последните 2 дни
-    $ttLastTwoDaysNums = [];
-    $syLastTwoDays = [];
+    // //Взимаме необходимите данни(числа) за последните 2 дни
+    // $ttLastTwoDaysNums = [];
+    // $syLastTwoDays = [];
 
-    foreach($todayYesterdayData as $d){
-        $ttLastTwoDaysNums[] = $d["number_of_videos_last_14days"];
-        $syLastTwoDays[] = $d["spotify_popularity"];
-    }
+    // foreach($todayYesterdayData as $d){
+    //     $ttLastTwoDaysNums[] = $d["number_of_videos_last_14days"];
+    //     $syLastTwoDays[] = $d["spotify_popularity"];
+    // }
 
 ?>
 <!DOCTYPE html>

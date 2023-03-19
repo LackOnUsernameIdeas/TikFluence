@@ -7,7 +7,7 @@
 
     //Ако няма такова id за песен, потребителят е върнат в songs.php
     $tid = isset($_GET["tid"]) && ctype_digit($_GET['tid']) ? intval($_GET["tid"]) : -1;
-    if($tid < 0) redirect("additionalStats.php");
+    if($tid < 0) redirect("tiktokers.php");
     
     //Създаваме връзката с базата данни
     $db = new DatabaseManager();
@@ -20,18 +20,12 @@
         $selectDate = "2023-01-12";
         $whyIsThis = true;
     }
-
-    $fetchDatesForButton = $db->listDatesForCurrentTikToker($tid);
-
-    $chooseDatesForButton = [];
-    foreach($fetchDatesForButton as $date){    
-        $timestamp = new DateTime($date["fetch_date"]);
-        $chooseDatesForButton[] = $timestamp->format('Y-m-d');
-    }
     
     //Запазваме данните за тиктокъра в променлива
     $tiktokerMainData = $db->getTikTokerData($tid, $selectDate);
     $tiktokerDatapoints = $db->getTikTokerDatapoints($tid, $selectDate);
+
+    if($tiktokerMainData == false) redirect("tiktokers.php");
 
     $tiktokerDataForSpecificDate = $db->getTikTokerDataForSpecificDate($tid, $selectDate);
 
@@ -48,6 +42,13 @@
         $followersThisYear[] = $dp["followers_this_year"];
     }
 
+    $fetchDatesForButton = $db->listDatesForCurrentTikToker($tid);
+
+    $chooseDatesForButton = [];
+    foreach($fetchDatesForButton as $date){    
+        $timestamp = new DateTime($date["fetch_date"]);
+        $chooseDatesForButton[] = $timestamp->format('Y-m-d');
+    }
 
 ?>
 <!DOCTYPE html>

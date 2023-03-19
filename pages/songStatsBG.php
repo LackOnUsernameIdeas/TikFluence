@@ -7,7 +7,7 @@
 
     //Ако няма такова id за песен, потребителят е върнат в songs.php
     $sid = isset($_GET["sid"]) && ctype_digit($_GET['sid']) ? intval($_GET["sid"]) : -1;
-    if($sid < 0) redirect("songs.php");
+    if($sid < 0) redirect("songsBG.php");
 
     //Създаваме връзката с базата данни
     $db = new DatabaseManager();

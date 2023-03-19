@@ -7,7 +7,7 @@
 
     //Ако няма такова id за песен, потребителят е върнат в songs.php
     $vid = isset($_GET["vid"]) && ctype_digit($_GET['vid']) ? intval($_GET["vid"]) : -1;
-    if($vid < 0) redirect("additionalStats.php");
+    if($vid < 0) redirect("topVideos.php");
     
     //Създаваме връзката с базата данни
     $db = new DatabaseManager();
@@ -22,16 +22,11 @@
         $whyIsThis = true;
     }
 
-    $fetchDatesForButton = $db->listDatesForCurrentVideo($vid);
-
-    $chooseDatesForButton = [];
-    foreach($fetchDatesForButton as $date){    
-        $timestamp = new DateTime($date["fetch_date"]);
-        $chooseDatesForButton[] = $timestamp->format('Y-m-d');
-    }
 
     //Запазваме данните за видеото в променлива
     $videoDatapoints = $db->getVideosData($vid, $selectDate);
+
+    if($videoDatapoints == false) redirect("topVideos.php");
 
     $videoDataForSpecificDate = $db->getVideoDataForSpecificDate($vid, $selectDate);
 
@@ -53,6 +48,15 @@
     }
     
     $vidUrl = $videoDatapoints[0]["video_url"];
+
+    
+    $fetchDatesForButton = $db->listDatesForCurrentVideo($vid);
+
+    $chooseDatesForButton = [];
+    foreach($fetchDatesForButton as $date){    
+        $timestamp = new DateTime($date["fetch_date"]);
+        $chooseDatesForButton[] = $timestamp->format('Y-m-d');
+    }
 ?>
 <!DOCTYPE html>
 <html>

@@ -356,6 +356,10 @@ class DatabaseManager {
         $query->execute();
         $result_array = $query->fetch();
 
+        if($result_array == false){
+            $result_array = [];
+        }
+
         return count($result_array) > 0 ? $result_array : false;
     }
 
@@ -1144,6 +1148,8 @@ class DatabaseManager {
         $query->execute();
         $result_array = $query->fetchAll(PDO::FETCH_ASSOC);
 
+        if($result_array == false) $result_array = [];
+        
         return count($result_array) > 0 ? $result_array : false;
     }
 
@@ -1176,6 +1182,8 @@ class DatabaseManager {
         $query->execute();
         $result_array = $query->fetch();
 
+        if($result_array == false) $result_array = [];
+
         return count($result_array) > 0 ? $result_array : false;
     }
 
@@ -1190,6 +1198,8 @@ class DatabaseManager {
         $query->bindValue('date', $date);
         $query->execute();
         $result_array = $query->fetch();
+
+        if($result_array == false) $result_array = [];
 
         return count($result_array) > 0 ? $result_array : false;
     }
