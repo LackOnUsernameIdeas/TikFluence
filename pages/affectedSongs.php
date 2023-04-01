@@ -27,7 +27,7 @@
         array_push($songsNamesUpTo10, $influencedSongs[$i]["song_name"]);
         array_push($songsPeaksDiffUpTo10, $influencedSongs[$i]["peaks_difference"]);
 
-        if($i == 10){
+        if($i == 9){
             break;
         }
     }
