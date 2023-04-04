@@ -155,7 +155,7 @@ foreach($topvideos as $tt){
 
 
 
-//Запазване на повлияните песни в масива - songsWithDays
+//Запазване на повлияните песни в масива - songsWithDaysPositive
     function getPeaks($db){
         $songs = $db->listSongs();
 
@@ -177,7 +177,8 @@ foreach($topvideos as $tt){
 
     $peaksWithData = getPeaks($db);
 
-    $songsWithDays = [];
+    $songsWithDaysPositive = [];
+    $songsWithDaysNegative = [];
 
     for($i=0;$i<count($peaksWithData);$i+=2){
 
@@ -185,16 +186,18 @@ foreach($topvideos as $tt){
         strtotime($peaksWithData[$i]["Spotify"]["fetch_date"]) - strtotime($peaksWithData[$i + 1]["TikTok"]["fetch_date"]) : false;
 
         if($datediff != false && $datediff > 0){
-            $songsWithDays[$peaksWithData[$i]["Spotify"]["song_id"]] = $datediff / (60 * 60 * 24);
+            $songsWithDaysPositive[$peaksWithData[$i]["Spotify"]["song_id"]] = $datediff / (60 * 60 * 24);
+        } elseif($datediff < 0){
+            $songsWithDaysNegative[$peaksWithData[$i]["Spotify"]["song_id"]] = $datediff / (60 * 60 * 24);
         }
 
     }
 
-//Промени, които масива - songsWithDays претърпява, за да съдържа само данните на песните, които имат плато, по-малко от 10 дни
-    arsort($songsWithDays);
+//Промени, които масива - songsWithDaysPositive претърпява, за да съдържа само данните на песните, които имат плато, по-малко от 10 дни
+    arsort($songsWithDaysPositive);
 
 
-    foreach($songsWithDays as $key => $value){
+    foreach($songsWithDaysPositive as $key => $value){
         $datapoints = $db->getEveryDatapointForSong($key);
         
         $ttNums = [];
@@ -214,20 +217,20 @@ foreach($topvideos as $tt){
                 $plateauIndex = 0;
             }
             if($plateauIndex >= 10){
-                unset($songsWithDays[$key]);
+                unset($songsWithDaysPositive[$key]);
             } 
             $previousVal = $val;
         }
     }
 
-//Как изглежда всеки индекс от масива - songsWithDays:
+//Как изглежда всеки индекс от масива - songsWithDaysPositive:
 //[id на песен] => int(разликата на датите на пийковете в 2те платформи)
 
 
 //Запазване на нужната информацията за повлияните песни в масива - influencedSongsData
     $influencedSongsData = [];
 
-    foreach($songsWithDays as $songId => $days){
+    foreach($songsWithDaysPositive as $songId => $days){
 
         $songData = $db->findSongById($songId)[0];
 
@@ -256,7 +259,7 @@ foreach($topvideos as $tt){
 
     
 //Проверяваме дали има отрицателни стойности в разликите в пийковете на повлияните песни и ако има, изтриваме дадената песен, защото вече не я считаме за повлияна
-    foreach($songsWithDays as $sid=>$datediff){
+    foreach($songsWithDaysNegative as $sid=>$datediff){
 
         $song = $db->checkIfSongExists($sid);
 
