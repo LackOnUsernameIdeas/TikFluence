@@ -253,5 +253,16 @@ foreach($topvideos as $tt){
         }
         
     }
+
     
+//Проверяваме дали има промяна в данните на вече полияните песни и изтриваме песента, ако има промяна
+    foreach($songsWithDays as $sid=>$datediff){
+
+        $song = $db->checkIfSongExists($sid);
+
+        if($song != false && $song["peaks_difference"] != $datediff){
+            $db->deleteInfluencedSong($sid);
+        }
+    }
+
 echo "gotovo";

@@ -32,6 +32,13 @@
         }
     }
 
+    $songsClearedNames = [];
+
+    foreach($songsNamesUpTo10 as $song){
+        $songsClearedNames[] = str_replace('\\"', '\\\"', $song);
+    }
+    
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -269,7 +276,7 @@
 
         // съставяне 
         const dataGlobal = {
-            labels: JSON.parse(`<?php echo json_encode($songsNamesUpTo10) ?>`),
+            labels: JSON.parse(`<?php echo json_encode($songsClearedNames) ?>`),
             datasets: [{
                 label: 'ПОПУЛЯРНОСТ',
                 data: JSON.parse(`<?php echo json_encode($songsPeaksDiffUpTo10) ?>`),
