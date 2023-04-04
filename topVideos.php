@@ -1,9 +1,9 @@
 <?php
 
     //Вмъкване на нужните файлове
-    include "../selectDate.php";
-    include "../includes/databaseManager.php";
-    include "../includes/common.php";
+    include "./selectDate.php";
+    include "./includes/databaseManager.php";
+    include "./includes/common.php";
 
     //Създаваме връзката с базата данни
     $db = new DatabaseManager();
@@ -59,29 +59,29 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <title>ОЩЕ СТАТИСТИКИ</title>
     <!-- Favicon-->
-    <link rel="icon" href="../favicon1.ico" type="image/x-icon">
+    <link rel="icon" href="./favicon1.ico" type="image/x-icon">
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
 
     <!-- Bootstrap Core Css -->
-    <link href="../plugins/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link href="./plugins/bootstrap/css/bootstrap.css" rel="stylesheet">
 
     <!-- Waves Effect Css -->
-    <link href="../plugins/node-waves/waves.css" rel="stylesheet" />
+    <link href="./plugins/node-waves/waves.css" rel="stylesheet" />
 
     <!-- Animation Css -->
-    <link href="../plugins/animate-css/animate.css" rel="stylesheet" />
+    <link href="./plugins/animate-css/animate.css" rel="stylesheet" />
 
     <!-- JQuery DataTable Css -->
-    <link href="../plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css" rel="stylesheet">
+    <link href="./plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css" rel="stylesheet">
 
     <!-- Custom Css -->
-    <link href="../css/style.css" rel="stylesheet">
+    <link href="./css/style.css" rel="stylesheet">
 
     <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
-    <link href="../css/themes/all-themes.css" rel="stylesheet" />
+    <link href="./css/themes/all-themes.css" rel="stylesheet" />
     
     <!-- Cloudflare -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -97,7 +97,7 @@
             <div class="navbar-header">
                 <a href="javascript:void(0);" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false"></a>
                 <a href="javascript:void(0);" class="bars"></a>
-                <a class="navbar-brand" href="../index.php">TIKFLUENCE</a>
+                <a class="navbar-brand" href="./index.php">TIKFLUENCE</a>
             </div>
 
         </div>
@@ -106,14 +106,14 @@
     <section>
         <!-- Left Sidebar -->
         <aside id="leftsidebar" class="sidebar">
-            <img src="../images/logo.jpg" width="300"> 
+            <img src="./images/logo.jpg" width="300"> 
 
             <!-- Menu -->
             <div class="menu">
                 <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 584px;"><ul class="list" style="overflow: hidden; width: auto; height: 584px;">
                     <li class="header">ГЛАВНО МЕНЮ</li>
                     <li>
-                        <a href="../index.php" class="toggled waves-effect waves-block">
+                        <a href="./index.php" class="toggled waves-effect waves-block">
                             <i class="material-icons">home</i>
                             <span>НАЧАЛО</span>
                         </a>
@@ -194,7 +194,7 @@
                     <div class="block-header card p-t-10 p-l-10">
                         <h2>ВИЕ СЕ НАМИРАТЕ В:</h2>
                         <ol class="breadcrumb breadcrumb-col-black">
-                            <li onclick="window.location.href='../index.php'"><a href="javascript:void(0);"><i class="material-icons">home</i>НАЧАЛО</a></li>
+                            <li onclick="window.location.href='./index.php'"><a href="javascript:void(0);"><i class="material-icons">home</i>НАЧАЛО</a></li>
                             <li><a href="javascript:void(0);"><i class="material-icons">insert_chart</i>СТАТИСТИКИ</a></li>
                             <li class="active"><i class="material-icons">play_circle_outline</i>ТОП 200 НАЙ-ГЛЕДАНИ ВИДЕА</li>
                         </ol>
@@ -209,7 +209,7 @@
                             <?php if($datesArray):?>
                                 <input type="date" id="start" name="trip-start"
                                 value="<?php echo $selectDate ?>"
-                                min="<?php echo $datesArray[0] ?>" max="<?php echo end($datesArray) ?>" data-id="<?php echo $date ?>" data-role="setDate" onchange=" window.location.replace('../selectDate.php?setDate=' + this.value + '&redirectURI=' + window.location.href)">
+                                min="<?php echo $datesArray[0] ?>" max="<?php echo end($datesArray) ?>" data-id="<?php echo $date ?>" data-role="setDate" onchange=" window.location.replace('./selectDate.php?setDate=' + this.value + '&redirectURI=' + window.location.href)">
                             <?php endif;?>
             
                     </div>
@@ -293,7 +293,7 @@
                 <div class="body">
                     
                     <div class="legal">
-                        <?php include '../footer.php';?>
+                        <?php include './footer.php';?>
                     </div>
                             
                 </div>
@@ -304,37 +304,37 @@
     </section>
 
     <!-- Jquery Core Js -->
-    <script src="../plugins/jquery/jquery.min.js"></script>
+    <script src="./plugins/jquery/jquery.min.js"></script>
 
     <!-- Bootstrap Core Js -->
-    <script src="../plugins/bootstrap/js/bootstrap.js"></script>
+    <script src="./plugins/bootstrap/js/bootstrap.js"></script>
 
     <!-- Select Plugin Js -->
-    <script src="../plugins/bootstrap-select/js/bootstrap-select.js"></script>
+    <script src="./plugins/bootstrap-select/js/bootstrap-select.js"></script>
 
     <!-- Slimscroll Plugin Js -->
-    <script src="../plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
+    <script src="./plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
 
     <!-- Waves Effect Plugin Js -->
-    <script src="../plugins/node-waves/waves.js"></script>
+    <script src="./plugins/node-waves/waves.js"></script>
 
     <!-- Jquery DataTable Plugin Js -->
-    <script src="../plugins/jquery-datatable/jquery.dataTables.js"></script>
-    <script src="../plugins/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js"></script>
-    <script src="../plugins/jquery-datatable/extensions/export/dataTables.buttons.min.js"></script>
-    <script src="../plugins/jquery-datatable/extensions/export/buttons.flash.min.js"></script>
-    <script src="../plugins/jquery-datatable/extensions/export/jszip.min.js"></script>
-    <script src="../plugins/jquery-datatable/extensions/export/pdfmake.min.js"></script>
-    <script src="../plugins/jquery-datatable/extensions/export/vfs_fonts.js"></script>
-    <script src="../plugins/jquery-datatable/extensions/export/buttons.html5.min.js"></script>
-    <script src="../plugins/jquery-datatable/extensions/export/buttons.print.min.js"></script>
+    <script src="./plugins/jquery-datatable/jquery.dataTables.js"></script>
+    <script src="./plugins/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js"></script>
+    <script src="./plugins/jquery-datatable/extensions/export/dataTables.buttons.min.js"></script>
+    <script src="./plugins/jquery-datatable/extensions/export/buttons.flash.min.js"></script>
+    <script src="./plugins/jquery-datatable/extensions/export/jszip.min.js"></script>
+    <script src="./plugins/jquery-datatable/extensions/export/pdfmake.min.js"></script>
+    <script src="./plugins/jquery-datatable/extensions/export/vfs_fonts.js"></script>
+    <script src="./plugins/jquery-datatable/extensions/export/buttons.html5.min.js"></script>
+    <script src="./plugins/jquery-datatable/extensions/export/buttons.print.min.js"></script>
 
     <!-- Custom Js -->
-    <script src="../js/admin.js"></script>
-    <script src="../js/pages/tables/jquery-datatable.js"></script>
+    <script src="./js/admin.js"></script>
+    <script src="./js/pages/tables/jquery-datatable.js"></script>
 
     <!-- Demo Js -->
-    <script src="../js/demo.js"></script>
+    <script src="./js/demo.js"></script>
 </body>
 
 </html>

@@ -1,9 +1,9 @@
 <?php
 
     //Вмъкване на нужните файлове
-    include "../selectDate.php";
-    include '../includes/databaseManager.php';
-    include '../includes/common.php';
+    include "./selectDate.php";
+    include './includes/databaseManager.php';
+    include './includes/common.php';
 
     //Ако няма такова id за песен, потребителят е върнат в songs.php
     $sid = isset($_GET["sid"]) && ctype_digit($_GET['sid']) ? intval($_GET["sid"]) : -1;
@@ -314,26 +314,26 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <title>Статистики за <?= htmlspecialchars($songData["song_name"]); ?></title>
     <!-- Favicon-->
-    <link rel="icon" href="../favicon1.ico" type="image/x-icon">
+    <link rel="icon" href="./favicon1.ico" type="image/x-icon">
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
 
     <!-- Bootstrap Core Css -->
-    <link href="../plugins/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link href="./plugins/bootstrap/css/bootstrap.css" rel="stylesheet">
 
     <!-- Waves Effect Css -->
-    <link href="../plugins/node-waves/waves.css" rel="stylesheet" />
+    <link href="./plugins/node-waves/waves.css" rel="stylesheet" />
 
     <!-- Animation Css -->
-    <link href="../plugins/animate-css/animate.css" rel="stylesheet" />
+    <link href="./plugins/animate-css/animate.css" rel="stylesheet" />
 
     <!-- Custom Css -->
-    <link href="../css/style.css" rel="stylesheet">
+    <link href="./css/style.css" rel="stylesheet">
 
     <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
-    <link href="../css/themes/all-themes.css" rel="stylesheet" />
+    <link href="./css/themes/all-themes.css" rel="stylesheet" />
 </head>
 
 <body class="theme-purple">
@@ -350,7 +350,7 @@
                     </div>
                 </div>
             </div>
-            <p>Моля изчакайте...</p>
+            <p>Моля изчакайте..</p>
         </div>
     </div>
     <!-- #END# Page Loader -->
@@ -363,7 +363,7 @@
             <div class="navbar-header">
                 <a href="javascript:void(0);" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false"></a>
                 <a href="javascript:void(0);" class="bars"></a>
-                <a class="navbar-brand" href="../index.php">TIKFLUENCE</a>
+                <a class="navbar-brand" href="./index.php">TIKFLUENCE</a>
             </div>
 
         </div>
@@ -372,14 +372,14 @@
     <section>
         <!-- Left Sidebar -->
         <aside id="leftsidebar" class="sidebar">
-            <img src="../images/logo.jpg" width="300"> 
+            <img src="./images/logo.jpg" width="300"> 
 
             <!-- Menu -->
             <div class="menu">
                 <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 584px;"><ul class="list" style="overflow: hidden; width: auto; height: 584px;">
                     <li class="header">ГЛАВНО МЕНЮ</li>
                     <li>
-                        <a href="../index.php" class="toggled waves-effect waves-block">
+                        <a href="./index.php" class="toggled waves-effect waves-block">
                             <i class="material-icons">home</i>
                             <span>НАЧАЛО</span>
                         </a>
@@ -475,7 +475,7 @@
                                 <div class="body">
                                     <h2>ВИЕ СЕ НАМИРАТЕ В:</h2>
                                     <ol class="breadcrumb breadcrumb-col-black">
-                                        <li onclick="window.location.href='../index.php'"><a href="javascript:void(0);"><i class="material-icons">home</i>НАЧАЛО</a></li>
+                                        <li onclick="window.location.href='./index.php'"><a href="javascript:void(0);"><i class="material-icons">home</i>НАЧАЛО</a></li>
                                         <li><a href="javascript:void(0);"><i class="material-icons">insert_chart</i>СТАТИСТИКИ</a></li>
                                         <li onclick="window.location.href='songs.php'"><a href="javascript:void(0);"><i class="material-icons">music_note</i>ТОП 200 TIKTOK ПЕСНИ ГЛОБАЛНО</a></li>
                                         <li class="active"><i class="material-icons">music_note</i>СТАТИСТИКИ ЗА: <?php echo $songData["song_name"]?></li>
@@ -491,7 +491,7 @@
                                         <?php if($datesArray):?>
                                             <input type="date" id="start" name="trip-start"
                                             value="<?php echo $selectDate ?>"
-                                            min="<?php echo $datesArray[1] ?>" max="<?php echo end($datesArray) ?>" onchange="window.location.replace('../selectDate.php?setDate=' + this.value + '&redirectURI=' + window.location.href)">
+                                            min="<?php echo $datesArray[1] ?>" max="<?php echo end($datesArray) ?>" onchange="window.location.replace('./selectDate.php?setDate=' + this.value + '&redirectURI=' + window.location.href)">
                                         <?php endif;?>
                         
                                 </div>
@@ -896,7 +896,7 @@
                 <div class="body">
                     
                     <div class="legal">
-                        <?php include '../footer.php';?>
+                        <?php include './footer.php';?>
                     </div>
                             
                 </div>
@@ -1405,7 +1405,7 @@
 
                 $.ajax({
                     type: "POST",
-                    url: "../selectDate.php",
+                    url: "./selectDate.php",
                     data: {setDate: date},
                     success: function(data){
                         $("#setDateButton").html(data);
@@ -1419,25 +1419,25 @@
     </script>
 
     <!-- Jquery Core Js -->
-    <script src="../plugins/jquery/jquery.min.js"></script>
+    <script src="./plugins/jquery/jquery.min.js"></script>
 
     <!-- Bootstrap Core Js -->
-    <script src="../plugins/bootstrap/js/bootstrap.js"></script>
+    <script src="./plugins/bootstrap/js/bootstrap.js"></script>
 
     <!-- Select Plugin Js -->
-    <script src="../plugins/bootstrap-select/js/bootstrap-select.js"></script>
+    <script src="./plugins/bootstrap-select/js/bootstrap-select.js"></script>
 
     <!-- Slimscroll Plugin Js -->
-    <script src="../plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
+    <script src="./plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
 
     <!-- Waves Effect Plugin Js -->
-    <script src="../plugins/node-waves/waves.js"></script>
+    <script src="./plugins/node-waves/waves.js"></script>
 
     <!-- Custom Js -->
-    <script src="../js/admin.js"></script>
+    <script src="./js/admin.js"></script>
 
     <!-- Demo Js -->
-    <script src="../js/demo.js"></script>
+    <script src="./js/demo.js"></script>
 </body>
 
 </html>

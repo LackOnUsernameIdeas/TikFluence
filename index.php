@@ -194,13 +194,13 @@
                         </a>
                     </li>
                     <li>
-                        <a href="pages/affectedSongs.php" class=" waves-effect waves-block">
+                        <a href="affectedSongs.php" class=" waves-effect waves-block">
                             <i class="material-icons">music_note</i>
                             <span>ПОВЛИЯНИ ПЕСНИ</span>
                         </a>
                     </li>
                     <li>
-                        <a href="pages/individualStats.php" class=" waves-effect waves-block">
+                        <a href="individualStats.php" class=" waves-effect waves-block">
                             <i class="material-icons">person_outline</i>
                             <span>МОИТЕ СТАТИСТИКИ В TIKTOK</span>
                         </a>
@@ -212,25 +212,25 @@
                         </a>
                         <ul class="ml-menu">
                             <li>
-                                <a href="pages/songs.php" class="waves-effect waves-block">
+                                <a href="songs.php" class="waves-effect waves-block">
                                     <i class="material-icons">music_note</i>
                                     <span>ТОП 200 TIKTOK ПЕСНИ ГЛОБАЛНО</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="pages/songsBG.php" class=" waves-effect waves-block">
+                                <a href="songsBG.php" class=" waves-effect waves-block">
                                     <i class="material-icons">music_note</i>
                                     <span>ТОП TIKTOK ПЕСНИ ЗА БЪЛГАРИЯ</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="pages/tiktokers.php" class="waves-effect waves-block">
+                                <a href="tiktokers.php" class="waves-effect waves-block">
                                     <i class="material-icons">person</i>
                                     <span>ТОП 200 НАЙ-ИЗВЕСТНИ ТИКТОКЪРИ</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="pages/topVideos.php" class="waves-effect waves-block">
+                                <a href="topVideos.php" class="waves-effect waves-block">
                                     <i class="material-icons">play_circle_outline</i>
                                     <span>ТОП 200 НАЙ-ГЛЕДАНИ ВИДЕА В TIKTOK</span>
                                 </a>
@@ -239,7 +239,7 @@
                     </li>
 
                     <li>
-                        <a href="pages/feedback.php" class=" waves-effect waves-block">
+                        <a href="feedback.php" class=" waves-effect waves-block">
                             <i class="material-icons">info</i>
                             <span>ЗА КОНТАКТ</span>
                         </a>
@@ -251,10 +251,10 @@
             <!-- Footer -->
             <div class="legal">
                 <div class="copyright">
-                    <a href="javascript:void(0);"><a href="pages/privacyPolicy.php">Политика за поверителност</a> ,</a>
+                    <a href="javascript:void(0);"><a href="privacyPolicy.php">Политика за поверителност</a> ,</a>
                 </div>
                 <div class="copyright">
-                    <a href="javascript:void(0);"><a href="pages/termsAndConditions.php">Правила и Условия</a></a>
+                    <a href="javascript:void(0);"><a href="termsAndConditions.php">Правила и Условия</a></a>
                 </div>
             </div>
             <!-- #Footer -->
@@ -300,7 +300,7 @@
                 <?php endforeach;?>
 
                 <?php if(isset($influencedSongsData[0])): ?>
-                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12" onClick="window.location.href=`./pages/influencedSong.php?sid=<?= $influencedSongsData[0]["song_id"] ?>`">
+                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12" onClick="window.location.href=`./influencedSong.php?sid=<?= $influencedSongsData[0]["song_id"] ?>`">
                         <div class="info-box bg-green hover-expand-effect">
                             <div class="icon">
                                 <i class="material-icons">filter_1</i>
@@ -314,7 +314,7 @@
                 <?php endif; ?>
 
                 <?php if(isset($influencedSongsData[1])): ?>
-                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12" onClick="window.location.href=`./pages/influencedSong.php?sid=<?= $influencedSongsData[1]["song_id"] ?>`">
+                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12" onClick="window.location.href=`./influencedSong.php?sid=<?= $influencedSongsData[1]["song_id"] ?>`">
                         <div class="info-box bg-yellow hover-expand-effect">
                             <div class="icon">
                                 <i class="material-icons">filter_2</i>
@@ -328,7 +328,7 @@
                 <?php endif; ?>
 
                 <?php if(isset($influencedSongsData[2])): ?>
-                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12" onClick="window.location.href=`./pages/influencedSong.php?sid=<?= $influencedSongsData[2]["song_id"] ?>`">
+                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12" onClick="window.location.href=`./influencedSong.php?sid=<?= $influencedSongsData[2]["song_id"] ?>`">
                         <div class="info-box bg-red hover-expand-effect">
                             <div class="icon">
                                 <i class="material-icons">filter_3</i>
@@ -377,7 +377,7 @@
                                         <?php $songPeakDataSY = $db->findSongPeakDataSY($songId) ?>
                                         <?php $songLastSavedData = $db->findSongLastSavedData($songId) ?>
                                         
-                                        <tr onClick="window.location.href=`./pages/influencedSong.php?sid=<?= $songData[0]["id"] ?>`">
+                                        <tr onClick="window.location.href=`./influencedSong.php?sid=<?= $songData[0]["id"] ?>`">
                                             <td><?= $iteration?></td>
                                             <td><?= $songData[0]["song_name"] ?></td>
                                             <td><?= $songData[0]["artist_name"] ?></td>
@@ -385,7 +385,7 @@
                                             <th><?= $songPeakDataSY["fetch_date"] ?></th>
                                             <th><?= $songLastSavedData["number_of_videos_last_14days"] ?></th>
                                             <th><?= $songLastSavedData["spotify_popularity"] ?></th>
-                                            <td><a href='./pages/influencedSong.php?sid=<?= $songData[0]["id"] ?>' class="btn bg-purple waves-effect" style="font-size:14px;">Вижте повече</a></td>
+                                            <td><a href='./influencedSong.php?sid=<?= $songData[0]["id"] ?>' class="btn bg-purple waves-effect" style="font-size:14px;">Вижте повече</a></td>
                                             <!-- <td>
                                                 <div class="progress">
                                                     <div class="progress-bar bg-purple" role="progressbar" aria-valuenow="62" aria-valuemin="0" aria-valuemax="100" style="width: 62%"></div>
