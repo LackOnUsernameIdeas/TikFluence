@@ -24,20 +24,16 @@
 
     for($i=0; $i < count($influencedSongs); $i++){
 
-        array_push($songsNamesUpTo10, $influencedSongs[$i]["song_name"]);
+        //Слагаме "\" tам където има кавички, за да може да не стават проблеми при показването на данните
+        $strWithoutSingleAndDoubleQuotes = str_replace("'", "\'", str_replace('"', '\"', $influencedSongs[$i]["song_name"]));
+
+        array_push($songsNamesUpTo10, $strWithoutSingleAndDoubleQuotes);
         array_push($songsPeaksDiffUpTo10, $influencedSongs[$i]["peaks_difference"]);
 
         if($i == 9){
             break;
         }
     }
-
-    $songsClearedNames = [];
-
-    foreach($songsNamesUpTo10 as $song){
-        $songsClearedNames[] = str_replace('"', '\"', $song);
-    }
-    
 
 ?>
 <!DOCTYPE html>
@@ -276,7 +272,7 @@
 
         // съставяне 
         const dataGlobal = {
-            labels: JSON.parse(`<?php echo json_encode($songsClearedNames) ?>`),
+            labels: JSON.parse(`<?php echo json_encode($songsNamesUpTo10) ?>`),
             datasets: [{
                 label: 'ПОПУЛЯРНОСТ',
                 data: JSON.parse(`<?php echo json_encode($songsPeaksDiffUpTo10) ?>`),
