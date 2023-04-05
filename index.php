@@ -46,8 +46,8 @@
     }
 
     //Запазваме данните за най-използваните хаштагове в променливи
-    $hashtagsDataForTheLast7Days = getHashtagsForTheLast7Days();
-    $hashtagsDataForTheLast120Days = getHashtagsForTheLast120Days();
+    $hashtagsDataForTheLast7Days = $db->getHashtagsForTheLast7Days();
+    $hashtagsDataForTheLast120Days = $db->getHashtagsForTheLast120Days();
 
     //АЛГОРИТЪМ НА ПОВЛИЯВАНЕ
 
@@ -452,7 +452,7 @@
                 </div>
             </div>
 
-            <?php if($hashtagsDataForTheLast7Days != [] && $hashtagsDataForTheLast120Days != []): ?>
+            <?php if($hashtagsDataForTheLast7Days != false && $hashtagsDataForTheLast120Days != false): ?>
                 <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                     <div class="card">
                         <div class="header">
@@ -477,7 +477,7 @@
                                                     <ul class="dashboard-stat-list">
                                                         <?php foreach($hashtagsDataForTheLast7Days as $ht):?>
                                                             <li>
-                                                                #<?php echo $ht ?>
+                                                                #<?php echo $ht["hashtag_name"] ?>
                                                             </li>
                                                         <?php endforeach;?>
                                                     </ul>
@@ -498,7 +498,7 @@
                                                     <ul class="dashboard-stat-list">
                                                         <?php foreach($hashtagsDataForTheLast120Days as $ht):?>
                                                             <li>
-                                                                #<?php echo $ht ?> 
+                                                                #<?php echo $ht["hashtag_name"] ?> 
                                                             </li>
                                                         <?php endforeach;?>
                                                     </ul>

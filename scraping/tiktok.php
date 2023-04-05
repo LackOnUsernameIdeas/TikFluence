@@ -62,6 +62,8 @@ $dataPoints = fetchTiktokDatapoints();
 $dataPointsBG = fetchTiktokDatapointsBG();
 $tiktokers = fetchTiktokTopUsers();
 $topvideos = fetchTiktokTopVideos();
+$hashtagsForTheLast7Days = fetchTopHashtagsForTheLast7Days();
+$hashtagsForTheLast120Days = fetchTopHashtagsForTheLast120Days();
 $date = date("Y-m-d");
 
 //Взимаме ключ за работа със Spotify API
@@ -266,6 +268,29 @@ foreach($topvideos as $tt){
         if($song != false && $song["peaks_difference"] != $datediff){
             $db->deleteInfluencedSong($sid);
         }
+    }
+
+    
+//Качваме данните за най-използваните хаштагове за последните 7 дни
+    foreach($hashtagsForTheLast7Days as $hashtag){
+
+        $db->insertHashtagForTheLast7Days([
+            'hashtag_name' => $hashtag["hashtag_name"],
+            'rank' => $hashtag["rank"],
+            'publish_cnt' => $hashtag["publish_cnt"],
+            'fetch_date' => $date
+        ]);
+    }
+
+//Качваме данните за най-използваните хаштагове за последните 120 дни
+    foreach($hashtagsForTheLast120Days as $hashtag){
+        
+        $db->insertHashtagForTheLast120Days([
+            'rank' => $hashtag["rank"],
+            'hashtag_name' => $hashtag["hashtag_name"],
+            'publish_cnt' => $hashtag["publish_cnt"],
+            'fetch_date' => $date
+        ]);
     }
 
 echo "gotovo";

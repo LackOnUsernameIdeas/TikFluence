@@ -1186,4 +1186,90 @@ class DatabaseManager {
 
         return count($result_array) > 0 ? $result_array : false;
     }
+
+    //Качваме данните за най-използваните хаштагове за последните 7 дни
+    public function insertHashtagForTheLast7Days($object){
+        $sql = "INSERT INTO `tiktok_hashtags_7days` ( 
+                    `rank`, 
+                    `hashtag_name`,
+                    `publish_cnt`,
+                    `fetch_date`
+                ) VALUES (
+                    :rank, 
+                    :hashtag_name,
+                    :publish_cnt,
+                    :fetch_date
+                )";
+
+        $query = $this->pdo->prepare($sql);
+
+        $query->bindValue('rank', $object['rank']);
+        $query->bindValue('hashtag_name', $object['hashtag_name']);
+        $query->bindValue('publish_cnt', $object['publish_cnt']);
+        $query->bindValue('fetch_date', $object['fetch_date']);
+
+        $query->execute();
+
+        return $this->pdo->lastInsertId();
+    }
+
+    //Качваме данните за най-използваните хаштагове за последните 120 дни
+    public function insertHashtagForTheLast120Days($object){
+        $sql = "INSERT INTO `tiktok_hashtags_120days` ( 
+                    `rank`, 
+                    `hashtag_name`,
+                    `publish_cnt`,
+                    `fetch_date`
+                ) VALUES (
+                    :rank, 
+                    :hashtag_name,
+                    :publish_cnt,
+                    :fetch_date
+                )";
+
+        $query = $this->pdo->prepare($sql);
+
+        $query->bindValue('rank', $object['rank']);
+        $query->bindValue('hashtag_name', $object['hashtag_name']);
+        $query->bindValue('publish_cnt', $object['publish_cnt']);
+        $query->bindValue('fetch_date', $object['fetch_date']);
+
+        $query->execute();
+
+        return $this->pdo->lastInsertId();
+    }
+
+    public function getHashtagsForTheLast7Days(){
+        $sql = "SELECT * 
+                FROM `tiktok_hashtags_7days`
+                WHERE DATE(`fetch_date`) = DATE(NOW())
+                ORDER BY `rank`
+                LIMIT 5";
+
+        $query = $this->pdo->prepare($sql);
+
+        $query->execute();
+        $result_array = $query->fetchAll(PDO::FETCH_ASSOC);
+
+        if($result_array == false) $result_array = [];
+
+        return count($result_array) > 0 ? $result_array : false;
+    }
+    
+    public function getHashtagsForTheLast120Days(){
+        $sql = "SELECT * 
+                FROM `tiktok_hashtags_120days`
+                WHERE DATE(`fetch_date`) = DATE(NOW())
+                ORDER BY `rank`
+                LIMIT 5";
+
+        $query = $this->pdo->prepare($sql);
+
+        $query->execute();
+        $result_array = $query->fetchAll(PDO::FETCH_ASSOC);
+
+        if($result_array == false) $result_array = [];
+
+        return count($result_array) > 0 ? $result_array : false;
+    }
 }
