@@ -334,7 +334,11 @@ function fetchTopHashtagsForTheLast7Days(){
 
     curl_close($ch);
 
-    return $decoded["data"]["list"];
+    if(isset($decoded["data"]["list"])){
+        return $decoded["data"]["list"];
+    } else {
+        return false;
+    }
 }
 
 // Взимаме данни за най-използваните хаштагове за последните 120 дни

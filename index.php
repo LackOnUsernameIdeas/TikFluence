@@ -6,28 +6,48 @@
     //Създаваме връзката с базата данни
     $db = new DatabaseManager();
 
-    //Взимаме необходимите данни
-    $hashtagsDataForTheLast7Days = fetchTopHashtagsForTheLast7Days();
-    $hashtagsDataForTheLast120Days = fetchTopHashtagsForTheLast120Days();
 
-    //Осигуряваме си необходимите данни
-    $hashtagsForTheLast7Days = [];
+    //Сдобиваме се с данни за най-използваните хаштагове за последните 7 дни
+    function getHashtagsForTheLast7Days(){
+        //Взимаме необходимите данни
+        $hashtagsDataForTheLast7Days = fetchTopHashtagsForTheLast7Days();
+        if($hashtagsDataForTheLast7Days == false){return [];}
 
-    for($i=0;$i<count($hashtagsDataForTheLast7Days);$i++){
-        if($i == 6){
-            break;
+        //Запазваме данните в масив
+        $hashtagsForTheLast7Days = [];
+
+        for($i=0;$i<count($hashtagsDataForTheLast7Days);$i++){
+            if($i == 6){
+                break;
+            }
+            array_push($hashtagsForTheLast7Days, $hashtagsDataForTheLast7Days[$i]["hashtag_name"]);
         }
-        array_push($hashtagsForTheLast7Days, $hashtagsDataForTheLast7Days[$i]["hashtag_name"]);
+        
+        return $hashtagsForTheLast7Days;
     }
 
-    $hashtagsForTheLast120Days = [];
+    //Сдобиваме се с данни за най-използваните хаштагове за последните 120 дни
+    function getHashtagsForTheLast120Days(){
+        //Взимаме необходимите данни
+        $hashtagsDataForTheLast120Days = fetchTopHashtagsForTheLast120Days();
+        if($hashtagsDataForTheLast120Days == false){return [];}
 
-    for($i=0;$i<count($hashtagsDataForTheLast120Days);$i++){
-        if($i == 6){
-            break;
+        //Запазваме данните в масив
+        $hashtagsForTheLast120Days = [];
+
+        for($i=0;$i<count($hashtagsDataForTheLast120Days);$i++){
+            if($i == 6){
+                break;
+            }
+            array_push($hashtagsForTheLast120Days, $hashtagsDataForTheLast120Days[$i]["hashtag_name"]);
         }
-        array_push($hashtagsForTheLast120Days, $hashtagsDataForTheLast120Days[$i]["hashtag_name"]);
+
+        return $hashtagsForTheLast120Days;
     }
+
+    //Запазваме данните за най-използваните хаштагове в променливи
+    $hashtagsDataForTheLast7Days = getHashtagsForTheLast7Days();
+    $hashtagsDataForTheLast120Days = getHashtagsForTheLast120Days();
 
     //АЛГОРИТЪМ НА ПОВЛИЯВАНЕ
 
@@ -432,65 +452,67 @@
                 </div>
             </div>
 
-            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                <div class="card">
-                    <div class="header">
-                        <h2>
-                            НАЙ-ИЗПОЛЗВАНИТЕ ХАШТАГОВЕ
-                        </h2>
-                    </div>
-                    <div class="body">
-                        <div class="row clearfix">
-                            <div class="col-xs-12 ol-sm-12 col-md-12 col-lg-12">
-                                <div class="panel-group" id="accordion_1" role="tablist" aria-multiselectable="true">
-                                    <div class="panel panel-primary">
-                                        <div class="panel-heading" role="tab" id="headingOne_1">
-                                            <h4 class="panel-title">
-                                                <a role="button" data-toggle="collapse" data-parent="#accordion_1" href="#collapseOne_1" aria-expanded="false" aria-controls="collapseOne_1" class="collapsed">
-                                                    ПОНАСТОЯЩЕМ <i class="material-icons">keyboard_arrow_down</i>
-                                                </a>
-                                            </h4>
-                                        </div>
-                                        <div id="collapseOne_1" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne_1" aria-expanded="false" style="height: 0px;">
-                                            <div class="panel-body body bg-cyan">
-                                                <ul class="dashboard-stat-list">
-                                                    <?php foreach($hashtagsForTheLast7Days as $ht):?>
-                                                        <li>
-                                                            #<?php echo $ht ?>
-                                                        </li>
-                                                    <?php endforeach;?>
-                                                </ul>
+            <?php if($hashtagsDataForTheLast7Days != [] && $hashtagsDataForTheLast120Days != []): ?>
+                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2>
+                                НАЙ-ИЗПОЛЗВАНИТЕ ХАШТАГОВЕ
+                            </h2>
+                        </div>
+                        <div class="body">
+                            <div class="row clearfix">
+                                <div class="col-xs-12 ol-sm-12 col-md-12 col-lg-12">
+                                    <div class="panel-group" id="accordion_1" role="tablist" aria-multiselectable="true">
+                                        <div class="panel panel-primary">
+                                            <div class="panel-heading" role="tab" id="headingOne_1">
+                                                <h4 class="panel-title">
+                                                    <a role="button" data-toggle="collapse" data-parent="#accordion_1" href="#collapseOne_1" aria-expanded="false" aria-controls="collapseOne_1" class="collapsed">
+                                                        ПОНАСТОЯЩЕМ <i class="material-icons">keyboard_arrow_down</i>
+                                                    </a>
+                                                </h4>
+                                            </div>
+                                            <div id="collapseOne_1" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne_1" aria-expanded="false" style="height: 0px;">
+                                                <div class="panel-body body bg-cyan">
+                                                    <ul class="dashboard-stat-list">
+                                                        <?php foreach($hashtagsDataForTheLast7Days as $ht):?>
+                                                            <li>
+                                                                #<?php echo $ht ?>
+                                                            </li>
+                                                        <?php endforeach;?>
+                                                    </ul>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
 
-                                    <div class="panel panel-primary">
-                                        <div class="panel-heading" role="tab" id="headingTwo_1">
-                                            <h4 class="panel-title">
-                                                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion_1" href="#collapseTwo_1" aria-expanded="false" aria-controls="collapseTwo_1">
-                                                    ЗА ПОСЛЕДНИТЕ 120 ДНИ <i class="material-icons">keyboard_arrow_down</i>
-                                                </a>
-                                            </h4>
-                                        </div>
-                                        <div id="collapseTwo_1" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo_1" aria-expanded="false">
-                                            <div class="panel-body body bg-cyan">
-                                                <ul class="dashboard-stat-list">
-                                                    <?php foreach($hashtagsForTheLast120Days as $ht):?>
-                                                        <li>
-                                                            #<?php echo $ht ?> 
-                                                        </li>
-                                                    <?php endforeach;?>
-                                                </ul>
+                                        <div class="panel panel-primary">
+                                            <div class="panel-heading" role="tab" id="headingTwo_1">
+                                                <h4 class="panel-title">
+                                                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion_1" href="#collapseTwo_1" aria-expanded="false" aria-controls="collapseTwo_1">
+                                                        ЗА ПОСЛЕДНИТЕ 120 ДНИ <i class="material-icons">keyboard_arrow_down</i>
+                                                    </a>
+                                                </h4>
+                                            </div>
+                                            <div id="collapseTwo_1" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo_1" aria-expanded="false">
+                                                <div class="panel-body body bg-cyan">
+                                                    <ul class="dashboard-stat-list">
+                                                        <?php foreach($hashtagsDataForTheLast120Days as $ht):?>
+                                                            <li>
+                                                                #<?php echo $ht ?> 
+                                                            </li>
+                                                        <?php endforeach;?>
+                                                    </ul>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
 
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            <?php endif;?>
 
             <!-- Footer -->
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
