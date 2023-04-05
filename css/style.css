@@ -1896,7 +1896,7 @@
     color: #fff !important; }
 
 .bg-cyan {
-  background-color: #00BCD4 !important;
+  background-color: #641971 !important;
   color: #fff; }
   .bg-cyan .content .text,
   .bg-cyan .content .number {
@@ -4771,9 +4771,9 @@ section.content {
     color: #555; }
 
 .panel-group .panel-primary {
-  border: 1px solid #1f91f3; }
+  border: 1px solid #9C27B0; }
   .panel-group .panel-primary .panel-title {
-    background-color: #1f91f3; }
+    background-color: #9C27B0; }
 
 .panel-group .panel-success {
   border: 1px solid #2b982b; }

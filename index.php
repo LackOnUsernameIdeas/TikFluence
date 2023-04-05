@@ -6,9 +6,22 @@
     //Създаваме връзката с базата данни
     $db = new DatabaseManager();
 
+
+    //Осигуряваме си необходимите данни
+    $dates = $db->listDatesHashtagsAndSongsOnHomePage();
+    $datesArray = [];
+
+    foreach($dates as $date){
+        $timestamp = new DateTime($date["fetch_date"]);
+        $datesArray[] = $timestamp->format('Y-m-d');
+    }
+
+    //Слагаме избраната дата в променлива и с нея издърпваме нужните данни
+    $selectDate = isset($_SESSION["setDate"]) && $_SESSION["setDate"] >= '2023-04-05'  ? $_SESSION["setDate"] : date("Y-m-d");
+
     //Запазваме данните за най-използваните хаштагове в променливи
-    $hashtagsDataForTheLast7Days = $db->getHashtagsForTheLast7Days();
-    $hashtagsDataForTheLast120Days = $db->getHashtagsForTheLast120Days();
+    $hashtagsDataForTheLast7Days = $db->getHashtagsForTheLast7Days($selectDate);
+    $hashtagsDataForTheLast120Days = $db->getHashtagsForTheLast120Days($selectDate);
 
     //АЛГОРИТЪМ НА ПОВЛИЯВАНЕ
 
@@ -356,58 +369,93 @@
 
             </div>
             <!-- #END# Widgets -->
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="block-header">
+                    <div class="card">
+                        <div class="body">
+                            <h2>Изберете дата за която искате да видите данни:</h2>
+                            <?php if($datesArray):?>
+                                <input type="date" id="start" name="trip-start"
+                                value="<?php echo $selectDate ?>"
+                                min="<?php echo $datesArray[0] ?>" max="<?php echo end($datesArray) ?>" data-id="<?php echo $date ?>" data-role="setDate" onchange=" window.location.replace('./selectDate.php?setDate=' + this.value + '&redirectURI=' + window.location.href)">
+                            <?php endif;?>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8">
                 <div class="card">
                     <div class="header">
-                        <h2>TikFluence засече тези най-повлияни от TikTok песни</h2>
+                        <h2>
+                            TikFluence засече тези най-повлияни от TikTok песни
+                        </h2>
                     </div>
                     <div class="body">
-                        <div class="table-responsive">
-                            <table class="table table-hover dashboard-task-infos" style="font-size:14px;">
-                                <thead>
-                                    <tr>
-                                        <th>Ранг</th>
-                                        <th>Песен</th>
-                                        <th>Артист</th>
-                                        <th>Дата на пик в TikTok</th>
-                                        <th>Дата на пик в Spotify</th>
-                                        <th>TikTok видеа последно</th>
-                                        <th>Spotify популярност последно</th>
-                                        <th>Повлияване</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php $iteration = 0;?>
-                                    <?php foreach($songsWithDays as $songId => $days):?>
-                                        <?php $iteration++?>
-                                        <?php if($iteration == 11):?>
-                                            <?php break;?>
-                                        <?php endif;?>
+                        <div class="row clearfix">
+                            <div class="col-xs-12 ol-sm-12 col-md-12 col-lg-12">
+                                <div class="panel-group" id="accordion_1" role="tablist" aria-multiselectable="true">
+                                    <div class="panel panel-primary">
+                                        <div class="panel-heading" role="tab" id="headingOne_1">
+                                            <h4 class="panel-title">
+                                                <a role="button" data-toggle="collapse" data-parent="#accordion_1" href="#collapseOne_1" aria-expanded="false" aria-controls="collapseOne_1" class="collapsed">
+                                                    ПОНАСТОЯЩЕМ <i class="material-icons">keyboard_arrow_down</i>
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id="collapseOne_1" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_1">
+                                            <div class="panel-body">
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover dashboard-task-infos" style="font-size:14px;">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Ранг</th>
+                                                                <th>Песен</th>
+                                                                <th>Артист</th>
+                                                                <th>Дата на пик в TikTok</th>
+                                                                <th>Дата на пик в Spotify</th>
+                                                                <th>TikTok видеа последно</th>
+                                                                <th>Spotify популярност последно</th>
+                                                                <th>Повлияване</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <?php $iteration = 0;?>
+                                                            <?php foreach($songsWithDays as $songId => $days):?>
+                                                                <?php $iteration++?>
+                                                                <?php if($iteration == 11):?>
+                                                                    <?php break;?>
+                                                                <?php endif;?>
 
-                                        <?php $songData = $db->findSongById($songId) ?>
-                                        <?php $songPeakDataTT = $db->findSongPeakDataTT($songId) ?>
-                                        <?php $songPeakDataSY = $db->findSongPeakDataSY($songId) ?>
-                                        <?php $songLastSavedData = $db->findSongLastSavedData($songId) ?>
-                                        
-                                        <tr onClick="window.location.href=`./influencedSong.php?sid=<?= $songData[0]["id"] ?>`">
-                                            <td><?= $iteration?></td>
-                                            <td><?= $songData[0]["song_name"] ?></td>
-                                            <td><?= $songData[0]["artist_name"] ?></td>
-                                            <th><?= $songPeakDataTT["fetch_date"] ?></th>
-                                            <th><?= $songPeakDataSY["fetch_date"] ?></th>
-                                            <th><?= $songLastSavedData["number_of_videos_last_14days"] ?></th>
-                                            <th><?= $songLastSavedData["spotify_popularity"] ?></th>
-                                            <td><a href='./influencedSong.php?sid=<?= $songData[0]["id"] ?>' class="btn bg-purple waves-effect" style="font-size:14px;">Вижте повече</a></td>
-                                            <!-- <td>
-                                                <div class="progress">
-                                                    <div class="progress-bar bg-purple" role="progressbar" aria-valuenow="62" aria-valuemin="0" aria-valuemax="100" style="width: 62%"></div>
+                                                                <?php $songData = $db->findSongById($songId) ?>
+                                                                <?php $songPeakDataTT = $db->findSongPeakDataTT($songId) ?>
+                                                                <?php $songPeakDataSY = $db->findSongPeakDataSY($songId) ?>
+                                                                <?php $songLastSavedData = $db->findSongLastSavedData($songId) ?>
+                                                                
+                                                                <tr onClick="window.location.href=`./influencedSong.php?sid=<?= $songData[0]["id"] ?>`">
+                                                                    <td><?= $iteration?></td>
+                                                                    <td><?= $songData[0]["song_name"] ?></td>
+                                                                    <td><?= $songData[0]["artist_name"] ?></td>
+                                                                    <th><?= $songPeakDataTT["fetch_date"] ?></th>
+                                                                    <th><?= $songPeakDataSY["fetch_date"] ?></th>
+                                                                    <th><?= $songLastSavedData["number_of_videos_last_14days"] ?></th>
+                                                                    <th><?= $songLastSavedData["spotify_popularity"] ?></th>
+                                                                    <td><a href='./influencedSong.php?sid=<?= $songData[0]["id"] ?>' class="btn bg-purple waves-effect" style="font-size:14px;">Вижте повече</a></td>
+                                                                    <!-- <td>
+                                                                        <div class="progress">
+                                                                            <div class="progress-bar bg-purple" role="progressbar" aria-valuenow="62" aria-valuemin="0" aria-valuemax="100" style="width: 62%"></div>
+                                                                        </div>
+                                                                    </td> -->
+                                                                </tr>
+                                                            <?php endforeach;?>
+                                                        </tbody>
+                                                    </table>
                                                 </div>
-                                            </td> -->
-                                        </tr>
-                                    <?php endforeach;?>
-                                </tbody>
-                            </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -424,16 +472,16 @@
                         <div class="body">
                             <div class="row clearfix">
                                 <div class="col-xs-12 ol-sm-12 col-md-12 col-lg-12">
-                                    <div class="panel-group" id="accordion_1" role="tablist" aria-multiselectable="true">
+                                    <div class="panel-group" id="accordion_2" role="tablist" aria-multiselectable="true">
                                         <div class="panel panel-primary">
-                                            <div class="panel-heading" role="tab" id="headingOne_1">
+                                            <div class="panel-heading" role="tab" id="headingOne_2">
                                                 <h4 class="panel-title">
-                                                    <a role="button" data-toggle="collapse" data-parent="#accordion_1" href="#collapseOne_1" aria-expanded="false" aria-controls="collapseOne_1" class="collapsed">
+                                                    <a role="button" data-toggle="collapse" data-parent="#accordion_2" href="#collapseOne_2" aria-expanded="false" aria-controls="collapseOne_2" class="collapsed">
                                                         ПОНАСТОЯЩЕМ <i class="material-icons">keyboard_arrow_down</i>
                                                     </a>
                                                 </h4>
                                             </div>
-                                            <div id="collapseOne_1" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne_1" aria-expanded="false" style="height: 0px;">
+                                            <div id="collapseOne_2" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne_2" aria-expanded="false" style="height: 0px;">
                                                 <div class="panel-body body bg-cyan">
                                                     <ul class="dashboard-stat-list">
                                                         <?php foreach($hashtagsDataForTheLast7Days as $ht):?>
@@ -449,7 +497,7 @@
                                         <div class="panel panel-primary">
                                             <div class="panel-heading" role="tab" id="headingTwo_1">
                                                 <h4 class="panel-title">
-                                                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion_1" href="#collapseTwo_1" aria-expanded="false" aria-controls="collapseTwo_1">
+                                                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion_2" href="#collapseTwo_1" aria-expanded="false" aria-controls="collapseTwo_1">
                                                         ЗА ПОСЛЕДНИТЕ 120 ДНИ <i class="material-icons">keyboard_arrow_down</i>
                                                     </a>
                                                 </h4>

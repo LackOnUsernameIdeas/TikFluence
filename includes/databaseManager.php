@@ -564,6 +564,18 @@ class DatabaseManager {
 
         return count($result_array) > 0 ? $result_array : false;
     }
+    
+    //Дърпаме всички дати със записи
+    public function listDatesHashtagsAndSongsOnHomePage() {
+        $sql = "SELECT DISTINCT `fetch_date` 
+                FROM `tiktok_hashtags_7days`";
+
+        $query = $this->pdo->prepare($sql);
+        $query->execute();
+        $result_array = $query->fetchAll(PDO::FETCH_ASSOC);
+
+        return count($result_array) > 0 ? $result_array : false;
+    }
 
     //Намираме песента по id
     public function findSongByTiktokId($sid){
@@ -1240,15 +1252,15 @@ class DatabaseManager {
     }
 
     //Взимаме данните за най-използваните хаштагове за последните 7 дни
-    public function getHashtagsForTheLast7Days(){
+    public function getHashtagsForTheLast7Days($date){
         $sql = "SELECT * 
                 FROM `tiktok_hashtags_7days`
-                WHERE DATE(`fetch_date`) = DATE(NOW())
+                WHERE DATE(`fetch_date`) = DATE(:date)
                 ORDER BY `rank`
-                LIMIT 5";
+                LIMIT 10";
 
         $query = $this->pdo->prepare($sql);
-
+        $query->bindValue('date', $date);
         $query->execute();
         $result_array = $query->fetchAll(PDO::FETCH_ASSOC);
 
@@ -1258,14 +1270,15 @@ class DatabaseManager {
     }
     
     //Взимаме данните за най-използваните хаштагове за последните 120 дни
-    public function getHashtagsForTheLast120Days(){
+    public function getHashtagsForTheLast120Days($date){
         $sql = "SELECT * 
                 FROM `tiktok_hashtags_120days`
-                WHERE DATE(`fetch_date`) = DATE(NOW())
+                WHERE DATE(`fetch_date`) = DATE(:date)
                 ORDER BY `rank`
-                LIMIT 5";
+                LIMIT 10";
 
         $query = $this->pdo->prepare($sql);
+        $query->bindValue('date', $date);
 
         $query->execute();
         $result_array = $query->fetchAll(PDO::FETCH_ASSOC);

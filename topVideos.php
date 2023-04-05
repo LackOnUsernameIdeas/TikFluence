@@ -186,12 +186,11 @@
                 <div class="card">
                     <div class="body">
                         <h2>Изберете дата за която искате да видите данни:</h2>
-                            <?php if($datesArray):?>
-                                <input type="date" id="start" name="trip-start"
-                                value="<?php echo $selectDate ?>"
-                                min="<?php echo $datesArray[0] ?>" max="<?php echo end($datesArray) ?>" data-id="<?php echo $date ?>" data-role="setDate" onchange=" window.location.replace('./selectDate.php?setDate=' + this.value + '&redirectURI=' + window.location.href)">
-                            <?php endif;?>
-            
+                        <?php if($datesArray):?>
+                            <input type="date" id="start" name="trip-start"
+                            value="<?php echo $selectDate ?>"
+                            min="<?php echo $datesArray[0] ?>" max="<?php echo end($datesArray) ?>" data-id="<?php echo $date ?>" data-role="setDate" onchange=" window.location.replace('./selectDate.php?setDate=' + this.value + '&redirectURI=' + window.location.href)">
+                        <?php endif;?>
                     </div>
                 </div>
             </div>
