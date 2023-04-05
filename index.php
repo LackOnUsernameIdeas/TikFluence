@@ -472,17 +472,18 @@
                         <div class="body">
                             <div class="row clearfix">
                                 <div class="col-xs-12 ol-sm-12 col-md-12 col-lg-12">
+
                                     <div class="panel-group" id="accordion_2" role="tablist" aria-multiselectable="true">
                                         <div class="panel panel-primary">
                                             <div class="panel-heading" role="tab" id="headingOne_2">
                                                 <h4 class="panel-title">
-                                                    <a role="button" data-toggle="collapse" data-parent="#accordion_2" href="#collapseOne_2" aria-expanded="false" aria-controls="collapseOne_2" class="collapsed">
+                                                    <a role="button" data-toggle="collapse" data-parent="#accordion_2" href="#collapseOne_2" aria-expanded="true" aria-controls="collapseOne_2">
                                                         ПОНАСТОЯЩЕМ <i class="material-icons">keyboard_arrow_down</i>
                                                     </a>
                                                 </h4>
                                             </div>
-                                            <div id="collapseOne_2" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne_2" aria-expanded="false" style="height: 0px;">
-                                                <div class="panel-body body bg-cyan">
+                                            <div id="collapseOne_2" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_2">
+                                                <div class="panel-body">
                                                     <ul class="dashboard-stat-list">
                                                         <?php foreach($hashtagsDataForTheLast7Days as $ht):?>
                                                             <li>
@@ -493,17 +494,16 @@
                                                 </div>
                                             </div>
                                         </div>
-
                                         <div class="panel panel-primary">
-                                            <div class="panel-heading" role="tab" id="headingTwo_1">
+                                            <div class="panel-heading" role="tab" id="headingTwo_2">
                                                 <h4 class="panel-title">
-                                                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion_2" href="#collapseTwo_1" aria-expanded="false" aria-controls="collapseTwo_1">
+                                                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion_2" href="#collapseTwo_2" aria-expanded="false" aria-controls="collapseTwo_2">
                                                         ЗА ПОСЛЕДНИТЕ 120 ДНИ <i class="material-icons">keyboard_arrow_down</i>
                                                     </a>
                                                 </h4>
                                             </div>
-                                            <div id="collapseTwo_1" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo_1" aria-expanded="false">
-                                                <div class="panel-body body bg-cyan">
+                                            <div id="collapseTwo_2" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo_2">
+                                                <div class="panel-body">
                                                     <ul class="dashboard-stat-list">
                                                         <?php foreach($hashtagsDataForTheLast120Days as $ht):?>
                                                             <li>
@@ -516,6 +516,7 @@
                                         </div>
 
                                     </div>
+
                                 </div>
                             </div>
                         </div>
