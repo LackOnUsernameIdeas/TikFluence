@@ -1,4 +1,4 @@
-﻿<?php
+<?php
     //Вмъкване на нужните файлове
     include "scraping/curlFunctions.php";
     include "includes/databaseManager.php";
@@ -136,6 +136,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <meta name="google-site-verification" content="tQMYDP8q6UH_zU17EdVY3_8xQa5TZRTC2dCCShMYYgg" />
     <title>НАЧАЛО</title>
     <!-- Favicon-->
     <link rel="icon" href="favicon1.ico" type="image/x-icon">
