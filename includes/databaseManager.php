@@ -1239,6 +1239,7 @@ class DatabaseManager {
         return $this->pdo->lastInsertId();
     }
 
+    //Взимаме данните за най-използваните хаштагове за последните 7 дни
     public function getHashtagsForTheLast7Days(){
         $sql = "SELECT * 
                 FROM `tiktok_hashtags_7days`
@@ -1256,6 +1257,7 @@ class DatabaseManager {
         return count($result_array) > 0 ? $result_array : false;
     }
     
+    //Взимаме данните за най-използваните хаштагове за последните 120 дни
     public function getHashtagsForTheLast120Days(){
         $sql = "SELECT * 
                 FROM `tiktok_hashtags_120days`

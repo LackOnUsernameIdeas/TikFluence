@@ -6,45 +6,6 @@
     //Създаваме връзката с базата данни
     $db = new DatabaseManager();
 
-
-    //Сдобиваме се с данни за най-използваните хаштагове за последните 7 дни
-    function getHashtagsForTheLast7Days(){
-        //Взимаме необходимите данни
-        $hashtagsDataForTheLast7Days = fetchTopHashtagsForTheLast7Days();
-        if($hashtagsDataForTheLast7Days == false){return [];}
-
-        //Запазваме данните в масив
-        $hashtagsForTheLast7Days = [];
-
-        for($i=0;$i<count($hashtagsDataForTheLast7Days);$i++){
-            if($i == 6){
-                break;
-            }
-            array_push($hashtagsForTheLast7Days, $hashtagsDataForTheLast7Days[$i]["hashtag_name"]);
-        }
-        
-        return $hashtagsForTheLast7Days;
-    }
-
-    //Сдобиваме се с данни за най-използваните хаштагове за последните 120 дни
-    function getHashtagsForTheLast120Days(){
-        //Взимаме необходимите данни
-        $hashtagsDataForTheLast120Days = fetchTopHashtagsForTheLast120Days();
-        if($hashtagsDataForTheLast120Days == false){return [];}
-
-        //Запазваме данните в масив
-        $hashtagsForTheLast120Days = [];
-
-        for($i=0;$i<count($hashtagsDataForTheLast120Days);$i++){
-            if($i == 6){
-                break;
-            }
-            array_push($hashtagsForTheLast120Days, $hashtagsDataForTheLast120Days[$i]["hashtag_name"]);
-        }
-
-        return $hashtagsForTheLast120Days;
-    }
-
     //Запазваме данните за най-използваните хаштагове в променливи
     $hashtagsDataForTheLast7Days = $db->getHashtagsForTheLast7Days();
     $hashtagsDataForTheLast120Days = $db->getHashtagsForTheLast120Days();
