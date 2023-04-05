@@ -12,9 +12,7 @@
     //Създаваме връзката с базата данни
     $db = new DatabaseManager();
 
-    $songData = $db->getSongData($sid);
-
-        
+    //Взимаме всички дати, за които дадената песен има данни
     $fetchDatesForButton = $db->listDatesForCurrentSong($sid);
 
     $datesArray = [];
@@ -24,7 +22,7 @@
         $datesArray[] = $timestamp->format('Y-m-d');
     }
 
-    //Взимаме необходимата информация и я превръщаме където е необходимо в проценти
+    //Слагаме избраната дата в променлива и с нея издърпваме нужните данни
     $selectDate = isset($_SESSION["setDate"]) && $_SESSION["setDate"] > $datesArray[0] ? $_SESSION["setDate"] : date("Y-m-d");
     
     if($selectDate == "2023-01-13"){
@@ -35,10 +33,9 @@
         $selectDate = end($datesArray);
     }
 
-    $todayYesterdayData = $db->getTodayYesterdayData($sid, $selectDate);
+    //Взимаме записите и данните за всяка песен
+    $songData = $db->getSongData($sid);
 
-
-    //Взимаме записите за всяка песен
     $dataPoints = $db->getDatapointsForSong($sid, $selectDate);
     
     if($dataPoints === false) redirect("songs.php");
@@ -78,16 +75,17 @@
         $ytPercents[] = $dp["youtube_views"];
     }
 
-
+    //Запазваме колко стойности null има в масивите
     $ttNulls = array_keys($ttNums, null);
     $ytNulls = array_keys($ytNums, null);
     $syNulls = array_keys($syNums, null);
 
-
+    //Определяме най-големите стойности в масивите
     $maxTikTok = max($ttPercents);
     $maxYouTube = max($ytPercents);
     $maxSpotify = max($syPercents);
 
+    //Взимаме информацията от масивите ttPercents, ytPercents, syPercents и я превръщаме в проценти
     for($i=0; $i<count($ttPercents); $i++){
         $ttPercents[$i] = $maxTikTok ? ($ttPercents[$i] * 100)/$maxTikTok : null;
     }
@@ -102,7 +100,9 @@
 
 
 
-    //Взимаме необходимите данни(числа) за последните 2 дни
+    //Взимаме необходимите данни за последните 2 дни
+    $todayYesterdayData = $db->getTodayYesterdayData($sid, $selectDate);
+
     $ttLastTwoDaysPercents = [];
     $ttLastTwoDaysNums = [];
 
@@ -121,7 +121,7 @@
         $syLastTwoDays[] = $d["spotify_popularity"];
     }
 
-    // Превръщаме числата в проценти
+    // Превръщаме данните за последните 2 дни в проценти и ги запазваме в масиви.
 
     $todayYesterdayTTDataArray = [];
 
@@ -149,7 +149,7 @@
         }
     }
     
-    // Изчисляваме разликата между днес и вчера:
+    // Изчисляваме разликата между днес и вчера в числови стойности и в проценти, за да покажем с колко се е променила от предната дата в сравнение с избраната дата дадена песен.
 
     //TikTok
     if(isset($ttLastTwoDaysPercents[0]) || $ttLastTwoDaysPercents[0] == 0){ 
@@ -176,7 +176,7 @@
         $subtractionSY = "-";
     }
 
-    //Избираме подходяща икона за кутийките:
+    //Избираме подходяща икона на уиджетите за измяна на популярност:
     
     $chooseIconTT = "";
     $chooseIconYT = "";
@@ -207,6 +207,8 @@
     }
 
 
+    //Взимаме данните за датата, която сме избрали в страницата
+
     //TikTok
     $todayTT = $ttLastTwoDaysNums[1];
 
@@ -225,6 +227,7 @@
     }
 
     
+    //Взимаме данните за датата преди датата, която сме избрали в страницата
 
     //TikTok
     $yesterdayTT = $ttLastTwoDaysNums[0];
@@ -244,28 +247,35 @@
     }
 
 
+    //На база всички стойности, които имаме за популярност, изчисляваме средната стойност и я запазваме в променлива. Това се отнася и за трите платформи.
     $averageTT = $db->getAverageTT($sid, $selectDate)[0][0];
     $averageYT = $db->getAverageYT($sid, $selectDate)[0][0];
     $averageSY = $db->getAverageSY($sid, $selectDate)[0][0];
 
     
+    //Ако днешната или вчерашната стойност в TikTok е по-малка или равна от средната стойност, няма нарастване.
     if($todayTT <= $averageTT || $yesterdayTT <= $averageTT){
         $growthTT = false;
     } else {
         $growthTT = true;
     }
 
+    //Ако днешната или вчерашната стойност в YouTube е по-малка или равна от средната стойност, няма нарастване.
     if($todayYT <= $averageYT || $yesterdayYT <= $averageYT){
         $growthYT = false;
     } else {
         $growthYT = true;
     }
 
+    //Ако днешната или вчерашната стойност в Spotify е по-малка или равна от средната стойност, няма нарастване.
     if($todaySY <= $averageSY || $yesterdaySY <= $averageSY){
         $growthSY = false;
     } else {
         $growthSY = true;
     }
+
+
+    //Според това къде има и къде няма нарастване се определя точното състояние на дадената песен. Това дали тя има нарастване и къде.
 
     $setConclusionPerfect = false;
     $setConclusionYT = false;
@@ -278,7 +288,9 @@
 
     $setConclusionWithoutAnything = false;
 
+    
     if($growthTT){
+        //Ако тази песен има по-големи от средната стойности за последните два дни в TikTok:
 
         if($growthSY && $growthYT){
             $setConclusionPerfect = true;
@@ -291,8 +303,8 @@
         }
 
     } else {
+        //Ако тази песен няма по-големи от средната стойности за последните два дни в TikTok:
 
-        //Ако тази песен не е популярна последните два дни в TikTok
         if($growthSY && $growthYT){
             $setConclusionPerfectWithoutTT = true;
         } elseif($growthSY == false || $growthYT){

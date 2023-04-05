@@ -5,7 +5,7 @@
     include './includes/databaseManager.php';
     include './includes/common.php';
 
-    //Ако няма такова id за песен, потребителят е върнат в songs.php
+    //Ако няма такова id за песен, потребителят е върнат в songsBG.php
     $sid = isset($_GET["sid"]) && ctype_digit($_GET['sid']) ? intval($_GET["sid"]) : -1;
     if($sid < 0) redirect("songsBG.php");
 
@@ -13,6 +13,7 @@
     $db = new DatabaseManager();
 
     
+    //Взимаме всички дати, за които дадена песен има данни. Слагаме избраната дата в променлива и с нея издърпваме нужните данни
     $fetchDatesForButton = $db->listDatesForCurrentSongBG($sid);
 
     $chooseDatesForButton = [];
@@ -21,25 +22,17 @@
         $chooseDatesForButton[] = $timestamp->format('Y-m-d');
     }
 
-    //Взимаме необходимата информация и я превръщаме където е необходимо в проценти
     $selectDate = isset($_SESSION["setDate"]) && $_SESSION["setDate"] > $chooseDatesForButton[0] ? $_SESSION["setDate"] : date("Y-m-d");
     
     if($selectDate == "2023-01-13"){
         $selectDate = "2023-01-12";
     }
 
-    //Взимаме записите за всяка песен
+    //Взимаме данните от записите за всяка песен и ги запазваме в масиви
     $dataPoints = $db->getDatapointsForSongBG($sid, $selectDate);
-
-
-
-    
     if($dataPoints === false) redirect("songs.php");
 
     $songData = $db->getSongDataBG($sid);
-
-
-    $todayYesterdayData = $db->getTodayYesterdayDataBG($sid, $selectDate);
 
 
     $dates = [];
@@ -74,16 +67,17 @@
         $ytPercents[] = $dp["youtube_views"];
     }
 
-    
+    //Запазваме колко стойности null има в масивите
     $ttNulls = array_keys($ttNums, null);
     $ytNulls = array_keys($ytNums, null);
     $syNulls = array_keys($syNums, null);
 
-
+    //Определяме най-големите стойности в масивите
     $maxTiktok = max($ttPercents);
     $maxYoutube = max($ytPercents);
     $maxSpotify = max($syPercents);
 
+    //Взимаме информацията от масивите ttPercents, ytPercents, syPercents и я превръщаме в проценти
     for($i=0; $i<count($ttPercents); $i++){
         $ttPercents[$i] = $maxTiktok ? ($ttPercents[$i] * 100)/$maxTiktok : null;
     }
@@ -97,10 +91,9 @@
     }
 
 
+    //Взимаме необходимите данни за последните 2 дни
 
-
-
-    //Взимаме необходимите данни(числа)
+    $todayYesterdayData = $db->getTodayYesterdayDataBG($sid, $selectDate);
 
     $ttLastTwoDaysPercents = [];
     $ttLastTwoDaysNums = [];
@@ -120,7 +113,7 @@
         $syLastTwoDays[] = $d["spotify_popularity"];
     }
 
-    // Превръщаме числата в проценти
+    // Превръщаме данните за последните 2 дни в проценти и ги запазваме в масиви.
 
     $todayYesterdayTTDataArray = [];
 
@@ -152,7 +145,7 @@
         }
     }
     
-    // Изчисляваме разликата между днес и вчера:
+    // Изчисляваме разликата между днес и вчера в числови стойности и в проценти, за да покажем с колко се е променила от предната дата в сравнение с избраната дата дадена песен.
 
     //TikTok
     $subtractionTTPercents = $todayYesterdayTTDataArray[1] - $todayYesterdayTTDataArray[0];
@@ -173,7 +166,7 @@
         $subtractionSY = 0;
     }
 
-    //Избираме подходяща икона за кутийките:
+    //Избираме подходяща икона на уиджетите за измяна на популярност:
 
     $chooseIconTT = "";
     $chooseIconYT = "";
@@ -204,7 +197,7 @@
     }
 
 
-    //Взимаме днешните данни и ги показваме:
+    //Взимаме данните за датата, която сме избрали в страницата
 
     //TikTok
     $todayTT = $ttLastTwoDaysNums[1];

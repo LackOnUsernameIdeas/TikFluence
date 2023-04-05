@@ -35,6 +35,13 @@
         }
     }
 
+    if($influencedSongs != false){
+        //Осигуряваме рангове за песните
+        for($i=0;$i<count($influencedSongs);$i++){
+            $influencedSongs[$i]["rank"] = $i + 1;
+        }
+    }
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -201,6 +208,7 @@
                                 <table class="table table-bordered table-striped table-hover dataTable js-exportable" id="globalDataTable">
                                     <thead>
                                         <tr>
+                                            <th>РАНГ</th>
                                             <th>ПЕСЕН</th>
                                             <th>АВТОР НА ПЕСЕНТА</th>
                                             <th>ДАТА НА ПИК В TIKTOK</th>
@@ -213,6 +221,7 @@
                                     <tbody>
                                         <?php foreach($influencedSongs as $song):?>
                                             <tr>
+                                                <th><?php echo $song["rank"]?></th>
                                                 <th><?php echo $song["song_name"]?></th>
                                                 <th><?php echo $song["artist_name"]?></th>
                                                 <th><?php echo $song["tiktok_peak_date"]?></th>
@@ -220,7 +229,6 @@
                                                 <th><?php echo $song["peaks_difference"]?></th>
                                                 <th><?php echo $song["report_date"]?></th>
                                                 <th><a href='./influencedSong.php?sid=<?php echo $song["song_id"]?>' class="btn bg-purple waves-effect">Вижте повлияване</a></th>
-
                                             </tr>
                                         <?php endforeach;?>
                                     </tbody>

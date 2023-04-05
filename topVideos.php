@@ -16,35 +16,15 @@
         $timestamp = new DateTime($date["fetch_date"]);
         $datesArray[] = $timestamp->format('Y-m-d');
     }
-    
+
+    //Слагаме избраната дата в променлива и с нея издърпваме нужните данни
     $selectDate = isset($_SESSION["setDate"]) && $_SESSION["setDate"] >= '2023-01-11' ? $_SESSION["setDate"] : date("Y-m-d");
 
     //Запазваме данните в променлива
-    $tiktokers = $db->getTiktokersTodayData($selectDate);
-    $tiktokersTop = $db->getTiktokersTodayDataTop($selectDate);
-
     $topvideos = $db->getTopVideosTodayData($selectDate);
 
-    //Осигуряваме си необходимите данни
-    
-    $tiktokersArray = [];
-    $followers = [];
-
-    if($tiktokers != false){
-        foreach($tiktokersTop as $dp){
-            $tiktokersArray[] = $dp["tiktoker"];
-            $followers[] = $dp["followers_count"];
-        }
-
-        //Осигуряваме рангове за тиктокърите
-        for($i=0;$i<count($tiktokers);$i++){
-            $tiktokers[$i]["rank"] = $i + 1;
-        }
-
-    }
-
+    //Осигуряваме рангове за видеята
     if($topvideos != false){
-        //Осигуряваме рангове за видеята
         for($i=0;$i<count($topvideos);$i++){
             $topvideos[$i]["rank"] = $i + 1;
         }

@@ -8,7 +8,7 @@
     //Създаваме връзката с базата данни
     $db = new DatabaseManager();
 
-    //Осигуряваме си необходимите данни
+    //Взимаме всички дати, за които даден тиктокър има данни
     $dates = $db->listDatesTikTokers();
     $datesArray = [];
 
@@ -16,17 +16,14 @@
         $timestamp = new DateTime($date["fetch_date"]);
         $datesArray[] = $timestamp->format('Y-m-d');
     }
-    
+
+    //Слагаме избраната дата в променлива и с нея издърпваме нужните данни
     $selectDate = isset($_SESSION["setDate"]) && $_SESSION["setDate"] >= '2023-01-08' ? $_SESSION["setDate"] : date("Y-m-d");
 
-    //Запазваме данните в променлива
+    //Осигуряваме си необходимите данни и ги запазваме в масиви
     $tiktokers = $db->getTiktokersTodayData($selectDate);
     $tiktokersTop = $db->getTiktokersTodayDataTop($selectDate);
 
-    $topvideos = $db->getTopVideosTodayData($selectDate);
-
-    //Осигуряваме си необходимите данни
-    
     $tiktokersArray = [];
     $followers = [];
 
@@ -41,13 +38,6 @@
             $tiktokers[$i]["rank"] = $i + 1;
         }
 
-    }
-
-    if($topvideos != false){
-        //Осигуряваме рангове за видеята
-        for($i=0;$i<count($topvideos);$i++){
-            $topvideos[$i]["rank"] = $i + 1;
-        }
     }
 
 ?>
