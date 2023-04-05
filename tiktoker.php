@@ -5,15 +5,14 @@
     include './includes/databaseManager.php';
     include './includes/common.php';
 
-    //Ако няма такова id за песен, потребителят е върнат в songs.php
+    //Ако няма такова id за песен, потребителят е върнат в tiktokers.php
     $tid = isset($_GET["tid"]) && ctype_digit($_GET['tid']) ? intval($_GET["tid"]) : -1;
     if($tid < 0) redirect("tiktokers.php");
     
     //Създаваме връзката с базата данни
     $db = new DatabaseManager();
 
-    //Осигуряваме си необходимите данни
-
+    //Слагаме избраната дата в променлива и с нея издърпваме нужните данни
     $selectDate = isset($_SESSION["setDate"]) && $_SESSION["setDate"] >= '2023-01-08' ? $_SESSION["setDate"] : date("Y-m-d");
 
     if($selectDate == "2023-01-13"){
@@ -21,12 +20,14 @@
         $whyIsThis = true;
     }
     
-    //Запазваме данните за тиктокъра в променлива
+    //Запазваме данните за тиктокъра в променливи
     $tiktokerMainData = $db->getTikTokerData($tid, $selectDate);
     $tiktokerDatapoints = $db->getTikTokerDatapoints($tid, $selectDate);
 
+    //Ако няма данни за такъв тиктокър, потребителят е върнат в tiktokers.php
     if($tiktokerMainData == false) redirect("tiktokers.php");
 
+    //Осигуряваме си необходимите данни
     $tiktokerDataForSpecificDate = $db->getTikTokerDataForSpecificDate($tid, $selectDate);
 
     $dates = [];

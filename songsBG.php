@@ -1,14 +1,14 @@
 <?php
 
-    //Вмъкване на нужните файлове
+    //Вмъкване на нужните файлове.
     include "./selectDate.php";
     include "./includes/databaseManager.php";
     include "./includes/common.php";
 
-    //Създаваме връзката с базата данни
+    //Създаваме връзката с базата данни.
     $db = new DatabaseManager();
     
-    //Осигуряваме си необходимите данни
+    //Осигуряваме си необходимите данни.
     $dates = $db->listDatesSongsBG();
     $datesArray = [];
 
@@ -17,10 +17,10 @@
         $datesArray[] = $timestamp->format('Y-m-d');
     }
 
-
+    //Слагаме избраната дата в променлива и с нея си осигуряваме нужните данни.
     $selectDate = isset($_SESSION["setDate"]) && $_SESSION["setDate"] >= '2023-01-08' ? $_SESSION["setDate"] : date("Y-m-d");
 
-
+    //Осигуряваме си необходимите данни.
     $top200SongsBG = $db->listTop200SongsBG($selectDate);
     $topSongsBG = $db->listTopSongsBG($selectDate);
 

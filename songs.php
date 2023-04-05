@@ -1,14 +1,14 @@
 ﻿<?php
 
-    //Вмъкване на нужните файлове
+    //Вмъкване на нужните файлове.
     include "./selectDate.php";
     include "./includes/databaseManager.php";
     include "./includes/common.php";
 
-    //Създаваме връзката с базата данни
+    //Създаваме връзката с базата данни.
     $db = new DatabaseManager();
     
-    //Осигуряваме си необходимите данни
+    //Осигуряваме си необходимите данни.
     $dates = $db->listDatesSongs();
     $datesArray = [];
 
@@ -17,9 +17,8 @@
         $datesArray[] = $timestamp->format('Y-m-d');
     }
 
-
+    //Слагаме избраната дата в променлива и с нея издърпваме нужните данни.
     $selectDate = isset($_SESSION["setDate"]) ? $_SESSION["setDate"] : date("Y-m-d");
-
 
     $top200SongsGlobal = $db->listTop200Songs($selectDate);
     $topSongsGlobal = $db->listTopSongsGlobal($selectDate);
@@ -36,10 +35,10 @@
     }
 
 
+    //Използваме функция за да определим надписа на бутоните на всяка песен от таблицата за да се види дали песента е претърпяла ефекта на нарастване.
     function setGrowth($sid, $db, $selectDate) {
 
-        //Взимаме необходимите данни(числа) за последните 2 дни
-
+        //Взимаме необходимите данни за последните 2 дни
         $todayYesterdayDataGlobal = $db->getTodayYesterdayGlobalData($sid, $selectDate);
 
         $ttLastTwoDaysPercents = [];
@@ -114,24 +113,27 @@
         }
     
 
-
+        //На база всички стойности, които имаме за популярност, изчисляваме средната стойност и я запазваме в променлива. Това се отнася и за трите платформи.
         $averageTT = $db->getAverageTT($sid, $selectDate)[0][0];
         $averageYT = $db->getAverageYT($sid, $selectDate)[0][0];
         $averageSY = $db->getAverageSY($sid, $selectDate)[0][0];
 
         
+        //Ако днешната или вчерашната стойност в TikTok е по-малка или равна от средната стойност, няма нарастване.
         if($todayTT <= $averageTT || $yesterdayTT <= $averageTT){
             $growthTT = false;
         } else {
             $growthTT = true;
         }
 
+        //Ако днешната или вчерашната стойност в YouTube е по-малка или равна от средната стойност, няма нарастване.
         if($todayYT <= $averageYT || $yesterdayYT <= $averageYT){
             $growthYT = false;
         } else {
             $growthYT = true;
         }
 
+        //Ако днешната или вчерашната стойност в Spotify е по-малка или равна от средната стойност, няма нарастване.
         if($todaySY <= $averageSY || $yesterdaySY <= $averageSY){
             $growthSY = false;
         } else {
@@ -139,12 +141,17 @@
         }
 
 
+        //Ако има нарастване в TikTok, има възможност песента да е нарастнала.
         if($growthTT) {
+
+            //Ако има нарастване в YouTube или Spotify, песента със сигурност е нарастнала и стойността на бутона ще е "Вижте нарастване".
             if($growthSY || $growthYT) {
                 return "Вижте нарастване";
             }
         }
-        // дава като краен резултат "Вижте детайли";
+
+
+        //Стойността на бутона ще е "Вижте детайли" ако няма нарастване.
         return "Вижте детайли";
     }
 

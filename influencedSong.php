@@ -5,7 +5,7 @@
     include './includes/databaseManager.php';
     include './includes/common.php';
 
-    //Ако няма такова id за песен, потребителят е върнат в songs.php
+    //Ако няма такова id за песен, потребителят бива върнат в affectedSongs.php
     $sid = isset($_GET["sid"]) && ctype_digit($_GET['sid']) ? intval($_GET["sid"]) : -1;
     if($sid < 0) redirect("affectedSongs.php");
 
@@ -13,32 +13,19 @@
     $db = new DatabaseManager();
 
     $songData = $db->getSongData($sid);
+
+    //Ако няма данни за тази песен, потребителят бива върнат в affectedSongs.php
     if($songData == false) redirect("affectedSongs.php");
-        
-    // $fetchDatesForButton = $db->listDatesForCurrentSong($sid);
 
-    // $chooseDatesForButton = [];
-    // foreach($fetchDatesForButton as $date){    
-    //     $timestamp = new DateTime($date["fetch_date"]);
-    //     $chooseDatesForButton[] = $timestamp->format('Y-m-d');
-    // }
-
-    //Взимаме необходимата информация и я превръщаме където е необходимо в проценти
+    //Слагаме избраната дата в променлива и с нея издърпваме нужните данни
     $selectDate = isset($_SESSION["setDate"]) ? $_SESSION["setDate"] : date("Y-m-d");
-    
-    // if(end($chooseDatesForButton) != $selectDate){
-    //     $selectDate = end($chooseDatesForButton);
-    // }
-
-    // $todayYesterdayData = $db->getTodayYesterdayData($sid, $selectDate);
 
 
-    //Взимаме записите за всяка песен
+    //Взимаме всички данни за дадената песен и ако няма потребителят бива върнат в songs.php
     $dataPoints = $db->getDatapointsForSong($sid, $selectDate);
-    
     if($dataPoints === false) redirect("songs.php");
 
-    //Взимаме всички дати и данни за всяка песен
+
     $dates = [];
 
     $ttNums = [];
@@ -58,16 +45,6 @@
 
     $ttNulls = array_keys($ttNums, null);
     $syNulls = array_keys($syNums, null);
-
-
-    // //Взимаме необходимите данни(числа) за последните 2 дни
-    // $ttLastTwoDaysNums = [];
-    // $syLastTwoDays = [];
-
-    // foreach($todayYesterdayData as $d){
-    //     $ttLastTwoDaysNums[] = $d["number_of_videos_last_14days"];
-    //     $syLastTwoDays[] = $d["spotify_popularity"];
-    // }
 
 ?>
 <!DOCTYPE html>

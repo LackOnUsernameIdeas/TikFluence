@@ -10,9 +10,6 @@
     $hashtagsDataForTheLast7Days = fetchTopHashtagsForTheLast7Days();
     $hashtagsDataForTheLast120Days = fetchTopHashtagsForTheLast120Days();
 
-    //Взимаме необходимите данни
-
-
     //Осигуряваме си необходимите данни
     $hashtagsForTheLast7Days = [];
 
@@ -32,15 +29,19 @@
         array_push($hashtagsForTheLast120Days, $hashtagsDataForTheLast120Days[$i]["hashtag_name"]);
     }
 
-    //Алгоритъм на повлияване
+    //АЛГОРИТЪМ НА ПОВЛИЯВАНЕ
+
     function getPeaks($db){
+        //Взимаме всички песни от таблицата tiktok_songs
         $songs = $db->listSongs();
 
+        //Взимаме най-големите стойности от всички запазени за тикток и спотифай популярност
         $peaks = [];
         foreach($songs as $sg){
             $peaks[] = $db->getPeaks($sg["id"]);
         }
     
+        //Комбинираме данните от двете таблици tiktok_records и tiktok_songs и слагаме всички данни за конкретния пийков запис в масива peaksWithData
         $peaksWithData = [];
         foreach($peaks as $pk){
             $peaksWithData[]["Spotify"] = $db->findSongByPeakSY($pk["song_id"], $pk["MAX(`spotify_popularity`)"]);
@@ -51,14 +52,40 @@
         return $peaksWithData;
     }
 
-
+    //Изпълняваме функцията за да се сдобием с данните за пийковете на песните
     $peaksWithData = getPeaks($db);
 
+    //peaksWithData масива е конструиран така:
+
+    // [четен индекс] => Масив
+    //     (
+    //         [Spotify] => Масив
+    //             (
+    //                 [song_id] => 208
+    //                 [0] => 208
+    //                 [fetch_date] => 2023-01-03
+    //                 [1] => 2023-01-03
+    //             )
+
+    //     )
+
+    // [нечетен индекс] => Масив
+    // (
+    //     [TikTok] => Масив
+    //         (
+    //             [song_id] => 208
+    //             [0] => 208
+    //             [fetch_date] => 2023-01-03
+    //             [1] => 2023-01-03
+    //         )
+
+    // )
+
+
+
+    //Махаме песните от масива, които имат разлика в пийковите дати по-малка от 0 за да получим само тези песни, които са повлияни
     $songsWithDays = [];
 
-
-
-    //Алгоритъм на повлияване
     for($i=0;$i<count($peaksWithData);$i+=2){
 
         $datediff = isset($peaksWithData[$i]["Spotify"]["fetch_date"]) ? 
@@ -70,11 +97,10 @@
 
     }
 
+    //Подреждаме песните в масива по низходящ ред
     arsort($songsWithDays);
 
-    $songsWithDaysForWidgets = $songsWithDays;
-
-    //Приготвяме данни за таблицата
+    //Махаме песните от масива, които не са претърпяли никаква промяна в популярността си в TikTok повече от 10 дни.
     foreach($songsWithDays as $key => $value){
         $datapoints = $db->getEveryDatapointForSong($key);
         
@@ -101,7 +127,10 @@
         }
     }
 
-    //Приготвяме данни за widget-и
+
+    //Приготвяме данни за widget-ите, показващи кои са топ 3 най-повлияни песни
+    $songsWithDaysForWidgets = $songsWithDays;
+
     foreach($songsWithDaysForWidgets as $key => $value){
         $datapoints = $db->getEveryDatapointForSong($key);
         
@@ -128,7 +157,13 @@
         }
     }
     
+    //Слагаме необходимите данни за widget-ите в масив, който ще използваме за да покажем информацията
     $influencedSongsData = [];
+
+    foreach($songsWithDaysForWidgets as $songId => $days){
+        $influencedSongsData[] = $db->findSongAndSongsTodayDataById($songId);
+    }
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -295,10 +330,6 @@
                     <h2>ТОП 3 НА НАЙ-ПОВЛИЯНИТЕ ПЕСНИ ОТ TIKTOK ЗА ДНЕС И ВКЛЮЧЕНИ В ТОП 200 НА ПЛАТФОРМАТА И ТЕХНИТЕ ВИДЕА НАПРАВЕНИ НАСКОРО:</h2>
                 </div>
                 <!-- Widgets -->
-
-                <?php foreach($songsWithDaysForWidgets as $songId => $days):?>
-                    <?php $influencedSongsData[] = $db->findSongAndSongsTodayDataById($songId) ?>
-                <?php endforeach;?>
 
                 <?php if(isset($influencedSongsData[0])): ?>
                     <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12" onClick="window.location.href=`./influencedSong.php?sid=<?= $influencedSongsData[0]["song_id"] ?>`">
