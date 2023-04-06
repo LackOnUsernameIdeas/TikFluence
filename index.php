@@ -1,162 +1,183 @@
 <?php
-    //Вмъкване на нужните файлове
-    include "scraping/curlFunctions.php";
-    include "includes/databaseManager.php";
 
-    //Създаваме връзката с базата данни
-    $db = new DatabaseManager();
+//Стартираме сесия
+session_start();
 
+//Вмъкване на нужните файлове
+include "scraping/curlFunctions.php";
+include "includes/databaseManager.php";
 
-    //Осигуряваме си необходимите данни
-    $dates = $db->listDatesHashtagsAndSongsOnHomePage();
-    $datesArray = [];
-
-    foreach($dates as $date){
-        $timestamp = new DateTime($date["fetch_date"]);
-        $datesArray[] = $timestamp->format('Y-m-d');
-    }
-
-    //Слагаме избраната дата в променлива и с нея издърпваме нужните данни
-    $selectDate = isset($_SESSION["setDate"]) && $_SESSION["setDate"] >= '2023-04-05'  ? $_SESSION["setDate"] : date("Y-m-d");
-
-    //Запазваме данните за най-използваните хаштагове в променливи
-    $hashtagsDataForTheLast7Days = $db->getHashtagsForTheLast7Days($selectDate);
-    $hashtagsDataForTheLast120Days = $db->getHashtagsForTheLast120Days($selectDate);
-
-    //АЛГОРИТЪМ НА ПОВЛИЯВАНЕ
-
-    function getPeaks($db){
-        //Взимаме всички песни от таблицата tiktok_songs
-        $songs = $db->listSongs();
-
-        //Взимаме най-големите стойности от всички запазени за тикток и спотифай популярност
-        $peaks = [];
-        foreach($songs as $sg){
-            $peaks[] = $db->getPeaks($sg["id"]);
-        }
-    
-        //Комбинираме данните от двете таблици tiktok_records и tiktok_songs и слагаме всички данни за конкретния пийков запис в масива peaksWithData
-        $peaksWithData = [];
-        foreach($peaks as $pk){
-            $peaksWithData[]["Spotify"] = $db->findSongByPeakSY($pk["song_id"], $pk["MAX(`spotify_popularity`)"]);
-            $peaksWithData[]["TikTok"] = $db->findSongByPeakTT($pk["song_id"], $pk["MAX(`number_of_videos_last_14days`)"]);
-        }
+//Създаваме връзката с базата данни
+$db = new DatabaseManager();
 
 
-        return $peaksWithData;
-    }
+//Осигуряваме си необходимите данни
+$dates = $db->listDatesHashtagsAndSongsOnHomePage();
+$datesArray = [];
 
-    //Изпълняваме функцията за да се сдобием с данните за пийковете на песните
-    $peaksWithData = getPeaks($db);
+foreach($dates as $date){
+    $timestamp = new DateTime($date["fetch_date"]);
+    $datesArray[] = $timestamp->format('Y-m-d');
+}
 
-    //peaksWithData масива е конструиран така:
+//Слагаме избраната дата в променлива и с нея издърпваме нужните данни
+$selectDate = isset($_SESSION["setDate"]) && $_SESSION["setDate"] >= '2023-04-05' ? $_SESSION["setDate"] : date("Y-m-d");
 
-    // [четен индекс] => Масив
-    //     (
-    //         [Spotify] => Масив
-    //             (
-    //                 [song_id] => 208
-    //                 [0] => 208
-    //                 [fetch_date] => 2023-01-03
-    //                 [1] => 2023-01-03
-    //             )
+//Запазваме данните за най-използваните хаштагове в променливи
+$hashtagsDataForTheLast7Days = $db->getHashtagsForTheLast7Days($selectDate);
+$hashtagsDataForTheLast120Days = $db->getHashtagsForTheLast120Days($selectDate);
 
-    //     )
+//Осигуряваме си данни за диаграмите за хаштаговете
+$hashtagsNames7Days = [];
+$hashtagsNames120Days = [];
 
-    // [нечетен индекс] => Масив
-    // (
-    //     [TikTok] => Масив
-    //         (
-    //             [song_id] => 208
-    //             [0] => 208
-    //             [fetch_date] => 2023-01-03
-    //             [1] => 2023-01-03
-    //         )
+$hashtagsUses7Days = [];
+$hashtagsUses120Days = [];
 
-    // )
+foreach($hashtagsDataForTheLast7Days as $ht){
+    $hashtagsNames7Days[] = $ht["hashtag_name"];
+    $hashtagsUses7Days[] = $ht["publish_cnt"];
+}
 
+foreach($hashtagsDataForTheLast120Days as $ht){
+    $hashtagsNames120Days[] = $ht["hashtag_name"];
+    $hashtagsUses120Days[] = $ht["publish_cnt"];
+}
 
+//АЛГОРИТЪМ НА ПОВЛИЯВАНЕ
 
-    //Махаме песните от масива, които имат разлика в пийковите дати по-малка от 0 за да получим само тези песни, които са повлияни
-    $songsWithDays = [];
+function getPeaks($db){
+    //Взимаме всички песни от таблицата tiktok_songs
+    $songs = $db->listSongs();
 
-    for($i=0;$i<count($peaksWithData);$i+=2){
-
-        $datediff = isset($peaksWithData[$i]["Spotify"]["fetch_date"]) ? 
-        strtotime($peaksWithData[$i]["Spotify"]["fetch_date"]) - strtotime($peaksWithData[$i + 1]["TikTok"]["fetch_date"]) : false;
-
-        if($datediff != false && $datediff > 0){
-            $songsWithDays[$peaksWithData[$i]["Spotify"]["song_id"]] = $datediff / (60 * 60 * 24);
-        }
-
-    }
-
-    //Подреждаме песните в масива по низходящ ред
-    arsort($songsWithDays);
-
-    //Махаме песните от масива, които не са претърпяли никаква промяна в популярността си в TikTok повече от 10 дни.
-    foreach($songsWithDays as $key => $value){
-        $datapoints = $db->getEveryDatapointForSong($key);
-        
-        $ttNums = [];
-        $dates = [];
-
-        foreach($datapoints as $dp){
-            $ttNums[] = $dp["number_of_videos_last_14days"];
-            $dates[] = $dp["fetch_date"];
-        }
-
-        $plateauIndex = 0;
-        $previousVal = 0;
-        foreach($ttNums as $val){
-            if($val == $previousVal){
-                $plateauIndex++;
-            } else {
-                $plateauIndex = 0;
-            }
-            if($plateauIndex >= 10){
-                unset($songsWithDays[$key]);
-            } 
-            $previousVal = $val;
-        }
-    }
-
-
-    //Приготвяме данни за widget-ите, показващи кои са топ 3 най-повлияни песни
-    $songsWithDaysForWidgets = $songsWithDays;
-
-    foreach($songsWithDaysForWidgets as $key => $value){
-        $datapoints = $db->getEveryDatapointForSong($key);
-        
-        $ttNums = [];
-        $dates = [];
-
-        foreach($datapoints as $dp){
-            $ttNums[] = $dp["number_of_videos_last_14days"];
-            $dates[] = $dp["fetch_date"];
-        }
-
-        $plateauIndex = 0;
-        $previousVal = 0;
-        foreach($ttNums as $val){
-            if($val == $previousVal){
-                $plateauIndex++;
-            } else {
-                $plateauIndex = 0;
-            }
-            if($plateauIndex >= 10 || end($dates) != date("Y-m-d")){
-                unset($songsWithDaysForWidgets[$key]);
-            } 
-            $previousVal = $val;
-        }
+    //Взимаме най-големите стойности от всички запазени за тикток и спотифай популярност
+    $peaks = [];
+    foreach($songs as $sg){
+        $peaks[] = $db->getPeaks($sg["id"]);
     }
     
-    //Слагаме необходимите данни за widget-ите в масив, който ще използваме за да покажем информацията
-    $influencedSongsData = [];
-
-    foreach($songsWithDaysForWidgets as $songId => $days){
-        $influencedSongsData[] = $db->findSongAndSongsTodayDataById($songId);
+    //Комбинираме данните от двете таблици tiktok_records и tiktok_songs и слагаме всички данни за конкретния пийков запис в масива peaksWithData
+    $peaksWithData = [];
+    foreach($peaks as $pk){
+        $peaksWithData[]["Spotify"] = $db->findSongByPeakSY($pk["song_id"], $pk["MAX(`spotify_popularity`)"]);
+        $peaksWithData[]["TikTok"] = $db->findSongByPeakTT($pk["song_id"], $pk["MAX(`number_of_videos_last_14days`)"]);
     }
+
+
+    return $peaksWithData;
+}
+
+//Изпълняваме функцията за да се сдобием с данните за пийковете на песните
+$peaksWithData = getPeaks($db);
+
+//peaksWithData масива е конструиран така:
+
+// [четен индекс] => Масив
+//     (
+//         [Spotify] => Масив
+//             (
+//                 [song_id] => 208
+//                 [0] => 208
+//                 [fetch_date] => 2023-01-03
+//                 [1] => 2023-01-03
+//             )
+
+//     )
+
+// [нечетен индекс] => Масив
+// (
+//     [TikTok] => Масив
+//         (
+//             [song_id] => 208
+//             [0] => 208
+//             [fetch_date] => 2023-01-03
+//             [1] => 2023-01-03
+//         )
+
+// )
+
+
+
+//Махаме песните от масива, които имат разлика в пийковите дати по-малка от 0 за да получим само тези песни, които са повлияни
+$songsWithDays = [];
+
+for($i=0;$i<count($peaksWithData);$i+=2){
+
+    $datediff = isset($peaksWithData[$i]["Spotify"]["fetch_date"]) ? 
+    strtotime($peaksWithData[$i]["Spotify"]["fetch_date"]) - strtotime($peaksWithData[$i + 1]["TikTok"]["fetch_date"]) : false;
+
+    if($datediff != false && $datediff > 0){
+        $songsWithDays[$peaksWithData[$i]["Spotify"]["song_id"]] = $datediff / (60 * 60 * 24);
+    }
+
+}
+
+//Подреждаме песните в масива по низходящ ред
+arsort($songsWithDays);
+
+//Махаме песните от масива, които не са претърпяли никаква промяна в популярността си в TikTok повече от 10 дни.
+foreach($songsWithDays as $key => $value){
+    $datapoints = $db->getEveryDatapointForSong($key);
+    
+    $ttNums = [];
+    $dates = [];
+
+    foreach($datapoints as $dp){
+        $ttNums[] = $dp["number_of_videos_last_14days"];
+        $dates[] = $dp["fetch_date"];
+    }
+
+    $plateauIndex = 0;
+    $previousVal = 0;
+    foreach($ttNums as $val){
+        if($val == $previousVal){
+            $plateauIndex++;
+        } else {
+            $plateauIndex = 0;
+        }
+        if($plateauIndex >= 10){
+            unset($songsWithDays[$key]);
+        } 
+        $previousVal = $val;
+    }
+}
+
+
+//Приготвяме данни за widget-ите, показващи кои са топ 3 най-повлияни песни
+$songsWithDaysForWidgets = $songsWithDays;
+
+foreach($songsWithDaysForWidgets as $key => $value){
+    $datapoints = $db->getEveryDatapointForSong($key);
+    
+    $ttNums = [];
+    $dates = [];
+
+    foreach($datapoints as $dp){
+        $ttNums[] = $dp["number_of_videos_last_14days"];
+        $dates[] = $dp["fetch_date"];
+    }
+
+    $plateauIndex = 0;
+    $previousVal = 0;
+    foreach($ttNums as $val){
+        if($val == $previousVal){
+            $plateauIndex++;
+        } else {
+            $plateauIndex = 0;
+        }
+        if($plateauIndex >= 10 || end($dates) != date("Y-m-d")){
+            unset($songsWithDaysForWidgets[$key]);
+        } 
+        $previousVal = $val;
+    }
+}
+
+//Слагаме необходимите данни за widget-ите в масив, който ще използваме за да покажем информацията
+$influencedSongsData = [];
+
+foreach($songsWithDaysForWidgets as $songId => $days){
+    $influencedSongsData[] = $db->findSongAndSongsTodayDataById($songId);
+}
 
 ?>
 <!DOCTYPE html>
@@ -522,7 +543,25 @@
                         </div>
                     </div>
                 </div>
+                
+                <div class="row clearfix">
+                    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                        <div class="card">
+                        <div class="header">
+                                <h2>
+                                    СРАВНЕНИЕ МЕЖДУ ПЪРВИТЕ 10 ПЕСНИ
+                                </h2>
+                            </div>
+                            <div class="body">
+                                <div class="body">
+                                    <canvas id="barChartGlobal"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             <?php endif;?>
+
 
             <!-- Footer -->
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -576,6 +615,68 @@
 
         </div>
     </section>
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+
+    //Статистика за хаштаговете
+    
+    let hashtagsNames7Days = JSON.parse(`<?php echo json_encode($hashtagsNames7Days) ?>`);
+    let hashtagsNames120Days = JSON.parse(`<?php echo json_encode($hashtagsNames120Days) ?>`);
+    
+    let hashtagsUses7Days = JSON.parse(`<?php echo json_encode($hashtagsUses7Days) ?>`);
+    let hashtagsUses120Days = JSON.parse(`<?php echo json_encode($hashtagsUses120Days) ?>`);
+
+        // съставяне 
+        const dataGlobal = {
+            labels: hashtagsNames7Days,
+            datasets: [{
+                label: 'ПОПУЛЯРНОСТ',
+                data: hashtagsUses7Days,
+                backgroundColor: [
+                    'rgba(255, 26, 104, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(0, 0, 0, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 26, 104, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(0, 0, 0, 1)'
+                ],
+                borderWidth: 1,
+                borderRadius: 5
+            }]
+        };
+
+        // кофигуриране 
+        const configGlobal = {
+            type: 'bar',
+            data: dataGlobal,
+            options: {
+                indexAxis: 'y',
+                    scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        };
+
+        // слагаме статистиката в html елемента
+        const myChartGlobal = new Chart(
+            document.getElementById('barChartGlobal'),
+            configGlobal
+        );
+
+    </script>
 
     <!-- Jquery Core Js -->
     <script async="" src="https://www.google-analytics.com/analytics.js"></script><script src="plugins/jquery/jquery.min.js"></script>
