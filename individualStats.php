@@ -12,6 +12,7 @@
     $userBasicData = [];
     $userVideoData = [];
 
+    $accessToken = "";
     if(isset($_GET["code"])){
         $accessToken = generateTikTokAccessToken($_GET["code"]);
 
@@ -434,6 +435,21 @@
                                 <div class="card">
                                     <div class="header">
                                         <h2>
+                                            ПОСЛЕДОВАТЕЛИ В РЕАЛНО ВРЕМЕ
+                                        </h2>
+                                    </div>
+                                    <div class="body">
+                                        <div class="content">
+                                            <canvas id="FollowersChart"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <div class="card">
+                                    <div class="header">
+                                        <h2>
                                             ХАРЕСВАНИЯ НА СКОРО КАЧЕНИ ВИДЕА
                                         </h2>
                                     </div>
@@ -553,77 +569,6 @@
         let shares =  JSON.parse('<?php echo json_encode($shares) ?>');
 
 
-    // let followers = JSON.parse("<?php //echo json_encode(getUserFollowers($username)) ?>")
-
-    // function followersInRealTime(){
-    //     let followers = JSON.parse("<?php //echo json_encode(getUserFollowers($username)) ?>");
-    // }
-
-    // setInterval(followersInRealTime, 10000);
-
-    // съставяне 
-    // const data = {
-    //     labels: [],
-    //     datasets: [{
-    //         label: 'ПОСЛЕДОВАТЕЛИ',
-    //         data: [],
-    //         backgroundColor: 'rgba(159, 90, 253, 0.7)',
-    //         borderColor: 'rgba(159, 90, 253, 0.7)',
-    //         borderWidth: 1,
-    //         borderRadius: 5
-    //     }]
-    // };
-
-    // // кофигуриране 
-    // const config = {
-    //     type: 'line',
-    //     data: data,
-    //     options: {
-    //         indexAxis: 'x',
-    //         plugins: {
-    //             streaming: {
-    //                 refresh: 10000,
-    //                 frameRate: 1
-    //             }
-    //         },
-    //         scales: {
-    //             x: {
-    //                 type: 'realtime',
-    //                 realtime: {
-    //                     onRefresh: chart => {
-    //                         chart.data.datasets.forEach(dataset => {
-    //                             dataset.data.push({
-    //                                 x: Date.now(),
-    //                                 y: followers
-    //                             });
-    //                         });
-    //                     }
-    //                 }
-    //             },
-    //             y: {
-    //                 beginAtZero: false,
-    //                 min: followers - 5,
-    //                 max: followers + 5,
-    //                 ticks: {
-    //                     stepSize: 5
-    //                 }
-    //             }
-    //         }
-    //     }
-    // };
-
-    // //слагаме статистиката в html елемента
-    // const myChart = new Chart(
-    //     document.getElementById('LiveLikesChart'),
-    //     config
-    // );
-
-    // function updateChart(){
-    //     myChart.data.datasets[0].data = [12,22];
-
-    //     myChart.update();
-    // }
-
     //Статистика за харесвания
         new Chart(document.getElementById('LikesChart'), {
             type: 'bar',
@@ -731,6 +676,61 @@
                 }
             }
         });
+
+    //Статистика за последователи в реално време
+    let followersLive = new Chart(document.getElementById("FollowersChart"), {
+        type: 'line',
+        data: {
+            labels: [],  // initial labels array
+            datasets: [{
+                label: 'Последователи в реално време',
+                data: [],   // initial data array
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                xAxes: [{
+                    type: 'time',
+                    time: {
+                    unit: 'second'
+                }
+                }],
+                yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+                }]
+            }
+        }
+    });
+
+    let accessToken = JSON.parse('<?php echo json_encode($accessToken) ?>');
+
+    setInterval(function() {
+        fetch('https://open.tiktokapis.com/v2/user/info/?fields=follower_count', {
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            let now = new Date();
+            let time = now.toLocaleTimeString();
+            let value = data.data.user.following_count; // assuming the API returns a JSON object with a "value" field
+
+            followersLive.data.labels.push(time);
+            followersLive.data.datasets[0].data.push(value);
+            followersLive.update();
+            })
+            .catch(error => {
+            console.error('Error fetching data:', error);
+        });
+    }, 5000);
 </script>
 
 <!-- Jquery Core Js -->
