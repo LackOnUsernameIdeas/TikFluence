@@ -28,21 +28,25 @@ $hashtagsDataForTheLast7Days = $db->getHashtagsForTheLast7Days($selectDate);
 $hashtagsDataForTheLast120Days = $db->getHashtagsForTheLast120Days($selectDate);
 
 //Осигуряваме си данни за диаграмите за хаштаговете
-$hashtagsNames7Days = [];
-$hashtagsNames120Days = [];
+$hashtagsRanks7Days = [];
+$hashtagsRanks120Days = [];
 
 $hashtagsUses7Days = [];
 $hashtagsUses120Days = [];
 
-foreach($hashtagsDataForTheLast7Days as $ht){
-    $hashtagsNames7Days[] = $ht["hashtag_name"];
-    $hashtagsUses7Days[] = $ht["publish_cnt"];
+if($hashtagsDataForTheLast7Days != false || $hashtagsDataForTheLast120Days != false){
+
+    foreach($hashtagsDataForTheLast7Days as $ht){
+        $hashtagsRanks7Days[] = $ht["rank"];
+        $hashtagsUses7Days[] = $ht["publish_cnt"];
+    }
+
+    foreach($hashtagsDataForTheLast120Days as $ht){
+        $hashtagsRanks120Days[] = $ht["rank"];
+        $hashtagsUses120Days[] = $ht["publish_cnt"];
+    }
 }
 
-foreach($hashtagsDataForTheLast120Days as $ht){
-    $hashtagsNames120Days[] = $ht["hashtag_name"];
-    $hashtagsUses120Days[] = $ht["publish_cnt"];
-}
 
 //АЛГОРИТЪМ НА ПОВЛИЯВАНЕ
 
@@ -508,7 +512,7 @@ foreach($songsWithDaysForWidgets as $songId => $days){
                                                     <ul class="dashboard-stat-list">
                                                         <?php foreach($hashtagsDataForTheLast7Days as $ht):?>
                                                             <li>
-                                                                #<?php echo $ht["hashtag_name"] ?>
+                                                                <?php echo $ht["rank"] ?>. <b>#<?php echo $ht["hashtag_name"] ?></b>&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;<?php echo number_format($ht["publish_cnt"]) ?> пъти е използван
                                                             </li>
                                                         <?php endforeach;?>
                                                     </ul>
@@ -528,7 +532,7 @@ foreach($songsWithDaysForWidgets as $songId => $days){
                                                     <ul class="dashboard-stat-list">
                                                         <?php foreach($hashtagsDataForTheLast120Days as $ht):?>
                                                             <li>
-                                                                #<?php echo $ht["hashtag_name"] ?> 
+                                                                <?php echo $ht["rank"] ?>. <b>#<?php echo $ht["hashtag_name"] ?></b>&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;<?php echo number_format($ht["publish_cnt"]) ?> пъти е използван
                                                             </li>
                                                         <?php endforeach;?>
                                                     </ul>
@@ -545,17 +549,10 @@ foreach($songsWithDaysForWidgets as $songId => $days){
                 </div>
                 
                 <div class="row clearfix">
-                    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
                         <div class="card">
-                        <div class="header">
-                                <h2>
-                                    СРАВНЕНИЕ МЕЖДУ ПЪРВИТЕ 10 ПЕСНИ
-                                </h2>
-                            </div>
                             <div class="body">
-                                <div class="body">
-                                    <canvas id="barChartGlobal"></canvas>
-                                </div>
+                                <canvas id="barChartGlobal"></canvas>
                             </div>
                         </div>
                     </div>
@@ -577,42 +574,6 @@ foreach($songsWithDaysForWidgets as $songId => $days){
             </div>
             <!-- #Footer -->
 
-            <!-- Answered Tickets -->
-            <!-- <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-                <div class="card">
-                    <div class="body bg-teal">
-                        <div class="font-bold m-b--35">ANSWERED TICKETS</div>
-                        <ul class="dashboard-stat-list">
-                            <li>
-                                TODAY
-                                <span class="pull-right"><b>12</b> <small>TICKETS</small></span>
-                            </li>
-                            <li>
-                                YESTERDAY
-                                <span class="pull-right"><b>15</b> <small>TICKETS</small></span>
-                            </li>
-                            <li>
-                                LAST WEEK
-                                <span class="pull-right"><b>90</b> <small>TICKETS</small></span>
-                            </li>
-                            <li>
-                                LAST MONTH
-                                <span class="pull-right"><b>342</b> <small>TICKETS</small></span>
-                            </li>
-                            <li>
-                                LAST YEAR
-                                <span class="pull-right"><b>4 225</b> <small>TICKETS</small></span>
-                            </li>
-                            <li>
-                                ALL
-                                <span class="pull-right"><b>8 752</b> <small>TICKETS</small></span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div> -->
-            <!-- #END# Answered Tickets -->
-
         </div>
     </section>
 
@@ -621,8 +582,8 @@ foreach($songsWithDaysForWidgets as $songId => $days){
 
     //Статистика за хаштаговете
     
-    let hashtagsNames7Days = JSON.parse(`<?php echo json_encode($hashtagsNames7Days) ?>`);
-    let hashtagsNames120Days = JSON.parse(`<?php echo json_encode($hashtagsNames120Days) ?>`);
+    let hashtagsNames7Days = JSON.parse(`<?php echo json_encode($hashtagsRanks7Days) ?>`);
+    let hashtagsNames120Days = JSON.parse(`<?php echo json_encode($hashtagsRanks120Days) ?>`);
     
     let hashtagsUses7Days = JSON.parse(`<?php echo json_encode($hashtagsUses7Days) ?>`);
     let hashtagsUses120Days = JSON.parse(`<?php echo json_encode($hashtagsUses120Days) ?>`);
@@ -631,7 +592,7 @@ foreach($songsWithDaysForWidgets as $songId => $days){
         const dataGlobal = {
             labels: hashtagsNames7Days,
             datasets: [{
-                label: 'ПОПУЛЯРНОСТ',
+                label: 'Хаштагове',
                 data: hashtagsUses7Days,
                 backgroundColor: [
                     'rgba(255, 26, 104, 0.2)',
@@ -661,7 +622,6 @@ foreach($songsWithDaysForWidgets as $songId => $days){
             type: 'bar',
             data: dataGlobal,
             options: {
-                indexAxis: 'y',
                     scales: {
                     y: {
                         beginAtZero: true

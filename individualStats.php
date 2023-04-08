@@ -215,8 +215,7 @@
                             <h2>ВИЕ СЕ НАМИРАТЕ В:</h2>
                             <ol class="breadcrumb breadcrumb-col-black">
                                 <li onclick="window.location.href='./index.php'"><a href="javascript:void(0);"><i class="material-icons">home</i>НАЧАЛО</a></li>
-                                <li><i class="material-icons">insert_chart</i>СТАТИСТИКИ</li>
-                                <li class="active"><i class="material-icons">person_outline</i>ИНДИВИДУАЛНИ СТАТИСТИКИ ЗА ПОТРЕБИТЕЛ</li>
+                                <li class="active"><i class="material-icons">person_outline</i>МОИТЕ СТАТИСТИКИ В TIKTOK</li>
                             </ol>
                         </div>
                     </div>

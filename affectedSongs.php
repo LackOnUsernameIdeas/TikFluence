@@ -187,7 +187,6 @@
                         <h2>ВИЕ СЕ НАМИРАТЕ В:</h2>
                         <ol class="breadcrumb breadcrumb-col-black">
                             <li onclick="window.location.href='./index.php'"><a href="javascript:void(0);"><i class="material-icons">home</i>НАЧАЛО</a></li>
-                            <li><a href="javascript:void(0);"><i class="material-icons">insert_chart</i>СТАТИСТИКИ</a></li>
                             <li class="active"><i class="material-icons">music_note</i>ТОП 200 TIKTOK ПЕСНИ ГЛОБАЛНО</li>
                         </ol>
                     </div>
