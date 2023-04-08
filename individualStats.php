@@ -221,7 +221,7 @@
                     </div>
                     <?php if(isset($_GET["code"]) && $userBasicData != []): ?>
                         <div class="col">
-                            <a href="https://www.tiktok.com/logout?redirect_url=https://fluence.noit.eu/pages/individualStats.php" class="btn bg-purple waves-effect" target="_blank" id="myLink">ИЗЛЕЗ ОТ ПРОФИЛА СИ</a>
+                            <a href="https://www.tiktok.com/logout?redirect_url=https://fluence.noit.eu/individualStats.php" class="btn bg-purple waves-effect" target="_blank" id="myLink">ИЗЛЕЗ ОТ ПРОФИЛА СИ</a>
                         </div>
                         <br>
                     <?php endif; ?>
@@ -247,7 +247,7 @@
                         </div>
                     </div>
 
-                    <a href='https://www.tiktok.com/auth/authorize/?client_key=awntkz3ma9o5eetl&scope=user.info.basic,video.list&response_type=code&redirect_uri=https://fluence.noit.eu/pages/individualStats.php&state=<?php echo $reqCallbackState ?>' target="_blank"><img src="./images/logInButton.png" style="border-radius:10px;"></a>
+                    <a href='https://www.tiktok.com/auth/authorize/?client_key=awntkz3ma9o5eetl&scope=user.info.basic,video.list&response_type=code&redirect_uri=https://fluence.noit.eu/individualStats.php&state=<?php echo $reqCallbackState ?>' target="_blank"><img src="./images/logInButton.png" style="border-radius:10px;"></a>
                     <br>
                     <br>
 
@@ -342,20 +342,6 @@
 
                 <?php endif;?>
 
-                <!-- <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <div class="card">
-                        <div class="header">
-                            <h2>
-                                wfwffwfwf                            
-                            </h2>
-                        </div>
-                        <div class="body">
-                            <div class="content">
-                                <canvas id="LiveLikesChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </div> -->
                 <?php if(isset($_GET["code"]) && $userBasicData != []): ?>
                     <div class="row clearfix">  
                         
@@ -400,7 +386,6 @@
                                 </div>
                                 <div class="content">
                                     <div class="text">Последователи</div>
-                                    <!-- <div class="number">wcw</div>  -->
                                     <div class="number count-to" data-from="0" data-to="<?php echo $userBasicData["follower_count"] ?>" data-speed="3000" data-fresh-interval="20"></div>
                                 </div>
                             </div>
@@ -441,7 +426,13 @@
                                 </div>
                             </div>
                         </div>
-
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
                         <?php if($userVideoData != false): ?>
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                                 <div class="card">
