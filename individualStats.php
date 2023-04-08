@@ -725,7 +725,10 @@
     setInterval(async function() {
         await fetch('https://open.tiktokapis.com/v2/user/info/?fields=follower_count', {
             headers: {
-                'Authorization': `Bearer ${accessToken}`
+                'Authorization': `Bearer ${accessToken}`,
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+                'Access-Control-Allow-Headers': 'Content-Type, Authorization'
             }
         })
         .then(response => response.json())
