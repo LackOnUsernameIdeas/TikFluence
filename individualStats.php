@@ -680,10 +680,18 @@
         });
 
     //Статистика за последователи в реално време
+
+    let date = new Date();
+    let hours = date.getHours();
+    let minutes = date.getMinutes();
+    let seconds = date.getSeconds();
+
+    let time = hours + "/" + minutes + "/" + seconds;
+
     let followersLive = new Chart(document.getElementById("FollowersChart"), {
         type: 'line',
         data: {
-            labels: [new Date()],  // initial labels array
+            labels: [time],  // initial labels array
             datasets: [{
                 label: 'Последователи в реално време',
                 data: [followers],   // initial data array
@@ -714,26 +722,31 @@
     let accessToken = JSON.parse('<?php echo json_encode($accessToken) ?>');
 
     console.log(accessToken);
-    // setInterval(function() {
-    //     fetch('https://open.tiktokapis.com/v2/user/info/?fields=follower_count', {
-    //         headers: {
-    //             'Authorization': `Bearer ${accessToken}`
-    //         }
-    //     })
-    //     .then(response => response.json())
-    //     .then(data => {
-    //         let now = new Date();
-    //         let time = now.toLocaleTimeString();
-    //         let value = data.data.user.following_count; // assuming the API returns a JSON object with a "value" field
+    setInterval(async function() {
+        await fetch('https://open.tiktokapis.com/v2/user/info/?fields=follower_count', {
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            let date = new Date();
+            let hours = date.getHours();
+            let minutes = date.getMinutes();
+            let seconds = date.getSeconds();
 
-    //         followersLive.data.labels.push(time);
-    //         followersLive.data.datasets[0].data.push(value);
-    //         followersLive.update();
-    //         })
-    //         .catch(error => {
-    //         console.error('Error fetching data:', error);
-    //     });
-    // }, 5000);
+            let time = hours + "/" + minutes + "/" + seconds;
+
+            let value = data.data.user.follower_count; // assuming the API returns a JSON object with a "value" field
+
+            followersLive.data.labels.push(time);
+            followersLive.data.datasets[0].data.push(value);
+            followersLive.update();
+            })
+            .catch(error => {
+            console.error('Error fetching data:', error);
+        });
+    }, 5000);
 </script>
 
 <!-- Jquery Core Js -->
