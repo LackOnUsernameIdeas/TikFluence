@@ -379,6 +379,7 @@
                             </div>
                         </div>
 
+                    <div class="row clearfix">  
                         <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
                             <div class="info-box bg-deep-purple hover-zoom-effect">
                                 <div class="icon">
@@ -426,13 +427,8 @@
                                 </div>
                             </div>
                         </div>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
+                    </div>
+
                         <?php if($userVideoData != false): ?>
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                                 <div class="card">
