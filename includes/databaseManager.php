@@ -108,7 +108,10 @@ class DatabaseManager {
     public function getDatapointsForSong($sid, $date){
         $sql = "SELECT * 
                 FROM `tiktok_records`
-                WHERE song_id=:sid AND DATE(`fetch_date`) <= DATE(:date)";
+                WHERE song_id=:sid 
+                AND `fetch_date` 
+                BETWEEN DATE_SUB(:date, INTERVAL 40 DAY) 
+                AND DATE_SUB(:date, INTERVAL 1 DAY)";
 
         $query = $this->pdo->prepare($sql);
         $query->bindValue('sid', $sid);
@@ -124,7 +127,9 @@ class DatabaseManager {
     public function getDatapointsForSongBG($sid, $date){
         $sql = "SELECT * 
                 FROM `tiktok_records_bulgaria`
-                WHERE song_id=:sid AND DATE(`fetch_date`) <= DATE(:date)";
+                WHERE song_id=:sid AND `fetch_date` 
+                BETWEEN DATE_SUB(:date, INTERVAL 40 DAY) 
+                AND DATE_SUB(:date, INTERVAL 1 DAY)";
 
         $query = $this->pdo->prepare($sql);
         $query->bindValue('sid', $sid);
@@ -1134,7 +1139,9 @@ class DatabaseManager {
     public function getVideosData($vid, $date){
         $sql = "SELECT * 
                 FROM `tiktok_top_videos`
-                WHERE user_id=:user_id AND DATE(`fetch_date`) <= DATE(:date)";
+                WHERE user_id=:user_id AND `fetch_date` 
+                BETWEEN DATE_SUB(:date, INTERVAL 40 DAY) 
+                AND DATE_SUB(:date, INTERVAL 1 DAY)";
 
         $query = $this->pdo->prepare($sql);
         $query->bindValue('user_id', $vid);
@@ -1203,7 +1210,9 @@ class DatabaseManager {
     public function getTikTokerDatapoints($tid, $date){
         $sql = "SELECT * 
                 FROM `tiktokers`
-                WHERE given_id=:given_id AND DATE(`fetch_date`) <= DATE(:date)";
+                WHERE given_id=:given_id AND `fetch_date` 
+                BETWEEN DATE_SUB(:date, INTERVAL 40 DAY) 
+                AND DATE_SUB(:date, INTERVAL 1 DAY)";
 
         $query = $this->pdo->prepare($sql);
         $query->bindValue('given_id', $tid);

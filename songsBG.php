@@ -234,8 +234,8 @@
                                                         <th><?php echo $st["artist_name"]?></th>
                                                         <th><?php echo number_format($st["number_of_videos_last_14days"])?></th>
                                                         <th><?php echo number_format($st["total_likes_count"])?></th>
-                                                        <th><?php echo number_format($st["youtube_views"])?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://www.youtube.com/watch?v=<?php echo $st["youtube_platform_id"] ?>" target="_blank"><i class="fa fa-eye" title="Вижте песента в YouTube"></i></a></th>
-                                                        <th><?php echo $st["spotify_popularity"]?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://open.spotify.com/track/<?php echo $st["spotify_platform_id"] ?>" target="_blank"><i class="fa fa-eye" title="Вижте песента в Spotify"></i></a></th>
+                                                        <th><?php if($st["youtube_platform_id"] != null):?><?php echo number_format($st["youtube_views"])?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://www.youtube.com/watch?v=<?php echo $st["youtube_platform_id"] ?>" target="_blank"><i class="fa fa-eye" title="Вижте песента в YouTube"></i></a><?php endif;?></th>
+                                                        <th><?php if($st["spotify_platform_id"] != null):?><?php echo $st["spotify_popularity"]?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://open.spotify.com/track/<?php echo $st["spotify_platform_id"] ?>" target="_blank"><i class="fa fa-eye" title="Вижте песента в Spotify"></i></a><?php endif;?></th>
                                                         <th><a href='./songStatsBG.php?sid=<?php echo $st["song_id"]?>' class="btn bg-purple waves-effect">Вижте детайли</a></th>
                                                     </tr>
                                                 <?php endforeach;?>
