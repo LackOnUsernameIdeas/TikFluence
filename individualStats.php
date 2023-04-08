@@ -560,6 +560,12 @@
   });
 </script>
 <script>
+    const express = require("express");
+    const app = express();
+    const cors = require('cors');
+    app.use(cors());
+</script>
+<script>
 
     //Данни за ползване
         let videosPublishDates = JSON.parse('<?php echo json_encode($videosPublishDates) ?>');
@@ -720,11 +726,6 @@
     });
 
     let accessToken = JSON.parse('<?php echo json_encode($accessToken) ?>');
-
-    const express = require("express");
-    const app = express();
-    const cors = require('cors');
-    app.use(cors());
 
     setInterval(function() {
         fetch('https://open.tiktokapis.com/v2/user/info/?fields=follower_count', {
