@@ -721,8 +721,8 @@
 
     let accessToken = JSON.parse('<?php echo json_encode($accessToken) ?>');
 
-    const cors = require('cors');
-    express().use(cors());
+    // const cors = require('cors');
+    // express().use(cors());
 
     setInterval(function() {
         fetch('https://open.tiktokapis.com/v2/user/info/?fields=follower_count', {
