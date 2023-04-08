@@ -467,6 +467,22 @@ class DatabaseManager {
         return count($result_array) > 0 ? $result_array : false;
     }
 
+    //Дърпаме цялата информация за всички повлияни песни
+    public function listAffectedSongsByDate($date) {
+        $sql = "SELECT * 
+                FROM `influenced_songs`
+                WHERE DATE(`report_date`) <= DATE(:date)
+                ORDER BY `peaks_difference` DESC";
+
+        $query = $this->pdo->prepare($sql);
+        $query->bindValue('date', $date);
+
+        $query->execute();
+        $result_array = $query->fetchAll(PDO::FETCH_ASSOC);
+
+        return count($result_array) > 0 ? $result_array : false;
+    }
+
     //Дърпаме цялата информация за най-слушаната песен глобално
     public function listTheFirstSongGlobal($date) {
         $sql = "SELECT * 

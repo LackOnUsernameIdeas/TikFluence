@@ -10,7 +10,6 @@ include "includes/databaseManager.php";
 //Създаваме връзката с базата данни
 $db = new DatabaseManager();
 
-
 //Осигуряваме си необходимите данни
 $dates = $db->listDatesHashtagsAndSongsOnHomePage();
 $datesArray = [];
@@ -47,79 +46,20 @@ if($hashtagsDataForTheLast7Days != false || $hashtagsDataForTheLast120Days != fa
     }
 }
 
-
-//АЛГОРИТЪМ НА ПОВЛИЯВАНЕ
-
-function getPeaks($db){
-    //Взимаме всички песни от таблицата tiktok_songs
-    $songs = $db->listSongs();
-
-    //Взимаме най-големите стойности от всички запазени за тикток и спотифай популярност
-    $peaks = [];
-    foreach($songs as $sg){
-        $peaks[] = $db->getPeaks($sg["id"]);
-    }
-    
-    //Комбинираме данните от двете таблици tiktok_records и tiktok_songs и слагаме всички данни за конкретния пийков запис в масива peaksWithData
-    $peaksWithData = [];
-    foreach($peaks as $pk){
-        $peaksWithData[]["Spotify"] = $db->findSongByPeakSY($pk["song_id"], $pk["MAX(`spotify_popularity`)"]);
-        $peaksWithData[]["TikTok"] = $db->findSongByPeakTT($pk["song_id"], $pk["MAX(`number_of_videos_last_14days`)"]);
-    }
-
-
-    return $peaksWithData;
-}
-
-//Изпълняваме функцията за да се сдобием с данните за пийковете на песните
-$peaksWithData = getPeaks($db);
-
-//peaksWithData масива е конструиран така:
-
-// [четен индекс] => Масив
-//     (
-//         [Spotify] => Масив
-//             (
-//                 [song_id] => 208
-//                 [0] => 208
-//                 [fetch_date] => 2023-01-03
-//                 [1] => 2023-01-03
-//             )
-
-//     )
-
-// [нечетен индекс] => Масив
-// (
-//     [TikTok] => Масив
-//         (
-//             [song_id] => 208
-//             [0] => 208
-//             [fetch_date] => 2023-01-03
-//             [1] => 2023-01-03
-//         )
-
-// )
-
-
+//Осигуряваме си данни за класацията за най-повлияните песни
+$influencedSongs = $db->listAffectedSongsByDate($selectDate);
 
 //Махаме песните от масива, които имат разлика в пийковите дати по-малка от 0 за да получим само тези песни, които са повлияни
 $songsWithDays = [];
 
-for($i=0;$i<count($peaksWithData);$i+=2){
-
-    $datediff = isset($peaksWithData[$i]["Spotify"]["fetch_date"]) ? 
-    strtotime($peaksWithData[$i]["Spotify"]["fetch_date"]) - strtotime($peaksWithData[$i + 1]["TikTok"]["fetch_date"]) : false;
-
-    if($datediff != false && $datediff > 0){
-        $songsWithDays[$peaksWithData[$i]["Spotify"]["song_id"]] = $datediff / (60 * 60 * 24);
-    }
-
+foreach($influencedSongs as $song){
+    $songsWithDays[$song["song_id"]] = $song["peaks_difference"];
 }
 
-//Подреждаме песните в масива по низходящ ред
-arsort($songsWithDays);
+//Масивът songsWithDays изглежда така:
+//[sid] => [peaks_diff]
 
-//Махаме песните от масива, които не са претърпяли никаква промяна в популярността си в TikTok повече от 10 дни.
+//Приготвяме данни за widget-ите, показващи кои са топ 3 най-повлияни песни
 foreach($songsWithDays as $key => $value){
     $datapoints = $db->getEveryDatapointForSong($key);
     
@@ -139,38 +79,8 @@ foreach($songsWithDays as $key => $value){
         } else {
             $plateauIndex = 0;
         }
-        if($plateauIndex >= 10){
-            unset($songsWithDays[$key]);
-        } 
-        $previousVal = $val;
-    }
-}
-
-
-//Приготвяме данни за widget-ите, показващи кои са топ 3 най-повлияни песни
-$songsWithDaysForWidgets = $songsWithDays;
-
-foreach($songsWithDaysForWidgets as $key => $value){
-    $datapoints = $db->getEveryDatapointForSong($key);
-    
-    $ttNums = [];
-    $dates = [];
-
-    foreach($datapoints as $dp){
-        $ttNums[] = $dp["number_of_videos_last_14days"];
-        $dates[] = $dp["fetch_date"];
-    }
-
-    $plateauIndex = 0;
-    $previousVal = 0;
-    foreach($ttNums as $val){
-        if($val == $previousVal){
-            $plateauIndex++;
-        } else {
-            $plateauIndex = 0;
-        }
         if($plateauIndex >= 10 || end($dates) != date("Y-m-d")){
-            unset($songsWithDaysForWidgets[$key]);
+            unset($songsWithDays[$key]);
         } 
         $previousVal = $val;
     }
@@ -179,7 +89,7 @@ foreach($songsWithDaysForWidgets as $key => $value){
 //Слагаме необходимите данни за widget-ите в масив, който ще използваме за да покажем информацията
 $influencedSongsData = [];
 
-foreach($songsWithDaysForWidgets as $songId => $days){
+foreach($songsWithDays as $songId => $days){
     $influencedSongsData[] = $db->findSongAndSongsTodayDataById($songId);
 }
 
@@ -439,38 +349,28 @@ foreach($songsWithDaysForWidgets as $songId => $days){
                                                                 <th>Артист</th>
                                                                 <th>Дата на пик в TikTok</th>
                                                                 <th>Дата на пик в Spotify</th>
-                                                                <th>TikTok видеа последно</th>
-                                                                <th>Spotify популярност последно</th>
+                                                                <th>Разлика в пийковете</th>
+                                                                <th>Дата на повлияване</th>
                                                                 <th>Повлияване</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
                                                             <?php $iteration = 0;?>
-                                                            <?php foreach($songsWithDays as $songId => $days):?>
+                                                            <?php foreach($influencedSongs as $song):?>
                                                                 <?php $iteration++?>
                                                                 <?php if($iteration == 11):?>
                                                                     <?php break;?>
                                                                 <?php endif;?>
 
-                                                                <?php $songData = $db->findSongById($songId) ?>
-                                                                <?php $songPeakDataTT = $db->findSongPeakDataTT($songId) ?>
-                                                                <?php $songPeakDataSY = $db->findSongPeakDataSY($songId) ?>
-                                                                <?php $songLastSavedData = $db->findSongLastSavedData($songId) ?>
-                                                                
-                                                                <tr onClick="window.location.href=`./influencedSong.php?sid=<?= $songData[0]["id"] ?>`">
+                                                                <tr onClick="window.location.href=`./influencedSong.php?sid=<?= $song["song_id"] ?>`">
                                                                     <td><?= $iteration?></td>
-                                                                    <td><?= $songData[0]["song_name"] ?></td>
-                                                                    <td><?= $songData[0]["artist_name"] ?></td>
-                                                                    <th><?= $songPeakDataTT["fetch_date"] ?></th>
-                                                                    <th><?= $songPeakDataSY["fetch_date"] ?></th>
-                                                                    <th><?= $songLastSavedData["number_of_videos_last_14days"] ?></th>
-                                                                    <th><?= $songLastSavedData["spotify_popularity"] ?></th>
-                                                                    <td><a href='./influencedSong.php?sid=<?= $songData[0]["id"] ?>' class="btn bg-purple waves-effect" style="font-size:14px;">Вижте повече</a></td>
-                                                                    <!-- <td>
-                                                                        <div class="progress">
-                                                                            <div class="progress-bar bg-purple" role="progressbar" aria-valuenow="62" aria-valuemin="0" aria-valuemax="100" style="width: 62%"></div>
-                                                                        </div>
-                                                                    </td> -->
+                                                                    <td><?= $song["song_name"] ?></td>
+                                                                    <td><?= $song["artist_name"] ?></td>
+                                                                    <th><?= $song["tiktok_peak_date"] ?></th>
+                                                                    <th><?= $song["spotify_peak_date"] ?></th>
+                                                                    <th><?= $song["peaks_difference"] ?></th>
+                                                                    <th><?= $song["report_date"] ?></th>
+                                                                    <td><a href='./influencedSong.php?sid=<?= $song["song_id"] ?>' class="btn bg-purple waves-effect" style="font-size:14px;">Вижте повече</a></td>
                                                                 </tr>
                                                             <?php endforeach;?>
                                                         </tbody>
@@ -502,7 +402,7 @@ foreach($songsWithDaysForWidgets as $songId => $days){
                                         <div class="panel panel-primary">
                                             <div class="panel-heading" role="tab" id="headingOne_2">
                                                 <h4 class="panel-title">
-                                                    <a role="button" data-toggle="collapse" data-parent="#accordion_2" href="#collapseOne_2" aria-expanded="true" aria-controls="collapseOne_2">
+                                                    <a role="button" data-toggle="collapse" data-parent="#accordion_2" href="#collapseOne_2" aria-expanded="true" aria-controls="collapseOne_2" id="hashtagsForTheLast7Days">
                                                         ПОНАСТОЯЩЕМ <i class="material-icons">keyboard_arrow_down</i>
                                                     </a>
                                                 </h4>
@@ -522,7 +422,7 @@ foreach($songsWithDaysForWidgets as $songId => $days){
                                         <div class="panel panel-primary">
                                             <div class="panel-heading" role="tab" id="headingTwo_2">
                                                 <h4 class="panel-title">
-                                                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion_2" href="#collapseTwo_2" aria-expanded="false" aria-controls="collapseTwo_2">
+                                                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion_2" href="#collapseTwo_2" aria-expanded="false" aria-controls="collapseTwo_2" id="hashtagsForTheLast120Days">
                                                         ЗА ПОСЛЕДНИТЕ 120 ДНИ <i class="material-icons">keyboard_arrow_down</i>
                                                     </a>
                                                 </h4>
@@ -636,6 +536,27 @@ foreach($songsWithDaysForWidgets as $songId => $days){
             configGlobal
         );
 
+
+    const hashtags7div = document.getElementById('hashtagsForTheLast7Days');
+    const hashtags120div = document.getElementById('hashtagsForTheLast120Days');
+
+    hashtags7div.addEventListener('click', () => {
+        // Update the chart data
+        myChartGlobal.data.datasets[0].data = hashtagsUses7Days;
+        myChartGlobal.data.labels = hashtagsNames7Days;
+
+        // Redraw the chart with the new data
+        myChartGlobal.update();
+    });
+
+    hashtags120div.addEventListener('click', () => {
+        // Update the chart data
+        myChartGlobal.data.datasets[0].data = hashtagsUses120Days;
+        myChartGlobal.data.labels = hashtagsNames120Days;
+
+        // Redraw the chart with the new data
+        myChartGlobal.update();
+    });
     </script>
 
     <!-- Jquery Core Js -->
