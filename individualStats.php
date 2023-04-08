@@ -724,9 +724,8 @@
     const cors = require('cors');
     express().use(cors());
 
-    console.log(accessToken);
-    setInterval(async function() {
-        await fetch('https://open.tiktokapis.com/v2/user/info/?fields=follower_count', {
+    setInterval(function() {
+        fetch('https://open.tiktokapis.com/v2/user/info/?fields=follower_count', {
             headers: {
                 'Authorization': `Bearer ${accessToken}`
             }
