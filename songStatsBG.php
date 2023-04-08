@@ -388,7 +388,7 @@
                                     <h2>ВИЕ СЕ НАМИРАТЕ В:</h2>
                                     <ol class="breadcrumb breadcrumb-col-black">
                                         <li onclick="window.location.href='./index.php'"><a href="javascript:void(0);"><i class="material-icons">home</i>НАЧАЛО</a></li>
-                                        <li><a href="javascript:void(0);"><i class="material-icons">insert_chart</i>СТАТИСТИКИ</a></li>
+                                        <li><a href="javascript:void(0);"><i class="material-icons">insert_chart</i>ОЩЕ СТАТИСТИКИ</a></li>
                                         <li onclick="window.location.href='songsBG.php'"><a href="javascript:void(0);"><i class="material-icons">music_note</i>ТОП TIKTOK ПЕСНИ ЗА БЪЛГАРИЯ</a></li>
                                         <li class="active"><i class="material-icons">music_note</i>СТАТИСТИКИ ЗА: <?php echo $songData["song_name"]?></li>
                                     </ol>

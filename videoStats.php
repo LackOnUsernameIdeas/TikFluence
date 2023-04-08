@@ -227,7 +227,7 @@
                                 <h2>ВИЕ СЕ НАМИРАТЕ В:</h2>
                                 <ol class="breadcrumb breadcrumb-col-black">
                                     <li onclick="window.location.href='./index.php'"><a href="javascript:void(0);"><i class="material-icons">home</i>НАЧАЛО</a></li>
-                                    <li><a href="javascript:void(0);"><i class="material-icons">insert_chart</i>СТАТИСТИКИ</a></li>
+                                    <li><a href="javascript:void(0);"><i class="material-icons">insert_chart</i>ОЩЕ СТАТИСТИКИ</a></li>
                                     <li onclick="window.location.href='topVideos.php'"><a href="javascript:void(0);"><i class="material-icons">play_circle_outline</i>ТОП 200 НАЙ-ГЛЕДАНИ ВИДЕА В TIKTOK</a></li>
                                     <li class="active"><i class="material-icons">play_circle_outline</i>СТАТИСТИКИ ЗА ВИДЕОТО НА <?php echo $videoDatapoints[0]["platform_name"] ?></li>
                                 </ol>
