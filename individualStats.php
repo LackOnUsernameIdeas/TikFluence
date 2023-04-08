@@ -29,6 +29,7 @@
             $username = explode("?", explode('@', $usernameLink)[1])[0];
         }
     }
+    var_dump($accessToken);
 
     //Показваме профилната снимка на потребителя ако е въвел името си. Подсигуряме си информацията за потребителя под формата на масиви.
     $videosPublishDates = [];
@@ -568,6 +569,7 @@
         let comments =  JSON.parse('<?php echo json_encode($comments) ?>');
         let shares =  JSON.parse('<?php echo json_encode($shares) ?>');
 
+        let followers = JSON.parse('<?php echo json_encode($userBasicData["follower_count"]) ?>');
 
     //Статистика за харесвания
         new Chart(document.getElementById('LikesChart'), {
@@ -681,10 +683,10 @@
     let followersLive = new Chart(document.getElementById("FollowersChart"), {
         type: 'line',
         data: {
-            labels: [],  // initial labels array
+            labels: [new Date()],  // initial labels array
             datasets: [{
                 label: 'Последователи в реално време',
-                data: [],   // initial data array
+                data: [followers],   // initial data array
                 backgroundColor: 'rgba(255, 99, 132, 0.2)',
                 borderColor: 'rgba(255, 99, 132, 1)',
                 borderWidth: 1
@@ -711,26 +713,27 @@
 
     let accessToken = JSON.parse('<?php echo json_encode($accessToken) ?>');
 
-    setInterval(function() {
-        fetch('https://open.tiktokapis.com/v2/user/info/?fields=follower_count', {
-            headers: {
-                'Authorization': `Bearer ${accessToken}`
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            let now = new Date();
-            let time = now.toLocaleTimeString();
-            let value = data.data.user.following_count; // assuming the API returns a JSON object with a "value" field
+    console.log(accessToken);
+    // setInterval(function() {
+    //     fetch('https://open.tiktokapis.com/v2/user/info/?fields=follower_count', {
+    //         headers: {
+    //             'Authorization': `Bearer ${accessToken}`
+    //         }
+    //     })
+    //     .then(response => response.json())
+    //     .then(data => {
+    //         let now = new Date();
+    //         let time = now.toLocaleTimeString();
+    //         let value = data.data.user.following_count; // assuming the API returns a JSON object with a "value" field
 
-            followersLive.data.labels.push(time);
-            followersLive.data.datasets[0].data.push(value);
-            followersLive.update();
-            })
-            .catch(error => {
-            console.error('Error fetching data:', error);
-        });
-    }, 5000);
+    //         followersLive.data.labels.push(time);
+    //         followersLive.data.datasets[0].data.push(value);
+    //         followersLive.update();
+    //         })
+    //         .catch(error => {
+    //         console.error('Error fetching data:', error);
+    //     });
+    // }, 5000);
 </script>
 
 <!-- Jquery Core Js -->
