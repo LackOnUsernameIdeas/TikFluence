@@ -389,23 +389,32 @@ function generateTikTokAccessToken($code){
 
     curl_close($ch);
 
-    return isset($decoded["data"]["access_token"]) ? $decoded["data"]["access_token"] : false;
+    return isset($decoded["data"]["access_token"]) ? $decoded["data"] : false;
 
 }
 
-// Генерираме си redirect link за да вземем потребителско име от TikTok API
-// function generateTikTokRedirectLink($profLink){
+function refreshTikTokAccessToken($refreshToken){
 
-//     $ch = curl_init();
+    $client_key = 'awntkz3ma9o5eetl';
 
-//     curl_setopt($ch, CURLOPT_URL, $profLink);
-//     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    $ch = curl_init();
 
-//     $result = curl_exec($ch);
+    curl_setopt($ch, CURLOPT_URL, "https://open-api.tiktok.com/oauth/refresh_token/?client_key=$client_key&grant_type=refresh_token&refresh_token=$refreshToken");
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1 );
 
-//     return $result;
+    $result = curl_exec($ch);
+    $decoded = json_decode($result, true);
 
-// }
+    $error_message = curl_error($ch);
+    if($error_message != ''){
+        die($error_message);
+    };
+
+    curl_close($ch);
+
+    return isset($decoded["data"]["access_token"]) ? $decoded["data"]["access_token"] : false;
+
+}
 
 //Сдобиваме се с главната информация за потребителя
 function getUserBasicData($accessToken){

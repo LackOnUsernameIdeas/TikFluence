@@ -15,10 +15,17 @@
     if(isset($_GET["code"]) && !isset($_COOKIE["tiktok_access_token"])){ //Ако потребителят не е потвърдил все още
 
         //Генерираме си access token, когато потребителят влезе и потвърди от профила си
-        $accessToken = generateTikTokAccessToken($_GET["code"]);
-        $expirationIn = 3600;
+        $tokens = generateTikTokAccessToken($_GET["code"]);
+        $accessToken = $tokens["access_token"];
+        $refreshToken = $tokens["refresh_token"];
 
-        setcookie('tiktok_access_token', $accessToken, time() + $expirationIn);
+        $expirationIn = 3600;
+        $expirationTime = time() + $expiresIn;
+
+        setcookie('tiktok_access_token', $accessToken, $expirationTime);
+        setcookie('tiktok_refresh_token', $refreshToken, time() + 86400);
+
+        setcookie('tiktok_access_token_expiration', $expirationTime, $expirationTime);
 
         $userBasicData = getUserBasicData($accessToken);
         $userVideoData = getUserVideoData($accessToken);
@@ -33,14 +40,16 @@
     } elseif(isset($_COOKIE["tiktok_access_token"])){ //Ако потребителят веднъж е потвърдил
 
         $accessToken = $_COOKIE["tiktok_access_token"];
+        $refreshToken = $_COOKIE["tiktok_refresh_token"];
+
         $expirationTime = $_COOKIE["tiktok_access_token_expiration"];
         $currentTime = time();
 
         //Проверяваме дали токена е изтекъл
         if($currentTime > $expirationTime){
             //Генерираме си нов access token
-            $accessToken = generateTikTokAccessToken($_GET["code"]);
-            $expiresIn = 3600; // set the expiration time to 1 hour
+            $accessToken = refreshTikTokAccessToken($refreshToken);
+            $expiresIn = 3600; // слагаме времето на изтичане отново да е 1 час
             $expirationTime = time() + $expiresIn;
             
             //Актуализираме бизквитката с новия токен и времето му на изтичане на валидността
