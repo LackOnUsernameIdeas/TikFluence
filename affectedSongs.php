@@ -80,7 +80,7 @@
 
     <style>
         .songsBox{
-            width: 1450px;
+            width: 100%;
             height: 600px;
             max-width: 85vw;
         }

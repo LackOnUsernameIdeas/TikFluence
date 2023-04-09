@@ -137,9 +137,22 @@ function limitContentLength($content, $limit) {
     
     <style>
         .hashtagsBox{
-            width: 503.5px;
+            width: 100%;
             min-height: 200px;
             max-width: 93vw;
+        }
+
+        .hashtagsAccordionBox{
+            width: 33.33%;
+            min-height: 200px;
+            max-width: 93vw;
+        }
+
+        @media only screen and (max-width: 991px) {
+            .hashtagsAccordionBox{
+                width: 100%;
+                min-height: 200px;
+            }
         }
     </style>
 </head>
@@ -470,8 +483,8 @@ function limitContentLength($content, $limit) {
                     </div>
                 </div>
 
-
-                <div class="col-xs-4 ol-sm-4 col-md-4 col-lg-4 hashtagsBox">
+                                                        
+                <div class="col-xs-4 ol-sm-4 col-md-4 col-lg-4 hashtagsAccordionBox">
                     <div class="panel-group" id="accordion_3" role="tablist" aria-multiselectable="true">
 
                         <div class="panel panel-primary">
@@ -484,7 +497,7 @@ function limitContentLength($content, $limit) {
                             </div>
                             <div id="collapseOne_3" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_3" aria-expanded="true">
                                 <div class="panel-body">
-                                    <div class="body">
+                                    <div class="body hashtagsBox">
                                         <canvas id="hashtagsChart"></canvas>
                                     </div>
                                 </div>

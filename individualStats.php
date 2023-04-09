@@ -98,7 +98,7 @@
 
     <style>
         .userChartsBox{
-            width: 1480px;
+            width: 100%;
             min-height: 400px;
             max-height: 600px;
             max-width: 85vw;
@@ -245,7 +245,7 @@
                     <?php endif; ?>
                 </div>
 
-                <?php if(!isset($_GET["code"]) || $userBasicData == []): ?>
+                <?php if($userBasicData == []): ?>
 
                     <div class="row clearfix">
 
@@ -360,7 +360,7 @@
 
                 <?php endif;?>
 
-                <?php if(isset($_GET["code"]) && $userBasicData != []): ?>
+                <?php if($userBasicData != []): ?>
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">  
                         <div class="row clearfix">  
 
@@ -774,7 +774,8 @@
                 yAxes: [{
                 ticks: {
                     stepSize: 1,
-                    beginAtZero: true
+                    beginAtZero: true,
+                    callback: function (value) { if (Number.isInteger(value)) { return value; } }
                 }
                 }]
             },
@@ -809,7 +810,8 @@
                 yAxes: [{
                 ticks: {
                     stepSize: 1,
-                    beginAtZero: true
+                    beginAtZero: true,
+                    callback: function (value) { if (Number.isInteger(value)) { return value; } }
                 }
                 }]
             },

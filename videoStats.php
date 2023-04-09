@@ -89,7 +89,7 @@
 
     <style>
         .videoBox{
-            width: 1480px;
+            width: 100%;
             min-height: 600px;
             max-width: 85vw;
         }
