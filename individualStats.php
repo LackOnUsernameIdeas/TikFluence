@@ -13,26 +13,26 @@
     $userVideoData = [];
 
     if(isset($_GET["code"])){
-        $_SESSION["accessToken"] = generateTikTokAccessToken($_GET["code"]);
+        $accessToken = generateTikTokAccessToken($_GET["code"]);
 
-        $userBasicData = getUserBasicData($_SESSION["accessToken"]);
-        $userVideoData = getUserVideoData($_SESSION["accessToken"]);
+        $userBasicData = getUserBasicData($accessToken);
+        $userVideoData = getUserVideoData($accessToken);
 
         //Генерираме си подробни данни за потребителя, ако профилът му не е заключен и има видеа
-        if($_SESSION["accessToken"] != false){
-            $openUserId = getUserOpenId($_SESSION["accessToken"]);
+        if($accessToken != false){
+            $openUserId = getUserOpenId($accessToken);
 
             $usernameLink = generateTikTokUsername("https://open-api.tiktok.com/shortlink/profile/?open_id=$openUserId");
             $username = explode("?", explode('@', $usernameLink)[1])[0];
         }
-    } elseif(isset($_SESSION["accessToken"])){
+    } elseif(isset($accessToken)){
 
-        $userBasicData = getUserBasicData($_SESSION["accessToken"]);
-        $userVideoData = getUserVideoData($_SESSION["accessToken"]);
+        $userBasicData = getUserBasicData($accessToken);
+        $userVideoData = getUserVideoData($accessToken);
 
         //Генерираме си подробни данни за потребителя, ако профилът му не е заключен и има видеа
-        if($_SESSION["accessToken"] != false){
-            $openUserId = getUserOpenId($_SESSION["accessToken"]);
+        if($accessToken != false){
+            $openUserId = getUserOpenId($accessToken);
 
             $usernameLink = generateTikTokUsername("https://open-api.tiktok.com/shortlink/profile/?open_id=$openUserId");
             $username = explode("?", explode('@', $usernameLink)[1])[0];
@@ -818,7 +818,7 @@
     });
 
     //Запазваме токена, който ни е необходим, за да взимаме данни
-    let accessToken = JSON.parse('<?php echo json_encode($_SESSION["accessToken"]) ?>');
+    let accessToken = JSON.parse('<?php echo json_encode($accessToken) ?>');
 
     //Изпълняваме функцията, която трябва да праща заяки и да актуализира информацията в диаграмите и уиджетите през 1 минута
     let requestCount = 0;
