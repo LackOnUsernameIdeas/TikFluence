@@ -774,8 +774,7 @@
                 yAxes: [{
                     ticks: {
                         stepSize: 1,
-                        beginAtZero: true,
-                        max: Math.ceil(followersLiveData) + 1                
+                        beginAtZero: true              
                     }
                 }]
             },
@@ -810,8 +809,7 @@
                 yAxes: [{
                     ticks: {
                         stepSize: 1,
-                        beginAtZero: true,
-                        max: Math.ceil(followersLiveData) + 1
+                        beginAtZero: true
                     }
                 }]
             },
@@ -863,11 +861,14 @@
             //Актуализираме новите данни в диаграмите
             followersLive.data.labels.push(time);
             followersLive.data.datasets[0].data.push(followers);
+            followersLive.options.scales.yAxes[0].ticks.stepSize = 1;
             followersLive.update();
 
             likesLive.data.labels.push(time);
             likesLive.data.datasets[0].data.push(likes);
+            likesLive.options.scales.yAxes[0].ticks.stepSize = 1;
             likesLive.update();
+
         })
         .catch(error => {
             console.error('Error fetching data:', error);
