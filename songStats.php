@@ -16,7 +16,6 @@
     $fetchDatesForButton = $db->listDatesForCurrentSong($sid);
 
     $datesArray = [];
-
     foreach($fetchDatesForButton as $date){
         $timestamp = new DateTime($date["fetch_date"]);
         $datesArray[] = $timestamp->format('Y-m-d');
@@ -37,7 +36,6 @@
     $songData = $db->getSongData($sid);
 
     $dataPoints = $db->getDatapointsForSong($sid, $selectDate);
-    
     if($dataPoints === false) redirect("songs.php");
 
 

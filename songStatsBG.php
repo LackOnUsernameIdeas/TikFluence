@@ -11,7 +11,6 @@
 
     //Създаваме връзката с базата данни
     $db = new DatabaseManager();
-
     
     //Взимаме всички дати, за които дадена песен има данни. Слагаме избраната дата в променлива и с нея издърпваме нужните данни
     $fetchDatesForButton = $db->listDatesForCurrentSongBG($sid);
@@ -22,6 +21,7 @@
         $chooseDatesForButton[] = $timestamp->format('Y-m-d');
     }
 
+    //Слагаме избраната дата в променлива и с нея издърпваме нужните данни
     $selectDate = isset($_SESSION["setDate"]) && $_SESSION["setDate"] > $chooseDatesForButton[0] ? $_SESSION["setDate"] : date("Y-m-d");
     
     if($selectDate == "2023-01-13"){
@@ -30,7 +30,7 @@
 
     //Взимаме данните от записите за всяка песен и ги запазваме в масиви
     $dataPoints = $db->getDatapointsForSongBG($sid, $selectDate);
-    if($dataPoints === false) redirect("songs.php");
+    if($dataPoints === false) redirect("songsBG.php");
 
     $songData = $db->getSongDataBG($sid);
 
@@ -148,11 +148,13 @@
     // Изчисляваме разликата между днес и вчера в числови стойности и в проценти, за да покажем с колко се е променила от предната дата в сравнение с избраната дата дадена песен.
 
     //TikTok
-    $subtractionTTPercents = $todayYesterdayTTDataArray[1] - $todayYesterdayTTDataArray[0];
-    $subtractionTTNums = $ttLastTwoDaysNums[1] - $ttLastTwoDaysNums[0];
+    if(isset($todayYesterdayTTDataArray[1]) && isset($todayYesterdayTTDataArray[0])){
+        $subtractionTTPercents = $todayYesterdayTTDataArray[1] - $todayYesterdayTTDataArray[0];
+        $subtractionTTNums = $ttLastTwoDaysNums[1] - $ttLastTwoDaysNums[0];    
+    }
 
     //YouTube
-    if($ytLastTwoDaysPercents[0] != null){ 
+    if(isset($todayYesterdayYTDataArray[1]) && isset($todayYesterdayYTDataArray[0]) && $ytLastTwoDaysPercents[0] != null){ 
         $subtractionYTPercents = $todayYesterdayYTDataArray[1] - $todayYesterdayYTDataArray[0];
         $subtractionYTNums = $ytLastTwoDaysNums[1] - $ytLastTwoDaysNums[0];
     } else { 
@@ -160,10 +162,12 @@
     }
 
     //Spotify
-    if($syLastTwoDays[0] != null){
-        $subtractionSY = $todayYesterdaySYDataArray[1] - $todayYesterdaySYDataArray[0];
-    } else { 
-        $subtractionSY = 0;
+    if(isset($todayYesterdaySYDataArray[1]) && isset($todayYesterdaySYDataArray[0])){
+        if($syLastTwoDays[0] != null){
+            $subtractionSY = $todayYesterdaySYDataArray[1] - $todayYesterdaySYDataArray[0];
+        } else { 
+            $subtractionSY = 0;
+        }
     }
 
     //Избираме подходяща икона на уиджетите за измяна на популярност:
@@ -200,17 +204,19 @@
     //Взимаме данните за датата, която сме избрали в страницата
 
     //TikTok
-    $todayTT = $ttLastTwoDaysNums[1];
+    if(isset($ttLastTwoDaysNums[1])){
+        $todayTT = $ttLastTwoDaysNums[1];
+    }
 
     //YouTube
-    if($ytLastTwoDaysPercents[0] != null || $ytLastTwoDaysPercents[0] == 0){ 
+    if(isset($ytLastTwoDaysPercents[1]) && $ytLastTwoDaysPercents[0] != null || $ytLastTwoDaysPercents[0] == 0){ 
         $todayYT = $ytLastTwoDaysPercents[1];
     } else { 
         $todayYT = "-";
     }
 
     //Spotify
-    if($syLastTwoDays[0] != null || $syLastTwoDays[0] == 0){ 
+    if(isset($syLastTwoDays[1]) && $syLastTwoDays[0] != null || $syLastTwoDays[0] == 0){ 
         $todaySY = $syLastTwoDays[1];
     } else { 
         $todaySY = "-";
