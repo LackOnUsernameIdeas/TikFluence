@@ -768,15 +768,15 @@
                 xAxes: [{
                     type: 'time',
                     time: {
-                    unit: 'second'
-                }
+                        unit: 'second'
+                    }
                 }],
                 yAxes: [{
-                ticks: {
-                    stepSize: 1,
-                    beginAtZero: true,
-                    callback: function (value) { if (Number.isInteger(value)) { return value; } }
-                }
+                    ticks: {
+                        stepSize: 1,
+                        beginAtZero: true,
+                        max: Math.ceil(followersLiveData) + 1                
+                    }
                 }]
             },
             maintainAspectRatio: false
@@ -804,15 +804,15 @@
                 xAxes: [{
                     type: 'time',
                     time: {
-                    unit: 'second'
-                }
+                        unit: 'second'
+                    }
                 }],
                 yAxes: [{
-                ticks: {
-                    stepSize: 1,
-                    beginAtZero: true,
-                    callback: function (value) { if (Number.isInteger(value)) { return value; } }
-                }
+                    ticks: {
+                        stepSize: 1,
+                        beginAtZero: true,
+                        max: Math.ceil(followersLiveData) + 1
+                    }
                 }]
             },
             maintainAspectRatio: false
