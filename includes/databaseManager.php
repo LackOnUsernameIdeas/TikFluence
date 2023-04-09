@@ -110,8 +110,8 @@ class DatabaseManager {
                 FROM `tiktok_records`
                 WHERE song_id=:sid 
                 AND `fetch_date` 
-                BETWEEN DATE_SUB(:date, INTERVAL 40 DAY) 
-                AND DATE_SUB(:date, INTERVAL 1 DAY)";
+                BETWEEN DATE_SUB(:date, INTERVAL 39 DAY) 
+                AND :date";
 
         $query = $this->pdo->prepare($sql);
         $query->bindValue('sid', $sid);
@@ -128,8 +128,8 @@ class DatabaseManager {
         $sql = "SELECT * 
                 FROM `tiktok_records_bulgaria`
                 WHERE song_id=:sid AND `fetch_date` 
-                BETWEEN DATE_SUB(:date, INTERVAL 40 DAY) 
-                AND DATE_SUB(:date, INTERVAL 1 DAY)";
+                BETWEEN DATE_SUB(:date, INTERVAL 39 DAY) 
+                AND :date";
 
         $query = $this->pdo->prepare($sql);
         $query->bindValue('sid', $sid);
@@ -1140,8 +1140,8 @@ class DatabaseManager {
         $sql = "SELECT * 
                 FROM `tiktok_top_videos`
                 WHERE user_id=:user_id AND `fetch_date` 
-                BETWEEN DATE_SUB(:date, INTERVAL 40 DAY) 
-                AND DATE_SUB(:date, INTERVAL 1 DAY)";
+                BETWEEN DATE_SUB(:date, INTERVAL 39 DAY) 
+                AND :date";
 
         $query = $this->pdo->prepare($sql);
         $query->bindValue('user_id', $vid);
@@ -1211,8 +1211,8 @@ class DatabaseManager {
         $sql = "SELECT * 
                 FROM `tiktokers`
                 WHERE given_id=:given_id AND `fetch_date` 
-                BETWEEN DATE_SUB(:date, INTERVAL 40 DAY) 
-                AND DATE_SUB(:date, INTERVAL 1 DAY)";
+                BETWEEN DATE_SUB(:date, INTERVAL 39 DAY) 
+                AND :date";
 
         $query = $this->pdo->prepare($sql);
         $query->bindValue('given_id', $tid);
