@@ -390,58 +390,57 @@ foreach($songsWithDays as $songId => $days){
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                        <div class="body">
-                            <div class="row clearfix">
-                                <div class="col-xs-12 ol-sm-12 col-md-12 col-lg-12">
+                    <div class="body">
+                        <div class="row clearfix">
+                            <div class="col-xs-12 ol-sm-12 col-md-12 col-lg-12">
 
-                                    <div class="panel-group" id="accordion_2" role="tablist" aria-multiselectable="true">
-                                        <div class="panel panel-primary">
-                                            <div class="panel-heading" role="tab" id="headingOne_2">
-                                                <h4 class="panel-title">
-                                                    <a role="button" data-toggle="collapse" data-parent="#accordion_2" href="#collapseOne_2" aria-expanded="true" aria-controls="collapseOne_2" id="hashtagsForTheLast7Days">
-                                                        ПОНАСТОЯЩЕМ <i class="material-icons">keyboard_arrow_down</i>
-                                                    </a>
-                                                </h4>
-                                            </div>
-                                            <div id="collapseOne_2" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_2">
-                                                <div class="panel-body">
-                                                    <ul class="dashboard-stat-list">
-                                                        <?php foreach($hashtagsDataForTheLast7Days as $ht):?>
-                                                            <li>
-                                                                <?php echo $ht["rank"] ?>. <b>#<?php echo $ht["hashtag_name"] ?></b>&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;<?php echo number_format($ht["publish_cnt"]) ?> пъти е използван
-                                                            </li>
-                                                        <?php endforeach;?>
-                                                    </ul>
-                                                </div>
+                                <div class="panel-group" id="accordion_2" role="tablist" aria-multiselectable="true">
+                                    <div class="panel panel-primary">
+                                        <div class="panel-heading" role="tab" id="headingOne_2">
+                                            <h4 class="panel-title">
+                                                <a role="button" data-toggle="collapse" data-parent="#accordion_2" href="#collapseOne_2" aria-expanded="true" aria-controls="collapseOne_2" id="hashtagsForTheLast7Days">
+                                                    ПОНАСТОЯЩЕМ <i class="material-icons">keyboard_arrow_down</i>
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id="collapseOne_2" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_2">
+                                            <div class="panel-body">
+                                                <ul class="dashboard-stat-list">
+                                                    <?php foreach($hashtagsDataForTheLast7Days as $ht):?>
+                                                        <li>
+                                                            <?php echo $ht["rank"] ?>. <b>#<?php echo $ht["hashtag_name"] ?></b>&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;<?php echo number_format($ht["publish_cnt"]) ?> пъти е използван
+                                                        </li>
+                                                    <?php endforeach;?>
+                                                </ul>
                                             </div>
                                         </div>
-                                        <div class="panel panel-primary">
-                                            <div class="panel-heading" role="tab" id="headingTwo_2">
-                                                <h4 class="panel-title">
-                                                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion_2" href="#collapseTwo_2" aria-expanded="false" aria-controls="collapseTwo_2" id="hashtagsForTheLast120Days">
-                                                        ЗА ПОСЛЕДНИТЕ 120 ДНИ <i class="material-icons">keyboard_arrow_down</i>
-                                                    </a>
-                                                </h4>
-                                            </div>
-                                            <div id="collapseTwo_2" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo_2">
-                                                <div class="panel-body">
-                                                    <ul class="dashboard-stat-list">
-                                                        <?php foreach($hashtagsDataForTheLast120Days as $ht):?>
-                                                            <li>
-                                                                <?php echo $ht["rank"] ?>. <b>#<?php echo $ht["hashtag_name"] ?></b>&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;<?php echo number_format($ht["publish_cnt"]) ?> пъти е използван
-                                                            </li>
-                                                        <?php endforeach;?>
-                                                    </ul>
-                                                </div>
+                                    </div>
+                                    <div class="panel panel-primary">
+                                        <div class="panel-heading" role="tab" id="headingTwo_2">
+                                            <h4 class="panel-title">
+                                                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion_2" href="#collapseTwo_2" aria-expanded="false" aria-controls="collapseTwo_2" id="hashtagsForTheLast120Days">
+                                                    ЗА ПОСЛЕДНИТЕ 120 ДНИ <i class="material-icons">keyboard_arrow_down</i>
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id="collapseTwo_2" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo_2">
+                                            <div class="panel-body">
+                                                <ul class="dashboard-stat-list">
+                                                    <?php foreach($hashtagsDataForTheLast120Days as $ht):?>
+                                                        <li>
+                                                            <?php echo $ht["rank"] ?>. <b>#<?php echo $ht["hashtag_name"] ?></b>&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;<?php echo number_format($ht["publish_cnt"]) ?> пъти е използван
+                                                        </li>
+                                                    <?php endforeach;?>
+                                                </ul>
                                             </div>
                                         </div>
-
                                     </div>
 
                                 </div>
+
                             </div>
                         </div>
-
+                    </div>
                 </div>
 
 
