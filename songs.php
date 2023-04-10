@@ -191,6 +191,14 @@
 
     <!-- Cloudflare -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <style>
+        .songsBox{
+            width: 1450px;
+            min-height: 600px;
+            max-width: 85vw;
+        }
+    </style>
 </head>
 
 <body class="theme-purple">
@@ -324,65 +332,73 @@
 
             <?php if($topSongsGlobal != false):?>
                 <!-- Exportable Table -->
-                <div class="row clearfix">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div class="card">
-                            <div class="header">
-                                <h2>
-                                    ТОП 200 TIKTOK ПЕСНИ ГЛОБАЛНО
-                                </h2>
+
+                <div class="col-xs-14 ol-sm-14 col-md-14 col-lg-14">
+                    <div class="panel-group" id="accordion_1" role="tablist" aria-multiselectable="true">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading" role="tab" id="headingOne_1">
+                                <h4 class="panel-title">
+                                    <a role="button" data-toggle="collapse" data-parent="#accordion_1" href="#collapseOne_1" aria-expanded="true" aria-controls="collapseOne_1" class="">
+                                        ТОП 200 TIKTOK ПЕСНИ ГЛОБАЛНО
+                                    </a>
+                                </h4>
                             </div>
-                            <div class="body">
-                                <div class="table-responsive">
-                                    <table class="table table-bordered table-striped table-hover dataTable js-exportable" id="globalDataTable">
-                                        <thead>
-                                            <tr>
-                                                <th>РАНГ</th>
-                                                <th>ПЕСЕН</th>
-                                                <th>АВТОР НА ПЕСЕНТА</th>
-                                                <th>ВИДЕА НАПРАВЕНИ НАСКОРО</th>
-                                                <th>TIKTOK ХАРЕСВАНИЯ</th>
-                                                <th>YOUTUBE ГЛЕДАНИЯ</th>
-                                                <th>SPOTIFY ПОПУЛЯРНОСТ</th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php if($top200SongsGlobal):?>
-                                                <?php foreach($top200SongsGlobal as $st):?>
-                                                    <?php $show = setGrowth($st["song_id"], $db, $selectDate)?>
-                                                    <?php $songData = $db->getDatapointsForSong($st["song_id"], $selectDate); ?>
-                                                    <tr>
-                                                        <th><?php echo $st["rank"]?></th>
-                                                        <th><?php echo $st["song_name"]?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://www.tiktok.com/music/-<?php echo $st["tiktok_platform_id"] ?>" target="_blank"><i class="fa fa-eye" title="Вижте песента в TikTok"></i></a></th>
-                                                        <th><?php echo $st["artist_name"]?></th>
-                                                        <th><?php echo number_format($st["number_of_videos_last_14days"])?></th>
-                                                        <th><?php echo number_format($st["total_likes_count"])?></th>
-                                                        <th><?php if($st["youtube_platform_id"] != null):?><?php echo number_format($st["youtube_views"])?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://www.youtube.com/watch?v=<?php echo $st["youtube_platform_id"] ?>" target="_blank"><i class="fa fa-eye" title="Вижте песента в YouTube"></i></a><?php endif;?></th>
-                                                        <th><?php if($st["spotify_platform_id"] != null):?><?php echo $st["spotify_popularity"]?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://open.spotify.com/track/<?php echo $st["spotify_platform_id"] ?>" target="_blank"><i class="fa fa-eye" title="Вижте песента в Spotify"></i></a><?php endif;?></th>
-                                                        <th><?php if(count($songData) > 1):?><a href='./songStats.php?sid=<?php echo $st["song_id"]?>' class="btn bg-purple waves-effect"><?php echo $show?></a><?php endif;?></th>
-                                                    </tr>
-                                                <?php endforeach;?>
-                                            <?php endif;?>
-                                        </tbody>
-                                    </table>
+                            <div id="collapseOne_1" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_1" aria-expanded="true">
+                                <div class="body" style="padding:2%">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered table-striped table-hover dataTable js-exportable" id="globalDataTable">
+                                            <thead>
+                                                <tr>
+                                                    <th>РАНГ</th>
+                                                    <th>ПЕСЕН</th>
+                                                    <th>АВТОР НА ПЕСЕНТА</th>
+                                                    <th>ВИДЕА НАПРАВЕНИ НАСКОРО</th>
+                                                    <th>TIKTOK ХАРЕСВАНИЯ</th>
+                                                    <th>YOUTUBE ГЛЕДАНИЯ</th>
+                                                    <th>SPOTIFY ПОПУЛЯРНОСТ</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php if($top200SongsGlobal):?>
+                                                    <?php foreach($top200SongsGlobal as $st):?>
+                                                        <?php $show = setGrowth($st["song_id"], $db, $selectDate)?>
+                                                        <?php $songData = $db->getDatapointsForSong($st["song_id"], $selectDate); ?>
+                                                        <tr>
+                                                            <th><?php echo $st["rank"]?></th>
+                                                            <th><?php echo $st["song_name"]?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://www.tiktok.com/music/-<?php echo $st["tiktok_platform_id"] ?>" target="_blank"><i class="fa fa-eye" title="Вижте песента в TikTok"></i></a></th>
+                                                            <th><?php echo $st["artist_name"]?></th>
+                                                            <th><?php echo number_format($st["number_of_videos_last_14days"])?></th>
+                                                            <th><?php echo number_format($st["total_likes_count"])?></th>
+                                                            <th><?php if($st["youtube_platform_id"] != null):?><?php echo number_format($st["youtube_views"])?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://www.youtube.com/watch?v=<?php echo $st["youtube_platform_id"] ?>" target="_blank"><i class="fa fa-eye" title="Вижте песента в YouTube"></i></a><?php endif;?></th>
+                                                            <th><?php if($st["spotify_platform_id"] != null):?><?php echo $st["spotify_popularity"]?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://open.spotify.com/track/<?php echo $st["spotify_platform_id"] ?>" target="_blank"><i class="fa fa-eye" title="Вижте песента в Spotify"></i></a><?php endif;?></th>
+                                                            <th><?php if(count($songData) > 1):?><a href='./songStats.php?sid=<?php echo $st["song_id"]?>' class="btn bg-purple waves-effect"><?php echo $show?></a><?php endif;?></th>
+                                                        </tr>
+                                                    <?php endforeach;?>
+                                                <?php endif;?>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        
                     </div>
                 </div>
                 <!-- #END# Exportable Table -->
 
-                <div class="row clearfix">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div class="card">
-                        <div class="header">
-                                <h2>
+                <div class="col-xs-14 ol-sm-14 col-md-14 col-lg-14">
+                    <div class="panel-group" id="accordion_2" role="tablist" aria-multiselectable="true">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading" role="tab" id="headingOne_2">
+                                <h4 class="panel-title">
+                                    <a role="button" data-toggle="collapse" data-parent="#accordion_2" href="#collapseOne_2" aria-expanded="true" aria-controls="collapseOne_2" class="">
                                     СРАВНЕНИЕ МЕЖДУ ПЪРВИТЕ 10 ПЕСНИ
-                                </h2>
+                                    </a>
+                                </h4>
                             </div>
-                            <div class="body">
-                                <div class="body">
+                            <div id="collapseOne_2" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_2" aria-expanded="true">
+                                <div class="body songsBox" style="padding:1%">
                                     <canvas id="barChartGlobal"></canvas>
                                 </div>
                             </div>
@@ -467,11 +483,12 @@
             data: dataGlobal,
             options: {
                 indexAxis: 'y',
-                    scales: {
+                scales: {
                     y: {
                         beginAtZero: true
                     }
-                }
+                },
+                maintainAspectRatio: false
             }
         };
 

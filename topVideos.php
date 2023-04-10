@@ -197,30 +197,33 @@
 
             <?php if($topvideos != false):?>
                 <!-- Second Exportable table -->
-                <div class="row clearfix">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div class="card">
-                            <div class="header">
-                                <h2>
-                                    ТОП 200 НАЙ-ГЛЕДАНИ ВИДЕА В TIKTOK
-                                </h2>
+                <div class="col-xs-14 ol-sm-14 col-md-14 col-lg-14">
+                    <div class="panel-group" id="accordion_1" role="tablist" aria-multiselectable="true">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading" role="tab" id="headingOne_1">
+                                <h4 class="panel-title">
+                                    <a role="button" data-toggle="collapse" data-parent="#accordion_1" href="#collapseOne_1" aria-expanded="true" aria-controls="collapseOne_1" class="">
+                                        ТОП 200 TIKTOK ПЕСНИ В TIKTOK
+                                    </a>
+                                </h4>
                             </div>
-                            <div class="body">
-                                <div class="table-responsive">
-                                    <table class="table table-bordered table-striped table-hover dataTable js-exportable">
-                                        <thead>
-                                            <tr>
-                                                <th>РАНГ</th>
-                                                <th>ЛИНК КЪМ ВИДЕО В TIKTOK</th>
-                                                <th>ГЛЕДАНИЯ</th>
-                                                <th>ХАРЕСВАНИЯ</th>
-                                                <th>СПОДЕЛЯНИЯ</th>
-                                                <th>ПЕСЕН НА КОЯТО Е НАПРАВЕНО ВИДЕОТО</th>
-                                                <th>СЪЗДАТЕЛ НА ВИДЕОТО</th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
+                            <div id="collapseOne_1" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_1" aria-expanded="true">
+                                <div class="body" style="padding:2%">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered table-striped table-hover dataTable js-exportable" id="globalDataTable">
+                                            <thead>
+                                                <tr>
+                                                    <th>РАНГ</th>
+                                                    <th>ЛИНК КЪМ ВИДЕО В TIKTOK</th>
+                                                    <th>ГЛЕДАНИЯ</th>
+                                                    <th>ХАРЕСВАНИЯ</th>
+                                                    <th>СПОДЕЛЯНИЯ</th>
+                                                    <th>ПЕСЕН НА КОЯТО Е НАПРАВЕНО ВИДЕОТО</th>
+                                                    <th>СЪЗДАТЕЛ НА ВИДЕОТО</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
                                             <?php if($topvideos):?>
                                                 <?php foreach($topvideos as $st):?>
                                                     <tr onClick="window.location.href=`./videoStats.php?vid=<?php echo $st["user_id"]?>`">
@@ -267,7 +270,7 @@
 
         </div>
         <!-- Footer -->
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="col-xs-14 col-sm-14 col-md-14 col-lg-14">
             <div class="card">
                 <div class="body">
                     

@@ -126,6 +126,13 @@ foreach($songsWithDays as $songId => $days){
     <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
     <link href="css/themes/all-themes.css" rel="stylesheet">
     
+    <style>
+        .hashtagsBox{
+            width: 503.5px;
+            min-height: 200px;
+            max-width: 93vw;
+        }
+    </style>
 </head>
 <body class="theme-purple ls-closed">
     <!-- Overlay For Sidebars -->
@@ -444,7 +451,7 @@ foreach($songsWithDays as $songId => $days){
                 </div>
 
 
-                <div class="col-xs-4 ol-sm-4 col-md-4 col-lg-4">
+                <div class="col-xs-4 ol-sm-4 col-md-4 col-lg-4 hashtagsBox">
                     <div class="panel-group" id="accordion_3" role="tablist" aria-multiselectable="true">
 
                         <div class="panel panel-primary">
@@ -458,7 +465,7 @@ foreach($songsWithDays as $songId => $days){
                             <div id="collapseOne_3" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_3" aria-expanded="true">
                                 <div class="panel-body">
                                     <div class="body">
-                                        <canvas id="barChartGlobal"></canvas>
+                                        <canvas id="hashtagsChart"></canvas>
                                     </div>
                                 </div>
                             </div>
@@ -532,16 +539,17 @@ foreach($songsWithDays as $songId => $days){
             data: dataGlobal,
             options: {
                     scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
+                        y: {
+                            beginAtZero: true
+                        }
+                    },
+                    maintainAspectRatio: false
             }
         };
 
         // слагаме статистиката в html елемента
         const myChartGlobal = new Chart(
-            document.getElementById('barChartGlobal'),
+            document.getElementById('hashtagsChart'),
             configGlobal
         );
 

@@ -37,11 +37,11 @@
 
         $message = "";
 
-        $message .= "Имейл от: " . $name . "<br />";
-        $message .= "Имейл адрес: " . $email . "<br />";
-        $message .= "Съобщение: <br />";
+        $message .= "Имейл от: " . $name ;
+        $message .= "Имейл адрес: " . $email;
+        $message .= "Съобщение: ";
         $message .= $contact_message;
-        $message .= "<br /> ----- <br /> Този имейл беше изпратен от сайта 'TikFluence - ПГИ - гр.Перник '. <br />";
+        $message .= "Този имейл беше изпратен от сайта 'TikFluence - ПГИ - гр.Перник '";
 
 
         $from =  $name . " <" . $email . ">";
@@ -233,17 +233,21 @@
                 </div>    
 
                 <!-- Blockquotes -->
-                <div class="row clearfix">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div class="card">
-                            <div class="header">
-                                <h1>Свържете се с нас:</h1>
-                                <h3 style="color:green;"><?php echo $errorMessage != "" ? $errorMessage : "" ?></h3>
-                                <br>
-                                <br>
+
+                <div class="col-xs-14 ol-sm-14 col-md-14 col-lg-14">
+                    <div class="panel-group" id="accordion_1" role="tablist" aria-multiselectable="true">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading" role="tab" id="headingOne_1">
+                                <h4 class="panel-title">
+                                    <a role="button" data-toggle="collapse" data-parent="#accordion_1" href="#collapseOne_1" aria-expanded="true" aria-controls="collapseOne_1" class="">
+                                        Свържете се с нас <i class="material-icons">keyboard_arrow_down</i>
+                                    </a>
+                                </h4>
                             </div>
-                            <div class="body">
-                                <!-- contact -->
+                            <div id="collapseOne_1" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_1" aria-expanded="true">
+                                <div class="body" style="padding:1%">
+                                    <h3 style="color:green;"><?php echo $errorMessage != "" ? $errorMessage : "" ?></h3>
+                                    <!-- contact -->
                                     <div class="container py-lg-5 py-md-5 py-sm-4 py-3">
                                         <div class="row">
                                             <div class="col-lg-7 col-md-7">
@@ -269,50 +273,63 @@
                                             </div>
                                         </div>
                                     </div>
-                                <!--//contact -->
-                                
+                                    <!--//contact -->
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
                 <!-- #END# Blockquotes -->
                 
                 <!-- Body Copy -->
-                <div class="row clearfix">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div class="card">
-                            <div class="header">
-                                <h1>
-                                    Информация за нас
-                                </h1>
+
+                <div class="col-xs-14 ol-sm-14 col-md-14 col-lg-14">
+                    <div class="panel-group" id="accordion_2" role="tablist" aria-multiselectable="true">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading" role="tab" id="headingOne_2">
+                                <h4 class="panel-title">
+                                    <a role="button" data-toggle="collapse" data-parent="#accordion_2" href="#collapseOne_2" aria-expanded="true" aria-controls="collapseOne_2" class="">
+                                        Информация за нас <i class="material-icons">keyboard_arrow_down</i>
+                                    </a>
+                                </h4>
                             </div>
-                            <div class="body" style="font-size:18px;">
-                                <p>
-                                    Ние сме ученици от Vlllб и IXб клас на Професионална гимназия по икономика - гр.Перник. Специалност - Икономическа информатика. 
-                                </p>
-                                <p>
-                                    Калоян Костадинов се погрижи за софтуера, а Николай Георгиев за дизайна.
-                                </p>
+                            <div id="collapseOne_2" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne_2" aria-expanded="true">
+                                <div class="body" style="padding:1%;font-size:18px;">
+                                    <p>
+                                        Ние сме ученици от Vlllб и IXб клас на Професионална гимназия по икономика - гр.Перник. Специалност - Икономическа информатика. 
+                                    </p>
+                                    <p>
+                                        Калоян Костадинов се погрижи за софтуера, а Николай Георгиев за дизайна.
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
                 <!-- #END# Body Copy -->
                 <!-- Body Copy -->
-                <div class="row clearfix">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div class="card">
-                            <div class="header">
-                                <h1>
-                                    Адрес: 2302, гр. Перник, ул. Г. Мамарчев 2 - ПГИ Перник 
-                                </h1>
+
+                <div class="col-xs-14 ol-sm-14 col-md-14 col-lg-14">
+                    <div class="panel-group" id="accordion_3" role="tablist" aria-multiselectable="true">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading" role="tab" id="headingOne_3">
+                                <h4 class="panel-title">
+                                    <a role="button" data-toggle="collapse" data-parent="#accordion_1" href="#collapseOne_3" aria-expanded="true" aria-controls="collapseOne_3" class="">
+                                        Адрес: 2302, гр. Перник, ул. Г. Мамарчев 2 - ПГИ Перник <i class="material-icons">keyboard_arrow_down</i>
+                                    </a>
+                                </h4>
                             </div>
-                            <div class="body">
-                                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1234.6835304503172!2d23.048159630807987!3d42.60646545927766!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14aacadf4ba43b73%3A0x28028560258f88be!2sProfesionalna%20Gimnaziya%20PO%20Ikonomika!5e0!3m2!1sen!2sbg!4v1676395658037!5m2!1sen!2sbg" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                            <div id="collapseOne_3" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne_3" aria-expanded="true">
+                                <div class="body" style="padding:1%">
+                                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1234.6835304503172!2d23.048159630807987!3d42.60646545927766!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14aacadf4ba43b73%3A0x28028560258f88be!2sProfesionalna%20Gimnaziya%20PO%20Ikonomika!5e0!3m2!1sen!2sbg!4v1676395658037!5m2!1sen!2sbg" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
                 <!-- #END# Body Copy -->
  
             </div>

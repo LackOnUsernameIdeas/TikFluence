@@ -75,6 +75,14 @@
     
     <!-- Cloudflare -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <style>
+        .tiktokersBox{
+            width: 1450px;
+            min-height: 600px;
+            max-width: 85vw;
+        }
+    </style>
 </head>
 
 <body class="theme-purple">
@@ -208,61 +216,68 @@
 
             <?php if($tiktokers != false):?>
                 <!-- Second Exportable table -->
-                <div class="row clearfix">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div class="card">
-                            <div class="header">
-                                <h2>
-                                    ТОП 200 НАЙ-ИЗВЕСТНИ ТИКТОКЪРИ
-                                </h2>
+                <div class="col-xs-14 ol-sm-14 col-md-14 col-lg-14">
+                    <div class="panel-group" id="accordion_1" role="tablist" aria-multiselectable="true">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading" role="tab" id="headingOne_1">
+                                <h4 class="panel-title">
+                                    <a role="button" data-toggle="collapse" data-parent="#accordion_1" href="#collapseOne_1" aria-expanded="true" aria-controls="collapseOne_1" class="">
+                                        ТОП 200 НАЙ-ИЗВЕСТНИ ТИКТОКЪРИ
+                                    </a>
+                                </h4>
                             </div>
-                            <div class="body">
-                                <div class="table-responsive">
-                                    <table class="table table-bordered table-striped table-hover dataTable js-exportable">
-                                        <thead>
-                                            <tr>
-                                                <th>РАНГ</th>
-                                                <th>ПРОФИЛНА СНИМКА</th>
-                                                <th>ТИКТОКЪР</th>
-                                                <th>ИМЕ В ТИКТОК</th>
-                                                <th>ПОСЛЕДОВАТЕЛИ ОБЩО</th>
-                                                <th>ПОСЛЕДОВАТЕЛИ ОТ ТАЗИ ГОДИНА</th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php if($tiktokers):?>
-                                                <?php foreach($tiktokers as $st):?>
-                                                    <tr onClick="window.location.href=`./tiktoker.php?tid=<?php echo $st["given_id"]?>`">
-                                                        <th><?php echo $st["rank"]?></th>
-                                                        <th><?php if($st["thumbnail"]):?><img src="<?php echo $st["thumbnail"]?>" alt="Prof pic" width="42" height="42" style="vertical-align:bottom"><?php endif;?></th>
-                                                        <th><?php echo $st["tiktoker"]?></th>
-                                                        <th><?php echo $st["platform_name"]?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://www.tiktok.com/@<?php echo $st["platform_name"] ?>" target="_blank"><i class="fa fa-eye" title="Вижте песента в TikTok"></i></a></th>
-                                                        <th><?php echo number_format($st["followers_count"])?></th>
-                                                        <th><?php echo number_format($st["followers_this_year"])?></th>
-                                                        <th><a href='./tiktoker.php?tid=<?php echo $st["given_id"]?>' class="btn bg-purple waves-effect">Вижте повече</a></th>
-                                                    </tr>
-                                                <?php endforeach;?>
-                                            <?php endif;?>
-                                        </tbody>
-                                    </table>
+                            <div id="collapseOne_1" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_1" aria-expanded="true">
+                                <div class="body" style="padding:2%">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered table-striped table-hover dataTable js-exportable" id="globalDataTable">
+                                            <thead>
+                                                <tr>
+                                                    <th>РАНГ</th>
+                                                    <th>ПРОФИЛНА СНИМКА</th>
+                                                    <th>ТИКТОКЪР</th>
+                                                    <th>ИМЕ В ТИКТОК</th>
+                                                    <th>ПОСЛЕДОВАТЕЛИ ОБЩО</th>
+                                                    <th>ПОСЛЕДОВАТЕЛИ ОТ ТАЗИ ГОДИНА</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php if($tiktokers):?>
+                                                    <?php foreach($tiktokers as $st):?>
+                                                        <tr onClick="window.location.href=`./tiktoker.php?tid=<?php echo $st["given_id"]?>`">
+                                                            <th><?php echo $st["rank"]?></th>
+                                                            <th><?php if($st["thumbnail"]):?><img src="<?php echo $st["thumbnail"]?>" alt="Prof pic" width="42" height="42" style="vertical-align:bottom"><?php endif;?></th>
+                                                            <th><?php echo $st["tiktoker"]?></th>
+                                                            <th><?php echo $st["platform_name"]?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://www.tiktok.com/@<?php echo $st["platform_name"] ?>" target="_blank"><i class="fa fa-eye" title="Вижте песента в TikTok"></i></a></th>
+                                                            <th><?php echo number_format($st["followers_count"])?></th>
+                                                            <th><?php echo number_format($st["followers_this_year"])?></th>
+                                                            <th><a href='./tiktoker.php?tid=<?php echo $st["given_id"]?>' class="btn bg-purple waves-effect">Вижте повече</a></th>
+                                                        </tr>
+                                                    <?php endforeach;?>
+                                                <?php endif;?>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        
                     </div>
                 </div>
                 <!-- #END# Second Exportable table -->
 
-                <div class="row clearfix">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div class="card">
-                            <div class="header">
-                                <h2>
+                <div class="col-xs-14 ol-sm-14 col-md-14 col-lg-14">
+                    <div class="panel-group" id="accordion_2" role="tablist" aria-multiselectable="true">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading" role="tab" id="headingOne_2">
+                                <h4 class="panel-title">
+                                    <a role="button" data-toggle="collapse" data-parent="#accordion_2" href="#collapseOne_2" aria-expanded="true" aria-controls="collapseOne_2" class="">
                                     СРАВНЕНИЕ МЕЖДУ ПЪРВИТЕ 10 ТИКТОКЪРА
-                                </h2>
+                                    </a>
+                                </h4>
                             </div>
-                            <div class="body">
-                                <div class="content">
+                            <div id="collapseOne_2" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_2" aria-expanded="true">
+                                <div class="body tiktokersBox" style="padding:1%">
                                     <canvas id="barChart"></canvas>
                                 </div>
                             </div>
@@ -345,11 +360,12 @@
             data: data,
             options: {
                 indexAxis: 'y',
-                    scales: {
+                scales: {
                     y: {
                         beginAtZero: true
                     }
-                }
+                },
+                maintainAspectRatio: false
             }
         };
 

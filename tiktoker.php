@@ -80,26 +80,17 @@
 
     <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
     <link href="./css/themes/all-themes.css" rel="stylesheet" />
+
+    <style>
+        .tiktokerBox{
+            width: 1450px;
+            min-height: 600px;
+            max-width: 85vw;
+        }
+    </style>
 </head>
 
 <body class="theme-purple">
-    <!-- Page Loader -->
-    <div class="page-loader-wrapper">
-        <div class="loader">
-            <div class="preloader">
-                <div class="spinner-layer pl-red">
-                    <div class="circle-clipper left">
-                        <div class="circle"></div>
-                    </div>
-                    <div class="circle-clipper right">
-                        <div class="circle"></div>
-                    </div>
-                </div>
-            </div>
-            <p>Моля изчакайте..</p>
-        </div>
-    </div>
-    <!-- #END# Page Loader -->
     <!-- Overlay For Sidebars -->
     <div class="overlay"></div>
     <!-- #END# Overlay For Sidebars -->
@@ -294,35 +285,44 @@
             </div>
         </div>
 
-        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-            <div class="card">
-                <div class="header">
-                    <h2>
-                        ИЗМЕНЕНИЕ НА ПОСЛЕДОВАТЕЛИТЕ
-                    </h2>
-                </div>
-                <div class="body">
-                    <div class="content">
-                        <canvas id="FollowersChart"></canvas>
+        <div class="col-xs-12 ol-sm-12 col-md-12 col-lg-12">
+            <div class="panel-group" id="accordion_1" role="tablist" aria-multiselectable="true">
+                <div class="panel panel-primary">
+                    <div class="panel-heading" role="tab" id="headingOne_1">
+                        <h4 class="panel-title">
+                            <a role="button" data-toggle="collapse" data-parent="#accordion_1" href="#collapseOne_1" aria-expanded="true" aria-controls="collapseOne_1" class="">
+                            ИЗМЕНЕНИЕ НА ПОСЛЕДОВАТЕЛИТЕ
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseOne_1" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_1" aria-expanded="true">
+                        <div class="body tiktokerBox" style="padding:1%">
+                            <canvas id="FollowersChart"></canvas>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-            <div class="card">
-                <div class="header">
-                    <h2>
-                        ИЗМЕНЕНИЕ НА ПОСЛЕДОВАТЕЛИТЕ ОТ <?php echo date("Y") ?>
-                    </h2>
-                </div>
-                <div class="body">
-                    <div class="content">
-                        <canvas id="FollowersThisYearChart"></canvas>
+        <div class="col-xs-12 ol-sm-12 col-md-12 col-lg-12">
+            <div class="panel-group" id="accordion_2" role="tablist" aria-multiselectable="true">
+                <div class="panel panel-primary">
+                    <div class="panel-heading" role="tab" id="headingOne_2">
+                        <h4 class="panel-title">
+                            <a role="button" data-toggle="collapse" data-parent="#accordion_2" href="#collapseOne_2" aria-expanded="true" aria-controls="collapseOne_2" class="">
+                            ИЗМЕНЕНИЕ НА ПОСЛЕДОВАТЕЛИТЕ ОТ <?php echo date("Y") ?>
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseOne_2" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_2" aria-expanded="true">
+                        <div class="body tiktokerBox" style="padding:1%">
+                            <canvas id="FollowersThisYearChart"></canvas>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+            </div>
+
 
         <!-- Footer -->
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -372,7 +372,8 @@
                             display: true,
                             position: "left"
                         }
-                    }
+                    },
+                maintainAspectRatio: false
                 }
             });
 
@@ -399,7 +400,8 @@
                             display: true,
                             position: "left"
                         }
-                    }
+                    },
+                maintainAspectRatio: false
                 }
             });
     </script>
