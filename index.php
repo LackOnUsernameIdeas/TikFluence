@@ -322,62 +322,55 @@ foreach($songsWithDays as $songId => $days){
             </div>
 
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8">
-                <div class="card">
-                    <div class="header">
-                        <h2>
-                            TikFluence засече тези най-повлияни от TikTok песни
-                        </h2>
-                    </div>
-                    <div class="body">
-                        <div class="row clearfix">
-                            <div class="col-xs-12 ol-sm-12 col-md-12 col-lg-12">
-                                <div class="panel-group" id="accordion_1" role="tablist" aria-multiselectable="true">
-                                    <div class="panel panel-primary">
-                                        <div class="panel-heading" role="tab" id="headingOne_1">
-                                            <h4 class="panel-title">
-                                                <a role="button" data-toggle="collapse" data-parent="#accordion_1" href="#collapseOne_1" aria-expanded="false" aria-controls="collapseOne_1" class="collapsed">
-                                                    ПОНАСТОЯЩЕМ <i class="material-icons">keyboard_arrow_down</i>
-                                                </a>
-                                            </h4>
-                                        </div>
-                                        <div id="collapseOne_1" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_1">
-                                            <div class="panel-body">
-                                                <div class="table-responsive">
-                                                    <table class="table table-hover dashboard-task-infos" style="font-size:14px;">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>Ранг</th>
-                                                                <th>Песен</th>
-                                                                <th>Артист</th>
-                                                                <th>Дата на пик в TikTok</th>
-                                                                <th>Дата на пик в Spotify</th>
-                                                                <th>Разлика в пийковете</th>
-                                                                <th>Дата на повлияване</th>
-                                                                <th>Повлияване</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <?php $iteration = 0;?>
-                                                            <?php foreach($influencedSongs as $song):?>
-                                                                <?php $iteration++?>
-                                                                <?php if($iteration == 11):?>
-                                                                    <?php break;?>
-                                                                <?php endif;?>
+                <div class="body">
+                    <div class="row clearfix">
+                        <div class="col-xs-12 ol-sm-12 col-md-12 col-lg-12">
+                            <div class="panel-group" id="accordion_1" role="tablist" aria-multiselectable="true">
+                                <div class="panel panel-primary">
+                                    <div class="panel-heading" role="tab" id="headingOne_1">
+                                        <h4 class="panel-title">
+                                            <a role="button" data-toggle="collapse" data-parent="#accordion_1" href="#collapseOne_1" aria-expanded="false" aria-controls="collapseOne_1" class="collapsed">
+                                                TikFluence засече тези песни за най-повлияни от TikTok
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapseOne_1" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_1">
+                                        <div class="panel-body">
+                                            <div class="table-responsive">
+                                                <table class="table table-hover dashboard-task-infos" style="font-size:14px;">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Ранг</th>
+                                                            <th>Песен</th>
+                                                            <th>Артист</th>
+                                                            <th>Дата на пик в TikTok</th>
+                                                            <th>Дата на пик в Spotify</th>
+                                                            <th>Разлика в пийковете</th>
+                                                            <th>Дата на повлияване</th>
+                                                            <th>Повлияване</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <?php $iteration = 0;?>
+                                                        <?php foreach($influencedSongs as $song):?>
+                                                            <?php $iteration++?>
+                                                            <?php if($iteration == 11):?>
+                                                                <?php break;?>
+                                                            <?php endif;?>
 
-                                                                <tr onClick="window.location.href=`./influencedSong.php?sid=<?= $song["song_id"] ?>`">
-                                                                    <td><?= $iteration?></td>
-                                                                    <td><?= $song["song_name"] ?></td>
-                                                                    <td><?= $song["artist_name"] ?></td>
-                                                                    <th><?= $song["tiktok_peak_date"] ?></th>
-                                                                    <th><?= $song["spotify_peak_date"] ?></th>
-                                                                    <th><?= $song["peaks_difference"] ?></th>
-                                                                    <th><?= $song["report_date"] ?></th>
-                                                                    <td><a href='./influencedSong.php?sid=<?= $song["song_id"] ?>' class="btn bg-purple waves-effect" style="font-size:14px;">Вижте повече</a></td>
-                                                                </tr>
-                                                            <?php endforeach;?>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
+                                                            <tr onClick="window.location.href=`./influencedSong.php?sid=<?= $song["song_id"] ?>`">
+                                                                <td><?= $iteration?></td>
+                                                                <td><?= $song["song_name"] ?></td>
+                                                                <td><?= $song["artist_name"] ?></td>
+                                                                <th><?= $song["tiktok_peak_date"] ?></th>
+                                                                <th><?= $song["spotify_peak_date"] ?></th>
+                                                                <th><?= $song["peaks_difference"] ?></th>
+                                                                <th><?= $song["report_date"] ?></th>
+                                                                <td><a href='./influencedSong.php?sid=<?= $song["song_id"] ?>' class="btn bg-purple waves-effect" style="font-size:14px;">Вижте повече</a></td>
+                                                            </tr>
+                                                        <?php endforeach;?>
+                                                    </tbody>
+                                                </table>
                                             </div>
                                         </div>
                                     </div>
@@ -389,13 +382,14 @@ foreach($songsWithDays as $songId => $days){
             </div>
 
             <?php if($hashtagsDataForTheLast7Days != false && $hashtagsDataForTheLast120Days != false): ?>
-                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
                     <div class="card">
-                        <div class="header">
-                            <h2>
-                                НАЙ-ИЗПОЛЗВАНИТЕ ХАШТАГОВЕ
-                            </h2>
+                        <div class="body bg-purple">
+                            НАЙ-ИЗПОЛЗВАНИТЕ ХАШТАГОВЕ:
                         </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                         <div class="body">
                             <div class="row clearfix">
                                 <div class="col-xs-12 ol-sm-12 col-md-12 col-lg-12">
@@ -447,16 +441,30 @@ foreach($songsWithDays as $songId => $days){
                                 </div>
                             </div>
                         </div>
-                    </div>
+
                 </div>
-                
-                <div class="row clearfix">
-                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                        <div class="card">
-                            <div class="body">
-                                <canvas id="barChartGlobal"></canvas>
+
+
+                <div class="col-xs-4 ol-sm-4 col-md-4 col-lg-4">
+                    <div class="panel-group" id="accordion_3" role="tablist" aria-multiselectable="true">
+
+                        <div class="panel panel-primary">
+                            <div class="panel-heading" role="tab" id="headingOne_3">
+                                <h4 class="panel-title">
+                                    <a role="button" data-toggle="collapse" data-parent="#accordion_3" href="#collapseOne_3" aria-expanded="true" aria-controls="collapseOne_3" class="">
+                                        Диаграма за сравнение
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseOne_3" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_3" aria-expanded="true">
+                                <div class="panel-body">
+                                    <div class="body">
+                                        <canvas id="barChartGlobal"></canvas>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
             <?php endif;?>
