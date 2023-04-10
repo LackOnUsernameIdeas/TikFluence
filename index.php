@@ -100,6 +100,8 @@ foreach($songsWithDays as $songId => $days){
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <meta name="description" content="Запознайте се с ефекта на повлияване на TikTok и вижте вашите собствени статистики чрез нашето интерактивно приложение!">
+    <meta name="keywords" content="influence, songs, tiktok, charts, statistics, повлияване, песни, статистики, диаграми">
     <meta name="google-site-verification" content="tQMYDP8q6UH_zU17EdVY3_8xQa5TZRTC2dCCShMYYgg" />
     <title>НАЧАЛО</title>
     <!-- Favicon-->
