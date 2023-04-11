@@ -353,6 +353,7 @@
                                     <h2>ВИЕ СЕ НАМИРАТЕ В:</h2>
                                     <ol class="breadcrumb breadcrumb-col-black">
                                         <li onclick="window.location.href='./index.php'"><a href="javascript:void(0);"><i class="material-icons">home</i>НАЧАЛО</a></li>
+                                        <li onclick="window.location.href='./affectedSongs.php'"><a href="javascript:void(0);"><i class="material-icons">music_note</i>ПОВЛИЯНИ ПЕСНИ</a></li>
                                         <li class="active"><i class="material-icons">music_note</i>ПОВЛИЯВАНЕ НА: <?php echo $songData["song_name"]?> от TikTok</li>
                                     </ol>
                                 </div>
