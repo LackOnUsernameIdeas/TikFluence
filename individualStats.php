@@ -724,7 +724,7 @@
         }
     });
 
-    // let accessToken = JSON.parse('<?php echo json_encode($accessToken) ?>');
+    // let accessToken = JSON.parse('<?php //echo json_encode($accessToken) ?>');
 
     // setInterval(function() {
     //     fetch('https://open.tiktokapis.com/v2/user/info/?fields=follower_count', {
@@ -753,6 +753,46 @@
 
     //     console.log("request sent")
     // }, 5000);
+
+    let accessToken = JSON.parse('<?php echo json_encode($accessToken) ?>');
+
+    function handleTikTokResponse(response) {
+        let date = new Date();
+        let hours = date.getHours();
+        let minutes = date.getMinutes();
+        let seconds = date.getSeconds();
+        let time = hours + "/" + minutes + "/" + seconds;
+        let value = response.data.user.follower_count;
+
+        followersLive.data.labels.push(time);
+        followersLive.data.datasets[0].data.push(value);
+        followersLive.update();
+    }
+
+    function makeJSONPRequest() {
+        const url = 'https://open.tiktokapis.com/V2/user/info';
+        const callbackName = 'handleTikTokResponse';
+        const headers = {
+            'Authorization': `Bearer ${accessToken}`
+    };
+
+    // Create a script tag
+    const script = document.createElement('script');
+
+    // Add the API endpoint and callback function to the script tag
+    script.src = `${url}?fields=follower_count&callback=${callbackName}`;
+
+    // Append the script tag to the document
+    document.body.appendChild(script);
+
+    // Add the headers to the query string
+    const queryString = Object.keys(headers)
+        .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(headers[key])}`)
+        .join('&');
+    script.src += `&${queryString}`;
+    }
+
+    setInterval(makeJSONPRequest, 60000);
 </script>
 
 <!-- Jquery Core Js -->
