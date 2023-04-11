@@ -727,12 +727,12 @@
 
     setInterval(function() {
         fetch('https://fluence-api.noit.eu/realTimeStatisticData', {
-            method: "POST",
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                accessToken: "act.a4ee5183c3ab87db3c67a23d9243efff6vNhalBr6VMK10wFw8fY5LcBziQW!4466"
+                "accessToken": `${accessToken}`
             })
         })
         .then(data => {
@@ -743,7 +743,7 @@
 
                 let time = hours + "/" + minutes + "/" + seconds;
 
-                let value = data.user.follower_count; // assuming the API returns a JSON object with a "value" field
+                let value = data.data.user.follower_count; // assuming the API returns a JSON object with a "value" field
 
                 followersLive.data.labels.push(time);
                 followersLive.data.datasets[0].data.push(value);
