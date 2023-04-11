@@ -724,35 +724,35 @@
         }
     });
 
-    let accessToken = JSON.parse('<?php echo json_encode($accessToken) ?>');
+    // let accessToken = JSON.parse('<?php echo json_encode($accessToken) ?>');
 
-    setInterval(function() {
-        fetch('https://open.tiktokapis.com/v2/user/info/?fields=follower_count', {
-            headers: {
-                'Authorization': `Bearer ${accessToken}`
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-                let date = new Date();
-                let hours = date.getHours();
-                let minutes = date.getMinutes();
-                let seconds = date.getSeconds();
+    // setInterval(function() {
+    //     fetch('https://open.tiktokapis.com/v2/user/info/?fields=follower_count', {
+    //         headers: {
+    //             'Authorization': `Bearer ${accessToken}`
+    //         }
+    //     })
+    //     .then(response => response.json())
+    //     .then(data => {
+    //             let date = new Date();
+    //             let hours = date.getHours();
+    //             let minutes = date.getMinutes();
+    //             let seconds = date.getSeconds();
 
-                let time = hours + "/" + minutes + "/" + seconds;
+    //             let time = hours + "/" + minutes + "/" + seconds;
 
-                let value = data.data.user.follower_count; // assuming the API returns a JSON object with a "value" field
+    //             let value = data.data.user.follower_count; // assuming the API returns a JSON object with a "value" field
 
-                followersLive.data.labels.push(time);
-                followersLive.data.datasets[0].data.push(value);
-                followersLive.update();
-            })
-            .catch(error => {
-            console.error('Error fetching data:', error);
-        });
+    //             followersLive.data.labels.push(time);
+    //             followersLive.data.datasets[0].data.push(value);
+    //             followersLive.update();
+    //         })
+    //         .catch(error => {
+    //         console.error('Error fetching data:', error);
+    //     });
 
-        console.log("request sent")
-    }, 5000);
+    //     console.log("request sent")
+    // }, 5000);
 </script>
 
 <!-- Jquery Core Js -->
