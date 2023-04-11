@@ -11218,8 +11218,8 @@
 				 *      } );
 				 *    } );
 				 */
-				"sSortAscending": ": activate to sort column ascending",
-	
+				"sSortAscending": ": Активирайте за да сортирате тази колона във възходящ ред",
+
 				/**
 				 * ARIA label that is added to the table headers when the column may be
 				 * sorted descending by activing the column (click or return when focused).
@@ -11241,9 +11241,9 @@
 				 *      } );
 				 *    } );
 				 */
-				"sSortDescending": ": activate to sort column descending"
+				"sSortDescending": ": Активирайте за да сортирате тази колона в низходящ ред"
 			},
-	
+
 			/**
 			 * Pagination string used by DataTables for the built-in pagination
 			 * control types.
@@ -11271,9 +11271,9 @@
 				 *      } );
 				 *    } );
 				 */
-				"sFirst": "First",
-	
-	
+				"sFirst": "Първа",
+
+
 				/**
 				 * Text to use when using the 'full_numbers' type of pagination for the
 				 * button to take the user to the last page.
@@ -11294,9 +11294,9 @@
 				 *      } );
 				 *    } );
 				 */
-				"sLast": "Last",
-	
-	
+				"sPrevious": "Предишна",
+
+
 				/**
 				 * Text to use for the 'next' pagination button (to take the user to the
 				 * next page).
@@ -11317,9 +11317,9 @@
 				 *      } );
 				 *    } );
 				 */
-				"sNext": "Next",
-	
-	
+				"sNext": "Следваща",
+
+
 				/**
 				 * Text to use for the 'previous' pagination button (to take the user to
 				 * the previous page).
@@ -11340,9 +11340,9 @@
 				 *      } );
 				 *    } );
 				 */
-				"sPrevious": "Previous"
+				"sPrevious": "Предишна"
 			},
-	
+
 			/**
 			 * This string is shown in preference to `zeroRecords` when the table is
 			 * empty of data (regardless of filtering). Note that this is an optional
@@ -11363,9 +11363,9 @@
 			 *      } );
 			 *    } );
 			 */
-			"sEmptyTable": "No data available in table",
-	
-	
+			"sEmptyTable": "Няма данни за таблицата",
+
+
 			/**
 			 * This string gives information to the end user about the information
 			 * that is current on display on the page. The following tokens can be
@@ -11395,9 +11395,9 @@
 			 *      } );
 			 *    } );
 			 */
-			"sInfo": "Showing _START_ to _END_ of _TOTAL_ entries",
-	
-	
+			"sInfo": "Показване на резултати от _START_ до _END_ от общо _TOTAL_",
+
+
 			/**
 			 * Display information string for when the table is empty. Typically the
 			 * format of this string should match `info`.
@@ -11416,9 +11416,9 @@
 			 *      } );
 			 *    } );
 			 */
-			"sInfoEmpty": "Showing 0 to 0 of 0 entries",
-	
-	
+			"sInfoEmpty": "Показване на резултати от 0 до 0 от общо 0",
+
+
 			/**
 			 * When a user filters the information in a table, this string is appended
 			 * to the information (`info`) to give an idea of how strong the filtering
@@ -11438,9 +11438,9 @@
 			 *      } );
 			 *    } );
 			 */
-			"sInfoFiltered": "(filtered from _MAX_ total entries)",
-	
-	
+			"sInfoFiltered": "(филтрирани от общо _MAX_ резултата)",
+
+
 			/**
 			 * If can be useful to append extra information to the info string at times,
 			 * and this variable does exactly that. This information will be appended to
@@ -11462,8 +11462,8 @@
 			 *    } );
 			 */
 			"sInfoPostFix": "",
-	
-	
+
+
 			/**
 			 * This decimal place operator is a little different from the other
 			 * language options since DataTables doesn't output floating point
@@ -11493,8 +11493,8 @@
 			 *    } );
 			 */
 			"sDecimal": "",
-	
-	
+
+
 			/**
 			 * DataTables has a build in number formatter (`formatNumber`) which is
 			 * used to format large numbers that are used in the table information.
@@ -11516,8 +11516,8 @@
 			 *    } );
 			 */
 			"sThousands": ",",
-	
-	
+
+
 			/**
 			 * Detail the action that will be taken when the drop down menu for the
 			 * pagination length option is changed. The '_MENU_' variable is replaced
@@ -11556,9 +11556,9 @@
 			 *      } );
 			 *    } );
 			 */
-			"sLengthMenu": "Show _MENU_ entries",
-	
-	
+			"sLengthMenu": "Показване на _MENU_ резултата",
+
+
 			/**
 			 * When using Ajax sourced data and during the first draw when DataTables is
 			 * gathering the data, this message is shown in an empty row in the table to
@@ -11580,9 +11580,9 @@
 			 *      } );
 			 *    } );
 			 */
-			"sLoadingRecords": "Loading...",
-	
-	
+			"sLoadingRecords": "Зареждане...",
+
+
 			/**
 			 * Text which is displayed when the table is processing a user action
 			 * (usually a sort command or similar).
@@ -11601,9 +11601,9 @@
 			 *      } );
 			 *    } );
 			 */
-			"sProcessing": "Processing...",
-	
-	
+			"sProcessing": "Обработване...",
+
+
 			/**
 			 * Details the actions that will be taken when the user types into the
 			 * filtering input text box. The variable "_INPUT_", if used in the string,
@@ -11636,9 +11636,9 @@
 			 *      } );
 			 *    } );
 			 */
-			"sSearch": "Search:",
-	
-	
+			"sSearch": "Търсене:",
+
+
 			/**
 			 * Assign a `placeholder` attribute to the search `input` element
 			 *  @type string
@@ -11648,8 +11648,8 @@
 			 *  @name DataTable.defaults.language.searchPlaceholder
 			 */
 			"sSearchPlaceholder": "",
-	
-	
+
+
 			/**
 			 * All of the language information can be stored in a file on the
 			 * server-side, which DataTables will look up if this parameter is passed.
@@ -11673,8 +11673,8 @@
 			 *    } );
 			 */
 			"sUrl": "",
-	
-	
+
+
 			/**
 			 * Text shown inside the table records when the is no information to be
 			 * displayed after filtering. `emptyTable` is shown when there is simply no
@@ -11694,7 +11694,7 @@
 			 *      } );
 			 *    } );
 			 */
-			"sZeroRecords": "No matching records found"
+			"sZeroRecords": "Няма намерени резултати"
 		},
 	
 	
