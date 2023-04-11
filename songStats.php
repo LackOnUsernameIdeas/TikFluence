@@ -372,7 +372,7 @@
 
     <style>
         .songBox{
-            width: 1500px;
+            width: 1480px;
             min-height: 400px;
             max-height: 600px;
             max-width: 85vw;

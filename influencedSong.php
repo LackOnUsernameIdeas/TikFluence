@@ -78,7 +78,7 @@
     
     <style>
         .songBox{
-            width: 1500px;
+            width: 1480px;
             min-height: 400px;
             max-height: 600px;
             max-width: 85vw;
@@ -416,7 +416,7 @@
 
             <div class="row clearfix">
 
-                            <div class="col-xs-12 ol-sm-12 col-md-12 col-lg-12">
+                    <div class="col-xs-12 ol-sm-12 col-md-12 col-lg-12">
                         <div class="panel-group" id="accordion_1" role="tablist" aria-multiselectable="true">
                             <div class="panel panel-primary">
                                 <div class="panel-heading" role="tab" id="headingOne_1">
@@ -427,7 +427,7 @@
                                     </h4>
                                 </div>
                                 <div id="collapseOne_1" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_1" aria-expanded="true">
-                                    <div class="body videoBox" style="padding:1%">
+                                    <div class="body songBox" style="padding:1%">
                                         <canvas id="TikTokGraphChart"></canvas>
                                     </div>
                                 </div>
@@ -435,7 +435,7 @@
                         </div>
                     </div>
 
-                            <div class="col-xs-12 ol-sm-12 col-md-12 col-lg-12">
+                <div class="col-xs-12 ol-sm-12 col-md-12 col-lg-12">
                     <div class="panel-group" id="accordion_2" role="tablist" aria-multiselectable="true">
                         <div class="panel panel-primary">
                             <div class="panel-heading" role="tab" id="headingOne_2">
@@ -446,15 +446,13 @@
                                 </h4>
                             </div>
                             <div id="collapseOne_2" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_2" aria-expanded="true">
-                                <div class="body videoBox" style="padding:1%">
+                                <div class="body songBox" style="padding:1%">
                                     <canvas id="SpotifyGraphChart"></canvas>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
-            </div>
 
                 <!-- Footer -->
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -472,6 +470,7 @@
 
             </div>
 
+            </div>
 
         </div>
     </section>
@@ -533,7 +532,8 @@
                         display: true,
                         position: "left"
                     }
-                }
+                },
+                maintainAspectRatio: false
             }
         });
 

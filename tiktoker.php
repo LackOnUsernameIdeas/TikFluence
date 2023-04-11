@@ -83,7 +83,7 @@
 
     <style>
         .tiktokerBox{
-            width: 1450px;
+            width: 1480px;
             min-height: 600px;
             max-width: 85vw;
         }
