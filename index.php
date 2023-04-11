@@ -23,8 +23,8 @@ foreach($dates as $date){
 $selectDate = isset($_SESSION["setDate"]) && $_SESSION["setDate"] >= '2023-04-05' ? $_SESSION["setDate"] : date("Y-m-d");
 
 //Запазваме данните за най-използваните хаштагове в променливи
-$hashtagsDataForTheLast7Days = $db->getHashtagsForTheLast7Days($selectDate);
-$hashtagsDataForTheLast120Days = $db->getHashtagsForTheLast120Days($selectDate);
+$hashtagsDataForTheLast7Days = $db->getHashtagsForTheLast7Days();
+$hashtagsDataForTheLast120Days = $db->getHashtagsForTheLast120Days();
 
 //Осигуряваме си данни за диаграмите за хаштаговете
 $hashtagsRanks7Days = [];
@@ -264,7 +264,7 @@ foreach($songsWithDays as $songId => $days){
             <!-- #END# Body Copy -->
 
                 <div class="block-header">
-                    <h2>ТОП 3 НА НАЙ-ПОВЛИЯНИТЕ ПЕСНИ ОТ TIKTOK ЗА ДНЕС И ВКЛЮЧЕНИ В ТОП 200 НА ПЛАТФОРМАТА И ТЕХНИТЕ ВИДЕА НАПРАВЕНИ НАСКОРО:</h2>
+                    <h2>ТОП 3 НА НАЙ-ПОВЛИЯНИТЕ ПЕСНИ ОТ TIKTOK ЗА ДНЕС И ВКЛЮЧЕНИ В ТОП 200 НА ПЛАТФОРМАТА:</h2>
                 </div>
                 <!-- Widgets -->
 
@@ -391,7 +391,7 @@ foreach($songsWithDays as $songId => $days){
                 <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
                     <div class="card">
                         <div class="body bg-purple">
-                            НАЙ-ИЗПОЛЗВАНИТЕ ХАШТАГОВЕ:
+                            НАЙ-АКТУАЛНИТЕ ХАШТАГОВЕ:
                         </div>
                     </div>
                 </div>

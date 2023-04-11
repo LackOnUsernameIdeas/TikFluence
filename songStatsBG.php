@@ -95,13 +95,13 @@
 
     $todayYesterdayData = $db->getTodayYesterdayDataBG($sid, $selectDate);
 
-    $ttLastTwoDaysPercents = [];
-    $ttLastTwoDaysNums = [];
+    $ttLastTwoDaysPercents = [0, 0];
+    $ttLastTwoDaysNums = [0, 0];
 
-    $ytLastTwoDaysPercents = [];
-    $ytLastTwoDaysNums = [];
+    $ytLastTwoDaysPercents = [0, 0];
+    $ytLastTwoDaysNums = [0, 0];
 
-    $syLastTwoDays = [];
+    $syLastTwoDays = [0, 0];
 
     foreach($todayYesterdayData as $d){
         $ttLastTwoDaysPercents[] = $d["number_of_videos"];
@@ -115,7 +115,7 @@
 
     // Превръщаме данните за последните 2 дни в проценти и ги запазваме в масиви.
 
-    $todayYesterdayTTDataArray = [];
+    $todayYesterdayTTDataArray = [0, 0];
 
     foreach($ttLastTwoDaysPercents as $TT){
         if($ttLastTwoDaysPercents[0] != null && $ttLastTwoDaysPercents[0] != 0){
@@ -125,7 +125,7 @@
         }
     }
 
-    $todayYesterdayYTDataArray = [];
+    $todayYesterdayYTDataArray = [0, 0];
 
     foreach($ytLastTwoDaysPercents as $YT){
         if($ytLastTwoDaysPercents[0] != null && $ytLastTwoDaysPercents[0] != 0){ 
@@ -135,7 +135,7 @@
         }
     }
 
-    $todayYesterdaySYDataArray = [];
+    $todayYesterdaySYDataArray = [0, 0];
 
     foreach($syLastTwoDays as $SY){
         if($syLastTwoDays[0] != null && $syLastTwoDays[0] != 0){ 
@@ -601,7 +601,7 @@
 
                 <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12" style="min-height:80px">
                     <div class="card">
-                        <div class="body bg-purple" style="font-size:168%;">
+                        <div class="body bg-purple" style="font-size:160%;">
                             Промяна в популярност от <b><?php echo date('Y-m-d', mktime(0, 0, 0, date(substr($selectDate, 5, 2)), (date(substr($selectDate, 8, 2))-1), date(substr($selectDate, 0, 4)) ));?></b>:
                         </div>
                     </div>
@@ -629,7 +629,7 @@
                             </i>
                         </div>
                         <div class="content">
-                            <div class="text">TikTok</div>
+                            <div class="text">TikTok видеа</div>
                             <div class="number"><?php echo number_format($subtractionTTNums) ?></div>
                         </div>
                     </div>
@@ -650,20 +650,20 @@
                     </div>
                 </div>
 
-                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-
-                        <div class="info-box-3 bg-red hover-expand-effect">
-                            <div class="icon">
-                                <i class="material-icons">
-                                    <?php echo $chooseIconYT ?>
-                                </i>
-                            </div>
-                            <div class="content">
-                                <div class="text">YouTube</div>
-                                <div class="number"><?php echo number_format($subtractionYTNums) ?></div>
-                            </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div class="info-box-3 bg-red hover-expand-effect">
+                        <div class="icon">
+                            <i class="material-icons">
+                                <?php echo $chooseIconYT ?>
+                            </i>
+                        </div>
+                        <div class="content">
+                            <div class="text">YouTube</div>
+                            <div class="number"><?php echo number_format($subtractionYTNums) ?></div>
                         </div>
                     </div>
+                </div>
+
                 <?php endif;?>
 
                 <?php if(count($syNulls) != count($syNums)):?>

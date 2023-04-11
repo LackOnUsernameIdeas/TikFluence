@@ -1277,15 +1277,14 @@ class DatabaseManager {
     }
 
     //Взимаме данните за най-използваните хаштагове за последните 7 дни
-    public function getHashtagsForTheLast7Days($date){
+    public function getHashtagsForTheLast7Days(){
         $sql = "SELECT * 
                 FROM `tiktok_hashtags_7days`
-                WHERE DATE(`fetch_date`) = DATE(:date)
+                WHERE DATE(`fetch_date`) = DATE(NOW())
                 ORDER BY `rank`
                 LIMIT 10";
 
         $query = $this->pdo->prepare($sql);
-        $query->bindValue('date', $date);
         $query->execute();
         $result_array = $query->fetchAll(PDO::FETCH_ASSOC);
 
@@ -1295,15 +1294,14 @@ class DatabaseManager {
     }
     
     //Взимаме данните за най-използваните хаштагове за последните 120 дни
-    public function getHashtagsForTheLast120Days($date){
+    public function getHashtagsForTheLast120Days(){
         $sql = "SELECT * 
                 FROM `tiktok_hashtags_120days`
-                WHERE DATE(`fetch_date`) = DATE(:date)
+                WHERE DATE(`fetch_date`) = DATE(NOW())
                 ORDER BY `rank`
                 LIMIT 10";
 
         $query = $this->pdo->prepare($sql);
-        $query->bindValue('date', $date);
 
         $query->execute();
         $result_array = $query->fetchAll(PDO::FETCH_ASSOC);
