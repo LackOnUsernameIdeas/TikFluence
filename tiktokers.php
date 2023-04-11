@@ -79,7 +79,7 @@
     <style>
         .tiktokersBox{
             width: 1450px;
-            min-height: 600px;
+            height: 600px;
             max-width: 85vw;
         }
     </style>
@@ -272,11 +272,11 @@
                             <div class="panel-heading" role="tab" id="headingOne_2">
                                 <h4 class="panel-title">
                                     <a role="button" data-toggle="collapse" data-parent="#accordion_2" href="#collapseOne_2" aria-expanded="true" aria-controls="collapseOne_2" class="">
-                                    СРАВНЕНИЕ МЕЖДУ ПЪРВИТЕ 10 ТИКТОКЪРА
+                                    СРАВНЕНИЕ МЕЖДУ ПЪРВИТЕ 10 ТИКТОКЪРА<i class="material-icons">keyboard_arrow_down</i>
                                     </a>
                                 </h4>
                             </div>
-                            <div id="collapseOne_2" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_2" aria-expanded="true">
+                            <div id="collapseOne_2" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne_2" aria-expanded="true">
                                 <div class="body tiktokersBox" style="padding:1%">
                                     <canvas id="barChart"></canvas>
                                 </div>
