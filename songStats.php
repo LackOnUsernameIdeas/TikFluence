@@ -727,9 +727,9 @@
 
             <div class="row clearfix">
 
-                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12" style="min-height:80px">
+                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12" style="max-height:120px">
                     <div class="card">
-                        <div class="body bg-purple" style="font-size:168%;">
+                        <div class="body bg-purple" style="font-size:160%;">
                             Промяна в популярност от <b><?php echo date('Y-m-d', mktime(0, 0, 0, date(substr($selectDate, 5, 2)), (date(substr($selectDate, 8, 2))-1), date(substr($selectDate, 0, 4)) ));?></b>:
                         </div>
                     </div>
