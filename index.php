@@ -160,7 +160,6 @@ foreach($songsWithDays as $songId => $days){
             <!-- Menu -->
             <div class="menu">
                 <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 584px;"><ul class="list" style="overflow: hidden; width: auto; height: 584px;">
-                    <li class="header">ГЛАВНО МЕНЮ</li>
                     <li class="active">
                         <a href="#" class="toggled waves-effect waves-block">
                             <i class="material-icons">home</i>

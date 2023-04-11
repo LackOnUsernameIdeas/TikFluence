@@ -103,7 +103,6 @@
             <!-- Menu -->
             <div class="menu">
                 <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 584px;"><ul class="list" style="overflow: hidden; width: auto; height: 584px;">
-                    <li class="header">ГЛАВНО МЕНЮ</li>
                     <li>
                         <a href="./index.php" class="toggled waves-effect waves-block">
                             <i class="material-icons">home</i>
@@ -408,37 +407,43 @@
 
             <div class="row clearfix">
 
-
-                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <div class="card">
-                        <div class="header">
-                            <h2>
-                                ИЗМЕНЕНИЕ НА ПОПУЛЯРНОСТ В TIKTOK
-                            </h2>
-                        </div>
-                        <div class="body">
-                            <div class="content">
-                                <canvas id="TikTokGraphChart"></canvas>
+                        <div class="col-xs-12 ol-sm-12 col-md-12 col-lg-12">
+                    <div class="panel-group" id="accordion_1" role="tablist" aria-multiselectable="true">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading" role="tab" id="headingOne_1">
+                                <h4 class="panel-title">
+                                    <a role="button" data-toggle="collapse" data-parent="#accordion_1" href="#collapseOne_1" aria-expanded="true" aria-controls="collapseOne_1" class="">
+                                    ИЗМЕНЕНИЕ НА ПОПУЛЯРНОСТ В TIKTOK<i class="material-icons">keyboard_arrow_down</i>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseOne_1" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_1" aria-expanded="true">
+                                <div class="body videoBox" style="padding:1%">
+                                    <canvas id="TikTokGraphChart"></canvas>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="row clearfix">
-                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                        <div class="card">
-                            <div class="header">
-                                <h2>
-                                    ИЗМЕНЕНИЕ НА ПОПУЛЯРНОСТ В SPOTIFY
-                                </h2>
-                            </div>
-                            <div class="body">
-                                <div class="content">
-                                    <canvas id="SpotifyGraphChart"></canvas>
-                                </div>
+                        <div class="col-xs-12 ol-sm-12 col-md-12 col-lg-12">
+                <div class="panel-group" id="accordion_2" role="tablist" aria-multiselectable="true">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading" role="tab" id="headingOne_2">
+                            <h4 class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordion_2" href="#collapseOne_2" aria-expanded="true" aria-controls="collapseOne_2" class="">
+                                ИЗМЕНЕНИЕ НА ПОПУЛЯРНОСТ В SPOTIFY<i class="material-icons">keyboard_arrow_down</i>
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseOne_2" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_2" aria-expanded="true">
+                            <div class="body videoBox" style="padding:1%">
+                                <canvas id="SpotifyGraphChart"></canvas>
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
 
                 </div>
 
