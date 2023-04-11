@@ -728,6 +728,9 @@
     setInterval(function() {
         fetch('https://fluence-api.noit.eu/realTimeStatisticData', {
             method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
             body: JSON.stringify({
                 'accessToken': `${accessToken}`
             })
