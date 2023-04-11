@@ -75,6 +75,15 @@
 
     <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
     <link href="./css/themes/all-themes.css" rel="stylesheet" />
+    
+    <style>
+        .songBox{
+            width: 1500px;
+            min-height: 400px;
+            max-height: 600px;
+            max-width: 85vw;
+        }
+    </style>
 </head>
 
 <body class="theme-purple">
@@ -407,45 +416,45 @@
 
             <div class="row clearfix">
 
-                        <div class="col-xs-12 ol-sm-12 col-md-12 col-lg-12">
-                    <div class="panel-group" id="accordion_1" role="tablist" aria-multiselectable="true">
+                            <div class="col-xs-12 ol-sm-12 col-md-12 col-lg-12">
+                        <div class="panel-group" id="accordion_1" role="tablist" aria-multiselectable="true">
+                            <div class="panel panel-primary">
+                                <div class="panel-heading" role="tab" id="headingOne_1">
+                                    <h4 class="panel-title">
+                                        <a role="button" data-toggle="collapse" data-parent="#accordion_1" href="#collapseOne_1" aria-expanded="true" aria-controls="collapseOne_1" class="">
+                                        ИЗМЕНЕНИЕ НА ПОПУЛЯРНОСТ В TIKTOK<i class="material-icons">keyboard_arrow_down</i>
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapseOne_1" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_1" aria-expanded="true">
+                                    <div class="body videoBox" style="padding:1%">
+                                        <canvas id="TikTokGraphChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                            <div class="col-xs-12 ol-sm-12 col-md-12 col-lg-12">
+                    <div class="panel-group" id="accordion_2" role="tablist" aria-multiselectable="true">
                         <div class="panel panel-primary">
-                            <div class="panel-heading" role="tab" id="headingOne_1">
+                            <div class="panel-heading" role="tab" id="headingOne_2">
                                 <h4 class="panel-title">
-                                    <a role="button" data-toggle="collapse" data-parent="#accordion_1" href="#collapseOne_1" aria-expanded="true" aria-controls="collapseOne_1" class="">
-                                    ИЗМЕНЕНИЕ НА ПОПУЛЯРНОСТ В TIKTOK<i class="material-icons">keyboard_arrow_down</i>
+                                    <a role="button" data-toggle="collapse" data-parent="#accordion_2" href="#collapseOne_2" aria-expanded="true" aria-controls="collapseOne_2" class="">
+                                    ИЗМЕНЕНИЕ НА ПОПУЛЯРНОСТ В SPOTIFY<i class="material-icons">keyboard_arrow_down</i>
                                     </a>
                                 </h4>
                             </div>
-                            <div id="collapseOne_1" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_1" aria-expanded="true">
+                            <div id="collapseOne_2" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_2" aria-expanded="true">
                                 <div class="body videoBox" style="padding:1%">
-                                    <canvas id="TikTokGraphChart"></canvas>
+                                    <canvas id="SpotifyGraphChart"></canvas>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                        <div class="col-xs-12 ol-sm-12 col-md-12 col-lg-12">
-                <div class="panel-group" id="accordion_2" role="tablist" aria-multiselectable="true">
-                    <div class="panel panel-primary">
-                        <div class="panel-heading" role="tab" id="headingOne_2">
-                            <h4 class="panel-title">
-                                <a role="button" data-toggle="collapse" data-parent="#accordion_2" href="#collapseOne_2" aria-expanded="true" aria-controls="collapseOne_2" class="">
-                                ИЗМЕНЕНИЕ НА ПОПУЛЯРНОСТ В SPOTIFY<i class="material-icons">keyboard_arrow_down</i>
-                                </a>
-                            </h4>
-                        </div>
-                        <div id="collapseOne_2" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_2" aria-expanded="true">
-                            <div class="body videoBox" style="padding:1%">
-                                <canvas id="SpotifyGraphChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
-
-                </div>
 
                 <!-- Footer -->
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -570,7 +579,8 @@
                             display: true,
                             position: "left"
                         }
-                    }
+                    },
+                    maintainAspectRatio: false
                 }
             });
 
