@@ -549,11 +549,11 @@
     event.preventDefault(); // Prevents the link from being followed immediately
 
     // Open the TikTok logout page in a new tab
-    window.open('https://www.tiktok.com/logout?redirect_url=https://fluence.noit.eu/pages/individualStats.php', '_blank');
+    window.open('https://www.tiktok.com/logout?redirect_url=https://fluence.noit.euindividualStats.php', '_blank');
 
-    // Redirect the current tab to https://fluence.noit.eu/pages/individualStats.php after 3 seconds
+    // Redirect the current tab to https://fluence.noit.eu/individualStats.php after 3 seconds
     setTimeout(function() {
-      window.location.href = "https://fluence.noit.eu/pages/individualStats.php";
+      window.location.href = "https://fluence.noit.eu/individualStats.php";
     }, 1000);
   });
 </script>
@@ -729,7 +729,7 @@
         fetch('https://fluence-api.noit.eu/realTimeStatisticData', {
             method: "POST",
             body: JSON.stringify({
-                'accessToken': accessToken
+                'accessToken': `${accessToken}`
             })
         })
         .then(response => response.json())
