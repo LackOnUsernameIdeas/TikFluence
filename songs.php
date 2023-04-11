@@ -339,7 +339,7 @@
                             <div class="panel-heading" role="tab" id="headingOne_1">
                                 <h4 class="panel-title">
                                     <a role="button" data-toggle="collapse" data-parent="#accordion_1" href="#collapseOne_1" aria-expanded="true" aria-controls="collapseOne_1" class="">
-                                        ТОП 200 TIKTOK ПЕСНИ ГЛОБАЛНО
+                                        ТОП 200 TIKTOK ПЕСНИ ГЛОБАЛНО<i class="material-icons">keyboard_arrow_down</i>
                                     </a>
                                 </h4>
                             </div>

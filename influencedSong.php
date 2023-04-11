@@ -104,17 +104,25 @@
             <div class="menu">
                 <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 584px;"><ul class="list" style="overflow: hidden; width: auto; height: 584px;">
                     <li class="header">ГЛАВНО МЕНЮ</li>
-                    <li class="active">
+                    <li>
                         <a href="./index.php" class="toggled waves-effect waves-block">
                             <i class="material-icons">home</i>
                             <span>НАЧАЛО</span>
                         </a>
                     </li>
-                    <li>
+                    <li class="active">
                         <a href="affectedSongs.php" class=" waves-effect waves-block">
                             <i class="material-icons">music_note</i>
                             <span>ПОВЛИЯНИ ПЕСНИ</span>
                         </a>
+                        <ul class="ml-menu">
+                            <li class="active">
+                                <a href="#" class="menu-toggle waves-effect waves-block">
+                                    <i class="material-icons">music_note</i>
+                                    <span>СТАТИСТИКИ ЗА <?php echo $songData["song_name"] ?></span>
+                                </a>
+                            </li>
+                        </ul>
                     </li>
                     <li>
                         <a href="individualStats.php" class=" waves-effect waves-block">

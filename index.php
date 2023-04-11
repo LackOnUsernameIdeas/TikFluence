@@ -337,7 +337,7 @@ foreach($songsWithDays as $songId => $days){
                                     <div class="panel-heading" role="tab" id="headingOne_1">
                                         <h4 class="panel-title">
                                             <a role="button" data-toggle="collapse" data-parent="#accordion_1" href="#collapseOne_1" aria-expanded="false" aria-controls="collapseOne_1" class="collapsed">
-                                                TikFluence засече тези песни за най-повлияни от TikTok
+                                                TikFluence засече тези песни за най-повлияни от TikTok<i class="material-icons">keyboard_arrow_down</i>
                                             </a>
                                         </h4>
                                     </div>
@@ -457,8 +457,8 @@ foreach($songsWithDays as $songId => $days){
                         <div class="panel panel-primary">
                             <div class="panel-heading" role="tab" id="headingOne_3">
                                 <h4 class="panel-title">
-                                    <a role="button" data-toggle="collapse" data-parent="#accordion_3" href="#collapseOne_3" aria-expanded="true" aria-controls="collapseOne_3" class="">
-                                        Диаграма за сравнение
+                                    <a role="button" data-toggle="collapse" data-parent="#accordion_3" href="#collapseOne_3" aria-expanded="true" aria-controls="collapseOne_3" class="" id="hashtagsComparisonChartHeading">
+                                        ПОНАСТОЯЩЕМ<i class="material-icons">keyboard_arrow_down</i>
                                     </a>
                                 </h4>
                             </div>
@@ -556,8 +556,12 @@ foreach($songsWithDays as $songId => $days){
 
     const hashtags7div = document.getElementById('hashtagsForTheLast7Days');
     const hashtags120div = document.getElementById('hashtagsForTheLast120Days');
+    const hashtagsChartHeading = document.getElementById('hashtagsComparisonChartHeading');
 
     hashtags7div.addEventListener('click', () => {
+
+        hashtagsChartHeading.innerHTML = "ПОНАСТОЯЩЕМ" + `<i class="material-icons">keyboard_arrow_down</i>`;
+
         // Update the chart data
         myChartGlobal.data.datasets[0].data = hashtagsUses7Days;
         myChartGlobal.data.labels = hashtagsNames7Days;
@@ -567,6 +571,9 @@ foreach($songsWithDays as $songId => $days){
     });
 
     hashtags120div.addEventListener('click', () => {
+
+        hashtagsChartHeading.innerHTML = "ЗА ПОСЛЕДНИТЕ 120 ДНИ" + `<i class="material-icons">keyboard_arrow_down</i>`;
+
         // Update the chart data
         myChartGlobal.data.datasets[0].data = hashtagsUses120Days;
         myChartGlobal.data.labels = hashtagsNames120Days;

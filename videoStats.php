@@ -294,14 +294,25 @@
             </div>
         </div>
         
-        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-            <div class="card">
-                <div class="body">
-                    <div class="content">
-                        <blockquote class="tiktok-embed" cite="<?php echo $vidUrl ?>" data-video-id="<?php echo substr($vidUrl, -19) ?>" style="max-width: 360px;min-width: 325px;border: 0px; max-height: 585px;"> 
-                            <section></section> 
-                        </blockquote> 
-                        <script async src="https://www.tiktok.com/embed.js"></script>
+        <div class="col-xs-12 ol-sm-12 col-md-12 col-lg-12">
+            <div class="panel-group" id="accordion_4" role="tablist" aria-multiselectable="true">
+                <div class="panel panel-primary">
+                    <div class="panel-heading" role="tab" id="headingOne_4">
+                        <h4 class="panel-title">
+                            <a role="button" data-toggle="collapse" data-parent="#accordion_4" href="#collapseOne_4" aria-expanded="true" aria-controls="collapseOne_4" class="">
+                            ВИДЕОТО:<i class="material-icons">keyboard_arrow_down</i>
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseOne_4" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_4" aria-expanded="true">
+                        <div class="body videoBox" style="padding:1%">
+                            <div class="content">
+                                <blockquote class="tiktok-embed" cite="<?php echo $vidUrl ?>" data-video-id="<?php echo substr($vidUrl, -19) ?>" style="max-width: 360px;min-width: 325px;border: 0px; max-height: 585px;"> 
+                                    <section></section> 
+                                </blockquote> 
+                                <script async src="https://www.tiktok.com/embed.js"></script>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -313,7 +324,7 @@
                     <div class="panel-heading" role="tab" id="headingOne_1">
                         <h4 class="panel-title">
                             <a role="button" data-toggle="collapse" data-parent="#accordion_1" href="#collapseOne_1" aria-expanded="true" aria-controls="collapseOne_1" class="">
-                            ИЗМЕНЕНИЕ НА ГЛЕДАНИЯТА НА ВИДЕОТО
+                            ИЗМЕНЕНИЕ НА ГЛЕДАНИЯТА НА ВИДЕОТО<i class="material-icons">keyboard_arrow_down</i>
                             </a>
                         </h4>
                     </div>
@@ -332,7 +343,7 @@
                     <div class="panel-heading" role="tab" id="headingOne_2">
                         <h4 class="panel-title">
                             <a role="button" data-toggle="collapse" data-parent="#accordion_2" href="#collapseOne_2" aria-expanded="true" aria-controls="collapseOne_2" class="">
-                            ИЗМЕНЕНИЕ НА СПОДЕЛЯНИЯТА НА ВИДЕОТО
+                            ИЗМЕНЕНИЕ НА СПОДЕЛЯНИЯТА НА ВИДЕОТО<i class="material-icons">keyboard_arrow_down</i>
                             </a>
                         </h4>
                     </div>
@@ -351,7 +362,7 @@
                     <div class="panel-heading" role="tab" id="headingOne_3">
                         <h4 class="panel-title">
                             <a role="button" data-toggle="collapse" data-parent="#accordion_3" href="#collapseOne_3" aria-expanded="true" aria-controls="collapseOne_3" class="">
-                            ИЗМЕНЕНИЕ НА ХАРЕСВАНИЯТА НА ВИДЕОТО
+                            ИЗМЕНЕНИЕ НА ХАРЕСВАНИЯТА НА ВИДЕОТО<i class="material-icons">keyboard_arrow_down</i>
                             </a>
                         </h4>
                     </div>
