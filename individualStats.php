@@ -723,75 +723,37 @@
         }
     });
 
-    // let accessToken = JSON.parse('<?php //echo json_encode($accessToken) ?>');
-
-    // setInterval(function() {
-    //     fetch('https://open.tiktokapis.com/v2/user/info/?fields=follower_count', {
-    //         headers: {
-    //             'Authorization': `Bearer ${accessToken}`
-    //         }
-    //     })
-    //     .then(response => response.json())
-    //     .then(data => {
-    //             let date = new Date();
-    //             let hours = date.getHours();
-    //             let minutes = date.getMinutes();
-    //             let seconds = date.getSeconds();
-
-    //             let time = hours + "/" + minutes + "/" + seconds;
-
-    //             let value = data.data.user.follower_count; // assuming the API returns a JSON object with a "value" field
-
-    //             followersLive.data.labels.push(time);
-    //             followersLive.data.datasets[0].data.push(value);
-    //             followersLive.update();
-    //         })
-    //         .catch(error => {
-    //         console.error('Error fetching data:', error);
-    //     });
-
-    //     console.log("request sent")
-    // }, 5000);
-
     let accessToken = JSON.parse('<?php echo json_encode($accessToken) ?>');
 
-    function handleTikTokResponse(response) {
-        let date = new Date();
-        let hours = date.getHours();
-        let minutes = date.getMinutes();
-        let seconds = date.getSeconds();
-        let time = hours + "/" + minutes + "/" + seconds;
-        let value = response.data.user.follower_count;
+    setInterval(function() {
+        fetch('https://fluence-api.noit.eu/realTimeStatisticData', {
+            method: "POST",
+            body: JSON.stringify({
+                'accessToken': accessToken
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+                let date = new Date();
+                let hours = date.getHours();
+                let minutes = date.getMinutes();
+                let seconds = date.getSeconds();
 
-        followersLive.data.labels.push(time);
-        followersLive.data.datasets[0].data.push(value);
-        followersLive.update();
-    }
+                let time = hours + "/" + minutes + "/" + seconds;
 
-    function makeJSONPRequest() {
-        const url = 'https://open.tiktokapis.com/V2/user/info';
-        const callbackName = 'handleTikTokResponse';
-        const headers = {
-            'Authorization': `Bearer ${accessToken}`
-    };
+                let value = data.data.user.follower_count; // assuming the API returns a JSON object with a "value" field
 
-    // Create a script tag
-    const script = document.createElement('script');
+                followersLive.data.labels.push(time);
+                followersLive.data.datasets[0].data.push(value);
+                followersLive.update();
+            })
+            .catch(error => {
+            console.error('Error fetching data:', error);
+        });
 
-    // Add the API endpoint and callback function to the script tag
-    script.src = `${url}?fields=follower_count&callback=${callbackName}`;
+        console.log("request sent")
+    }, 5000);
 
-    // Append the script tag to the document
-    document.body.appendChild(script);
-
-    // Add the headers to the query string
-    const queryString = Object.keys(headers)
-        .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(headers[key])}`)
-        .join('&');
-    script.src += `&${queryString}`;
-    }
-
-    setInterval(makeJSONPRequest, 60000);
 </script>
 
 <!-- Jquery Core Js -->
