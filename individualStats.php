@@ -726,35 +726,33 @@
     let accessToken = JSON.parse('<?php echo json_encode($accessToken) ?>');
 
     setInterval(function() {
-        fetch('https://fluence-api.noit.eu/realTimeStatisticData', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                "accessToken": `${accessToken}`
-            })
-        })
-        .then(data => {
-                let date = new Date();
-                let hours = date.getHours();
-                let minutes = date.getMinutes();
-                let seconds = date.getSeconds();
+    fetch('https://fluence-api.noit.eu/realTimeStatisticData', {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+        'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({"accessToken": `${accessToken}`})
+    })
+    .then(response => response.json())
+    .then(data => {
+        let date = new Date();
+        let hours = date.getHours();
+        let minutes = date.getMinutes();
+        let seconds = date.getSeconds();
 
-                let time = hours + "/" + minutes + "/" + seconds;
+        let time = hours + "/" + minutes + "/" + seconds;
 
-                let value = data.data.user.follower_count; // assuming the API returns a JSON object with a "value" field
+        let value = data.follower_count; // assuming the API returns a JSON object with a "follower_count" field
 
-                followersLive.data.labels.push(time);
-                followersLive.data.datasets[0].data.push(value);
-                followersLive.update();
-            })
-            .catch(error => {
-            console.error('Error fetching data:', error);
-        });
-
-        console.log("request sent")
-    }, 5000);
+        followersLive.data.labels.push(time);
+        followersLive.data.datasets[0].data.push(value);
+        followersLive.update();
+    })
+    .catch(error => {
+        console.error('Error fetching data:', error);
+    });
+    }, 60000);
 
 </script>
 
