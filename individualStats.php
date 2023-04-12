@@ -439,7 +439,7 @@
                                     </div>
                                     <div class="body">
                                         <div class="content">
-                                            <canvas id="FollowersChart"></canvas>
+                                            <canvas id="FollowersRealtimeChart"></canvas>
                                         </div>
                                     </div>
                                 </div>
@@ -454,7 +454,7 @@
                                     </div>
                                     <div class="body">
                                         <div class="content">
-                                            <canvas id="LikesChart"></canvas>
+                                            <canvas id="LikesRealtimeChart"></canvas>
                                         </div>
                                     </div>
                                 </div>
@@ -578,8 +578,8 @@
         let comments = JSON.parse('<?php echo json_encode($comments) ?>');
         let shares = JSON.parse('<?php echo json_encode($shares) ?>');
 
-        let followers = JSON.parse('<?php echo json_encode($userBasicData["follower_count"]) ?>');
-        let likes = JSON.parse('<?php echo json_encode($userBasicData["likes_count"]) ?>');
+        let followersLiveData = JSON.parse('<?php echo json_encode($userBasicData["follower_count"]) ?>');
+        let likesLiveData = JSON.parse('<?php echo json_encode($userBasicData["likes_count"]) ?>');
 
     //Статистика за харесвания
         new Chart(document.getElementById('LikesChart'), {
@@ -697,13 +697,13 @@
 
     let time = hours + ":" + minutes;
 
-    let followersLive = new Chart(document.getElementById("FollowersChart"), {
+    let followersLive = new Chart(document.getElementById("FollowersRealtimeChart"), {
         type: 'line',
         data: {
             labels: [time],  // initial labels array
             datasets: [{
                 label: 'Последователи в реално време',
-                data: [followers],   // initial data array
+                data: [followersLiveData],   // initial data array
                 backgroundColor: 'rgba(159, 90, 253, 0.2)',
                 borderColor: 'rgb(159, 90, 253)',
                 borderWidth: 1
@@ -728,14 +728,15 @@
         }
     });
 
+    //Статистика за харесвания в реално време
 
-    let likesLive = new Chart(document.getElementById("LikesChart"), {
+    let likesLive = new Chart(document.getElementById("LikesRealtimeChart"), {
         type: 'line',
         data: {
             labels: [time],  // initial labels array
             datasets: [{
                 label: 'Харесвания в реално време',
-                data: [likes],   // initial data array
+                data: [likesLiveData],   // initial data array
                 backgroundColor: 'rgba(255, 240, 0, 0.2)',
                 borderColor: 'rgb(255, 240, 0)',
                 borderWidth: 1
