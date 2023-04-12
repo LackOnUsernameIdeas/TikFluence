@@ -378,7 +378,7 @@
                         <div class="card">
                             <div class="body">
                                 <div class="block-header">
-                                    <h2>Тук можете да видите ефектът на повлияване от TikTok в зависимост от пиковете на <strong><?php echo $songData["song_name"] ?></strong> в двете платформи. Тази песен се счита за повлияна, защото датата на пик в TikTok е преди датата на пик в Spotify.</h2>
+                                    <h2>Тук можете да видите ефекта на повлияване от TikTok в зависимост от пиковете на <strong><?php echo $songData["song_name"] ?></strong> в двете платформи. Тази песен се счита за повлияна, защото датата на пик в TikTok е преди датата на пик в Spotify.</h2>
                                 </div>
                             </div>
                         </div>
@@ -395,7 +395,7 @@
                             <i class="material-icons">music_note</i>
                         </div>
                         <div class="content">
-                            <div class="text">Брой видеа</div>
+                            <div class="text">Брой видеа в TikTok</div>
                             <div class="number"><?php echo number_format(end($ttNums)) ?></div> 
                         </div>
                     </div>

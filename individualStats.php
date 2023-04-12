@@ -449,6 +449,21 @@
                                 <div class="card">
                                     <div class="header">
                                         <h2>
+                                            ХАРЕСВАНИЯ В РЕАЛНО ВРЕМЕ
+                                        </h2>
+                                    </div>
+                                    <div class="body">
+                                        <div class="content">
+                                            <canvas id="LikesChart"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <div class="card">
+                                    <div class="header">
+                                        <h2>
                                             ХАРЕСВАНИЯ НА СКОРО КАЧЕНИ ВИДЕА
                                         </h2>
                                     </div>
@@ -540,10 +555,6 @@
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js" integrity="sha512-JPcRR8yFa8mmCsfrw4TNte1ZvF1e3+1SdGMslZvmrzDYxS69J7J49vkFL8u6u8PlPJK+H3voElBtUCzaXj+6ig==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-<!-- <script src="https://cdn.jsdelivr.net/npm/luxon@3.2.1/build/global/luxon.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@1.3.1/dist/chartjs-adapter-luxon.umd.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-streaming@2.0.0/dist/chartjs-plugin-streaming.min.js"></script> -->
-<!-- Статистики -->
 <script>
   document.getElementById("myLink").addEventListener("click", function(event) {
     event.preventDefault(); // Prevents the link from being followed immediately
@@ -558,22 +569,17 @@
   });
 </script>
 <script>
-    const express = require("express");
-    const app = express();
-    const cors = require('cors');
-    app.use(cors());
-</script>
-<script>
 
     //Данни за ползване
         let videosPublishDates = JSON.parse('<?php echo json_encode($videosPublishDates) ?>');
 
-        let likes =  JSON.parse('<?php echo json_encode($likes) ?>');
-        let views =  JSON.parse('<?php echo json_encode($views) ?>');
-        let comments =  JSON.parse('<?php echo json_encode($comments) ?>');
-        let shares =  JSON.parse('<?php echo json_encode($shares) ?>');
+        let likes = JSON.parse('<?php echo json_encode($likes) ?>');
+        let views = JSON.parse('<?php echo json_encode($views) ?>');
+        let comments = JSON.parse('<?php echo json_encode($comments) ?>');
+        let shares = JSON.parse('<?php echo json_encode($shares) ?>');
 
         let followers = JSON.parse('<?php echo json_encode($userBasicData["follower_count"]) ?>');
+        let likes = JSON.parse('<?php echo json_encode($userBasicData["likes_count"]) ?>');
 
     //Статистика за харесвания
         new Chart(document.getElementById('LikesChart'), {
@@ -688,9 +694,8 @@
     let date = new Date();
     let hours = date.getHours();
     let minutes = date.getMinutes();
-    let seconds = date.getSeconds();
 
-    let time = hours + "/" + minutes + "/" + seconds;
+    let time = hours + ":" + minutes;
 
     let followersLive = new Chart(document.getElementById("FollowersChart"), {
         type: 'line',
@@ -699,8 +704,40 @@
             datasets: [{
                 label: 'Последователи в реално време',
                 data: [followers],   // initial data array
-                backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                borderColor: 'rgba(255, 99, 132, 1)',
+                backgroundColor: 'rgba(159, 90, 253, 0.2)',
+                borderColor: 'rgb(159, 90, 253)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                xAxes: [{
+                    type: 'time',
+                    time: {
+                    unit: 'second'
+                }
+                }],
+                yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+                }]
+            }
+        }
+    });
+
+
+    let likesLive = new Chart(document.getElementById("LikesChart"), {
+        type: 'line',
+        data: {
+            labels: [time],  // initial labels array
+            datasets: [{
+                label: 'Харесвания в реално време',
+                data: [likes],   // initial data array
+                backgroundColor: 'rgba(255, 240, 0, 0.2)',
+                borderColor: 'rgb(255, 240, 0)',
                 borderWidth: 1
             }]
         },
@@ -726,32 +763,36 @@
     let accessToken = JSON.parse('<?php echo json_encode($accessToken) ?>');
 
     setInterval(function() {
-    fetch('https://fluence-api.noit.eu/realTimeStatisticData', {
-        method: 'POST',
-        mode: 'cors',
-        headers: {
-        'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({"accessToken": `${accessToken}`})
-    })
-    .then(response => response.json())
-    .then(data => {
-        let date = new Date();
-        let hours = date.getHours();
-        let minutes = date.getMinutes();
-        let seconds = date.getSeconds();
+        fetch('https://fluence-api.noit.eu/realTimeStatisticData', {
+            method: 'POST',
+            mode: 'cors',
+            headers: {
+            'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({"accessToken": `${accessToken}`})
+        })
+        .then(response => response.json())
+        .then(data => {
+            let date = new Date();
+            let hours = date.getHours();
+            let minutes = date.getMinutes();
+    
+            let time = hours + ":" + minutes;
 
-        let time = hours + "/" + minutes + "/" + seconds;
+            let followers = data.data.user.follower_count;
+            let likes = data.data.user.likes_count;
+    
+            followersLive.data.labels.push(time);
+            followersLive.data.datasets[0].data.push(followers);
+            followersLive.update();
 
-        let value = data.follower_count; // assuming the API returns a JSON object with a "follower_count" field
-
-        followersLive.data.labels.push(time);
-        followersLive.data.datasets[0].data.push(value);
-        followersLive.update();
-    })
-    .catch(error => {
-        console.error('Error fetching data:', error);
-    });
+            likesLive.data.labels.push(time);
+            likesLive.data.datasets[0].data.push(likes);
+            likesLive.update();
+        })
+        .catch(error => {
+            console.error('Error fetching data:', error);
+        });
     }, 60000);
 
 </script>

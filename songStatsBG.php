@@ -95,13 +95,13 @@
 
     $todayYesterdayData = $db->getTodayYesterdayDataBG($sid, $selectDate);
 
-    $ttLastTwoDaysPercents = [0, 0];
-    $ttLastTwoDaysNums = [0, 0];
+    $ttLastTwoDaysPercents = [];
+    $ttLastTwoDaysNums = [];
 
-    $ytLastTwoDaysPercents = [0, 0];
-    $ytLastTwoDaysNums = [0, 0];
+    $ytLastTwoDaysPercents = [];
+    $ytLastTwoDaysNums = [];
 
-    $syLastTwoDays = [0, 0];
+    $syLastTwoDays = [];
 
     foreach($todayYesterdayData as $d){
         $ttLastTwoDaysPercents[] = $d["number_of_videos"];
@@ -115,7 +115,7 @@
 
     // Превръщаме данните за последните 2 дни в проценти и ги запазваме в масиви.
 
-    $todayYesterdayTTDataArray = [0, 0];
+    $todayYesterdayTTDataArray = [];
 
     foreach($ttLastTwoDaysPercents as $TT){
         if($ttLastTwoDaysPercents[0] != null && $ttLastTwoDaysPercents[0] != 0){
@@ -125,7 +125,7 @@
         }
     }
 
-    $todayYesterdayYTDataArray = [0, 0];
+    $todayYesterdayYTDataArray = [];
 
     foreach($ytLastTwoDaysPercents as $YT){
         if($ytLastTwoDaysPercents[0] != null && $ytLastTwoDaysPercents[0] != 0){ 
@@ -135,7 +135,7 @@
         }
     }
 
-    $todayYesterdaySYDataArray = [0, 0];
+    $todayYesterdaySYDataArray = [];
 
     foreach($syLastTwoDays as $SY){
         if($syLastTwoDays[0] != null && $syLastTwoDays[0] != 0){ 

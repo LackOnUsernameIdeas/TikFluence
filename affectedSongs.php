@@ -223,7 +223,6 @@
                                                     <th>ДАТА НА ПИК В TIKTOK</th>
                                                     <th>ДАТА НА ПИК В SPOTIFY</th>
                                                     <th>РАЗЛИКА МЕЖДУ ДАТИТЕ НА ПИКОВЕТЕ</th>
-                                                    <th>ДАТА НА ЗАСИЧАНЕ ЗА ПОВЛИЯНА</th>
                                                     <th></th>
                                                 </tr>
                                             </thead>
@@ -236,7 +235,6 @@
                                                         <th><?php echo $song["tiktok_peak_date"]?></th>
                                                         <th><?php echo $song["spotify_peak_date"]?></th>
                                                         <th><?php echo $song["peaks_difference"]?></th>
-                                                        <th><?php echo $song["report_date"]?></th>
                                                         <th><a href='./influencedSong.php?sid=<?php echo $song["song_id"]?>' class="btn bg-purple waves-effect">Вижте повлияване</a></th>
                                                     </tr>
                                                 <?php endforeach;?>
@@ -257,7 +255,7 @@
                         <div class="panel-heading" role="tab" id="headingOne_2">
                             <h4 class="panel-title">
                                 <a role="button" data-toggle="collapse" data-parent="#accordion_2" href="#collapseOne_2" aria-expanded="true" aria-controls="collapseOne_2" class="">
-                                СРАВНЕНИЕ МЕЖДУ ПЪРВИТЕ 10 ПЕСНИ <i class="material-icons">keyboard_arrow_down</i>
+                                СЪПОСТАВКА МЕЖДУ ПЪРВИТЕ 10 ПЕСНИ <i class="material-icons">keyboard_arrow_down</i>
                                 </a>
                             </h4>
                         </div>
@@ -295,7 +293,7 @@
         const dataGlobal = {
             labels: JSON.parse(`<?php echo json_encode($songsNamesUpTo10) ?>`),
             datasets: [{
-                label: 'ПОПУЛЯРНОСТ',
+                label: 'РАЗЛИКА МЕЖДУ ДАТИТЕ НА ПИКОВЕТЕ В SPOTIFY И TIKTOK',
                 data: JSON.parse(`<?php echo json_encode($songsPeaksDiffUpTo10) ?>`),
                 backgroundColor: [
                     'rgba(255, 26, 104, 0.2)',

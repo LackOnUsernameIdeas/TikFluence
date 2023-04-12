@@ -102,12 +102,12 @@
     $todayYesterdayData = $db->getTodayYesterdayData($sid, $selectDate);
 
     $ttLastTwoDaysPercents = [];
-    $ttLastTwoDaysNums = [0, 0];
+    $ttLastTwoDaysNums = [];
 
     $ytLastTwoDaysPercents = [];
-    $ytLastTwoDaysNums = [0, 0];
+    $ytLastTwoDaysNums = [];
 
-    $syLastTwoDays = [0, 0];
+    $syLastTwoDays = [];
 
     foreach($todayYesterdayData as $d){
         $ttLastTwoDaysPercents[] = $d["number_of_videos_last_14days"];
@@ -121,13 +121,13 @@
 
     // Превръщаме данните за последните 2 дни в проценти и ги запазваме в масиви.
 
-    $todayYesterdayTTDataArray = [0, 0];
+    $todayYesterdayTTDataArray = [];
 
     foreach($ttLastTwoDaysPercents as $TT){
         array_push($todayYesterdayTTDataArray, ($TT * 100)/$ttLastTwoDaysPercents[0]);
     }
 
-    $todayYesterdayYTDataArray = [0, 0];
+    $todayYesterdayYTDataArray = [];
 
     foreach($ytLastTwoDaysPercents as $YT){
         if($ytLastTwoDaysPercents[0] != null && $ytLastTwoDaysPercents[0] != 0){ 
@@ -137,7 +137,7 @@
         }
     }
 
-    $todayYesterdaySYDataArray = [0, 0];
+    $todayYesterdaySYDataArray = [];
 
     foreach($syLastTwoDays as $SY){
         if($syLastTwoDays[0] != null && $syLastTwoDays[0] != 0){ 
@@ -150,36 +150,29 @@
     // Изчисляваме разликата между днес и вчера в числови стойности и в проценти, за да покажем с колко се е променила от предната дата в сравнение с избраната дата дадена песен.
 
     //TikTok
-    if(isset($ttLastTwoDaysPercents[1])){
-        if(isset($ttLastTwoDaysPercents[0]) || $ttLastTwoDaysPercents[0] == 0){ 
-            $subtractionTTPercents = $todayYesterdayTTDataArray[1] - $todayYesterdayTTDataArray[0];
-            $subtractionTTNums = $ttLastTwoDaysNums[1] - $ttLastTwoDaysNums[0];
-        } else { 
-            $subtractionTTPercents = "-";
-            $subtractionTTNums = "-";
-        }
+    if(isset($ttLastTwoDaysPercents[0]) || $ttLastTwoDaysPercents[0] == 0){ 
+        $subtractionTTPercents = $todayYesterdayTTDataArray[1] - $todayYesterdayTTDataArray[0];
+        $subtractionTTNums = $ttLastTwoDaysNums[1] - $ttLastTwoDaysNums[0];
+    } else { 
+        $subtractionTTPercents = "-";
+        $subtractionTTNums = "-";
     }
 
-    //YouTube
-    if(isset($ytLastTwoDaysPercents[1])){
-        if($ytLastTwoDaysPercents[0] != null || $ytLastTwoDaysPercents[0] == 0){ 
-            $subtractionYTPercents = $todayYesterdayYTDataArray[1] - $todayYesterdayYTDataArray[0];
-            $subtractionYTNums = $ytLastTwoDaysNums[1] - $ytLastTwoDaysNums[0];
-        } else { 
-            $subtractionYTPercents = "-";
-            $subtractionYTNums = "-";
-        }
-    } else {
 
+    //YouTube
+    if($ytLastTwoDaysPercents[0] != null || $ytLastTwoDaysPercents[0] == 0){ 
+        $subtractionYTPercents = $todayYesterdayYTDataArray[1] - $todayYesterdayYTDataArray[0];
+        $subtractionYTNums = $ytLastTwoDaysNums[1] - $ytLastTwoDaysNums[0];
+    } else { 
+        $subtractionYTPercents = "-";
+        $subtractionYTNums = "-";
     }
 
     //Spotify
-    if(isset($syLastTwoDays[1])){
-        if($syLastTwoDays[0] != null || $syLastTwoDays[0] == 0){
-            $subtractionSY = $todayYesterdaySYDataArray[1] - $todayYesterdaySYDataArray[0];
-        } else { 
-            $subtractionSY = "-";
-        }
+    if($syLastTwoDays[0] != null || $syLastTwoDays[0] == 0){
+        $subtractionSY = $todayYesterdaySYDataArray[1] - $todayYesterdaySYDataArray[0];
+    } else { 
+        $subtractionSY = "-";
     }
 
 
@@ -224,40 +217,37 @@
     //Взимаме данните за датата и за датата преди датата, която сме избрали в страницата
 
     //TikTok
-    if(isset($ttLastTwoDaysNums[1]) && isset($ttLastTwoDaysNums[0])){
-        $todayTT = $ttLastTwoDaysNums[1];
-        $yesterdayTT = $ttLastTwoDaysNums[0];    
-    }
+    $todayTT = $ttLastTwoDaysNums[1];
+    $yesterdayTT = $ttLastTwoDaysNums[0];    
+
 
     //YouTube
-    if(isset($ytLastTwoDaysPercents[1]) && isset($ytLastTwoDaysPercents[0])){
-        if($ytLastTwoDaysPercents[0] != null || $ytLastTwoDaysPercents[0] == 0){ 
-            $todayYT = $ytLastTwoDaysPercents[1];
-        } else { 
-            $todayYT = "-";
-        }
-    
-        if($ytLastTwoDaysPercents[0] != null || $ytLastTwoDaysPercents[0] == 0){ 
-            $yesterdayYT = $ytLastTwoDaysPercents[0];
-        } else { 
-            $yesterdayYT = "-";
-        }
+    if($ytLastTwoDaysPercents[0] != null || $ytLastTwoDaysPercents[0] == 0){ 
+        $todayYT = $ytLastTwoDaysPercents[1];
+    } else { 
+        $todayYT = "-";
     }
 
-    //Spotify
-    if(isset($syLastTwoDays[1]) && isset($syLastTwoDays[0])){
-        if($syLastTwoDays[0] != null || $syLastTwoDays[0] == 0){ 
-            $todaySY = $syLastTwoDays[1];
-        } else { 
-            $todaySY = "-";
-        }
-    
-        if($syLastTwoDays[0] != null || $syLastTwoDays[0] == 0){ 
-            $yesterdaySY = $syLastTwoDays[0];
-        } else { 
-            $yesterdaySY = "-";
-        }
+    if($ytLastTwoDaysPercents[0] != null || $ytLastTwoDaysPercents[0] == 0){ 
+        $yesterdayYT = $ytLastTwoDaysPercents[0];
+    } else { 
+        $yesterdayYT = "-";
     }
+
+
+    //Spotify
+    if($syLastTwoDays[0] != null || $syLastTwoDays[0] == 0){ 
+        $todaySY = $syLastTwoDays[1];
+    } else { 
+        $todaySY = "-";
+    }
+
+    if($syLastTwoDays[0] != null || $syLastTwoDays[0] == 0){ 
+        $yesterdaySY = $syLastTwoDays[0];
+    } else { 
+        $yesterdaySY = "-";
+    }
+
 
     //На база всички стойности, които имаме за популярност, изчисляваме средната стойност и я запазваме в променлива. Това се отнася и за трите платформи.
     $averageTT = $db->getAverageTT($sid, $selectDate)[0][0];
@@ -266,37 +256,28 @@
 
     
     //Ако днешната или вчерашната стойност в TikTok е по-малка или равна от средната стойност, няма нарастване.
-    if(isset($todayTT) && isset($yesterdayTT)){
-        if($todayTT <= $averageTT || $yesterdayTT <= $averageTT){
-            $growthTT = false;
-        } else {
-            $growthTT = true;
-        }
-    } else {
+    if($todayTT <= $averageTT || $yesterdayTT <= $averageTT){
         $growthTT = false;
+    } else {
+        $growthTT = true;
     }
+
 
     //Ако днешната или вчерашната стойност в YouTube е по-малка или равна от средната стойност, няма нарастване.
-    if(isset($todayYT) && isset($yesterdayYT)){
-        if($todayYT <= $averageYT || $yesterdayYT <= $averageYT){
-            $growthYT = false;
-        } else {
-            $growthYT = true;
-        }
-    } else {
+    if($todayYT <= $averageYT || $yesterdayYT <= $averageYT){
         $growthYT = false;
+    } else {
+        $growthYT = true;
     }
 
+
     //Ако днешната или вчерашната стойност в Spotify е по-малка или равна от средната стойност, няма нарастване.
-    if(isset($todaySY) && isset($yesterdaySY)){
-        if($todaySY <= $averageSY || $yesterdaySY <= $averageSY){
-            $growthSY = false;
-        } else {
-            $growthSY = true;
-        }
-    } else {
+    if($todaySY <= $averageSY || $yesterdaySY <= $averageSY){
         $growthSY = false;
+    } else {
+        $growthSY = true;
     }
+
 
     //Според това къде има и къде няма нарастване се определя точното състояние на дадената песен. Това дали тя има нарастване и къде.
 
@@ -326,20 +307,16 @@
     } else {
         //Ако тази песен няма по-големи от средната стойности за последните два дни в TikTok:
         if($growthSY && $growthYT){
-            if($growthSY && $growthYT){
-                $setConclusionPerfectWithoutTT = true;
-            } elseif($growthSY == false && $growthYT){
-                $setConclusionYTWithoutTT = true;
-            } elseif($growthSY && $growthYT == false){
-                $setConclusionSYWithoutTT = true;
-            } else {
-                $setConclusionWithoutAnything = true;
-            }
+            $setConclusionPerfectWithoutTT = true;
+        } elseif($growthSY == false && $growthYT){
+            $setConclusionYTWithoutTT = true;
+        } elseif($growthSY && $growthYT == false){
+            $setConclusionSYWithoutTT = true;
         } else {
             $setConclusionWithoutAnything = true;
         }
-    }
 
+    }
 ?>
 <!DOCTYPE html>
 <html>

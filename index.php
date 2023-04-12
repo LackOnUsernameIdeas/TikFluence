@@ -261,10 +261,7 @@ function limitContentLength($content, $limit) {
                                 Какво е TikFluence?
                             </p>
                             <p>
-                                Проект, който изследва ефекта на TikTok върху различни музикални платформи, като се следи градацията и нарастващата популярност на публикуваните в него музикални и видео клипове и се прави съпоставка с други подобни и известни приложения. 
-                            </p>
-                            <p>
-                                Данните са представени чрез интерактивни диаграми, таблици и статистики.
+                                Проект, който изследва с авторски алгоритми ефекта на повлияване от TikTok върху различни музикални платформи, като се следи градацията и нарастващата популярност на публикуваните в него музикални и видеоклипове и се прави съпоставка с други подобни и известни приложения. 
                             </p>
                         </div>
                     </div>
@@ -325,7 +322,7 @@ function limitContentLength($content, $limit) {
                 <div class="block-header">
                     <div class="card">
                         <div class="body">
-                            <h2>Изберете дата за която искате да видите данни:</h2>
+                            <h2>Изберете дата, за която искате да видите данни за ефекта на повлияване от TikTok:</h2>
                             <?php if($datesArray):?>
                                 <input type="date" id="start" name="trip-start"
                                 value="<?php echo $selectDate ?>"
@@ -360,8 +357,7 @@ function limitContentLength($content, $limit) {
                                                             <th>Артист</th>
                                                             <th>Дата на пик в TikTok</th>
                                                             <th>Дата на пик в Spotify</th>
-                                                            <th>Разлика в пиковете</th>
-                                                            <th>Дата на повлияване</th>
+                                                            <th>Разлика в пиковете в дни</th>
                                                             <th>Повлияване</th>
                                                         </tr>
                                                     </thead>
@@ -380,7 +376,6 @@ function limitContentLength($content, $limit) {
                                                                 <th><?= $song["tiktok_peak_date"] ?></th>
                                                                 <th><?= $song["spotify_peak_date"] ?></th>
                                                                 <th><?= $song["peaks_difference"] ?></th>
-                                                                <th><?= $song["report_date"] ?></th>
                                                                 <td><a href='./influencedSong.php?sid=<?= $song["song_id"] ?>' class="btn bg-purple waves-effect" style="font-size:14px;">Вижте повече</a></td>
                                                             </tr>
                                                         <?php endforeach;?>
