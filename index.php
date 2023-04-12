@@ -93,6 +93,15 @@ foreach($songsWithDays as $songId => $days){
     $influencedSongsData[] = $db->findSongAndSongsTodayDataById($songId);
 }
 
+
+function limitContentLength($content, $limit) {
+    $trimmed_content = trim(strip_tags($content));
+    if (strlen($trimmed_content) > $limit) {
+      $trimmed_content = substr($trimmed_content, 0, $limit) . '...';
+    }
+    return $trimmed_content;
+}
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -275,7 +284,7 @@ foreach($songsWithDays as $songId => $days){
                                 <i class="material-icons">filter_1</i>
                             </div>
                             <div class="content">
-                                <div class="text"><?= $influencedSongsData[0]["song_name"] ?></div>
+                                <div class="text"><?= limitContentLength($influencedSongsData[0]["song_name"], 90) ?></div>
                                 <div class="number count-to" data-from="0" data-to="<?= $influencedSongsData[0]["number_of_videos_last_14days"] ?>" data-speed="3000" data-fresh-interval="20"></div>
                             </div>
                         </div>
@@ -289,7 +298,7 @@ foreach($songsWithDays as $songId => $days){
                                 <i class="material-icons">filter_2</i>
                             </div>
                             <div class="content">
-                                <div class="text"><?= $influencedSongsData[1]["song_name"] ?></div>
+                                <div class="text"><?= limitContentLength($influencedSongsData[1]["song_name"], 90) ?></div>
                                 <div class="number count-to" data-from="0" data-to="<?= $influencedSongsData[1]["number_of_videos_last_14days"] ?>" data-speed="3000" data-fresh-interval="20"></div>
                             </div>
                         </div>
@@ -303,7 +312,7 @@ foreach($songsWithDays as $songId => $days){
                                 <i class="material-icons">filter_3</i>
                             </div>
                             <div class="content">
-                                <div class="text"><?= $influencedSongsData[2]["song_name"] ?></div>
+                                <div class="text"><?= limitContentLength($influencedSongsData[2]["song_name"], 90) ?></div>
                                 <div class="number count-to" data-from="0" data-to="<?= $influencedSongsData[2]["number_of_videos_last_14days"] ?>" data-speed="3000" data-fresh-interval="20"></div>
                             </div>
                         </div>
