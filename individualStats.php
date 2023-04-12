@@ -387,7 +387,7 @@
                                 </div>
                                 <div class="content">
                                     <div class="text">Последователи</div>
-                                    <div class="number count-to" id="follower-count" data-from="0" data-to="<?php echo $userBasicData["follower_count"] ?>" data-speed="3000" data-fresh-interval="20"></div>
+                                    <div class="number count-to" id="follower_count" data-from="0" data-to="<?php echo $userBasicData["follower_count"] ?>" data-speed="3000" data-fresh-interval="20"></div>
                                 </div>
                             </div>
                         </div>
@@ -423,7 +423,7 @@
                                 </div>
                                 <div class="content">
                                     <div class="text">Брой харесвания</div>
-                                    <div class="number count-to" data-from="0" data-to="<?php echo $userBasicData["likes_count"] ?>" data-speed="3000" data-fresh-interval="20"></div>
+                                    <div class="number count-to" id="likes_count" data-from="0" data-to="<?php echo $userBasicData["likes_count"] ?>" data-speed="3000" data-fresh-interval="20"></div>
                                 </div>
                             </div>
                         </div>
@@ -761,8 +761,10 @@
         }
     });
 
+    //Запазваме токена, който ни е необходим, за да взимаме данни
     let accessToken = JSON.parse('<?php echo json_encode($accessToken) ?>');
 
+    //Изпълняваме функцията, която трябва да праща заяки и да актуализира информацията в диаграмите и уиджетите през 1 минута
     setInterval(function() {
         fetch('https://fluence-api.noit.eu/realTimeStatisticData', {
             method: 'POST',
@@ -774,18 +776,25 @@
         })
         .then(response => response.json())
         .then(data => {
+            //Задаваме точно време
             let date = new Date();
             let hours = date.getHours();
             let minutes = date.getMinutes();
     
             let time = hours + ":" + minutes;
 
+            //Запазваме необходимата информация в променливи
             let followers = data.data.user.follower_count;
             let likes = data.data.user.likes_count;
     
-            let followerCountElement = document.getElementById('follower-count');
-            followerCountElement.setAttribute('data-to', followers);
+            //Актуализираме новите данни в уиджетите
+            let followerCount = document.getElementById('follower_count');
+            let likesCount = document.getElementById('likes_count');
 
+            followerCount.setAttribute('data-to', followers);
+            likesCount.setAttribute('data-to', likes);
+
+            //Актуализираме новите данни в диаграмите
             followersLive.data.labels.push(time);
             followersLive.data.datasets[0].data.push(followers);
             followersLive.update();
