@@ -387,7 +387,7 @@
                                 </div>
                                 <div class="content">
                                     <div class="text">Последователи</div>
-                                    <div class="number count-to" data-from="0" data-to="<?php echo $userBasicData["follower_count"] ?>" data-speed="3000" data-fresh-interval="20"></div>
+                                    <div class="number count-to" id="follower-count" data-from="0" data-to="<?php echo $userBasicData["follower_count"] ?>" data-speed="3000" data-fresh-interval="20"></div>
                                 </div>
                             </div>
                         </div>
@@ -783,6 +783,9 @@
             let followers = data.data.user.follower_count;
             let likes = data.data.user.likes_count;
     
+            let followerCountElement = document.getElementById('follower-count');
+            followerCountElement.setAttribute('data-to', followers);
+
             followersLive.data.labels.push(time);
             followersLive.data.datasets[0].data.push(followers);
             followersLive.update();
