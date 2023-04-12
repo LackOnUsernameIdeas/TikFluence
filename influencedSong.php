@@ -378,7 +378,7 @@
                         <div class="card">
                             <div class="body">
                                 <div class="block-header">
-                                    <h2>Тук можете да видите ефектът на повлияване от TikTok в зависимост от пийковете на <strong><?php echo $songData["song_name"] ?></strong> в двете платформи. Тази песен се счита за повлияна, защото датата на пийк в TikTok е преди датата на пийк в Spotify.</h2>
+                                    <h2>Тук можете да видите ефектът на повлияване от TikTok в зависимост от пиковете на <strong><?php echo $songData["song_name"] ?></strong> в двете платформи. Тази песен се счита за повлияна, защото датата на пик в TikTok е преди датата на пик в Spotify.</h2>
                                 </div>
                             </div>
                         </div>

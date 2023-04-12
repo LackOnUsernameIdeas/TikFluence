@@ -49,7 +49,7 @@ if($hashtagsDataForTheLast7Days != false || $hashtagsDataForTheLast120Days != fa
 //Осигуряваме си данни за класацията за най-повлияните песни
 $influencedSongs = $db->listAffectedSongsByDate($selectDate);
 
-//Махаме песните от масива, които имат разлика в пийковите дати по-малка от 0 за да получим само тези песни, които са повлияни
+//Махаме песните от масива, които имат разлика в пиковите дати по-малка от 0 за да получим само тези песни, които са повлияни
 $songsWithDays = [];
 
 foreach($influencedSongs as $song){
@@ -360,7 +360,7 @@ function limitContentLength($content, $limit) {
                                                             <th>Артист</th>
                                                             <th>Дата на пик в TikTok</th>
                                                             <th>Дата на пик в Spotify</th>
-                                                            <th>Разлика в пийковете</th>
+                                                            <th>Разлика в пиковете</th>
                                                             <th>Дата на повлияване</th>
                                                             <th>Повлияване</th>
                                                         </tr>
