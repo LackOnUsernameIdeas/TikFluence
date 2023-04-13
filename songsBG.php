@@ -194,23 +194,39 @@
                 </div>
             </div>
 
+            <?php if($top200SongsBG != false):?>
+                <div class="col-lg-14 col-md-14 col-sm-14 col-xs-14">
+                    <div class="card">
+
+                        <div class="body">
+                            <p class="lead" style="font-size: 170%;">
+                                В тази страница имате възможността да видите топ 200 на най-слушаните песни за БЪЛГАРИЯ!
+                            </p>
+                            <p>
+                                Под таблицата, можете да видите и сравнение между първите 10 песни от класацията.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            <?php endif;?>
+
             <div class="block-header">
                 <div class="card">
                     <div class="body">
                         <h2>Изберете дата за която искате да видите данни:</h2>
-                            <?php if($datesArray):?>
-                                <input type="date" id="start" name="trip-start"
-                                value="<?php echo $selectDate ?>"
-                                min="<?php echo $datesArray[0] ?>" max="<?php echo end($datesArray) ?>" onchange=" window.location.replace('./selectDate.php?setDate=' + this.value + '&redirectURI=' + window.location.href)">
-                            <?php endif;?>
-            
+                        <?php if($datesArray):?>
+                            <input type="date" id="start" name="trip-start"
+                            value="<?php echo $selectDate ?>"
+                            min="<?php echo $datesArray[1] ?>" max="<?php echo end($datesArray) ?>" onchange=" window.location.replace('./selectDate.php?setDate=' + this.value + '&redirectURI=' + window.location.href)">
+                        <?php endif;?>
                     </div>
                 </div>
             </div>
 
             <?php if($top200SongsBG != false):?>
+                
                 <!-- Second Exportable table -->
-                <div class="col-xs-14 ol-sm-14 col-md-14 col-lg-14">
+                <div class="col-xs-14 col-sm-14 col-md-14 col-lg-14">
                     <div class="panel-group" id="accordion_1" role="tablist" aria-multiselectable="true">
                         <div class="panel panel-primary">
                             <div class="panel-heading" role="tab" id="headingOne_1">

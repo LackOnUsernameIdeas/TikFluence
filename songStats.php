@@ -253,7 +253,6 @@
     $averageTT = $db->getAverageTT($sid, $selectDate)[0][0];
     $averageYT = $db->getAverageYT($sid, $selectDate)[0][0];
     $averageSY = $db->getAverageSY($sid, $selectDate)[0][0];
-
     
     //Ако днешната или вчерашната стойност в TikTok е по-малка или равна от средната стойност, няма нарастване.
     if($todayTT <= $averageTT || $yesterdayTT <= $averageTT){
@@ -491,12 +490,29 @@
                             <div class="card">
                                 <div class="body">
                                     <h2>Изберете дата за която искате да видите данни:</h2>
-                                        <?php if($datesArray):?>
-                                            <input type="date" id="start" name="trip-start"
-                                            value="<?php echo $selectDate ?>"
-                                            min="<?php echo $datesArray[1] ?>" max="<?php echo end($datesArray) ?>" onchange="window.location.replace('./selectDate.php?setDate=' + this.value + '&redirectURI=' + window.location.href)">
-                                        <?php endif;?>
-                        
+                                    <?php if($datesArray):?>
+                                        <input type="date" id="start" name="trip-start"
+                                        value="<?php echo $selectDate ?>"
+                                        min="<?php echo $datesArray[1] ?>" max="<?php echo end($datesArray) ?>" onchange="window.location.replace('./selectDate.php?setDate=' + this.value + '&redirectURI=' + window.location.href)">
+                                    <?php endif;?>
+                                    <i class="material-icons" data-toggle="modal" data-target="#defaultModal" style="cursor: pointer;display: inline-block;vertical-align: middle;">help_outline</i>
+                                    <div class="info"> 
+                                        <div class="modal fade" id="defaultModal" tabindex="-1" role="dialog">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h4 class="modal-title" id="defaultModalLabel"></h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        Имайте предвид, че избирате да видите данните от датата, която сте избрали и 39 дни назад от нея. Общо можете да виждате данни до не повече от 40 дни.
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn bg-purple btn-link waves-effect" data-dismiss="modal">ЗАТВОРИ</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -587,83 +603,91 @@
                         </div>
                     </div>
                 <?php endif;?>
-            </div>
-    
-            <div class="row clearfix">
 
-                <div class="col-xs-12 ol-sm-12 col-md-12 col-lg-12">
-                    <div class="panel-group" id="accordion_3" role="tablist" aria-multiselectable="true">
-                        <div class="panel panel-primary">
-                            <div class="panel-heading" role="tab" id="headingOne_3">
-                                <h4 class="panel-title">
-                                    <a role="button" data-toggle="collapse" data-parent="#accordion_3" href="#collapseOne_3" aria-expanded="true" aria-controls="collapseOne_3" class="">
-                                    ИЗМЕНЕНИЕ НА ПОПУЛЯРНОСТ В TIKTOK <i class="material-icons">keyboard_arrow_down</i>
-                                    </a>
-                                </h4>
-                            </div>
-                            <div id="collapseOne_3" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_3" aria-expanded="true">
-                                <div class="body songBox" style="padding:1%">
-                                    <canvas id="TikTokGraphChart"></canvas>
+                <div class="info"> 
+                    <i class="material-icons" data-toggle="modal" data-target="#defaultModal2" style="cursor: pointer;display: inline-block;">help_outline</i>
+                        <div class="modal fade" id="defaultModal2" tabindex="-1" role="dialog">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title" id="defaultModalLabel"></h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        Имайте предвид, че данните може да са закръглени, тъй като при надвишаване на определени стойности, създателите на TikTok са направили така че именно това да се случва.
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn bg-purple btn-link waves-effect" data-dismiss="modal">ЗАТВОРИ</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-            </div> 
-
+            </div>
+    
+            <div class="col-xs-12 ol-sm-12 col-md-12 col-lg-12">
+                <div class="panel-group" id="accordion_3" role="tablist" aria-multiselectable="true">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading" role="tab" id="headingOne_3">
+                            <h4 class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordion_3" href="#collapseOne_3" aria-expanded="true" aria-controls="collapseOne_3" class="">
+                                ИЗМЕНЕНИЕ НА ПОПУЛЯРНОСТ В TIKTOK <i class="material-icons">keyboard_arrow_down</i>
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseOne_3" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_3" aria-expanded="true">
+                            <div class="body songBox" style="padding:1%">
+                                <canvas id="TikTokGraphChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <?php if(count($ytNulls) != count($ytNums)):?>
-                <div class="row clearfix">
-
-                    <div class="col-xs-12 ol-sm-12 col-md-12 col-lg-12">
-                        <div class="panel-group" id="accordion_4" role="tablist" aria-multiselectable="true">
-                            <div class="panel panel-primary">
-                                <div class="panel-heading" role="tab" id="headingOne_4">
-                                    <h4 class="panel-title">
-                                        <a role="button" data-toggle="collapse" data-parent="#accordion_4" href="#collapseOne_4" aria-expanded="true" aria-controls="collapseOne_4" class="">
-                                            ИЗМЕНЕНИЕ НА ПОПУЛЯРНОСТ В YOUTUBE <i class="material-icons">keyboard_arrow_down</i>
-                                        </a>
-                                    </h4>
-                                </div>
-                                <div id="collapseOne_4" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_4" aria-expanded="true">
-                                    <div class="body songBox" style="padding:1%">
-                                        <canvas id="YouTubeGraphChart"></canvas>
-                                    </div>
+                <div class="col-xs-12 ol-sm-12 col-md-12 col-lg-12">
+                    <div class="panel-group" id="accordion_4" role="tablist" aria-multiselectable="true">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading" role="tab" id="headingOne_4">
+                                <h4 class="panel-title">
+                                    <a role="button" data-toggle="collapse" data-parent="#accordion_4" href="#collapseOne_4" aria-expanded="true" aria-controls="collapseOne_4" class="">
+                                        ИЗМЕНЕНИЕ НА ПОПУЛЯРНОСТ В YOUTUBE <i class="material-icons">keyboard_arrow_down</i>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseOne_4" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_4" aria-expanded="true">
+                                <div class="body songBox" style="padding:1%">
+                                    <canvas id="YouTubeGraphChart"></canvas>
                                 </div>
                             </div>
                         </div>
                     </div>
-
                 </div>
             <?php endif;?>
             
             <?php if(count($syNulls) != count($syNums)):?>
-                <div class="row clearfix">
-
-                    <div class="col-xs-12 ol-sm-12 col-md-12 col-lg-12">
-                        <div class="panel-group" id="accordion_5" role="tablist" aria-multiselectable="true">
-                            <div class="panel panel-primary">
-                                <div class="panel-heading" role="tab" id="headingOne_5">
-                                    <h4 class="panel-title">
-                                        <a role="button" data-toggle="collapse" data-parent="#accordion_5" href="#collapseOne_5" aria-expanded="true" aria-controls="collapseOne_5" class="">
-                                            ИЗМЕНЕНИЕ НА ПОПУЛЯРНОСТ В SPOTIFY <i class="material-icons">keyboard_arrow_down</i>
-                                        </a>
-                                    </h4>
-                                </div>
-                                <div id="collapseOne_5" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_5" aria-expanded="true">
-                                    <div class="body songBox" style="padding:1%">
-                                        <canvas id="SpotifyGraphChart"></canvas>
-                                    </div>
+                <div class="col-xs-12 ol-sm-12 col-md-12 col-lg-12">
+                    <div class="panel-group" id="accordion_5" role="tablist" aria-multiselectable="true">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading" role="tab" id="headingOne_5">
+                                <h4 class="panel-title">
+                                    <a role="button" data-toggle="collapse" data-parent="#accordion_5" href="#collapseOne_5" aria-expanded="true" aria-controls="collapseOne_5" class="">
+                                        ИЗМЕНЕНИЕ НА ПОПУЛЯРНОСТ В SPOTIFY <i class="material-icons">keyboard_arrow_down</i>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseOne_5" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_5" aria-expanded="true">
+                                <div class="body songBox" style="padding:1%">
+                                    <canvas id="SpotifyGraphChart"></canvas>
                                 </div>
                             </div>
                         </div>
                     </div>
-
                 </div>
             <?php endif;?>
 
-            <div class="col-xs-14 ol-sm-14 col-md-14 col-lg-14">
+            <div class="col-xs-12 ol-sm-12 col-md-12 col-lg-12">
                 <div class="panel-group" id="accordion_1" role="tablist" aria-multiselectable="true">
                     <div class="panel panel-primary">
                         <div class="panel-heading" role="tab" id="headingOne_1">
@@ -682,7 +706,7 @@
                 </div>
             </div>
 
-            <div class="col-xs-14 ol-sm-14 col-md-14 col-lg-14">
+            <div class="col-xs-12 ol-sm-12 col-md-12 col-lg-12">
                 <div class="panel-group" id="accordion_2" role="tablist" aria-multiselectable="true">
                     <div class="panel panel-primary">
                         <div class="panel-heading" role="tab" id="headingOne_2">
@@ -701,95 +725,90 @@
                 </div>
             </div>
 
-
-            <div class="row clearfix">
-
-                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12" style="max-height:80px">
-                    <div class="card">
-                        <div class="body bg-purple" style="font-size:160%;">
-                            Промяна в популярност от <b><?php echo date('Y-m-d', mktime(0, 0, 0, date(substr($selectDate, 5, 2)), (date(substr($selectDate, 8, 2))-1), date(substr($selectDate, 0, 4)) ));?></b>:
-                        </div>
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12" style="max-height:80px">
+                <div class="card">
+                    <div class="body bg-purple" style="font-size:160%;">
+                        Промяна в популярност от <b><?php echo date('Y-m-d', mktime(0, 0, 0, date(substr($selectDate, 5, 2)), (date(substr($selectDate, 8, 2))-1), date(substr($selectDate, 0, 4)) ));?></b>:
                     </div>
                 </div>
-                
-                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                    <div class="info-box-3 bg-deep-purple hover-expand-effect">
-                        <div class="icon">
-                            <i class="material-icons">
-                                <?php echo $chooseIconTT ?>
-                            </i>
-                        </div>
-                        <div class="content">
-                            <div class="text">TikTok</div>
-                            <div class="number"><?php echo round($subtractionTTPercents, 3) ?>%</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                    <div class="info-box-3 bg-deep-purple hover-expand-effect">
-                        <div class="icon">
-                            <i class="material-icons">
-                                <?php echo $chooseIconTT ?>
-                            </i>
-                        </div>
-                        <div class="content">
-                            <div class="text">TikTok видеа</div>
-                            <div class="number"><?php echo number_format($subtractionTTNums) ?></div>
-                        </div>
-                    </div>
-                </div>
-
-                <?php if(count($ytNulls) != count($ytNums)):?>
-                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                    <div class="info-box-3 bg-red hover-expand-effect">
-                        <div class="icon">
-                            <i class="material-icons">
-                                <?php echo $chooseIconYT ?>
-                            </i>
-                        </div>
-                        <div class="content">
-                            <div class="text">YouTube</div>
-                            <div class="number"><?php echo round($subtractionYTPercents, 3) ?>%</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                    <div class="info-box-3 bg-red hover-expand-effect">
-                        <div class="icon">
-                            <i class="material-icons">
-                                <?php echo $chooseIconYT ?>
-                            </i>
-                        </div>
-                        <div class="content">
-                            <div class="text">YouTube</div>
-                            <div class="number"><?php echo number_format($subtractionYTNums) ?></div>
-                        </div>
-                    </div>
-                </div>
-
-                <?php endif;?>
-
-                <?php if(count($syNulls) != count($syNums)):?>
-                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                                        
-                        <div class="info-box-3 bg-green hover-expand-effect">
-                            <div class="icon">
-                                <i class="material-icons">
-                                    <?php echo $chooseIconSY ?>
-                                </i>
-                            </div>
-                            <div class="content">
-                                <div class="text">Spotify</div>
-                                <div class="number"><?php echo round($subtractionSY, 3)?> %</div>
-                            </div>
-                        </div>
-
-                    </div>
-                <?php endif;?>
-
             </div>
+            
+            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box-3 bg-deep-purple hover-expand-effect">
+                    <div class="icon">
+                        <i class="material-icons">
+                            <?php echo $chooseIconTT ?>
+                        </i>
+                    </div>
+                    <div class="content">
+                        <div class="text">TikTok</div>
+                        <div class="number"><?php echo round($subtractionTTPercents, 3) ?>%</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box-3 bg-deep-purple hover-expand-effect">
+                    <div class="icon">
+                        <i class="material-icons">
+                            <?php echo $chooseIconTT ?>
+                        </i>
+                    </div>
+                    <div class="content">
+                        <div class="text">TikTok видеа</div>
+                        <div class="number"><?php echo number_format($subtractionTTNums) ?></div>
+                    </div>
+                </div>
+            </div>
+
+            <?php if(count($ytNulls) != count($ytNums)):?>
+            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box-3 bg-red hover-expand-effect">
+                    <div class="icon">
+                        <i class="material-icons">
+                            <?php echo $chooseIconYT ?>
+                        </i>
+                    </div>
+                    <div class="content">
+                        <div class="text">YouTube</div>
+                        <div class="number"><?php echo round($subtractionYTPercents, 3) ?>%</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box-3 bg-red hover-expand-effect">
+                    <div class="icon">
+                        <i class="material-icons">
+                            <?php echo $chooseIconYT ?>
+                        </i>
+                    </div>
+                    <div class="content">
+                        <div class="text">YouTube</div>
+                        <div class="number"><?php echo number_format($subtractionYTNums) ?></div>
+                    </div>
+                </div>
+            </div>
+
+            <?php endif;?>
+
+            <?php if(count($syNulls) != count($syNums)):?>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                                    
+                    <div class="info-box-3 bg-green hover-expand-effect">
+                        <div class="icon">
+                            <i class="material-icons">
+                                <?php echo $chooseIconSY ?>
+                            </i>
+                        </div>
+                        <div class="content">
+                            <div class="text">Spotify</div>
+                            <div class="number"><?php echo round($subtractionSY, 3)?> %</div>
+                        </div>
+                    </div>
+
+                </div>
+            <?php endif;?>
                                 
         </div>
         <!-- Footer -->
@@ -937,11 +956,24 @@
             }
         });
 
+        const ttDataAvg = JSON.parse('<?php echo json_encode($averageTT) ?>');
+
+        const avgLineTT = {
+            label: 'Средноаритметична стойност',
+            data: [{x: dates[0], y: ttDataAvg}, {x: dates[dates.length - 1], y: ttDataAvg}],
+            type: 'line',
+            borderColor: 'blue',
+            borderDash: [5, 5],
+            fill: false,
+        };
+
+        tt.data.datasets.push(avgLineTT);
+        tt.update();
 
 
         //YouTube
         if(ytDataNulls.length != ytDataNums.length){
-            new Chart(document.getElementById('YouTubeGraphChart'), {
+            let yt = new Chart(document.getElementById('YouTubeGraphChart'), {
             type: 'line',
             data: {
                 labels: dates, //x
@@ -968,6 +1000,22 @@
                     maintainAspectRatio: false
                 }
             });
+
+            
+            const ytDataAvg = JSON.parse('<?php echo json_encode($averageYT) ?>');
+
+            const avgLineYT = {
+                label: 'Средноаритметична стойност',
+                data: [{x: dates[0], y: ytDataAvg}, {x: dates[dates.length - 1], y: ytDataAvg}],
+                type: 'line',
+                borderColor: 'blue',
+                borderDash: [5, 5],
+                fill: false,
+            };
+
+            yt.data.datasets.push(avgLineYT);
+            yt.update();
+
         }
 
         //Spotify
@@ -1015,6 +1063,20 @@
                 }
             });
 
+            
+            const syDataAvg = JSON.parse('<?php echo json_encode($averageSY) ?>');
+
+            const avgLineSY = {
+                label: 'Средноаритметична стойност',
+                data: [{x: dates[0], y: syDataAvg}, {x: dates[dates.length - 1], y: syDataAvg}],
+                type: 'line',
+                borderColor: 'blue',
+                borderDash: [5, 5],
+                fill: false,
+            };
+
+            sy.data.datasets.push(avgLineSY);
+            sy.update();
 
         }
 

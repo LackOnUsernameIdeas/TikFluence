@@ -233,6 +233,20 @@
 
                 <!-- Blockquotes -->
 
+                <div class="col-lg-14 col-md-14 col-sm-14 col-xs-14">
+                    <div class="card">
+
+                        <div class="body">
+                            <p class="lead" style="font-size: 170%;">
+                                В тази страница имате възможността да направите обратна връзка!
+                            </p>
+                            <p>
+                                Може да разберете повече за нас и да видите къде се намира училището ни.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="col-xs-14 ol-sm-14 col-md-14 col-lg-14">
                     <div class="panel-group" id="accordion_1" role="tablist" aria-multiselectable="true">
                         <div class="panel panel-primary">

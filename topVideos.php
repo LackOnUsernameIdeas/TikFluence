@@ -180,7 +180,22 @@
                     </div>
                 </div>
             </div>
-        
+
+            <?php if($topvideos != false):?>
+                <div class="col-lg-14 col-md-14 col-sm-14 col-xs-14">
+                    <div class="card">
+                        <div class="body">
+                            <p class="lead" style="font-size: 170%;">
+                                В тази страница имате възможността да видите топ 200 на най-гледаните видеа в TikTok!
+                            </p>
+                            <p>
+                                Под таблицата, можете да видите и сравнение между първите 10 потребители от класацията.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            <?php endif;?>            
+                
             <div class="block-header">
                 <div class="card">
                     <div class="body">
@@ -188,7 +203,7 @@
                         <?php if($datesArray):?>
                             <input type="date" id="start" name="trip-start"
                             value="<?php echo $selectDate ?>"
-                            min="<?php echo $datesArray[0] ?>" max="<?php echo end($datesArray) ?>" data-id="<?php echo $date ?>" data-role="setDate" onchange=" window.location.replace('./selectDate.php?setDate=' + this.value + '&redirectURI=' + window.location.href)">
+                            min="<?php echo $datesArray[1] ?>" max="<?php echo end($datesArray) ?>" data-id="<?php echo $date ?>" data-role="setDate" onchange=" window.location.replace('./selectDate.php?setDate=' + this.value + '&redirectURI=' + window.location.href)">
                         <?php endif;?>
                     </div>
                 </div>
@@ -267,20 +282,22 @@
                 </div>
             <?php endif;?>
 
-        </div>
-        <!-- Footer -->
-        <div class="col-xs-14 col-sm-14 col-md-14 col-lg-14">
-            <div class="card">
-                <div class="body">
-                    
-                    <div class="legal">
-                        <?php include './footer.php';?>
+            <!-- Footer -->
+            <div class="col-xs-14 col-sm-14 col-md-14 col-lg-14">
+                <div class="card">
+                    <div class="body">
+                        
+                        <div class="legal">
+                            <?php include './footer.php';?>
+                        </div>
+                                
                     </div>
-                            
                 </div>
             </div>
+            <!-- #Footer -->  
+
         </div>
-        <!-- #Footer -->   
+ 
              
     </section>
 

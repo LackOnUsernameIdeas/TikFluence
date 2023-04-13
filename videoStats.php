@@ -229,12 +229,29 @@
                         <div class="card">
                             <div class="body">
                                 <h2>Изберете дата за която искате да видите данни:</h2>
-                                    <?php if($chooseDatesForButton):?>
-                                        <input type="date" id="start" name="trip-start"
-                                        value="<?php echo $selectDate ?>"
-                                        min="<?php echo $chooseDatesForButton[1] ?>" max="<?php echo end($chooseDatesForButton) ?>" onchange=" window.location.replace('./selectDate.php?setDate=' + this.value + '&redirectURI=' + window.location.href)">
-                                    <?php endif;?>
-                        
+                                <?php if($chooseDatesForButton):?>
+                                    <input type="date" id="start" name="trip-start"
+                                    value="<?php echo $selectDate ?>"
+                                    min="<?php echo $chooseDatesForButton[1] ?>" max="<?php echo end($chooseDatesForButton) ?>" onchange=" window.location.replace('./selectDate.php?setDate=' + this.value + '&redirectURI=' + window.location.href)">
+                                <?php endif;?>
+                                <i class="material-icons" data-toggle="modal" data-target="#defaultModal" style="cursor: pointer;display: inline-block;vertical-align: middle;">help_outline</i>
+                                <div class="info"> 
+                                    <div class="modal fade" id="defaultModal" tabindex="-1" role="dialog">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h4 class="modal-title" id="defaultModalLabel"></h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Имайте предвид, че избирате да видите данните от датата, която сте избрали и 39 дни назад от нея. Общо можете да виждате данни до не повече от 40 дни.
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn bg-purple btn-link waves-effect" data-dismiss="modal">ЗАТВОРИ</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -287,6 +304,26 @@
                         <div class="content">
                             <div class="text">ХАРЕСВАНИЯ</div>
                             <div class="number"><?php echo number_format($videoDataForSpecificDate["likes_count"]) ?></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="info"> 
+                    <i class="material-icons" data-toggle="modal" data-target="#defaultModal2" style="cursor: pointer;display: inline-block;">help_outline</i>
+                        <div class="modal fade" id="defaultModal2" tabindex="-1" role="dialog">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title" id="defaultModalLabel"></h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        Имайте предвид, че данните може да са закръглени, тъй като при надвишаване на определени стойности, създателите на TikTok са направили така че именно това да се случва.
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn bg-purple btn-link waves-effect" data-dismiss="modal">ЗАТВОРИ</button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

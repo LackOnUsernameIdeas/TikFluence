@@ -235,7 +235,7 @@
                             <div class="card">
 
                                 <div class="body">
-                                    <p class="lead">
+                                    <p class="lead" style="font-size: 170%;">
                                         В тази страница имате възможността да видите статистиките на вашия собствен профил!
                                     </p>
                                     <p>

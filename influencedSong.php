@@ -412,28 +412,47 @@
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="row clearfix">
-
-                    <div class="col-xs-12 ol-sm-12 col-md-12 col-lg-12">
-                        <div class="panel-group" id="accordion_1" role="tablist" aria-multiselectable="true">
-                            <div class="panel panel-primary">
-                                <div class="panel-heading" role="tab" id="headingOne_1">
-                                    <h4 class="panel-title">
-                                        <a role="button" data-toggle="collapse" data-parent="#accordion_1" href="#collapseOne_1" aria-expanded="true" aria-controls="collapseOne_1" class="">
-                                        ИЗМЕНЕНИЕ НА ПОПУЛЯРНОСТ В TIKTOK<i class="material-icons">keyboard_arrow_down</i>
-                                        </a>
-                                    </h4>
-                                </div>
-                                <div id="collapseOne_1" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_1" aria-expanded="true">
-                                    <div class="body songBox" style="padding:1%">
-                                        <canvas id="TikTokGraphChart"></canvas>
+                <div class="info"> 
+                    <i class="material-icons" data-toggle="modal" data-target="#defaultModal" style="cursor: pointer;display: inline-block;">help_outline</i>
+                        <div class="modal fade" id="defaultModal" tabindex="-1" role="dialog">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title" id="defaultModalLabel"></h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        Имайте предвид, че данните може да са закръглени, тъй като при надвишаване на определени стойности, създателите на TikTok са направили така че именно това да се случва.
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn bg-purple btn-link waves-effect" data-dismiss="modal">ЗАТВОРИ</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
+
+            <div class="row clearfix">
+
+                <div class="col-xs-12 ol-sm-12 col-md-12 col-lg-12">
+                    <div class="panel-group" id="accordion_1" role="tablist" aria-multiselectable="true">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading" role="tab" id="headingOne_1">
+                                <h4 class="panel-title">
+                                    <a role="button" data-toggle="collapse" data-parent="#accordion_1" href="#collapseOne_1" aria-expanded="true" aria-controls="collapseOne_1" class="">
+                                    ИЗМЕНЕНИЕ НА ПОПУЛЯРНОСТ В TIKTOK<i class="material-icons">keyboard_arrow_down</i>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseOne_1" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_1" aria-expanded="true">
+                                <div class="body songBox" style="padding:1%">
+                                    <canvas id="TikTokGraphChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="col-xs-12 ol-sm-12 col-md-12 col-lg-12">
                     <div class="panel-group" id="accordion_2" role="tablist" aria-multiselectable="true">

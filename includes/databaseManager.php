@@ -1074,7 +1074,7 @@ class DatabaseManager {
     public function getAverageTT($sid, $date){
         $sql = "SELECT AVG(`number_of_videos_last_14days`)
                 FROM `tiktok_records`
-                WHERE song_id=:sid AND DATE(`fetch_date`) <= DATE(:date)";
+                WHERE song_id=:sid AND DATE(`fetch_date`) BETWEEN DATE_SUB(:date, INTERVAL 39 DAY) AND :date";
 
         $query = $this->pdo->prepare($sql);
         $query->bindValue('sid', $sid);
@@ -1090,7 +1090,7 @@ class DatabaseManager {
     public function getAverageYT($sid, $date){
         $sql = "SELECT AVG(`youtube_views`)
                 FROM `tiktok_records`
-                WHERE song_id=:sid AND DATE(`fetch_date`) <= DATE(:date)";
+                WHERE song_id=:sid AND DATE(`fetch_date`) BETWEEN DATE_SUB(:date, INTERVAL 39 DAY) AND :date";
 
         $query = $this->pdo->prepare($sql);
         $query->bindValue('sid', $sid);
@@ -1106,7 +1106,7 @@ class DatabaseManager {
     public function getAverageSY($sid, $date){
         $sql = "SELECT AVG(`spotify_popularity`)
                 FROM `tiktok_records`
-                WHERE song_id=:sid AND DATE(`fetch_date`) <= DATE(:date)";
+                WHERE song_id=:sid AND DATE(`fetch_date`) BETWEEN DATE_SUB(:date, INTERVAL 39 DAY) AND :date";
 
         $query = $this->pdo->prepare($sql);
         $query->bindValue('sid', $sid);
