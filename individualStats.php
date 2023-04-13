@@ -721,6 +721,7 @@
                 }],
                 yAxes: [{
                 ticks: {
+                    stepSize: 1,
                     beginAtZero: true
                 }
                 }]
@@ -754,6 +755,7 @@
                 }],
                 yAxes: [{
                 ticks: {
+                    stepSize: 1,
                     beginAtZero: true
                 }
                 }]
