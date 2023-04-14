@@ -12,14 +12,23 @@
     $userBasicData = [];
     $userVideoData = [];
 
-    $accessToken = "";
     if(isset($_GET["code"])){
-        $accessToken = generateTikTokAccessToken($_GET["code"]);
+        $_SESSION["accessToken"] = generateTikTokAccessToken($_GET["code"]);
 
+        $userBasicData = getUserBasicData($_SESSION["accessToken"]);
+        $userVideoData = getUserVideoData($_SESSION["accessToken"]);
 
-        $userBasicData = getUserBasicData($accessToken);
-        $userVideoData = getUserVideoData($accessToken);
+        //Генерираме си подробни данни за потребителя, ако профилът му не е заключен и има видеа
+        if($accessToken != false){
+            $openUserId = getUserOpenId($accessToken);
 
+            $usernameLink = generateTikTokUsername("https://open-api.tiktok.com/shortlink/profile/?open_id=$openUserId");
+            $username = explode("?", explode('@', $usernameLink)[1])[0];
+        }
+    } elseif(isset($_SESSION["accessToken"])){
+
+        $userBasicData = getUserBasicData($_SESSION["accessToken"]);
+        $userVideoData = getUserVideoData($_SESSION["accessToken"]);
 
         //Генерираме си подробни данни за потребителя, ако профилът му не е заключен и има видеа
         if($accessToken != false){
@@ -344,90 +353,90 @@
 
                 <?php if(isset($_GET["code"]) && $userBasicData != []): ?>
                     <div class="row clearfix">  
-                        
-                        <div class="col-lg-6 col-md-8 col-sm-8 col-xs-8">
-                            <div class="card">
-                                <div class="body">
-                                    <!-- User Info -->
-                                    <div class="row clearfix">
-                                        <div class="container-fluid">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">  
 
-                                            <div class="user-info">
-                                                <div class="body">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <div class="card">
+                                    <div class="body">
+                                        <!-- User Info -->
+                                        <div class="row clearfix">
+                                            <div class="container-fluid">
 
-                                                        <div class="image">
-                                                            <img src="<?php echo $userBasicData["avatar_url"]?>" width="68" height="68" alt="User" />
-                                                        </div>
+                                                <div class="user-info">
+                                                    <div class="body">
 
-                                                        <div class="info-container">
-                                                            <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                <?= $username ?> <img src="<?= $userBasicData["is_verified"] ? "./images/verified.png" : ""?>" width="10px" height="10px">
+                                                            <div class="image">
+                                                                <img src="<?php echo $userBasicData["avatar_url"]?>" width="68" height="68" alt="User" />
                                                             </div>
-                                                            <div class="email" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                <?= $userBasicData["display_name"] . " |"?> <?= $userBasicData["bio_description"]?>
+
+                                                            <div class="info-container">
+                                                                <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                    <?= $username ?> <img src="<?= $userBasicData["is_verified"] ? "./images/verified.png" : ""?>" width="10px" height="10px">
+                                                                </div>
+                                                                <div class="email" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                    <?= $userBasicData["display_name"] . " |"?> <?= $userBasicData["bio_description"]?>
+                                                                </div>
                                                             </div>
-                                                        </div>
+                                                    </div>
+
                                                 </div>
 
                                             </div>
-
                                         </div>
+
+                                        <!-- #User Info -->
                                     </div>
+                                </div>
+                            </div>
 
-                                    <!-- #User Info -->
+                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
+                                <div class="info-box bg-deep-purple hover-zoom-effect">
+                                    <div class="icon">
+                                        <i class="material-icons">person</i>
+                                    </div>
+                                    <div class="content">
+                                        <div class="text">Последователи</div>
+                                        <div class="number count-to" id="follower_count" data-from="0" data-to="<?php echo $userBasicData["follower_count"] ?>" data-speed="3000" data-fresh-interval="20"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
+                                <div class="info-box bg-red hover-zoom-effect">
+                                    <div class="icon">
+                                        <i class="material-icons">person_outline</i>
+                                    </div>
+                                    <div class="content">
+                                        <div class="text">Последвани</div>
+                                        <div class="number count-to" data-from="0" data-to="<?php echo $userBasicData["following_count"] ?>" data-speed="3000" data-fresh-interval="20"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
+                                <div class="info-box bg-deep-orange hover-zoom-effect">
+                                    <div class="icon">
+                                        <i class="material-icons">video_library</i>
+                                    </div>
+                                    <div class="content">
+                                        <div class="text">Брой видеа</div>
+                                        <div class="number count-to" data-from="0" data-to="<?php echo count($userVideoData) ?>" data-speed="3000" data-fresh-interval="20"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
+                                <div class="info-box bg-yellow hover-zoom-effect">
+                                    <div class="icon">
+                                        <i class="material-icons">thumb_up</i>
+                                    </div>
+                                    <div class="content">
+                                        <div class="text">Брой харесвания</div>
+                                        <div class="number count-to" id="likes_count" data-from="0" data-to="<?php echo $userBasicData["likes_count"] ?>" data-speed="3000" data-fresh-interval="20"></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-
-                    <div class="row clearfix">  
-                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                            <div class="info-box bg-deep-purple hover-zoom-effect">
-                                <div class="icon">
-                                    <i class="material-icons">person</i>
-                                </div>
-                                <div class="content">
-                                    <div class="text">Последователи</div>
-                                    <div class="number count-to" id="follower_count" data-from="0" data-to="<?php echo $userBasicData["follower_count"] ?>" data-speed="3000" data-fresh-interval="20"></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                            <div class="info-box bg-red hover-zoom-effect">
-                                <div class="icon">
-                                    <i class="material-icons">person_outline</i>
-                                </div>
-                                <div class="content">
-                                    <div class="text">Последвани</div>
-                                    <div class="number count-to" data-from="0" data-to="<?php echo $userBasicData["following_count"] ?>" data-speed="3000" data-fresh-interval="20"></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                            <div class="info-box bg-deep-orange hover-zoom-effect">
-                                <div class="icon">
-                                    <i class="material-icons">video_library</i>
-                                </div>
-                                <div class="content">
-                                    <div class="text">Брой видеа</div>
-                                    <div class="number count-to" data-from="0" data-to="<?php echo count($userVideoData) ?>" data-speed="3000" data-fresh-interval="20"></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                            <div class="info-box bg-yellow hover-zoom-effect">
-                                <div class="icon">
-                                    <i class="material-icons">thumb_up</i>
-                                </div>
-                                <div class="content">
-                                    <div class="text">Брой харесвания</div>
-                                    <div class="number count-to" id="likes_count" data-from="0" data-to="<?php echo $userBasicData["likes_count"] ?>" data-speed="3000" data-fresh-interval="20"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
                         <?php if($userVideoData != false): ?>
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
@@ -767,7 +776,13 @@
     let accessToken = JSON.parse('<?php echo json_encode($accessToken) ?>');
 
     //Изпълняваме функцията, която трябва да праща заяки и да актуализира информацията в диаграмите и уиджетите през 1 минута
-    setInterval(function() {
+    let requestCount = 0;
+    let intervalFunction = setInterval(function() {
+        if (requestCount >= 10) {
+            clearInterval(intervalFunction);
+            return;
+        }
+
         fetch('https://fluence-api.noit.eu/realTimeStatisticData', {
             method: 'POST',
             mode: 'cors',
