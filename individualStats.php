@@ -439,91 +439,115 @@
                         </div>
 
                         <?php if($userVideoData != false): ?>
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                <div class="card">
-                                    <div class="header">
-                                        <h2>
-                                            ПОСЛЕДОВАТЕЛИ В РЕАЛНО ВРЕМЕ
-                                        </h2>
-                                    </div>
-                                    <div class="body">
-                                        <div class="content">
-                                            <canvas id="FollowersRealtimeChart"></canvas>
+                            <div class="col-xs-6 ol-sm-6 col-md-6 col-lg-6">
+                                <div class="panel-group" id="accordion_1" role="tablist" aria-multiselectable="true">
+                                    <div class="panel panel-primary">
+                                        <div class="panel-heading" role="tab" id="headingOne_1">
+                                            <h4 class="panel-title">
+                                                <a role="button" data-toggle="collapse" data-parent="#accordion_1" href="#collapseOne_1" aria-expanded="true" aria-controls="collapseOne_3" class="">
+                                                ПОСЛЕДОВАТЕЛИ В РЕАЛНО ВРЕМЕ <i class="material-icons">keyboard_arrow_down</i>
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id="collapseOne_1" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_1" aria-expanded="true">
+                                            <div class="body songBox" style="padding:1%">
+                                                <canvas id="FollowersRealtimeChart"></canvas>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                <div class="card">
-                                    <div class="header">
-                                        <h2>
-                                            ХАРЕСВАНИЯ В РЕАЛНО ВРЕМЕ
-                                        </h2>
-                                    </div>
-                                    <div class="body">
-                                        <div class="content">
-                                            <canvas id="LikesRealtimeChart"></canvas>
+                            <div class="col-xs-6 ol-sm-6 col-md-6 col-lg-6">
+                                <div class="panel-group" id="accordion_2" role="tablist" aria-multiselectable="true">
+                                    <div class="panel panel-primary">
+                                        <div class="panel-heading" role="tab" id="headingOne_2">
+                                            <h4 class="panel-title">
+                                                <a role="button" data-toggle="collapse" data-parent="#accordion_2" href="#collapseOne_2" aria-expanded="true" aria-controls="collapseOne_3" class="">
+                                                ХАРЕСВАНИЯ В РЕАЛНО ВРЕМЕ <i class="material-icons">keyboard_arrow_down</i>
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id="collapseOne_2" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_2" aria-expanded="true">
+                                            <div class="body songBox" style="padding:1%">
+                                                <canvas id="LikesRealtimeChart"></canvas>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                <div class="card">
-                                    <div class="header">
-                                        <h2>
-                                            ХАРЕСВАНИЯ НА СКОРО КАЧЕНИ ВИДЕА
-                                        </h2>
-                                    </div>
-                                    <div class="body">
-                                        <div class="content">
-                                            <canvas id="LikesChart"></canvas>
+                            <div class="col-xs-6 ol-sm-6 col-md-6 col-lg-6">
+                                <div class="panel-group" id="accordion_3" role="tablist" aria-multiselectable="true">
+                                    <div class="panel panel-primary">
+                                        <div class="panel-heading" role="tab" id="headingOne_3">
+                                            <h4 class="panel-title">
+                                                <a role="button" data-toggle="collapse" data-parent="#accordion_3" href="#collapseOne_3" aria-expanded="true" aria-controls="collapseOne_3" class="">
+                                                ХАРЕСВАНИЯ НА СКОРО КАЧЕНИ ВИДЕА <i class="material-icons">keyboard_arrow_down</i>
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id="collapseOne_3" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_3" aria-expanded="true">
+                                            <div class="body songBox" style="padding:1%">
+                                                <canvas id="LikesChart"></canvas>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                <div class="card">
-                                    <div class="header">
-                                        <h2>
-                                            ГЛЕДАНИЯ НА СКОРО КАЧЕНИ ВИДЕА
-                                        </h2>
-                                    </div>
-                                    <div class="body">
-                                        <div class="content">
-                                            <canvas id="ViewsChart"></canvas>
+                            <div class="col-xs-6 ol-sm-6 col-md-6 col-lg-6">
+                                <div class="panel-group" id="accordion_4" role="tablist" aria-multiselectable="true">
+                                    <div class="panel panel-primary">
+                                        <div class="panel-heading" role="tab" id="headingOne_4">
+                                            <h4 class="panel-title">
+                                                <a role="button" data-toggle="collapse" data-parent="#accordion_4" href="#collapseOne_4" aria-expanded="true" aria-controls="collapseOne_3" class="">
+                                                ГЛЕДАНИЯ НА СКОРО КАЧЕНИ ВИДЕА <i class="material-icons">keyboard_arrow_down</i>
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id="collapseOne_4" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_4" aria-expanded="true">
+                                            <div class="body songBox" style="padding:1%">
+                                                <canvas id="ViewsChart"></canvas>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                <div class="card">
-                                    <div class="header">
-                                        <h2>
-                                            СПОДЕЛЯНИЯ НА СКОРО КАЧЕНИ ВИДЕА
-                                        </h2>
-                                    </div>
-                                    <div class="body">
-                                        <div class="content">
-                                            <canvas id="SharesChart"></canvas>
+                            <div class="col-xs-6 ol-sm-6 col-md-6 col-lg-6">
+                                <div class="panel-group" id="accordion_5" role="tablist" aria-multiselectable="true">
+                                    <div class="panel panel-primary">
+                                        <div class="panel-heading" role="tab" id="headingOne_5">
+                                            <h4 class="panel-title">
+                                                <a role="button" data-toggle="collapse" data-parent="#accordion_5" href="#collapseOne_5" aria-expanded="true" aria-controls="collapseOne_3" class="">
+                                                СПОДЕЛЯНИЯ НА СКОРО КАЧЕНИ ВИДЕА <i class="material-icons">keyboard_arrow_down</i>
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id="collapseOne_5" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_5" aria-expanded="true">
+                                            <div class="body songBox" style="padding:1%">
+                                                <canvas id="SharesChart"></canvas>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                <div class="card">
-                                    <div class="header">
-                                        <h2>
-                                            КОМЕНТАРИ НА СКОРО КАЧЕНИ ВИДЕА
-                                        </h2>
-                                    </div>
-                                    <div class="body">
-                                        <div class="content">
-                                            <canvas id="CommentsChart"></canvas>
+                            <div class="col-xs-6 ol-sm-6 col-md-6 col-lg-6">
+                                <div class="panel-group" id="accordion_5" role="tablist" aria-multiselectable="true">
+                                    <div class="panel panel-primary">
+                                        <div class="panel-heading" role="tab" id="headingOne_5">
+                                            <h4 class="panel-title">
+                                                <a role="button" data-toggle="collapse" data-parent="#accordion_5" href="#collapseOne_5" aria-expanded="true" aria-controls="collapseOne_3" class="">
+                                                КОМЕНТАРИ НА СКОРО КАЧЕНИ ВИДЕА<i class="material-icons">keyboard_arrow_down</i>
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id="collapseOne_5" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_5" aria-expanded="true">
+                                            <div class="body songBox" style="padding:1%">
+                                                <canvas id="CommentsChart"></canvas>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
