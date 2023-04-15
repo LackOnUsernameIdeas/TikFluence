@@ -15,8 +15,8 @@
     if(isset($_GET["code"])){
         $_SESSION["accessToken"] = generateTikTokAccessToken($_GET["code"]);
 
-        $userBasicData = getUserBasicData($_SESSION["accessToken"]);
-        $userVideoData = getUserVideoData($_SESSION["accessToken"]);
+        $userBasicData = getUserBasicData($accessToken);
+        $userVideoData = getUserVideoData($accessToken);
 
         //Генерираме си подробни данни за потребителя, ако профилът му не е заключен и има видеа
         if($accessToken != false){
@@ -95,6 +95,15 @@
 
     <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
     <link href="./css/themes/all-themes.css" rel="stylesheet" />
+
+    <style>
+        .userChartsBox{
+            width: 1480px;
+            min-height: 400px;
+            max-height: 600px;
+            max-width: 85vw;
+        }
+    </style>
 </head>
 
 <body class="theme-purple">
@@ -256,7 +265,7 @@
                         </div>
                     </div>
 
-                    <a href='https://www.tiktok.com/auth/authorize/?client_key=awntkz3ma9o5eetl&scope=user.info.basic,video.list&response_type=code&redirect_uri=https://fluence.noit.eu/individualStats.php&state=<?php echo $reqCallbackState ?>' target="_blank"><img src="./images/logInButton.png" style="border-radius:10px;"></a>
+                    <a href='https://www.tiktok.com/auth/authorize/?client_key=awntkz3ma9o5eetl&scope=user.info.basic,video.list&response_type=code&redirect_uri=https://fluence.noit.eu/individualStats.php&state=<?php echo $reqCallbackState ?>' target="_blank"><img src="./images/logInButton.png" style="border-radius:10px;max-width:100%"></a>
                     <br>
                     <br>
 
@@ -352,10 +361,10 @@
                 <?php endif;?>
 
                 <?php if(isset($_GET["code"]) && $userBasicData != []): ?>
-                    <div class="row clearfix">  
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">  
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">  
+                        <div class="row clearfix">  
 
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5" style="min-width:50%;">
                                 <div class="card">
                                     <div class="body">
                                         <!-- User Info -->
@@ -389,166 +398,170 @@
                                 </div>
                             </div>
 
-                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
-                                <div class="info-box bg-deep-purple hover-zoom-effect">
-                                    <div class="icon">
-                                        <i class="material-icons">person</i>
-                                    </div>
-                                    <div class="content">
-                                        <div class="text">Последователи</div>
-                                        <div class="number count-to" id="follower_count" data-from="0" data-to="<?php echo $userBasicData["follower_count"] ?>" data-speed="3000" data-fresh-interval="20"></div>
+
+                            <div class="row clearfix">  
+
+                                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
+                                    <div class="info-box bg-deep-purple hover-zoom-effect">
+                                        <div class="icon">
+                                            <i class="material-icons">person</i>
+                                        </div>
+                                        <div class="content">
+                                            <div class="text">Последователи</div>
+                                            <div class="number count-to" id="follower_count" data-from="0" data-to="<?php echo $userBasicData["follower_count"] ?>" data-speed="3000" data-fresh-interval="20"></div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
-                                <div class="info-box bg-red hover-zoom-effect">
-                                    <div class="icon">
-                                        <i class="material-icons">person_outline</i>
-                                    </div>
-                                    <div class="content">
-                                        <div class="text">Последвани</div>
-                                        <div class="number count-to" data-from="0" data-to="<?php echo $userBasicData["following_count"] ?>" data-speed="3000" data-fresh-interval="20"></div>
+                                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
+                                    <div class="info-box bg-red hover-zoom-effect">
+                                        <div class="icon">
+                                            <i class="material-icons">person_outline</i>
+                                        </div>
+                                        <div class="content">
+                                            <div class="text">Последвани</div>
+                                            <div class="number count-to" data-from="0" data-to="<?php echo $userBasicData["following_count"] ?>" data-speed="3000" data-fresh-interval="20"></div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
-                                <div class="info-box bg-deep-orange hover-zoom-effect">
-                                    <div class="icon">
-                                        <i class="material-icons">video_library</i>
-                                    </div>
-                                    <div class="content">
-                                        <div class="text">Брой видеа</div>
-                                        <div class="number count-to" data-from="0" data-to="<?php echo count($userVideoData) ?>" data-speed="3000" data-fresh-interval="20"></div>
+                                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
+                                    <div class="info-box bg-deep-orange hover-zoom-effect">
+                                        <div class="icon">
+                                            <i class="material-icons">video_library</i>
+                                        </div>
+                                        <div class="content">
+                                            <div class="text">Брой видеа</div>
+                                            <div class="number count-to" data-from="0" data-to="<?php echo count($userVideoData) ?>" data-speed="3000" data-fresh-interval="20"></div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
-                                <div class="info-box bg-yellow hover-zoom-effect">
-                                    <div class="icon">
-                                        <i class="material-icons">thumb_up</i>
-                                    </div>
-                                    <div class="content">
-                                        <div class="text">Брой харесвания</div>
-                                        <div class="number count-to" id="likes_count" data-from="0" data-to="<?php echo $userBasicData["likes_count"] ?>" data-speed="3000" data-fresh-interval="20"></div>
+                                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
+                                    <div class="info-box bg-yellow hover-zoom-effect">
+                                        <div class="icon">
+                                            <i class="material-icons">thumb_up</i>
+                                        </div>
+                                        <div class="content">
+                                            <div class="text">Брой харесвания</div>
+                                            <div class="number count-to" id="likes_count" data-from="0" data-to="<?php echo $userBasicData["likes_count"] ?>" data-speed="3000" data-fresh-interval="20"></div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
 
-                        <?php if($userVideoData != false): ?>
-                            <div class="row clearfix">  
-                                <div class="col-xs-6 ol-sm-6 col-md-6 col-lg-6">
-                                    <div class="panel-group" id="accordion_1" role="tablist" aria-multiselectable="true">
-                                        <div class="panel panel-primary">
-                                            <div class="panel-heading" role="tab" id="headingOne_1">
-                                                <h4 class="panel-title">
-                                                    <a role="button" data-toggle="collapse" data-parent="#accordion_1" href="#collapseOne_1" aria-expanded="true" aria-controls="collapseOne_3" class="">
-                                                    ПОСЛЕДОВАТЕЛИ В РЕАЛНО ВРЕМЕ <i class="material-icons">keyboard_arrow_down</i>
-                                                    </a>
-                                                </h4>
-                                            </div>
-                                            <div id="collapseOne_1" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_1" aria-expanded="true">
-                                                <div class="body songBox" style="padding:1%">
-                                                    <canvas id="FollowersRealtimeChart"></canvas>
-                                                </div>
+                    <?php if($userVideoData != false): ?>
+                        <div class="row clearfix">  
+                            <div class="col-xs-12 ol-sm-12 col-md-12 col-lg-12">
+                                <div class="panel-group" id="accordion_1" role="tablist" aria-multiselectable="true">
+                                    <div class="panel panel-primary">
+                                        <div class="panel-heading" role="tab" id="headingOne_1">
+                                            <h4 class="panel-title">
+                                                <a role="button" data-toggle="collapse" data-parent="#accordion_1" href="#collapseOne_1" aria-expanded="true" aria-controls="collapseOne_1" class="">
+                                                ПОСЛЕДОВАТЕЛИ В РЕАЛНО ВРЕМЕ <i class="material-icons">keyboard_arrow_down</i>
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id="collapseOne_1" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_1" aria-expanded="true">
+                                            <div class="body userChartsBox" style="padding:1%">
+                                                <canvas id="FollowersRealtimeChart"></canvas>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                            </div>
 
-                                <div class="col-xs-6 ol-sm-6 col-md-6 col-lg-6">
-                                    <div class="panel-group" id="accordion_2" role="tablist" aria-multiselectable="true">
-                                        <div class="panel panel-primary">
-                                            <div class="panel-heading" role="tab" id="headingOne_2">
-                                                <h4 class="panel-title">
-                                                    <a role="button" data-toggle="collapse" data-parent="#accordion_2" href="#collapseOne_2" aria-expanded="true" aria-controls="collapseOne_3" class="">
-                                                    ХАРЕСВАНИЯ В РЕАЛНО ВРЕМЕ <i class="material-icons">keyboard_arrow_down</i>
-                                                    </a>
-                                                </h4>
-                                            </div>
-                                            <div id="collapseOne_2" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_2" aria-expanded="true">
-                                                <div class="body songBox" style="padding:1%">
-                                                    <canvas id="LikesRealtimeChart"></canvas>
-                                                </div>
+                            <div class="col-xs-12 ol-sm-12 col-md-12 col-lg-12">
+                                <div class="panel-group" id="accordion_2" role="tablist" aria-multiselectable="true">
+                                    <div class="panel panel-primary">
+                                        <div class="panel-heading" role="tab" id="headingOne_2">
+                                            <h4 class="panel-title">
+                                                <a role="button" data-toggle="collapse" data-parent="#accordion_2" href="#collapseOne_2" aria-expanded="true" aria-controls="collapseOne_2" class="">
+                                                ХАРЕСВАНИЯ В РЕАЛНО ВРЕМЕ <i class="material-icons">keyboard_arrow_down</i>
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id="collapseOne_2" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_2" aria-expanded="true">
+                                            <div class="body userChartsBox" style="padding:1%">
+                                                <canvas id="LikesRealtimeChart"></canvas>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                            </div>
 
-                                <div class="col-xs-6 ol-sm-6 col-md-6 col-lg-6">
-                                    <div class="panel-group" id="accordion_3" role="tablist" aria-multiselectable="true">
-                                        <div class="panel panel-primary">
-                                            <div class="panel-heading" role="tab" id="headingOne_3">
-                                                <h4 class="panel-title">
-                                                    <a role="button" data-toggle="collapse" data-parent="#accordion_3" href="#collapseOne_3" aria-expanded="true" aria-controls="collapseOne_3" class="">
-                                                    ХАРЕСВАНИЯ НА СКОРО КАЧЕНИ ВИДЕА <i class="material-icons">keyboard_arrow_down</i>
-                                                    </a>
-                                                </h4>
-                                            </div>
-                                            <div id="collapseOne_3" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_3" aria-expanded="true">
-                                                <div class="body songBox" style="padding:1%">
-                                                    <canvas id="LikesChart"></canvas>
-                                                </div>
+                            <div class="col-xs-12 ol-sm-12 col-md-12 col-lg-12">
+                                <div class="panel-group" id="accordion_3" role="tablist" aria-multiselectable="true">
+                                    <div class="panel panel-primary">
+                                        <div class="panel-heading" role="tab" id="headingOne_3">
+                                            <h4 class="panel-title">
+                                                <a role="button" data-toggle="collapse" data-parent="#accordion_3" href="#collapseOne_3" aria-expanded="true" aria-controls="collapseOne_3" class="">
+                                                ХАРЕСВАНИЯ НА СКОРО КАЧЕНИ ВИДЕА <i class="material-icons">keyboard_arrow_down</i>
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id="collapseOne_3" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_3" aria-expanded="true">
+                                            <div class="body userChartsBox" style="padding:1%">
+                                                <canvas id="LikesChart"></canvas>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                            </div>
 
-                                <div class="col-xs-6 ol-sm-6 col-md-6 col-lg-6">
-                                    <div class="panel-group" id="accordion_4" role="tablist" aria-multiselectable="true">
-                                        <div class="panel panel-primary">
-                                            <div class="panel-heading" role="tab" id="headingOne_4">
-                                                <h4 class="panel-title">
-                                                    <a role="button" data-toggle="collapse" data-parent="#accordion_4" href="#collapseOne_4" aria-expanded="true" aria-controls="collapseOne_3" class="">
-                                                    ГЛЕДАНИЯ НА СКОРО КАЧЕНИ ВИДЕА <i class="material-icons">keyboard_arrow_down</i>
-                                                    </a>
-                                                </h4>
-                                            </div>
-                                            <div id="collapseOne_4" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_4" aria-expanded="true">
-                                                <div class="body songBox" style="padding:1%">
-                                                    <canvas id="ViewsChart"></canvas>
-                                                </div>
+                            <div class="col-xs-12 ol-sm-12 col-md-12 col-lg-12">
+                                <div class="panel-group" id="accordion_4" role="tablist" aria-multiselectable="true">
+                                    <div class="panel panel-primary">
+                                        <div class="panel-heading" role="tab" id="headingOne_4">
+                                            <h4 class="panel-title">
+                                                <a role="button" data-toggle="collapse" data-parent="#accordion_4" href="#collapseOne_4" aria-expanded="true" aria-controls="collapseOne_4" class="">
+                                                ГЛЕДАНИЯ НА СКОРО КАЧЕНИ ВИДЕА <i class="material-icons">keyboard_arrow_down</i>
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id="collapseOne_4" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_4" aria-expanded="true">
+                                            <div class="body userChartsBox" style="padding:1%">
+                                                <canvas id="ViewsChart"></canvas>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                            </div>
 
-                                <div class="col-xs-6 ol-sm-6 col-md-6 col-lg-6">
-                                    <div class="panel-group" id="accordion_5" role="tablist" aria-multiselectable="true">
-                                        <div class="panel panel-primary">
-                                            <div class="panel-heading" role="tab" id="headingOne_5">
-                                                <h4 class="panel-title">
-                                                    <a role="button" data-toggle="collapse" data-parent="#accordion_5" href="#collapseOne_5" aria-expanded="true" aria-controls="collapseOne_3" class="">
-                                                    СПОДЕЛЯНИЯ НА СКОРО КАЧЕНИ ВИДЕА <i class="material-icons">keyboard_arrow_down</i>
-                                                    </a>
-                                                </h4>
-                                            </div>
-                                            <div id="collapseOne_5" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_5" aria-expanded="true">
-                                                <div class="body songBox" style="padding:1%">
-                                                    <canvas id="SharesChart"></canvas>
-                                                </div>
+                            <div class="col-xs-12 ol-sm-12 col-md-12 col-lg-12">
+                                <div class="panel-group" id="accordion_5" role="tablist" aria-multiselectable="true">
+                                    <div class="panel panel-primary">
+                                        <div class="panel-heading" role="tab" id="headingOne_5">
+                                            <h4 class="panel-title">
+                                                <a role="button" data-toggle="collapse" data-parent="#accordion_5" href="#collapseOne_5" aria-expanded="true" aria-controls="collapseOne_5" class="">
+                                                СПОДЕЛЯНИЯ НА СКОРО КАЧЕНИ ВИДЕА <i class="material-icons">keyboard_arrow_down</i>
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id="collapseOne_5" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_5" aria-expanded="true">
+                                            <div class="body userChartsBox" style="padding:1%">
+                                                <canvas id="SharesChart"></canvas>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                            </div>
 
-                                <div class="col-xs-6 ol-sm-6 col-md-6 col-lg-6">
-                                    <div class="panel-group" id="accordion_5" role="tablist" aria-multiselectable="true">
-                                        <div class="panel panel-primary">
-                                            <div class="panel-heading" role="tab" id="headingOne_5">
-                                                <h4 class="panel-title">
-                                                    <a role="button" data-toggle="collapse" data-parent="#accordion_5" href="#collapseOne_5" aria-expanded="true" aria-controls="collapseOne_3" class="">
-                                                    КОМЕНТАРИ НА СКОРО КАЧЕНИ ВИДЕА<i class="material-icons">keyboard_arrow_down</i>
-                                                    </a>
-                                                </h4>
-                                            </div>
-                                            <div id="collapseOne_5" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_5" aria-expanded="true">
-                                                <div class="body songBox" style="padding:1%">
-                                                    <canvas id="CommentsChart"></canvas>
-                                                </div>
+                            <div class="col-xs-12 ol-sm-12 col-md-12 col-lg-12">
+                                <div class="panel-group" id="accordion_6" role="tablist" aria-multiselectable="true">
+                                    <div class="panel panel-primary">
+                                        <div class="panel-heading" role="tab" id="headingOne_5">
+                                            <h4 class="panel-title">
+                                                <a role="button" data-toggle="collapse" data-parent="#accordion_6" href="#collapseOne_6" aria-expanded="true" aria-controls="collapseOne_6" class="">
+                                                КОМЕНТАРИ НА СКОРО КАЧЕНИ ВИДЕА<i class="material-icons">keyboard_arrow_down</i>
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id="collapseOne_6" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_6" aria-expanded="true">
+                                            <div class="body userChartsBox" style="padding:1%">
+                                                <canvas id="CommentsChart"></canvas>
                                             </div>
                                         </div>
                                     </div>
@@ -568,20 +581,20 @@
                     </div>
 
                 <?php endif;?>
-        </div>
-        <!-- Footer -->
-        <div class="col-xs-14 col-sm-14 col-md-14 col-lg-14">
-            <div class="card">
-                <div class="body">
-                    
-                    <div class="legal">
-                        <?php include './footer.php';?>
-                    </div>
+                <!-- Footer -->
+                <div class="col-xs-14 col-sm-14 col-md-14 col-lg-14">
+                    <div class="card">
+                        <div class="body">
                             
+                            <div class="legal">
+                                <?php include './footer.php';?>
+                            </div>
+                                    
+                        </div>
+                    </div>
                 </div>
-            </div>
+                <!-- #Footer -->
         </div>
-        <!-- #Footer -->
     </section>
 
 
@@ -639,7 +652,8 @@
                         display: true,
                         position: "left"
                     }
-                }
+                },
+                maintainAspectRatio: false
             }
         });
 
@@ -666,7 +680,8 @@
                         display: true,
                         position: "left"
                     }
-                }
+                },
+                maintainAspectRatio: false
             }
         });
 
@@ -693,7 +708,8 @@
                         display: true,
                         position: "left"
                     }
-                }
+                },
+                maintainAspectRatio: false
             }
         });
 
@@ -720,7 +736,8 @@
                         display: true,
                         position: "left"
                     }
-                }
+                },
+                maintainAspectRatio: false
             }
         });
 
@@ -760,7 +777,8 @@
                     beginAtZero: true
                 }
                 }]
-            }
+            },
+            maintainAspectRatio: false
         }
     });
 
@@ -794,7 +812,8 @@
                     beginAtZero: true
                 }
                 }]
-            }
+            },
+            maintainAspectRatio: false
         }
     });
 

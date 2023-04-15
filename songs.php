@@ -373,21 +373,13 @@
                                                     <th>YOUTUBE ГЛЕДАНИЯ</th>
                                                     <th>SPOTIFY ПОПУЛЯРНОСТ</th>
                                                     <th></th>
-                                                    <th></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <?php if($top200SongsGlobal):?>
                                                     <?php foreach($top200SongsGlobal as $st):?>
                                                         <?php $show = setGrowth($st["song_id"], $db, $selectDate)?>
-                                                        <?php 
-                                                            $growthForButton;
-                                                            if($show == "Вижте нарастване"){
-                                                                $growthForButton = true;
-                                                            } elseif($show == "Вижте детайли"){
-                                                                $growthForButton = false;
-                                                            }
-                                                        ?>
+
                                                         <?php $songData = $db->getDatapointsForSong($st["song_id"], $selectDate); ?>
                                                         <tr>
                                                             <th><?php echo $st["rank"]?></th>
@@ -397,8 +389,7 @@
                                                             <th><?php echo number_format($st["total_likes_count"])?></th>
                                                             <th><?php if($st["youtube_platform_id"] != null):?><?php echo number_format($st["youtube_views"])?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://www.youtube.com/watch?v=<?php echo $st["youtube_platform_id"] ?>" target="_blank"><i class="fa fa-eye" title="Вижте песента в YouTube"></i></a><?php endif;?></th>
                                                             <th><?php if($st["spotify_platform_id"] != null):?><?php echo $st["spotify_popularity"]?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://open.spotify.com/track/<?php echo $st["spotify_platform_id"] ?>" target="_blank"><i class="fa fa-eye" title="Вижте песента в Spotify"></i></a><?php endif;?></th>
-                                                            <th><?php if(count($songData) > 1):?><?php if($growthForButton):?><a href='./songStats.php?sid=<?php echo $st["song_id"]?>' class="btn bg-purple waves-effect"><?php echo $show?></a><?php endif;?><?php endif;?></th>
-                                                            <th><?php if(count($songData) > 1):?><?php if($growthForButton == false):?><a href='./songStats.php?sid=<?php echo $st["song_id"]?>' class="btn bg-purple waves-effect"><?php echo $show?></a><?php endif;?><?php endif;?></th>
+                                                            <th><?php if(count($songData) > 1):?><a href='./songStats.php?sid=<?php echo $st["song_id"]?>' class="btn bg-<?php if($show == "Вижте детайли"){echo "deep-purple";} elseif($show == "Вижте нарастване"){echo "purple";}?> waves-effect"><?php echo $show?></a><?php endif;?></th>
                                                         </tr>
                                                     <?php endforeach;?>
                                                 <?php endif;?>

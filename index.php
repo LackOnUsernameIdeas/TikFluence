@@ -247,7 +247,7 @@ function limitContentLength($content, $limit) {
 
     <section class="content">
         <div class="container-fluid">
-            <!-- Body Copy -->
+        <!-- Body Copy -->
             <div class="row clearfix">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="card">
@@ -269,71 +269,71 @@ function limitContentLength($content, $limit) {
             </div>
             <!-- #END# Body Copy -->
 
-                <div class="block-header">
-                    <h2>ТОП 3 НА НАЙ-ПОВЛИЯНИТЕ ПЕСНИ ОТ TIKTOK ЗА ДНЕС И ВКЛЮЧЕНИ В ТОП 200 НА ПЛАТФОРМАТА:&nbsp;&nbsp;<i class="material-icons" data-toggle="modal" data-target="#defaultModal" style="cursor: pointer;display: inline-block;vertical-align:sub;">help_outline</i></h2>
-                    <div class="info"> 
-                        <div class="modal fade" id="defaultModal" tabindex="-1" role="dialog">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h4 class="modal-title" id="defaultModalLabel"></h4>
-                                    </div>
-                                    <div class="modal-body">
-                                        Имайте предвид, че избирате да видите данните от датата, която сте избрали и 39 дни назад от нея. Общо можете да виждате данни до не повече от 40 дни.
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn bg-purple btn-link waves-effect" data-dismiss="modal">ЗАТВОРИ</button>
-                                    </div>
+            <div class="block-header">
+                <h2>ТОП 3 НА НАЙ-ПОВЛИЯНИТЕ ПЕСНИ ОТ TIKTOK ЗА ДНЕС И ВКЛЮЧЕНИ В ТОП 200 НА ПЛАТФОРМАТА:&nbsp;&nbsp;<i class="material-icons" data-toggle="modal" data-target="#defaultModal" style="cursor: pointer;display: inline-block;vertical-align:sub;">help_outline</i></h2>
+                <div class="info"> 
+                    <div class="modal fade" id="defaultModal" tabindex="-1" role="dialog">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title" id="defaultModalLabel"></h4>
+                                </div>
+                                <div class="modal-body">
+                                    Имайте предвид, че данните може да са закръглени, тъй като при надвишаване на определени стойности, създателите на TikTok са направили така че именно това да се случва.
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn bg-purple btn-link waves-effect" data-dismiss="modal">ЗАТВОРИ</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <!-- Widgets -->
-
-                <?php if(isset($influencedSongsData[0])): ?>
-                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12" onClick="window.location.href=`./influencedSong.php?sid=<?= $influencedSongsData[0]["song_id"] ?>`">
-                        <div class="info-box bg-green hover-expand-effect">
-                            <div class="icon">
-                                <i class="material-icons">filter_1</i>
-                            </div>
-                            <div class="content">
-                                <div class="text"><?= limitContentLength($influencedSongsData[0]["song_name"], 40) ?></div>
-                                <div class="number count-to" data-from="0" data-to="<?= $influencedSongsData[0]["number_of_videos_last_14days"] ?>" data-speed="3000" data-fresh-interval="20"></div>
-                            </div>
-                        </div>
-                    </div>
-                <?php endif; ?>
-
-                <?php if(isset($influencedSongsData[1])): ?>
-                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12" onClick="window.location.href=`./influencedSong.php?sid=<?= $influencedSongsData[1]["song_id"] ?>`">
-                        <div class="info-box bg-yellow hover-expand-effect">
-                            <div class="icon">
-                                <i class="material-icons">filter_2</i>
-                            </div>
-                            <div class="content">
-                                <div class="text"><?= limitContentLength($influencedSongsData[1]["song_name"], 40) ?></div>
-                                <div class="number count-to" data-from="0" data-to="<?= $influencedSongsData[1]["number_of_videos_last_14days"] ?>" data-speed="3000" data-fresh-interval="20"></div>
-                            </div>
-                        </div>
-                    </div>
-                <?php endif; ?>
-
-                <?php if(isset($influencedSongsData[2])): ?>
-                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12" onClick="window.location.href=`./influencedSong.php?sid=<?= $influencedSongsData[2]["song_id"] ?>`">
-                        <div class="info-box bg-red hover-expand-effect">
-                            <div class="icon">
-                                <i class="material-icons">filter_3</i>
-                            </div>
-                            <div class="content">
-                                <div class="text"><?= limitContentLength($influencedSongsData[2]["song_name"], 40) ?></div>
-                                <div class="number count-to" data-from="0" data-to="<?= $influencedSongsData[2]["number_of_videos_last_14days"] ?>" data-speed="3000" data-fresh-interval="20"></div>
-                            </div>
-                        </div>
-                    </div>
-                <?php endif; ?>
-
             </div>
+            <!-- Widgets -->
+
+            <?php if(isset($influencedSongsData[0])): ?>
+                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12" onClick="window.location.href=`./influencedSong.php?sid=<?= $influencedSongsData[0]["song_id"] ?>`">
+                    <div class="info-box bg-green hover-expand-effect">
+                        <div class="icon">
+                            <i class="material-icons">filter_1</i>
+                        </div>
+                        <div class="content">
+                            <div class="text"><?= limitContentLength($influencedSongsData[0]["song_name"], 40) ?></div>
+                            <div class="number count-to" data-from="0" data-to="<?= $influencedSongsData[0]["number_of_videos_last_14days"] ?>" data-speed="3000" data-fresh-interval="20"></div>
+                        </div>
+                    </div>
+                </div>
+            <?php endif; ?>
+
+            <?php if(isset($influencedSongsData[1])): ?>
+                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12" onClick="window.location.href=`./influencedSong.php?sid=<?= $influencedSongsData[1]["song_id"] ?>`">
+                    <div class="info-box bg-yellow hover-expand-effect">
+                        <div class="icon">
+                            <i class="material-icons">filter_2</i>
+                        </div>
+                        <div class="content">
+                            <div class="text"><?= limitContentLength($influencedSongsData[1]["song_name"], 40) ?></div>
+                            <div class="number count-to" data-from="0" data-to="<?= $influencedSongsData[1]["number_of_videos_last_14days"] ?>" data-speed="3000" data-fresh-interval="20"></div>
+                        </div>
+                    </div>
+                </div>
+            <?php endif; ?>
+
+            <?php if(isset($influencedSongsData[2])): ?>
+                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12" onClick="window.location.href=`./influencedSong.php?sid=<?= $influencedSongsData[2]["song_id"] ?>`">
+                    <div class="info-box bg-red hover-expand-effect">
+                        <div class="icon">
+                            <i class="material-icons">filter_3</i>
+                        </div>
+                        <div class="content">
+                            <div class="text"><?= limitContentLength($influencedSongsData[2]["song_name"], 40) ?></div>
+                            <div class="number count-to" data-from="0" data-to="<?= $influencedSongsData[2]["number_of_videos_last_14days"] ?>" data-speed="3000" data-fresh-interval="20"></div>
+                        </div>
+                    </div>
+                </div>
+            <?php endif; ?>
+
+        </div>
             <!-- #END# Widgets -->
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <div class="block-header">
