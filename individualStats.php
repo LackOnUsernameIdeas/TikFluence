@@ -20,7 +20,7 @@
         $refreshToken = $tokens["refresh_token"];
 
         $expirationIn = 3600;
-        $expirationTime = time() + $expiresIn;
+        $expirationTime = time() + $expirationIn;
 
         setcookie('tiktok_access_token', $accessToken, $expirationTime);
         setcookie('tiktok_refresh_token', $refreshToken, time() + 86400);
