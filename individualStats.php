@@ -843,6 +843,8 @@
             let hours = date.getHours();
             let minutes = date.getMinutes();
     
+            minutes = minutes < 10 ? String(date.getMinutes()).padStart(2, '0') : minutes;
+            
             let time = hours + ":" + minutes;
 
             //Запазваме необходимата информация в променливи
