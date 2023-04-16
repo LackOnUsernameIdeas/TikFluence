@@ -15,12 +15,12 @@
     if(isset($_GET["code"])){
         $_SESSION["accessToken"] = generateTikTokAccessToken($_GET["code"]);
 
-        $userBasicData = getUserBasicData($accessToken);
-        $userVideoData = getUserVideoData($accessToken);
+        $userBasicData = getUserBasicData($_SESSION["accessToken"]);
+        $userVideoData = getUserVideoData($_SESSION["accessToken"]);
 
         //Генерираме си подробни данни за потребителя, ако профилът му не е заключен и има видеа
-        if($accessToken != false){
-            $openUserId = getUserOpenId($accessToken);
+        if($_SESSION["accessToken"] != false){
+            $openUserId = getUserOpenId($_SESSION["accessToken"]);
 
             $usernameLink = generateTikTokUsername("https://open-api.tiktok.com/shortlink/profile/?open_id=$openUserId");
             $username = explode("?", explode('@', $usernameLink)[1])[0];
@@ -31,8 +31,8 @@
         $userVideoData = getUserVideoData($_SESSION["accessToken"]);
 
         //Генерираме си подробни данни за потребителя, ако профилът му не е заключен и има видеа
-        if($accessToken != false){
-            $openUserId = getUserOpenId($accessToken);
+        if($_SESSION["accessToken"] != false){
+            $openUserId = getUserOpenId($_SESSION["accessToken"]);
 
             $usernameLink = generateTikTokUsername("https://open-api.tiktok.com/shortlink/profile/?open_id=$openUserId");
             $username = explode("?", explode('@', $usernameLink)[1])[0];
@@ -818,7 +818,7 @@
     });
 
     //Запазваме токена, който ни е необходим, за да взимаме данни
-    let accessToken = JSON.parse('<?php echo json_encode($accessToken) ?>');
+    let accessToken = JSON.parse('<?php echo json_encode($_SESSION["accessToken"]) ?>');
 
     //Изпълняваме функцията, която трябва да праща заяки и да актуализира информацията в диаграмите и уиджетите през 1 минута
     let requestCount = 0;
