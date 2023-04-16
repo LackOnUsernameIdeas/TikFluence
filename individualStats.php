@@ -266,7 +266,7 @@
                             </ol>
                         </div>
                     </div>
-                    <?php if(isset($_GET["code"]) && $userBasicData != []): ?>
+                    <?php if($userBasicData != []): ?>
                         <div class="col">
                             <a href="https://www.tiktok.com/logout?redirect_url=https://fluence.noit.eu/individualStats.php" class="btn bg-purple waves-effect" target="_blank" id="myLink">ИЗЛЕЗ ОТ ПРОФИЛА СИ</a>
                         </div>
@@ -437,7 +437,7 @@
                                         </div>
                                         <div class="content">
                                             <div class="text">Последователи</div>
-                                            <div class="number count-to" id="follower_count" data-from="0" data-to="<?php echo $userBasicData["follower_count"] ?>" data-speed="3000" data-fresh-interval="20"></div>
+                                            <div class="number count-to" data-from="0" data-to="<span id='follower_count'><?php echo $userBasicData["follower_count"] ?></span>" data-speed="3000" data-fresh-interval="20"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -473,7 +473,7 @@
                                         </div>
                                         <div class="content">
                                             <div class="text">Брой харесвания</div>
-                                            <div class="number count-to" id="likes_count" data-from="0" data-to="<?php echo $userBasicData["likes_count"] ?>" data-speed="3000" data-fresh-interval="20"></div>
+                                            <div class="number count-to" data-from="0" data-to="<span id='likes_count'><?php echo $userBasicData["likes_count"] ?></span>" data-speed="3000" data-fresh-interval="20"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -872,7 +872,9 @@
             let hours = date.getHours();
             let minutes = date.getMinutes();
     
-            minutes = minutes < 10 ? String(date.getMinutes()).padStart(2, '0') : minutes;
+            if(minutes < 10){
+                minutes = String(date.getMinutes()).padStart(2, '0')
+            }
             
             let time = hours + ":" + minutes;
 
@@ -884,18 +886,16 @@
             let followerCount = document.getElementById('follower_count');
             let likesCount = document.getElementById('likes_count');
 
-            followerCount.setAttribute('data-to', followers);
-            likesCount.setAttribute('data-to', likes);
+            followerCount.innerText = followers;
+            likesCount.innerText = likes;
 
             //Актуализираме новите данни в диаграмите
             followersLive.data.labels.push(time);
             followersLive.data.datasets[0].data.push(followers);
-            followersLive.options.scales.yAxes[0].ticks.stepSize = 1;
             followersLive.update();
 
             likesLive.data.labels.push(time);
             likesLive.data.datasets[0].data.push(likes);
-            likesLive.options.scales.yAxes[0].ticks.stepSize = 1;
             likesLive.update();
 
         })
