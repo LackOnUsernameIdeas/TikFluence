@@ -12,6 +12,7 @@
     $userBasicData = [];
     $userVideoData = [];
 
+    $accessToken = "";
     if(isset($_GET["code"]) && !isset($_COOKIE["tiktok_access_token"])){ //Ако потребителят не е потвърдил все още
 
         //Генерираме си access token, когато потребителят влезе и потвърди от профила си
@@ -847,7 +848,7 @@
     });
 
     //Запазваме токена, който ни е необходим, за да взимаме данни
-    let accessToken = JSON.parse('<?php echo json_encode($_COOKIE["tiktok_access_token"]) ?>');
+    let accessToken = JSON.parse('<?php echo isset($_COOKIE["tiktok_access_token"]) ? json_encode($_COOKIE["tiktok_access_token"]) : json_encode($accessToken) ?>');
 
     //Изпълняваме функцията, която трябва да праща заяки и да актуализира информацията в диаграмите и уиджетите през 1 минута
     let requestCount = 0;
