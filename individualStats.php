@@ -847,7 +847,7 @@
     });
 
     //Запазваме токена, който ни е необходим, за да взимаме данни
-    let accessToken = JSON.parse('<?php echo json_encode($accessToken) ?>');
+    let accessToken = JSON.parse('<?php echo json_encode($_COOKIE["tiktok_access_token"]) ?>');
 
     //Изпълняваме функцията, която трябва да праща заяки и да актуализира информацията в диаграмите и уиджетите през 1 минута
     let requestCount = 0;
