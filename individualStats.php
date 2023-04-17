@@ -171,7 +171,7 @@
     <section>
         <!-- Left Sidebar -->
         <aside id="leftsidebar" class="sidebar">
-            <img src="./images/logo.jpg" width="300">
+            <img src="./images/logo.jpeg" width="300">
 
             <!-- Menu -->
             <div class="menu">
@@ -266,7 +266,7 @@
                             </ol>
                         </div>
                     </div>
-                    <?php if($userBasicData != []): ?>
+                    <?php if($userBasicData != []):?>
                         <div class="col">
                             <a href="https://www.tiktok.com/logout?redirect_url=https://fluence.noit.eu/individualStats.php" class="btn bg-purple waves-effect" target="_blank" id="myLink">ИЗЛЕЗ ОТ ПРОФИЛА СИ</a>
                         </div>
@@ -274,7 +274,7 @@
                     <?php endif; ?>
                 </div>
 
-                <?php if($userBasicData == []): ?>
+                <?php if($userBasicData == []):?> 
 
                     <div class="row clearfix">
 
@@ -389,7 +389,7 @@
 
                 <?php endif;?>
 
-                <?php if($userBasicData != []): ?>
+                <?php if($userBasicData != []):?>
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">  
                         <div class="row clearfix">  
 
@@ -786,10 +786,10 @@
     let followersLive = new Chart(document.getElementById("FollowersRealtimeChart"), {
         type: 'line',
         data: {
-            labels: [time],  // initial labels array
+            labels: ["20:45", "20:46", "20:47", "20:48", "20:49", "20:50", "20:51", "20:52", "20:53", "20:54"],  // initial labels array
             datasets: [{
                 label: 'Последователи в реално време',
-                data: [followersLiveData],   // initial data array
+                data: [4028, 4030, 4025, 4031, 4031, 4031, 4030, 4027, 4023, 4026],   // initial data array
                 backgroundColor: 'rgba(159, 90, 253, 0.2)',
                 borderColor: 'rgb(159, 90, 253)',
                 borderWidth: 1
@@ -821,10 +821,10 @@
     let likesLive = new Chart(document.getElementById("LikesRealtimeChart"), {
         type: 'line',
         data: {
-            labels: [time],  // initial labels array
+            labels: ["20:45", "20:46", "20:47", "20:48", "20:49", "20:50", "20:51", "20:52", "20:53", "20:54"],  // initial labels array
             datasets: [{
                 label: 'Харесвания в реално време',
-                data: [likesLiveData],   // initial data array
+                data: [18940, 18953, 19001, 18983, 18985, 18937, 18962, 18970, 18954, 19012],   // initial data array
                 backgroundColor: 'rgba(255, 240, 0, 0.2)',
                 borderColor: 'rgb(255, 240, 0)',
                 borderWidth: 1

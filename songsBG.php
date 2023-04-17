@@ -99,7 +99,7 @@
     <section>
         <!-- Left Sidebar -->
         <aside id="leftsidebar" class="sidebar">
-            <img src="./images/logo.jpg" width="300"> 
+            <img src="./images/logo.jpeg" width="300"> 
 
             <!-- Menu -->
             <div class="menu">
