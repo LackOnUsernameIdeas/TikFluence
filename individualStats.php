@@ -811,8 +811,10 @@
                 }],
                 yAxes: [{
                     ticks: {
-                        beginAtZero: false,
-                        min: 0           
+                        stepSize: 1,
+                        beginAtZero: true,
+                        min: followersLiveData - 10,
+                        max: followersLiveData + 10        
                     }
                 }]
             },
@@ -846,8 +848,10 @@
                 }],
                 yAxes: [{
                     ticks: {
+                        stepSize: 3,
                         beginAtZero: true,
-                        min: 0           
+                        min: likesLiveData - 10,
+                        max: likesLiveData + 10                          
                     }
                 }]
             },
