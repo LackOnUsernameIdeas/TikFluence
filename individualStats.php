@@ -781,6 +781,10 @@
     let hours = date.getHours();
     let minutes = date.getMinutes();
 
+    if(minutes < 10){
+        minutes = String(date.getMinutes()).padStart(2, '0');
+    }
+
     let time = hours + ":" + minutes;
 
     let followersLive = new Chart(document.getElementById("FollowersRealtimeChart"), {
@@ -789,7 +793,7 @@
             labels: [time],
             datasets: [{
                 label: 'Последователи в реално време',
-                data: [likesLiveData],
+                data: [followersLiveData],
                 backgroundColor: 'rgba(159, 90, 253, 0.2)',
                 borderColor: 'rgb(159, 90, 253)',
                 borderWidth: 1
