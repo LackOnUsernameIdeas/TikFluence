@@ -889,13 +889,6 @@
             let followers = data.data.user.follower_count;
             let likes = data.data.user.likes_count;
     
-            //Актуализираме новите данни в уиджетите
-            let followerCount = document.getElementById('follower_count');
-            let likesCount = document.getElementById('likes_count');
-
-            followerCount.innerText = followers;
-            likesCount.innerText = likes;
-
             //Актуализираме новите данни в диаграмите
             followersLive.data.labels.push(time);
             followersLive.data.datasets[0].data.push(followers);
