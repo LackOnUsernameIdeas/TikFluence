@@ -900,14 +900,10 @@
             //Актуализираме новите данни в диаграмите
             followersLive.data.labels.push(time);
             followersLive.data.datasets[0].data.push(followers);
-            followersLive.options.scales.yAxes.ticks.min = followers - 10;
-            followersLive.options.scales.yAxes.ticks.max = followers + 10;
             followersLive.update();
 
             likesLive.data.labels.push(time);
             likesLive.data.datasets[0].data.push(likes);
-            likesLive.options.scales.yAxes.ticks.min = likes - 10;
-            likesLive.options.scales.yAxes.ticks.min = likes + 10;
             likesLive.update();
 
         })
