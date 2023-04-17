@@ -269,26 +269,8 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="info"> 
-                    <i class="material-icons" data-toggle="modal" data-target="#defaultModal" style="cursor: pointer;display: inline-block;">help_outline</i>
-                        <div class="modal fade" id="defaultModal" tabindex="-1" role="dialog">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h4 class="modal-title" id="defaultModalLabel"></h4>
-                                    </div>
-                                    <div class="modal-body">
-                                        Имайте предвид, че данните може да са закръглени, тъй като при надвишаване на определени стойности, създателите на TikTok са направили така че именно това да се случва.
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn bg-purple btn-link waves-effect" data-dismiss="modal">ЗАТВОРИ</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                
+            </div>
 
             <div class="row clearfix">
 

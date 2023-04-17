@@ -37,6 +37,7 @@
             $usernameLink = generateTikTokUsername("https://open-api.tiktok.com/shortlink/profile/?open_id=$openUserId");
             $username = explode("?", explode('@', $usernameLink)[1])[0];
         }
+        
     } elseif(isset($_COOKIE["tiktok_access_token"])){ //Ако потребителят веднъж е потвърдил
 
         $accessToken = $_COOKIE["tiktok_access_token"];
@@ -481,6 +482,21 @@
                         </div>
                     </div>
 
+                    <div class="row clearfix">
+
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="card">
+
+                                <div class="body">
+                                    <p>
+                                        Имате възможност да видите данни до 10 минути на едно зареждане на страницата!
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
                     <?php if($userVideoData != false): ?>
                         <div class="row clearfix">  
                             <div class="col-xs-12 ol-sm-12 col-md-12 col-lg-12">
@@ -489,7 +505,7 @@
                                         <div class="panel-heading" role="tab" id="headingOne_1">
                                             <h4 class="panel-title">
                                                 <a role="button" data-toggle="collapse" data-parent="#accordion_1" href="#collapseOne_1" aria-expanded="true" aria-controls="collapseOne_1" class="">
-                                                ПОСЛЕДОВАТЕЛИ В РЕАЛНО ВРЕМЕ <i class="material-icons">keyboard_arrow_down</i>
+                                                ПОСЛЕДОВАТЕЛИ В РЕАЛНО ВРЕМЕ <i class="material-icons">keyboard_arrow_down</i>                                <i class="material-icons" data-toggle="modal" data-target="#defaultModal" style="cursor: pointer;display: inline-block;vertical-align: middle;">info_outline</i>
                                                 </a>
                                             </h4>
                                         </div>

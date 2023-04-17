@@ -283,7 +283,7 @@ function limitContentLength($content, $limit) {
             <!-- #END# Body Copy -->
 
             <div class="block-header">
-                <h2>ТОП 3 НА НАЙ-ПОВЛИЯНИТЕ ПЕСНИ ОТ TIKTOK ЗА ДНЕС И ВКЛЮЧЕНИ В ТОП 200 НА ПЛАТФОРМАТА:&nbsp;&nbsp;<i class="material-icons" data-toggle="modal" data-target="#defaultModal" style="cursor: pointer;display: inline-block;vertical-align:sub;">help_outline</i></h2>
+                <h2>ТОП 3 НА НАЙ-ПОВЛИЯНИТЕ ПЕСНИ ОТ TIKTOK ЗА ДНЕС И ВКЛЮЧЕНИ В ТОП 200 НА ПЛАТФОРМАТА:&nbsp;&nbsp;<i class="material-icons" data-toggle="modal" data-target="#defaultModal" style="cursor: pointer;display: inline-block;vertical-align:sub;">info_outline</i></h2>
                 <div class="info"> 
                     <div class="modal fade" id="defaultModal" tabindex="-1" role="dialog">
                         <div class="modal-dialog" role="document">
@@ -595,11 +595,10 @@ function limitContentLength($content, $limit) {
 
         hashtagsChartHeading.innerHTML = "ПОНАСТОЯЩЕМ" + `<i class="material-icons">keyboard_arrow_down</i>`;
 
-        // Update the chart data
+        //Актуализираме информацията в диаграмата
         myChartGlobal.data.datasets[0].data = hashtagsUses7Days;
         myChartGlobal.data.labels = hashtagsNames7Days;
 
-        // Redraw the chart with the new data
         myChartGlobal.update();
     });
 
@@ -607,11 +606,10 @@ function limitContentLength($content, $limit) {
 
         hashtagsChartHeading.innerHTML = "ЗА ПОСЛЕДНИТЕ 120 ДНИ" + `<i class="material-icons">keyboard_arrow_down</i>`;
 
-        // Update the chart data
+        //Актуализираме информацията в диаграмата
         myChartGlobal.data.datasets[0].data = hashtagsUses120Days;
         myChartGlobal.data.labels = hashtagsNames120Days;
 
-        // Redraw the chart with the new data
         myChartGlobal.update();
     });
     </script>
