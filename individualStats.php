@@ -852,6 +852,8 @@
     //Изпълняваме функцията, която трябва да праща заяки и да актуализира информацията в диаграмите и уиджетите през 1 минута
     let requestCount = 0;
     let intervalFunction = setInterval(function() {
+        
+        requestCount++;
         if (requestCount >= 10) {
             clearInterval(intervalFunction);
             return;
