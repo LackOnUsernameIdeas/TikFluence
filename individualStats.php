@@ -19,9 +19,6 @@
         $accessToken = $tokens["access_token"];
         $refreshToken = $tokens["refresh_token"];
 
-        //Запазваме токена, който ни е необходим, за да взимаме данни за диаграмите по-късно
-        echo "<script>let accessToken = '".$accessToken."';</script>";
-
         $expirationIn = 3600;
         $expirationTime = time() + $expirationIn;
 
@@ -44,9 +41,6 @@
 
         $accessToken = $_COOKIE["tiktok_access_token"];
         $refreshToken = $_COOKIE["tiktok_refresh_token"];
-
-        //Запазваме токена, който ни е необходим, за да взимаме данни за диаграмите по-късно
-        echo "<script>let accessToken = '".$accessToken."';</script>";
 
         $expirationTime = $_COOKIE["tiktok_access_token_expiration"];
         $currentTime = time();
@@ -443,7 +437,7 @@
                                         </div>
                                         <div class="content">
                                             <div class="text">Последователи</div>
-                                            <div class="number count-to" data-from="0" data-to="<span id='follower_count'><?php echo $userBasicData["follower_count"] ?></span>" data-speed="3000" data-fresh-interval="20"></div>
+                                            <div class="number count-to" data-from="0" data-to="<?php echo $userBasicData["follower_count"] ?>" data-speed="3000" data-fresh-interval="20"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -479,7 +473,7 @@
                                         </div>
                                         <div class="content">
                                             <div class="text">Брой харесвания</div>
-                                            <div class="number count-to" data-from="0" data-to="<span id='likes_count'><?php echo $userBasicData["likes_count"] ?></span>" data-speed="3000" data-fresh-interval="20"></div>
+                                            <div class="number count-to" data-from="0" data-to="<?php echo $userBasicData["likes_count"] ?>" data-speed="3000" data-fresh-interval="20"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -851,6 +845,9 @@
             maintainAspectRatio: false
         }
     });
+
+    //Запазваме токена, който ни е необходим, за да взимаме данни за диаграмите
+    let accessToken = JSON.parse('<?php echo isset($_COOKIE["tiktok_access_token"]) ? json_encode($_COOKIE["tiktok_access_token"]) : json_encode($accessToken) ?>');
 
     //Изпълняваме функцията, която трябва да праща заяки и да актуализира информацията в диаграмите и уиджетите през 1 минута
     let requestCount = 0;
