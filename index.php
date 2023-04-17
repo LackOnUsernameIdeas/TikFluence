@@ -292,7 +292,7 @@ function limitContentLength($content, $limit) {
                                     <h4 class="modal-title" id="defaultModalLabel"></h4>
                                 </div>
                                 <div class="modal-body">
-                                    Имайте предвид, че данните може да са закръглени, тъй като при надвишаване на определени стойности, създателите на TikTok са направили така че именно това да се случва.
+                                    Класацията - топ 3 за всеки ден, се определя в зависимост от разликата в пикове в дни на Spotify и TikTok за конкретната песен и в същото време тази песен трябва да има данни за видеа от днес.
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn bg-purple btn-link waves-effect" data-dismiss="modal">ЗАТВОРИ</button>

@@ -22,7 +22,7 @@
 
 
     //Взимаме всички данни за дадената песен и ако няма потребителят бива върнат в songs.php
-    $dataPoints = $db->getDatapointsForSong($sid, $selectDate);
+    $dataPoints = $db->getDatapointsForInfluencedSong($sid);
     if($dataPoints === false) redirect("songs.php");
 
 

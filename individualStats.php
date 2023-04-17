@@ -634,12 +634,17 @@
 
 <script>
   document.getElementById("myLink").addEventListener("click", function(event) {
-    event.preventDefault(); // Prevents the link from being followed immediately
+    event.preventDefault();
 
-    // Open the TikTok logout page in a new tab
+    //Изтриваме бисквитките от всички страници на приложението
+    document.cookie = "tiktok_access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    document.cookie = "tiktok_refresh_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    document.cookie = "tiktok_access_token_expiration=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+
+    // Отваря страницата на TikTok в нов прозорец
     window.open('https://www.tiktok.com/logout?redirect_url=https://fluence.noit.euindividualStats.php', '_blank');
 
-    // Redirect the current tab to https://fluence.noit.eu/individualStats.php after 3 seconds
+    // Препраща текущия прозорец към https://fluence.noit.eu/individualStats.php след 3 секунди
     setTimeout(function() {
       window.location.href = "https://fluence.noit.eu/individualStats.php";
     }, 1000);
@@ -852,7 +857,7 @@
     //Изпълняваме функцията, която трябва да праща заяки и да актуализира информацията в диаграмите и уиджетите през 1 минута
     let requestCount = 0;
     let intervalFunction = setInterval(function() {
-        
+
         requestCount++;
         if (requestCount >= 10) {
             clearInterval(intervalFunction);
@@ -863,7 +868,7 @@
             method: 'POST',
             mode: 'cors',
             headers: {
-            'Content-Type': 'application/json'
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify({"accessToken": `${accessToken}`})
         })

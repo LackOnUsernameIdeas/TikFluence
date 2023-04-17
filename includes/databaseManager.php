@@ -123,6 +123,21 @@ class DatabaseManager {
         return count($result_array) > 0 ? $result_array : false;
     }
 
+    //Дърпаме записите на дадена повлияна песен
+    public function getDatapointsForInfluencedSong($sid){
+        $sql = "SELECT * 
+                FROM `tiktok_records`
+                WHERE song_id=:sid";
+
+        $query = $this->pdo->prepare($sql);
+        $query->bindValue('sid', $sid);
+
+        $query->execute();
+        $result_array = $query->fetchAll(PDO::FETCH_ASSOC);
+
+        return count($result_array) > 0 ? $result_array : false;
+    }
+
     //Дърпаме записите до определена дата за дадена песен
     public function getDatapointsForSongBG($sid, $date){
         $sql = "SELECT * 
