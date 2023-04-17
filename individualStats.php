@@ -811,8 +811,8 @@
                 }],
                 yAxes: [{
                     ticks: {
-                        stepSize: 1,
-                        beginAtZero: true              
+                        beginAtZero: false,
+                        min: 0           
                     }
                 }]
             },
@@ -846,8 +846,8 @@
                 }],
                 yAxes: [{
                     ticks: {
-                        stepSize: 1,
-                        beginAtZero: true
+                        beginAtZero: true,
+                        min: 0           
                     }
                 }]
             },
