@@ -786,10 +786,10 @@
     let followersLive = new Chart(document.getElementById("FollowersRealtimeChart"), {
         type: 'line',
         data: {
-            labels: ["20:45", "20:46", "20:47", "20:48", "20:49", "20:50", "20:51", "20:52", "20:53", "20:54"],  // initial labels array
+            labels: [time],
             datasets: [{
                 label: 'Последователи в реално време',
-                data: [4028, 4030, 4025, 4031, 4031, 4031, 4030, 4027, 4023, 4026],   // initial data array
+                data: [likesLiveData],
                 backgroundColor: 'rgba(159, 90, 253, 0.2)',
                 borderColor: 'rgb(159, 90, 253)',
                 borderWidth: 1
@@ -821,10 +821,10 @@
     let likesLive = new Chart(document.getElementById("LikesRealtimeChart"), {
         type: 'line',
         data: {
-            labels: ["20:45", "20:46", "20:47", "20:48", "20:49", "20:50", "20:51", "20:52", "20:53", "20:54"],  // initial labels array
+            labels: [time],
             datasets: [{
                 label: 'Харесвания в реално време',
-                data: [18940, 18953, 19001, 18983, 18985, 18937, 18962, 18970, 18954, 19012],   // initial data array
+                data: [likesLiveData], 
                 backgroundColor: 'rgba(255, 240, 0, 0.2)',
                 borderColor: 'rgb(255, 240, 0)',
                 borderWidth: 1
