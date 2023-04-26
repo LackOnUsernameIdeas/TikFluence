@@ -871,31 +871,34 @@
             return;
         }
 
-        fetch('https://fluence-api.noit.eu/realTimeStatisticData', {
-            method: 'POST',
-            mode: 'cors',
+        const socket = new WebSocket('https://open.tiktokapis.com/v2/user/info/?fields=follower_count,likes_count', {
             headers: {
-                'Content-Type': 'application/json'
+                Authorization: `Bearer ${accessToken}`,
             },
-            body: JSON.stringify({"accessToken": `${accessToken}`})
-        })
-        .then(response => response.json())
-        .then(data => {
+        });
+
+        socket.addEventListener('open', () => {
+            console.log('WebSocket connection established');
+        });
+
+        socket.addEventListener('message', (event) => {
+            const data = JSON.parse(event.data);
+
             //Задаваме точно време
             let date = new Date();
             let hours = date.getHours();
             let minutes = date.getMinutes();
-    
-            if(minutes < 10){
-                minutes = String(date.getMinutes()).padStart(2, '0')
+
+            if (minutes < 10) {
+                minutes = String(date.getMinutes()).padStart(2, '0');
             }
-            
-            let time = hours + ":" + minutes;
+
+            let time = hours + ':' + minutes;
 
             //Запазваме необходимата информация в променливи
             let followers = data.data.user.follower_count;
             let likes = data.data.user.likes_count;
-    
+
             //Актуализираме новите данни в диаграмите
             followersLive.data.labels.push(time);
             followersLive.data.datasets[0].data.push(followers);
@@ -904,11 +907,12 @@
             likesLive.data.labels.push(time);
             likesLive.data.datasets[0].data.push(likes);
             likesLive.update();
-
-        })
-        .catch(error => {
-            console.error('Error fetching data:', error);
         });
+
+        socket.addEventListener('close', () => {
+            console.log('WebSocket connection closed');
+        });
+
     }, 60000);
 
 </script>
