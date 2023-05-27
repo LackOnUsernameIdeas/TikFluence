@@ -537,54 +537,54 @@ function limitContentLength($content, $limit) {
     let hashtagsUses7Days = JSON.parse(`<?php echo json_encode($hashtagsUses7Days) ?>`);
     let hashtagsUses120Days = JSON.parse(`<?php echo json_encode($hashtagsUses120Days) ?>`);
 
-        // съставяне 
-        const dataGlobal = {
-            labels: hashtagsNames7Days,
-            datasets: [{
-                label: 'Хаштагове',
-                data: hashtagsUses7Days,
-                backgroundColor: [
-                    'rgba(255, 26, 104, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(255, 159, 64, 0.2)',
-                    'rgba(0, 0, 0, 0.2)'
-                ],
-                borderColor: [
-                    'rgba(255, 26, 104, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)',
-                    'rgba(255, 159, 64, 1)',
-                    'rgba(0, 0, 0, 1)'
-                ],
-                borderWidth: 1,
-                borderRadius: 5
-            }]
-        };
+    // съставяне 
+    const dataGlobal = {
+        labels: hashtagsNames7Days,
+        datasets: [{
+            label: 'Хаштагове',
+            data: hashtagsUses7Days,
+            backgroundColor: [
+                'rgba(255, 26, 104, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)',
+                'rgba(0, 0, 0, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255, 26, 104, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)',
+                'rgba(0, 0, 0, 1)'
+            ],
+            borderWidth: 1,
+            borderRadius: 5
+        }]
+    };
 
-        // кофигуриране 
-        const configGlobal = {
-            type: 'bar',
-            data: dataGlobal,
-            options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
-                    },
-                    maintainAspectRatio: false
-            }
-        };
+    // кофигуриране 
+    const configGlobal = {
+        type: 'bar',
+        data: dataGlobal,
+        options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                maintainAspectRatio: false
+        }
+    };
 
-        // слагаме статистиката в html елемента
-        const myChartGlobal = new Chart(
-            document.getElementById('hashtagsChart'),
-            configGlobal
-        );
+    // слагаме статистиката в html елемента
+    const myChartGlobal = new Chart(
+        document.getElementById('hashtagsChart'),
+        configGlobal
+    );
 
 
     const hashtags7div = document.getElementById('hashtagsForTheLast7Days');
