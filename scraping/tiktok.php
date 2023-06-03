@@ -1,7 +1,7 @@
 <?php
 
 //Вмъкваме нужните файлове
-include '../includes/databaseManager.php';
+include '/home/noit1/public_html/fluence/includes/databaseManager.php';
 include 'curlFunctions.php';
 
 //Търсим песен по запис, ако я няма я създаваме. Връща се id като резултат

@@ -11,11 +11,17 @@
     
     //Създаваме връзката с базата данни
     $db = new DatabaseManager();
-
-
+    
     //Осигуряваме си необходимите данни
+    $dates = $db->listDatesVideos();
 
-    $selectDate = isset($_SESSION["setDate"]) && $_SESSION["setDate"] >= '2023-01-12' ? $_SESSION["setDate"] : date("Y-m-d");
+    $datesArray = [];
+    foreach($dates as $date){
+        $timestamp = new DateTime($date["fetch_date"]);
+        $datesArray[] = $timestamp->format('Y-m-d');
+    }
+
+    $selectDate = isset($_SESSION["setDate"]) && $_SESSION["setDate"] >= '2023-01-12' && in_array($_SESSION["setDate"], $datesArray)? $_SESSION["setDate"] : date("Y-m-d");
 
     if($selectDate == "2023-01-13"){
         $selectDate = "2023-01-12";

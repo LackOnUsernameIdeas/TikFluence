@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
     //Вмъкване на нужните файлове
     include "./selectDate.php";
@@ -22,7 +22,7 @@
         $chooseDatesForButton[] = $timestamp->format('Y-m-d');
     }
 
-    $selectDate = isset($_SESSION["setDate"]) && $_SESSION["setDate"] > $chooseDatesForButton[0] ? $_SESSION["setDate"] : date("Y-m-d");
+    $selectDate = isset($_SESSION["setDate"]) && $_SESSION["setDate"] > $chooseDatesForButton[0] && in_array($_SESSION["setDate"], $chooseDatesForButton) ? $_SESSION["setDate"] : date("Y-m-d");
     
     if($selectDate == "2023-01-13"){
         $selectDate = "2023-01-12";

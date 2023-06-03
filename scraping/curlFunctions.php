@@ -485,7 +485,7 @@ function getUserOpenId($accessToken){
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1 );
 
     $headers = [
-        "Authorization: $accessToken"
+        "Authorization: Bearer $accessToken"
     ];
 
     curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);

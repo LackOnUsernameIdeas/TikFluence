@@ -22,7 +22,7 @@
     }
 
     //Слагаме избраната дата в променлива и с нея издърпваме нужните данни
-    $selectDate = isset($_SESSION["setDate"]) && $_SESSION["setDate"] > $datesArray[0] ? $_SESSION["setDate"] : date("Y-m-d");
+    $selectDate = isset($_SESSION["setDate"]) && $_SESSION["setDate"] > $datesArray[0] && in_array($_SESSION["setDate"], $datesArray) ? $_SESSION["setDate"] : date("Y-m-d");
     
     if($selectDate == "2023-01-13"){
         $selectDate = "2023-01-12";

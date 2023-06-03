@@ -77,8 +77,14 @@ class DatabaseManager {
     public function getTodayYesterdayData($sid, $date){
         $sql = "SELECT * 
                 FROM tiktok_records 
-                WHERE DATE(`fetch_date`) >= ADDDATE(DATE(:date), INTERVAL -1 DAY) 
+                WHERE DATE(`fetch_date`) >=
+                IF(
+                    (SELECT COUNT(*) FROM tiktok_records WHERE DATE(`fetch_date`) = ADDDATE(DATE(:date), INTERVAL -1 DAY) AND song_id = :sth) > 0,
+                    ADDDATE(DATE(:date), INTERVAL -1 DAY),
+                    (SELECT MAX(DATE(`fetch_date`)) FROM tiktok_records WHERE DATE(`fetch_date`) < DATE(:date) AND song_id = :sth)
+                ) 
                 AND song_id=:sth";
+                
 
         $query = $this->pdo->prepare($sql);
         $query->bindValue('sth', $sid);
@@ -92,9 +98,13 @@ class DatabaseManager {
     public function getTodayYesterdayDataBG($sid, $date){
         $sql = "SELECT * 
                 FROM tiktok_records_bulgaria 
-                WHERE DATE(`fetch_date`) >= ADDDATE(DATE(:date), INTERVAL -1 DAY)
-                AND song_id=:sth
-        ";
+                WHERE DATE(`fetch_date`) >=
+                IF(
+                    (SELECT COUNT(*) FROM tiktok_records WHERE DATE(`fetch_date`) = ADDDATE(DATE(:date), INTERVAL -1 DAY) AND song_id = :sth) > 0,
+                    ADDDATE(DATE(:date), INTERVAL -1 DAY),
+                    (SELECT MAX(DATE(`fetch_date`)) FROM tiktok_records WHERE DATE(`fetch_date`) < DATE(:date) AND song_id = :sth)
+                ) 
+                AND song_id=:sth";
 
         $query = $this->pdo->prepare($sql);
         $query->bindValue('sth', $sid);

@@ -11,9 +11,18 @@
     
     //Създаваме връзката с базата данни
     $db = new DatabaseManager();
+    
+    //Осигуряваме си необходимите данни
+    $dates = $db->listDatesTikTokers();
+    
+    $datesArray = [];
+    foreach($dates as $date){
+        $timestamp = new DateTime($date["fetch_date"]);
+        $datesArray[] = $timestamp->format('Y-m-d');
+    }
 
     //Слагаме избраната дата в променлива и с нея издърпваме нужните данни
-    $selectDate = isset($_SESSION["setDate"]) && $_SESSION["setDate"] >= '2023-01-08' ? $_SESSION["setDate"] : date("Y-m-d");
+    $selectDate = isset($_SESSION["setDate"]) && $_SESSION["setDate"] >= '2023-01-08' && in_array($_SESSION["setDate"], $datesArray) ? $_SESSION["setDate"] : date("Y-m-d");
 
     if($selectDate == "2023-01-13"){
         $selectDate = "2023-01-12";
@@ -223,7 +232,7 @@
                         <div class="body">
                             <div class="block-header">
                                 <h2>СТАТИСТИКИ ЗА:</h2>
-                                <h1><?php if($tiktokerMainData["thumbnail"]):?><img src="<?php echo $tiktokerMainData["thumbnail"]?>" alt="Prof pic" width="62" height="62" style="vertical-align:bottom"><?php endif;?>&nbsp;<a href="https://www.tiktok.com/@<?php echo $tiktokerMainData["platform_name"] ?>" target="_blank"><?php echo $tiktokerMainData["tiktoker"]?></a></h1>
+                                <h1><a href="https://www.tiktok.com/@<?php echo $tiktokerMainData["platform_name"] ?>" target="_blank"><?php echo $tiktokerMainData["tiktoker"]?></a></h1>
                             </div>
                         </div>
                     </div>

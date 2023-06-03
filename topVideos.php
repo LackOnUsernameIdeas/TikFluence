@@ -10,6 +10,7 @@
 
     //Осигуряваме си необходимите данни
     $dates = $db->listDatesVideos();
+    $currentDate = date("Y-m-d");
     $datesArray = [];
 
     foreach($dates as $date){
@@ -264,9 +265,9 @@
                 <div class="row clearfix">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <div class="card">
-                            <?php if($selectDate != "" && $selectDate != "2023-01-13"):?>
+                            <?php if($selectDate != "" && $selectDate == $currentDate):?>
                                 <div class="body">
-                                    Все още няма данни за топ 200 песни глобално за днес :(
+                                    Все още няма данни за топ 200 най-гледани видеа в TikTok за днес :(
                                 </div>
                             <?php elseif($selectDate == ""):?>
                                 <div class="body">
@@ -274,7 +275,7 @@
                                 </div>
                             <?php else: ?>
                                 <div class="body">
-                                    Съжаляваме за причиненото неудобство. Нямаме данни за 13 януари 2023 година!
+                                    Съжаляваме за причиненото неудобство, но нямаме данни за тази дата. Моля, изберете друга!
                                 </div>
                             <?php endif;?>
                         </div>

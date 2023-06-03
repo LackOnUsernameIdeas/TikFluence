@@ -10,6 +10,7 @@
 
     //Взимаме всички дати, за които даден тиктокър има данни
     $dates = $db->listDatesTikTokers();
+    $currentDate = date("Y-m-d");
     $datesArray = [];
 
     foreach($dates as $date){
@@ -18,7 +19,7 @@
     }
 
     //Слагаме избраната дата в променлива и с нея издърпваме нужните данни
-    $selectDate = isset($_SESSION["setDate"]) && $_SESSION["setDate"] >= '2023-01-08' ? $_SESSION["setDate"] : date("Y-m-d");
+    $selectDate = isset($_SESSION["setDate"]) && in_array($_SESSION["setDate"], $datesArray) ? $_SESSION["setDate"] : date("Y-m-d");
 
     //Осигуряваме си необходимите данни и ги запазваме в масиви
     $tiktokers = $db->getTiktokersTodayData($selectDate);
@@ -246,7 +247,6 @@
                                             <thead>
                                                 <tr>
                                                     <th>РАНГ</th>
-                                                    <th>ПРОФИЛНА СНИМКА</th>
                                                     <th>ТИКТОКЪР</th>
                                                     <th>ИМЕ В ТИКТОК</th>
                                                     <th>ПОСЛЕДОВАТЕЛИ ОБЩО</th>
@@ -259,7 +259,6 @@
                                                     <?php foreach($tiktokers as $st):?>
                                                         <tr onClick="window.location.href=`./tiktoker.php?tid=<?php echo $st["given_id"]?>`">
                                                             <th><?php echo $st["rank"]?></th>
-                                                            <th><?php if($st["thumbnail"]):?><img src="<?php echo $st["thumbnail"]?>" alt="Prof pic" width="42" height="42" style="vertical-align:bottom"><?php endif;?></th>
                                                             <th><?php echo $st["tiktoker"]?></th>
                                                             <th><?php echo $st["platform_name"]?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://www.tiktok.com/@<?php echo $st["platform_name"] ?>" target="_blank"><i class="fa fa-eye" title="Вижте песента в TikTok"></i></a></th>
                                                             <th><?php echo number_format($st["followers_count"])?></th>
@@ -301,9 +300,9 @@
                 <div class="row clearfix">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <div class="card">
-                            <?php if($selectDate != "" && $selectDate != "2023-01-13"):?>
+                            <?php if($selectDate != "" && $selectDate == $currentDate):?>
                                 <div class="body">
-                                    Все още няма данни за топ 200 песни глобално за днес :(
+                                    Все още няма данни за топ 200 най-известни тиктокъри за днес :(
                                 </div>
                             <?php elseif($selectDate == ""):?>
                                 <div class="body">
@@ -311,7 +310,7 @@
                                 </div>
                             <?php else: ?>
                                 <div class="body">
-                                    Съжаляваме за причиненото неудобство. Нямаме данни за 13 януари 2023 година!
+                                    Съжаляваме за причиненото неудобство, но нямаме данни за тази дата. Моля, изберете друга!
                                 </div>
                             <?php endif;?>
                         </div>

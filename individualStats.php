@@ -488,7 +488,7 @@
                                         <div class="panel-heading" role="tab" id="headingOne_1">
                                             <h4 class="panel-title">
                                                 <a role="button" data-toggle="collapse" data-parent="#accordion_1" href="#collapseOne_1" aria-expanded="true" aria-controls="collapseOne_1" class="">
-                                                ПОСЛЕДОВАТЕЛИ В РЕАЛНО ВРЕМЕ <i class="material-icons">keyboard_arrow_down</i>                                <i class="material-icons" data-toggle="modal" data-target="#defaultModal" style="cursor: pointer;display: inline-block;vertical-align: middle;">info_outline</i>
+                                                ПОСЛЕДОВАТЕЛИ В РЕАЛНО ВРЕМЕ <i class="material-icons">keyboard_arrow_down</i>
                                                 </a>
                                             </h4>
                                         </div>
