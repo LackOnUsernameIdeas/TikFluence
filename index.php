@@ -11,11 +11,11 @@ include "includes/databaseManager.php";
 $db = new DatabaseManager();
 
 //Осигуряваме си необходимите данни
-$dates = $db->listDatesHashtagsAndSongsOnHomePage();
+$dates = $db->listDatesSongsOnHomePage();
 $datesArray = [];
 
 foreach($dates as $date){
-    $timestamp = new DateTime($date["fetch_date"]);
+    $timestamp = new DateTime($date["report_date"]);
     $datesArray[] = $timestamp->format('Y-m-d');
 }
 

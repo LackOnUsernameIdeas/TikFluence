@@ -612,7 +612,7 @@ class DatabaseManager {
     }
     
     //Дърпаме всички дати със записи
-    public function listDatesHashtagsAndSongsOnHomePage() {
+    public function listDatesHashtagsOnHomePage() {
         $sql = "SELECT DISTINCT `fetch_date` 
                 FROM `tiktok_hashtags_7days`";
 
@@ -622,6 +622,18 @@ class DatabaseManager {
 
         return count($result_array) > 0 ? $result_array : false;
     }
+    
+    //Дърпаме всички дати със записи
+    public function listDatesSongsOnHomePage() {
+        $sql = "SELECT DISTINCT `report_date` 
+                FROM `influenced_songs`";
+
+        $query = $this->pdo->prepare($sql);
+        $query->execute();
+        $result_array = $query->fetchAll(PDO::FETCH_ASSOC);
+
+        return count($result_array) > 0 ? $result_array : false;
+    }    
 
     //Намираме песента по id
     public function findSongByTiktokId($sid){
