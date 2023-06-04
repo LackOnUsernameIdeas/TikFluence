@@ -23,7 +23,16 @@
 
     //Слагаме избраната дата в променлива и с нея издърпваме нужните данни
     $selectDate = isset($_SESSION["setDate"]) && $_SESSION["setDate"] > $datesArray[0] && in_array($_SESSION["setDate"], $datesArray) ? $_SESSION["setDate"] : date("Y-m-d");
-    
+    $previousDate = '';
+
+    foreach ($datesArray as $date) {
+        if ($date < $selectDate) {
+            $previousDate = $date;
+        } else {
+            break;
+        }
+    }
+
     if($selectDate == "2023-01-13"){
         $selectDate = "2023-01-12";
     }
@@ -710,7 +719,7 @@
                 <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12" style="max-height:80px">
                     <div class="card">
                         <div class="body bg-purple" style="font-size:160%;">
-                            Промяна в популярност от <b><?php echo date('Y-m-d', mktime(0, 0, 0, date(substr($selectDate, 5, 2)), (date(substr($selectDate, 8, 2))-1), date(substr($selectDate, 0, 4)) ));?></b>:
+                            Промяна в популярност от <b><?php echo $previousDate;?></b>:
                         </div>
                     </div>
                 </div>
