@@ -22,38 +22,16 @@ foreach($dates as $date){
 //Слагаме избраната дата в променлива и с нея издърпваме нужните данни
 $selectDate = isset($_SESSION["setDate"]) && $_SESSION["setDate"] >= '2023-04-05' ? $_SESSION["setDate"] : date("Y-m-d");
 
-//Запазваме данните за най-използваните хаштагове в променливи
-$hashtagsDataForTheLast7Days = $db->getHashtagsForTheLast7Days();
-$hashtagsDataForTheLast120Days = $db->getHashtagsForTheLast120Days();
-
-//Осигуряваме си данни за диаграмите за хаштаговете
-$hashtagsRanks7Days = [];
-$hashtagsRanks120Days = [];
-
-$hashtagsUses7Days = [];
-$hashtagsUses120Days = [];
-
-if($hashtagsDataForTheLast7Days != false || $hashtagsDataForTheLast120Days != false){
-
-    foreach($hashtagsDataForTheLast7Days as $ht){
-        $hashtagsRanks7Days[] = $ht["rank"];
-        $hashtagsUses7Days[] = $ht["publish_cnt"];
-    }
-
-    foreach($hashtagsDataForTheLast120Days as $ht){
-        $hashtagsRanks120Days[] = $ht["rank"];
-        $hashtagsUses120Days[] = $ht["publish_cnt"];
-    }
-}
-
 //Осигуряваме си данни за класацията за най-повлияните песни
 $influencedSongs = $db->listAffectedSongsByDate($selectDate);
 
 //Махаме песните от масива, които имат разлика в пиковите дати по-малка от 0 за да получим само тези песни, които са повлияни
 $songsWithDays = [];
+$songsOnlyDaysDiff = [];
 
 foreach($influencedSongs as $song){
     $songsWithDays[$song["song_id"]] = $song["peaks_difference"];
+    $songsOnlyDaysDiff[] = $song["peaks_difference"];
 }
 
 //Масивът songsWithDays изглежда така:
@@ -93,7 +71,7 @@ foreach($songsWithDays as $songId => $days){
     $influencedSongsData[] = $db->findSongAndSongsTodayDataById($songId);
 }
 
-
+//Когато поредицата от символи в уиджетите надвиши лимита, тя бива съкращавана с `...`
 function limitContentLength($content, $limit) {
     $trimmed_content = trim(strip_tags($content));
     if (strlen($trimmed_content) > $limit) {
@@ -136,20 +114,20 @@ function limitContentLength($content, $limit) {
     <link href="css/themes/all-themes.css" rel="stylesheet">
     
     <style>
-        .hashtagsBox{
+        .songsBox{
             width: 100%;
             min-height: 200px;
             max-width: 93vw;
         }
 
-        .hashtagsAccordionBox{
+        .songsAccordionBox{
             width: 33.33%;
             min-height: 200px;
             max-width: 93vw;
         }
 
         @media only screen and (max-width: 991px) {
-            .hashtagsAccordionBox{
+            .songsAccordionBox{
                 width: 100%;
                 min-height: 200px;
             }
@@ -420,95 +398,30 @@ function limitContentLength($content, $limit) {
                     </div>
                 </div>
             </div>
+                                       
+            <div class="col-xs-4 ol-sm-4 col-md-4 col-lg-4 songsAccordionBox">
+                <div class="panel-group" id="accordion_3" role="tablist" aria-multiselectable="true">
 
-            <?php if($hashtagsDataForTheLast7Days != false && $hashtagsDataForTheLast120Days != false): ?>
-                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-                    <div class="card">
-                        <div class="body bg-purple">
-                            НАЙ-АКТУАЛНИТЕ ХАШТАГОВЕ:
+                    <div class="panel panel-primary">
+                        <div class="panel-heading" role="tab" id="headingOne_3">
+                            <h4 class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordion_3" href="#collapseOne_3" aria-expanded="true" aria-controls="collapseOne_3" class="" id="hashtagsComparisonChartHeading">
+                                    СРАВНЕНИЕ<i class="material-icons">keyboard_arrow_down</i>
+                                </a>
+                            </h4>
                         </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                    <div class="body">
-                        <div class="row clearfix">
-                            <div class="col-xs-12 ol-sm-12 col-md-12 col-lg-12">
-
-                                <div class="panel-group" id="accordion_2" role="tablist" aria-multiselectable="true">
-                                    <div class="panel panel-primary">
-                                        <div class="panel-heading" role="tab" id="headingOne_2">
-                                            <h4 class="panel-title">
-                                                <a role="button" data-toggle="collapse" data-parent="#accordion_2" href="#collapseOne_2" aria-expanded="true" aria-controls="collapseOne_2" id="hashtagsForTheLast7Days">
-                                                    ПОНАСТОЯЩЕМ <i class="material-icons">keyboard_arrow_down</i>
-                                                </a>
-                                            </h4>
-                                        </div>
-                                        <div id="collapseOne_2" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_2">
-                                            <div class="panel-body">
-                                                <ul class="dashboard-stat-list">
-                                                    <?php foreach($hashtagsDataForTheLast7Days as $ht):?>
-                                                        <li>
-                                                            <?php echo $ht["rank"] ?>. <b>#<?php echo $ht["hashtag_name"] ?></b>&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;<?php echo number_format($ht["publish_cnt"]) ?> пъти е използван
-                                                        </li>
-                                                    <?php endforeach;?>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="panel panel-primary">
-                                        <div class="panel-heading" role="tab" id="headingTwo_2">
-                                            <h4 class="panel-title">
-                                                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion_2" href="#collapseTwo_2" aria-expanded="false" aria-controls="collapseTwo_2" id="hashtagsForTheLast120Days">
-                                                    ЗА ПОСЛЕДНИТЕ 120 ДНИ <i class="material-icons">keyboard_arrow_down</i>
-                                                </a>
-                                            </h4>
-                                        </div>
-                                        <div id="collapseTwo_2" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo_2">
-                                            <div class="panel-body">
-                                                <ul class="dashboard-stat-list">
-                                                    <?php foreach($hashtagsDataForTheLast120Days as $ht):?>
-                                                        <li>
-                                                            <?php echo $ht["rank"] ?>. <b>#<?php echo $ht["hashtag_name"] ?></b>&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;<?php echo number_format($ht["publish_cnt"]) ?> пъти е използван
-                                                        </li>
-                                                    <?php endforeach;?>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                                                        
-                <div class="col-xs-4 ol-sm-4 col-md-4 col-lg-4 hashtagsAccordionBox">
-                    <div class="panel-group" id="accordion_3" role="tablist" aria-multiselectable="true">
-
-                        <div class="panel panel-primary">
-                            <div class="panel-heading" role="tab" id="headingOne_3">
-                                <h4 class="panel-title">
-                                    <a role="button" data-toggle="collapse" data-parent="#accordion_3" href="#collapseOne_3" aria-expanded="true" aria-controls="collapseOne_3" class="" id="hashtagsComparisonChartHeading">
-                                        ПОНАСТОЯЩЕМ<i class="material-icons">keyboard_arrow_down</i>
-                                    </a>
-                                </h4>
-                            </div>
-                            <div id="collapseOne_3" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_3" aria-expanded="true">
-                                <div class="panel-body">
-                                    <div class="body hashtagsBox">
-                                        <canvas id="hashtagsChart"></canvas>
-                                    </div>
+                        <div id="collapseOne_3" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_3" aria-expanded="true">
+                            <div class="panel-body">
+                                <div class="body songsBox">
+                                    <canvas id="songsChart"></canvas>
                                 </div>
                             </div>
                         </div>
-
                     </div>
+
                 </div>
-            <?php endif;?>
-
-
+            </div>
+            
             <!-- Footer -->
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <div class="card">
@@ -530,19 +443,14 @@ function limitContentLength($content, $limit) {
     <script>
 
     //Статистика за хаштаговете
-    
-    let hashtagsNames7Days = JSON.parse(`<?php echo json_encode($hashtagsRanks7Days) ?>`);
-    let hashtagsNames120Days = JSON.parse(`<?php echo json_encode($hashtagsRanks120Days) ?>`);
-    
-    let hashtagsUses7Days = JSON.parse(`<?php echo json_encode($hashtagsUses7Days) ?>`);
-    let hashtagsUses120Days = JSON.parse(`<?php echo json_encode($hashtagsUses120Days) ?>`);
+    let songsPeaksDiff = JSON.parse(`<?php echo json_encode($songsOnlyDaysDiff) ?>`);
 
     // съставяне 
     const dataGlobal = {
-        labels: hashtagsNames7Days,
+        labels: [1,2,3,4,5,6,7,8,9,10],
         datasets: [{
-            label: 'Хаштагове',
-            data: hashtagsUses7Days,
+            label: 'Разлика в пикове в дни',
+            data: songsPeaksDiff,
             backgroundColor: [
                 'rgba(255, 26, 104, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
@@ -582,36 +490,9 @@ function limitContentLength($content, $limit) {
 
     // слагаме статистиката в html елемента
     const myChartGlobal = new Chart(
-        document.getElementById('hashtagsChart'),
+        document.getElementById('songsChart'),
         configGlobal
     );
-
-
-    const hashtags7div = document.getElementById('hashtagsForTheLast7Days');
-    const hashtags120div = document.getElementById('hashtagsForTheLast120Days');
-    const hashtagsChartHeading = document.getElementById('hashtagsComparisonChartHeading');
-
-    hashtags7div.addEventListener('click', () => {
-
-        hashtagsChartHeading.innerHTML = "ПОНАСТОЯЩЕМ" + `<i class="material-icons">keyboard_arrow_down</i>`;
-
-        //Актуализираме информацията в диаграмата
-        myChartGlobal.data.datasets[0].data = hashtagsUses7Days;
-        myChartGlobal.data.labels = hashtagsNames7Days;
-
-        myChartGlobal.update();
-    });
-
-    hashtags120div.addEventListener('click', () => {
-
-        hashtagsChartHeading.innerHTML = "ЗА ПОСЛЕДНИТЕ 120 ДНИ" + `<i class="material-icons">keyboard_arrow_down</i>`;
-
-        //Актуализираме информацията в диаграмата
-        myChartGlobal.data.datasets[0].data = hashtagsUses120Days;
-        myChartGlobal.data.labels = hashtagsNames120Days;
-
-        myChartGlobal.update();
-    });
     </script>
 
     <!-- Jquery Core Js -->
