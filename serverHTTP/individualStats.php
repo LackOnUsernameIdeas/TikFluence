@@ -1,95 +1,96 @@
 <?php
 
-//Вмъкване на нужните файлове
-include './includes/databaseManager.php';
-include './includes/common.php';
-include './scraping/curlFunctions.php';
+    //Вмъкване на нужните файлове
+    include './includes/databaseManager.php';
+    include './includes/common.php';
+    include './scraping/curlFunctions.php';
 
-//Създаваме връзката с базата данни
-$db = new DatabaseManager();
+    //Създаваме връзката с базата данни
+    $db = new DatabaseManager();
 
-//Извличаме името от данните, които ни дава TikTok API
-$userBasicData = [];
-$userVideoData = [];
+    //Извличаме името от данните, които ни дава TikTok API
+    $userBasicData = [];
+    $userVideoData = [];
 
-if (isset($_GET["code"]) && !isset($_COOKIE["tiktok_access_token"])) { //Ако потребителят не е потвърдил все още
+    if(isset($_GET["code"]) && !isset($_COOKIE["tiktok_access_token"])){ //Ако потребителят не е потвърдил все още
 
-    //Генерираме си access token, когато потребителят влезе и потвърди от профила си
-    $tokens = generateTikTokAccessToken($_GET["code"]);
-    $accessToken = $tokens["access_token"];
-    $refreshToken = $tokens["refresh_token"];
+        //Генерираме си access token, когато потребителят влезе и потвърди от профила си
+        $tokens = generateTikTokAccessToken($_GET["code"]);
+        $accessToken = $tokens["access_token"];
+        $refreshToken = $tokens["refresh_token"];
 
-    $expirationIn = 3600;
-    $expirationTime = time() + $expirationIn;
+        $expirationIn = 3600;
+        $expirationTime = time() + $expirationIn;
 
-    setcookie('tiktok_access_token', $accessToken, $expirationTime);
-    setcookie('tiktok_refresh_token', $refreshToken, time() + 86400);
-
-    setcookie('tiktok_access_token_expiration', $expirationTime, $expirationTime);
-
-    $userBasicData = getUserBasicData($accessToken);
-    $userVideoData = getUserVideoData($accessToken);
-
-    //Генерираме си подробни данни за потребителя, ако профилът му не е заключен и има видеа
-    if ($accessToken != false) {
-        $openUserId = getUserOpenId($accessToken);
-
-        $usernameLink = generateTikTokUsername("https://open-api.tiktok.com/shortlink/profile/?open_id=$openUserId");
-        $username = explode("?", explode('@', $usernameLink)[1])[0];
-    }
-} elseif (isset($_COOKIE["tiktok_access_token"])) { //Ако потребителят веднъж е потвърдил
-
-    $accessToken = $_COOKIE["tiktok_access_token"];
-    $refreshToken = $_COOKIE["tiktok_refresh_token"];
-
-    $expirationTime = $_COOKIE["tiktok_access_token_expiration"];
-    $currentTime = time();
-
-    //Проверяваме дали токена е изтекъл
-    if ($currentTime > $expirationTime) {
-        //Генерираме си нов access token
-        $accessToken = refreshTikTokAccessToken($refreshToken);
-        $expiresIn = 3600; // слагаме времето на изтичане отново да е 1 час
-        $expirationTime = time() + $expiresIn;
-
-        //Актуализираме бизквитката с новия токен и времето му на изтичане на валидността
         setcookie('tiktok_access_token', $accessToken, $expirationTime);
+        setcookie('tiktok_refresh_token', $refreshToken, time() + 86400);
+
+        setcookie('tiktok_access_token_expiration', $expirationTime, $expirationTime);
+
+        $userBasicData = getUserBasicData($accessToken);
+        $userVideoData = getUserVideoData($accessToken);
+
+        //Генерираме си подробни данни за потребителя, ако профилът му не е заключен и има видеа
+        if($accessToken != false){
+            $openUserId = getUserOpenId($accessToken);
+
+            $usernameLink = generateTikTokUsername("https://open-api.tiktok.com/shortlink/profile/?open_id=$openUserId");
+            $username = explode("?", explode('@', $usernameLink)[1])[0];
+        }
+        
+    } elseif(isset($_COOKIE["tiktok_access_token"])){ //Ако потребителят веднъж е потвърдил
+
+        $accessToken = $_COOKIE["tiktok_access_token"];
+        $refreshToken = $_COOKIE["tiktok_refresh_token"];
+
+        $expirationTime = $_COOKIE["tiktok_access_token_expiration"];
+        $currentTime = time();
+
+        //Проверяваме дали токена е изтекъл
+        if($currentTime > $expirationTime){
+            //Генерираме си нов access token
+            $accessToken = refreshTikTokAccessToken($refreshToken);
+            $expiresIn = 3600; // слагаме времето на изтичане отново да е 1 час
+            $expirationTime = time() + $expiresIn;
+            
+            //Актуализираме бизквитката с новия токен и времето му на изтичане на валидността
+            setcookie('tiktok_access_token', $accessToken, $expirationTime);
+        }
+
+        $userBasicData = getUserBasicData($accessToken);
+        $userVideoData = getUserVideoData($accessToken);
+
+        //Генерираме си подробни данни за потребителя, ако профилът му не е заключен и има видеа
+        if($accessToken != false){
+            $openUserId = getUserOpenId($accessToken);
+
+            $usernameLink = generateTikTokUsername("https://open-api.tiktok.com/shortlink/profile/?open_id=$openUserId");
+            $username = explode("?", explode('@', $usernameLink)[1])[0];
+        }
     }
 
-    $userBasicData = getUserBasicData($accessToken);
-    $userVideoData = getUserVideoData($accessToken);
+    //Показваме профилната снимка на потребителя ако е въвел името си. Подсигуряме си информацията за потребителя под формата на масиви.
+    $videosPublishDates = [];
 
-    //Генерираме си подробни данни за потребителя, ако профилът му не е заключен и има видеа
-    if ($accessToken != false) {
-        $openUserId = getUserOpenId($accessToken);
+    $likes = [];
+    $views = [];
+    $shares = [];
+    $comments = [];
 
-        $usernameLink = generateTikTokUsername("https://open-api.tiktok.com/shortlink/profile/?open_id=$openUserId");
-        $username = explode("?", explode('@', $usernameLink)[1])[0];
+    if(isset($userVideoData) && $userVideoData != false){
+        foreach($userVideoData as $vid){
+            $videosPublishDates[] = gmdate("Y-m-d", $vid["create_time"]);
+    
+            $likes[] = $vid["like_count"];
+            $views[] = $vid["view_count"];
+            $shares[] = $vid["share_count"];
+            $comments[] = $vid["comment_count"];
+        }
     }
-}
-
-//Показваме профилната снимка на потребителя ако е въвел името си. Подсигуряме си информацията за потребителя под формата на масиви.
-$videosPublishDates = [];
-
-$likes = [];
-$views = [];
-$shares = [];
-$comments = [];
-
-if (isset($userVideoData) && $userVideoData != false) {
-    foreach ($userVideoData as $vid) {
-        $videosPublishDates[] = gmdate("Y-m-d", $vid["create_time"]);
-
-        $likes[] = $vid["like_count"];
-        $views[] = $vid["view_count"];
-        $shares[] = $vid["share_count"];
-        $comments[] = $vid["comment_count"];
-    }
-}
 
 
-//С помощта на това id, потребителят е сигурен, че не злоупотребяваме с неговите данни
-$reqCallbackState = uniqid();
+    //С помощта на това id, потребителят е сигурен, че не злоупотребяваме с неговите данни
+    $reqCallbackState = uniqid();
 
 ?>
 <!DOCTYPE html>
@@ -126,7 +127,7 @@ $reqCallbackState = uniqid();
     <link href="./css/themes/all-themes.css" rel="stylesheet" />
 
     <style>
-        .userChartsBox {
+        .userChartsBox{
             width: 100%;
             min-height: 400px;
             max-height: 600px;
@@ -158,70 +159,66 @@ $reqCallbackState = uniqid();
 
             <!-- Menu -->
             <div class="menu">
-                <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 584px;">
-                    <ul class="list" style="overflow: hidden; width: auto; height: 584px;">
-                        <li>
-                            <a href="./index.php" class="toggled waves-effect waves-block">
-                                <i class="material-icons">home</i>
-                                <span>НАЧАЛО</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="affectedSongs.php" class=" waves-effect waves-block">
-                                <i class="material-icons">music_note</i>
-                                <span>ПОВЛИЯНИ ПЕСНИ</span>
-                            </a>
-                        </li>
-                        <li class="active">
-                            <a href="#" class=" waves-effect waves-block">
-                                <i class="material-icons">person_outline</i>
-                                <span>МОИТЕ СТАТИСТИКИ В TIKTOK</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="javascript:void(0);" class="menu-toggle waves-effect waves-block">
-                                <i class="material-icons">insert_chart</i>
-                                <span>ОЩЕ СТАТИСТИКИ</span>
-                            </a>
-                            <ul class="ml-menu">
-                                <li>
-                                    <a href="songs.php" class="waves-effect waves-block">
-                                        <i class="material-icons">music_note</i>
-                                        <span>ТОП 200 TIKTOK ПЕСНИ ГЛОБАЛНО</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="songsBG.php" class=" waves-effect waves-block">
-                                        <i class="material-icons">music_note</i>
-                                        <span>ТОП TIKTOK ПЕСНИ ЗА БЪЛГАРИЯ</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="tiktokers.php" class="waves-effect waves-block">
-                                        <i class="material-icons">person</i>
-                                        <span>ТОП 200 НАЙ-ИЗВЕСТНИ ТИКТОКЪРИ</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="topVideos.php" class="waves-effect waves-block">
-                                        <i class="material-icons">play_circle_outline</i>
-                                        <span>ТОП 200 НАЙ-ГЛЕДАНИ ВИДЕА В TIKTOK</span>
-                                    </a>
-                                </li>
+                <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 584px;"><ul class="list" style="overflow: hidden; width: auto; height: 584px;">
+                    <li>
+                        <a href="./index.php" class="toggled waves-effect waves-block">
+                            <i class="material-icons">home</i>
+                            <span>НАЧАЛО</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="affectedSongs.php" class=" waves-effect waves-block">
+                            <i class="material-icons">music_note</i>
+                            <span>ПОВЛИЯНИ ПЕСНИ</span>
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="#" class=" waves-effect waves-block">
+                            <i class="material-icons">person_outline</i>
+                            <span>МОИТЕ СТАТИСТИКИ В TIKTOK</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0);" class="menu-toggle waves-effect waves-block">
+                            <i class="material-icons">insert_chart</i>
+                            <span>ОЩЕ СТАТИСТИКИ</span>
+                        </a>
+                        <ul class="ml-menu">
+                            <li>
+                                <a href="songs.php" class="waves-effect waves-block">
+                                    <i class="material-icons">music_note</i>
+                                    <span>ТОП 200 TIKTOK ПЕСНИ ГЛОБАЛНО</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="songsBG.php" class=" waves-effect waves-block">
+                                    <i class="material-icons">music_note</i>
+                                    <span>ТОП TIKTOK ПЕСНИ ЗА БЪЛГАРИЯ</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="tiktokers.php" class="waves-effect waves-block">
+                                    <i class="material-icons">person</i>
+                                    <span>ТОП 200 НАЙ-ИЗВЕСТНИ ТИКТОКЪРИ</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="topVideos.php" class="waves-effect waves-block">
+                                    <i class="material-icons">play_circle_outline</i>
+                                    <span>ТОП 200 НАЙ-ГЛЕДАНИ ВИДЕА В TIKTOK</span>
+                                </a>
+                            </li>
 
-                            </ul>
-                        </li>
-                        <li>
-                            <a href="feedback.php" class=" waves-effect waves-block">
-                                <i class="material-icons">info</i>
-                                <span>ЗА КОНТАКТ</span>
-                            </a>
-                        </li>
-                        <!-- <li class="header"></li> -->
-                    </ul>
-                    <div class="slimScrollBar" style="background: rgba(0, 0, 0, 0.5); width: 4px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 0px; z-index: 99; right: 1px; height: 584px;"></div>
-                    <div class="slimScrollRail" style="width: 4px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 0px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div>
-                </div>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="feedback.php" class=" waves-effect waves-block">
+                            <i class="material-icons">info</i>
+                            <span>ЗА КОНТАКТ</span>
+                        </a>
+                    </li>
+                    <!-- <li class="header"></li> -->
+                </ul><div class="slimScrollBar" style="background: rgba(0, 0, 0, 0.5); width: 4px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 0px; z-index: 99; right: 1px; height: 584px;"></div><div class="slimScrollRail" style="width: 4px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 0px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div></div>
             </div>
             <!-- #Menu -->
             <!-- Footer -->
@@ -253,7 +250,7 @@ $reqCallbackState = uniqid();
                             </ol>
                         </div>
                     </div>
-                    <?php if ($userBasicData != []) : ?>
+                    <?php if($userBasicData != []):?>
                         <div class="col">
                             <a href="https://www.tiktok.com/logout?redirect_url=https://fluence.noit.eu/individualStats.php" class="btn bg-purple waves-effect" target="_blank" id="myLink">ИЗЛЕЗ ОТ ПРОФИЛА СИ</a>
                         </div>
@@ -261,7 +258,7 @@ $reqCallbackState = uniqid();
                     <?php endif; ?>
                 </div>
 
-                <?php if ($userBasicData == []) : ?>
+                <?php if($userBasicData == []):?> 
 
                     <div class="row clearfix">
 
@@ -374,11 +371,11 @@ $reqCallbackState = uniqid();
                         </div>
                     </div>
 
-                <?php endif; ?>
+                <?php endif;?>
 
-                <?php if ($userBasicData != []) : ?>
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div class="row clearfix">
+                <?php if($userBasicData != []):?>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">  
+                        <div class="row clearfix">  
 
                             <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5" style="min-width:50%;">
                                 <div class="card">
@@ -390,18 +387,18 @@ $reqCallbackState = uniqid();
                                                 <div class="user-info">
                                                     <div class="body">
 
-                                                        <div class="image">
-                                                            <img src="<?php echo $userBasicData["avatar_url"] ?>" width="68" height="68" alt="User" />
-                                                        </div>
+                                                            <div class="image">
+                                                                <img src="<?php echo $userBasicData["avatar_url"]?>" width="68" height="68" alt="User" />
+                                                            </div>
 
-                                                        <div class="info-container">
-                                                            <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                <?= $username ?> <img src="<?= $userBasicData["is_verified"] ? "./images/verified.png" : "" ?>" width="10px" height="10px">
+                                                            <div class="info-container">
+                                                                <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                    <?= $username ?> <img src="<?= $userBasicData["is_verified"] ? "./images/verified.png" : ""?>" width="10px" height="10px">
+                                                                </div>
+                                                                <div class="email" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                    <?= $userBasicData["display_name"] . " |"?> <?= $userBasicData["bio_description"]?>
+                                                                </div>
                                                             </div>
-                                                            <div class="email" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                <?= $userBasicData["display_name"] . " |" ?> <?= $userBasicData["bio_description"] ?>
-                                                            </div>
-                                                        </div>
                                                     </div>
 
                                                 </div>
@@ -415,7 +412,7 @@ $reqCallbackState = uniqid();
                             </div>
 
 
-                            <div class="row clearfix">
+                            <div class="row clearfix">  
 
                                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
                                     <div class="info-box bg-deep-purple hover-zoom-effect">
@@ -483,15 +480,15 @@ $reqCallbackState = uniqid();
 
                     </div>
 
-                    <?php if ($userVideoData != false) : ?>
-                        <div class="row clearfix">
+                    <?php if($userVideoData != false): ?>
+                        <div class="row clearfix">  
                             <div class="col-xs-12 ol-sm-12 col-md-12 col-lg-12">
                                 <div class="panel-group" id="accordion_1" role="tablist" aria-multiselectable="true">
                                     <div class="panel panel-primary">
                                         <div class="panel-heading" role="tab" id="headingOne_1">
                                             <h4 class="panel-title">
                                                 <a role="button" data-toggle="collapse" data-parent="#accordion_1" href="#collapseOne_1" aria-expanded="true" aria-controls="collapseOne_1" class="">
-                                                    ПОСЛЕДОВАТЕЛИ В РЕАЛНО ВРЕМЕ <i class="material-icons">keyboard_arrow_down</i>
+                                                ПОСЛЕДОВАТЕЛИ В РЕАЛНО ВРЕМЕ <i class="material-icons">keyboard_arrow_down</i>
                                                 </a>
                                             </h4>
                                         </div>
@@ -510,7 +507,7 @@ $reqCallbackState = uniqid();
                                         <div class="panel-heading" role="tab" id="headingOne_2">
                                             <h4 class="panel-title">
                                                 <a role="button" data-toggle="collapse" data-parent="#accordion_2" href="#collapseOne_2" aria-expanded="true" aria-controls="collapseOne_2" class="">
-                                                    ХАРЕСВАНИЯ В РЕАЛНО ВРЕМЕ <i class="material-icons">keyboard_arrow_down</i>
+                                                ХАРЕСВАНИЯ В РЕАЛНО ВРЕМЕ <i class="material-icons">keyboard_arrow_down</i>
                                                 </a>
                                             </h4>
                                         </div>
@@ -529,7 +526,7 @@ $reqCallbackState = uniqid();
                                         <div class="panel-heading" role="tab" id="headingOne_3">
                                             <h4 class="panel-title">
                                                 <a role="button" data-toggle="collapse" data-parent="#accordion_3" href="#collapseOne_3" aria-expanded="true" aria-controls="collapseOne_3" class="">
-                                                    ХАРЕСВАНИЯ НА СКОРО КАЧЕНИ ВИДЕА <i class="material-icons">keyboard_arrow_down</i>
+                                                ХАРЕСВАНИЯ НА СКОРО КАЧЕНИ ВИДЕА <i class="material-icons">keyboard_arrow_down</i>
                                                 </a>
                                             </h4>
                                         </div>
@@ -548,7 +545,7 @@ $reqCallbackState = uniqid();
                                         <div class="panel-heading" role="tab" id="headingOne_4">
                                             <h4 class="panel-title">
                                                 <a role="button" data-toggle="collapse" data-parent="#accordion_4" href="#collapseOne_4" aria-expanded="true" aria-controls="collapseOne_4" class="">
-                                                    ГЛЕДАНИЯ НА СКОРО КАЧЕНИ ВИДЕА <i class="material-icons">keyboard_arrow_down</i>
+                                                ГЛЕДАНИЯ НА СКОРО КАЧЕНИ ВИДЕА <i class="material-icons">keyboard_arrow_down</i>
                                                 </a>
                                             </h4>
                                         </div>
@@ -567,7 +564,7 @@ $reqCallbackState = uniqid();
                                         <div class="panel-heading" role="tab" id="headingOne_5">
                                             <h4 class="panel-title">
                                                 <a role="button" data-toggle="collapse" data-parent="#accordion_5" href="#collapseOne_5" aria-expanded="true" aria-controls="collapseOne_5" class="">
-                                                    СПОДЕЛЯНИЯ НА СКОРО КАЧЕНИ ВИДЕА <i class="material-icons">keyboard_arrow_down</i>
+                                                СПОДЕЛЯНИЯ НА СКОРО КАЧЕНИ ВИДЕА <i class="material-icons">keyboard_arrow_down</i>
                                                 </a>
                                             </h4>
                                         </div>
@@ -586,7 +583,7 @@ $reqCallbackState = uniqid();
                                         <div class="panel-heading" role="tab" id="headingOne_5">
                                             <h4 class="panel-title">
                                                 <a role="button" data-toggle="collapse" data-parent="#accordion_6" href="#collapseOne_6" aria-expanded="true" aria-controls="collapseOne_6" class="">
-                                                    КОМЕНТАРИ НА СКОРО КАЧЕНИ ВИДЕА<i class="material-icons">keyboard_arrow_down</i>
+                                                КОМЕНТАРИ НА СКОРО КАЧЕНИ ВИДЕА<i class="material-icons">keyboard_arrow_down</i>
                                                 </a>
                                             </h4>
                                         </div>
@@ -598,7 +595,7 @@ $reqCallbackState = uniqid();
                                     </div>
                                 </div>
                             </div>
-                        <?php else : ?>
+                        <?php else:?>
                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <div class="card">
                                     <div class="body" style="font-size:18px;">
@@ -608,24 +605,24 @@ $reqCallbackState = uniqid();
                                     </div>
                                 </div>
                             </div>
-                        <?php endif; ?>
-                        </div>
+                        <?php endif;?>
+                    </div>
 
-                    <?php endif; ?>
-                    <!-- Footer -->
-                    <div class="col-xs-14 col-sm-14 col-md-14 col-lg-14">
-                        <div class="card">
-                            <div class="body">
-
-                                <div class="legal">
-                                    <?php include './footer.php'; ?>
-                                </div>
-
+                <?php endif;?>
+                <!-- Footer -->
+                <div class="col-xs-14 col-sm-14 col-md-14 col-lg-14">
+                    <div class="card">
+                        <div class="body">
+                            
+                            <div class="legal">
+                                <?php include './footer.php';?>
                             </div>
+                                    
                         </div>
                     </div>
-                    <!-- #Footer -->
-            </div>
+                </div>
+                <!-- #Footer -->
+        </div>
     </section>
 
 
@@ -635,140 +632,147 @@ $reqCallbackState = uniqid();
 <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js" integrity="sha512-JPcRR8yFa8mmCsfrw4TNte1ZvF1e3+1SdGMslZvmrzDYxS69J7J49vkFL8u6u8PlPJK+H3voElBtUCzaXj+6ig==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <script>
-    document.getElementById("myLink").addEventListener("click", function(event) {
-        event.preventDefault();
+  document.getElementById("myLink").addEventListener("click", function(event) {
+    event.preventDefault();
 
-        //Изтриваме бисквитките от всички страници на приложението
-        document.cookie = "tiktok_access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-        document.cookie = "tiktok_refresh_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-        document.cookie = "tiktok_access_token_expiration=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    //Изтриваме бисквитките от всички страници на приложението
+    document.cookie = "tiktok_access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    document.cookie = "tiktok_refresh_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    document.cookie = "tiktok_access_token_expiration=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
 
-        // Отваря страницата на TikTok в нов прозорец
-        window.open('https://www.tiktok.com/logout?redirect_url=https://fluence.noit.euindividualStats.php', '_blank');
+    // Отваря страницата на TikTok в нов прозорец
+    window.open('https://www.tiktok.com/logout?redirect_url=https://fluence.noit.euindividualStats.php', '_blank');
 
-        // Препраща текущия прозорец към https://fluence.noit.eu/individualStats.php след 3 секунди
-        setTimeout(function() {
-            window.location.href = "https://fluence.noit.eu/individualStats.php";
-        }, 1000);
-    });
+    // Препраща текущия прозорец към https://fluence.noit.eu/individualStats.php след 3 секунди
+    setTimeout(function() {
+      window.location.href = "https://fluence.noit.eu/individualStats.php";
+    }, 1000);
+  });
 </script>
-
-<script src="https://cdn.socket.io/4.6.0/socket.io.min.js"></script>
 <script>
+
     //Данни за ползване
-    let videosPublishDates = JSON.parse('<?php echo json_encode($videosPublishDates) ?>');
+        let videosPublishDates = JSON.parse('<?php echo json_encode($videosPublishDates) ?>');
 
-    let likes = JSON.parse('<?php echo json_encode($likes) ?>');
-    let views = JSON.parse('<?php echo json_encode($views) ?>');
-    let comments = JSON.parse('<?php echo json_encode($comments) ?>');
-    let shares = JSON.parse('<?php echo json_encode($shares) ?>');
+        let likes = JSON.parse('<?php echo json_encode($likes) ?>');
+        let views = JSON.parse('<?php echo json_encode($views) ?>');
+        let comments = JSON.parse('<?php echo json_encode($comments) ?>');
+        let shares = JSON.parse('<?php echo json_encode($shares) ?>');
 
-    let followersLiveData = JSON.parse('<?php echo json_encode($userBasicData["follower_count"]) ?>');
-    let likesLiveData = JSON.parse('<?php echo json_encode($userBasicData["likes_count"]) ?>');
+        let followersLiveData = JSON.parse('<?php echo json_encode($userBasicData["follower_count"]) ?>');
+        let likesLiveData = JSON.parse('<?php echo json_encode($userBasicData["likes_count"]) ?>');
 
     //Статистика за харесвания
-    new Chart(document.getElementById('LikesChart'), {
-        type: 'bar',
-        data: {
-            labels: videosPublishDates, //x
-            datasets: [{
-                label: 'Харесвания',
-                data: likes, //y
-                borderColor: 'rgb(255, 240, 0)',
-                backgroundColor: 'rgba(255, 240, 0, 0.7)',
-                fill: true,
-                tension: 0.4
-            }]
-        },
-        options: {
-            scales: {
-                y: {
-                    type: 'linear',
-                    display: true,
-                    position: "left"
-                }
+        new Chart(document.getElementById('LikesChart'), {
+            type: 'bar',
+            data: {
+                labels: videosPublishDates, //x
+                datasets: [
+                    {
+                        label: 'Харесвания',
+                        data: likes, //y
+                        borderColor: 'rgb(255, 240, 0)',
+                        backgroundColor: 'rgba(255, 240, 0, 0.7)',
+                        fill: true,
+                        tension: 0.4
+                    }
+                ]
             },
-            maintainAspectRatio: false
-        }
-    });
+            options: {
+                scales: {
+                    y: {
+                        type: 'linear',
+                        display: true,
+                        position: "left"
+                    }
+                },
+                maintainAspectRatio: false
+            }
+        });
 
     //Статистика за гледания
-    new Chart(document.getElementById('ViewsChart'), {
-        type: 'bar',
-        data: {
-            labels: videosPublishDates, //x
-            datasets: [{
-                label: 'Гледания',
-                data: views, //y
-                borderColor: 'rgb(159, 90, 253)',
-                backgroundColor: 'rgba(159, 90, 253, 0.7)',
-                fill: true,
-                tension: 0.4
-            }]
-        },
-        options: {
-            scales: {
-                y: {
-                    type: 'linear',
-                    display: true,
-                    position: "left"
-                }
+        new Chart(document.getElementById('ViewsChart'), {
+            type: 'bar',
+            data: {
+                labels: videosPublishDates, //x
+                datasets: [
+                    {
+                        label: 'Гледания',
+                        data: views, //y
+                        borderColor: 'rgb(159, 90, 253)',
+                        backgroundColor: 'rgba(159, 90, 253, 0.7)',
+                        fill: true,
+                        tension: 0.4
+                    }
+                ]
             },
-            maintainAspectRatio: false
-        }
-    });
+            options: {
+                scales: {
+                    y: {
+                        type: 'linear',
+                        display: true,
+                        position: "left"
+                    }
+                },
+                maintainAspectRatio: false
+            }
+        });
 
     //Статистика за споделяния
-    new Chart(document.getElementById('SharesChart'), {
-        type: 'bar',
-        data: {
-            labels: videosPublishDates, //x
-            datasets: [{
-                label: 'Споделяния',
-                data: shares, //y
-                borderColor: 'rgb(255, 0, 0)',
-                backgroundColor: 'rgba(255, 0, 0, 0.7)',
-                fill: true,
-                tension: 0.4
-            }]
-        },
-        options: {
-            scales: {
-                y: {
-                    type: 'linear',
-                    display: true,
-                    position: "left"
-                }
+        new Chart(document.getElementById('SharesChart'), {
+            type: 'bar',
+            data: {
+                labels: videosPublishDates, //x
+                datasets: [
+                    {
+                        label: 'Споделяния',
+                        data: shares, //y
+                        borderColor: 'rgb(255, 0, 0)',
+                        backgroundColor: 'rgba(255, 0, 0, 0.7)',
+                        fill: true,
+                        tension: 0.4
+                    }
+                ]
             },
-            maintainAspectRatio: false
-        }
-    });
+            options: {
+                scales: {
+                    y: {
+                        type: 'linear',
+                        display: true,
+                        position: "left"
+                    }
+                },
+                maintainAspectRatio: false
+            }
+        });
 
     //Статистика за коментари
-    new Chart(document.getElementById('CommentsChart'), {
-        type: 'bar',
-        data: {
-            labels: videosPublishDates, //x
-            datasets: [{
-                label: 'Коментари',
-                data: comments, //y
-                borderColor: 'rgb(241, 90, 34)',
-                backgroundColor: 'rgba(241, 90, 34, 0.7)',
-                fill: true,
-                tension: 0.4
-            }]
-        },
-        options: {
-            scales: {
-                y: {
-                    type: 'linear',
-                    display: true,
-                    position: "left"
-                }
+        new Chart(document.getElementById('CommentsChart'), {
+            type: 'bar',
+            data: {
+                labels: videosPublishDates, //x
+                datasets: [
+                    {
+                        label: 'Коментари',
+                        data: comments, //y
+                        borderColor: 'rgb(241, 90, 34)',
+                        backgroundColor: 'rgba(241, 90, 34, 0.7)',
+                        fill: true,
+                        tension: 0.4
+                    }
+                ]
             },
-            maintainAspectRatio: false
-        }
-    });
+            options: {
+                scales: {
+                    y: {
+                        type: 'linear',
+                        display: true,
+                        position: "left"
+                    }
+                },
+                maintainAspectRatio: false
+            }
+        });
 
     //Статистика за последователи в реално време
 
@@ -776,7 +780,7 @@ $reqCallbackState = uniqid();
     let hours = date.getHours();
     let minutes = date.getMinutes();
 
-    if (minutes < 10) {
+    if(minutes < 10){
         minutes = String(date.getMinutes()).padStart(2, '0');
     }
 
@@ -809,7 +813,7 @@ $reqCallbackState = uniqid();
                         stepSize: 1,
                         beginAtZero: true,
                         min: followersLiveData - 10,
-                        max: followersLiveData + 10
+                        max: followersLiveData + 10        
                     }
                 }]
             },
@@ -825,7 +829,7 @@ $reqCallbackState = uniqid();
             labels: [time],
             datasets: [{
                 label: 'Харесвания в реално време',
-                data: [likesLiveData],
+                data: [likesLiveData], 
                 backgroundColor: 'rgba(255, 240, 0, 0.2)',
                 borderColor: 'rgb(255, 240, 0)',
                 borderWidth: 1
@@ -846,7 +850,7 @@ $reqCallbackState = uniqid();
                         stepSize: 3,
                         beginAtZero: true,
                         min: likesLiveData - 10,
-                        max: likesLiveData + 10
+                        max: likesLiveData + 10                          
                     }
                 }]
             },
@@ -854,53 +858,59 @@ $reqCallbackState = uniqid();
         }
     });
 
-    const socket = io('https://fluence-api.noit.eu', {});
-    
     //Запазваме токена, който ни е необходим, за да взимаме данни за диаграмите
     let accessToken = JSON.parse('<?php echo isset($_COOKIE["tiktok_access_token"]) ? json_encode($_COOKIE["tiktok_access_token"]) : json_encode($accessToken) ?>');
-    
-    socket.on('connect', () => {
-        // When the WebSocket connection is established, send the access token to the server
-        console.log("WebSocket connection established!")
-        socket.emit('sendAccessToken', accessToken);
-    });
 
-    socket.on('realTimeStatisticData', (data) => {
-        // Handle the received data here
-        let date = new Date();
-        let hours = date.getHours();
-        let minutes = date.getMinutes();
+    //Изпълняваме функцията, която трябва да праща заяки и да актуализира информацията в диаграмите и уиджетите през 1 минута
+    let requestCount = 0;
+    let intervalFunction = setInterval(function() {
 
-        if (minutes < 10) {
-            minutes = String(date.getMinutes()).padStart(2, '0');
+        requestCount++;
+        if (requestCount >= 10) {
+            clearInterval(intervalFunction);
+            return;
         }
 
-        let time = hours + ":" + minutes;
-
-        // Extract necessary information from data
-        let followers = data.data.user.follower_count;
-        let likes = data.data.user.likes_count;
-
-        // Update the charts with the new data
-        followersLive.data.labels.push(time);
-        followersLive.data.datasets[0].data.push(followers);
-        followersLive.update();
-
-        likesLive.data.labels.push(time);
-        likesLive.data.datasets[0].data.push(likes);
-        likesLive.update();
-    });
+        fetch('https://fluence-api.noit.eu/realTimeStatisticData', {
+            method: 'POST',
+            mode: 'cors',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({"accessToken": `${accessToken}`})
+        })
+        .then(response => response.json())
+        .then(data => {
+            //Задаваме точно време
+            let date = new Date();
+            let hours = date.getHours();
+            let minutes = date.getMinutes();
     
-    socket.on('error', (error) => {
-        // Handle the error on the client-side
-        console.error('Socket.io error:', error);
-        // You can display an error message to the user or take appropriate action
-    });
+            if(minutes < 10){
+                minutes = String(date.getMinutes()).padStart(2, '0')
+            }
+            
+            let time = hours + ":" + minutes;
+
+            //Запазваме необходимата информация в променливи
+            let followers = data.data.user.follower_count;
+            let likes = data.data.user.likes_count;
     
-    socket.on('disconnect', () => {
-        console.log('Disconnected from the server');
-        // You can perform any cleanup or display a message to the user here.
-    });        
+            //Актуализираме новите данни в диаграмите
+            followersLive.data.labels.push(time);
+            followersLive.data.datasets[0].data.push(followers);
+            followersLive.update();
+
+            likesLive.data.labels.push(time);
+            likesLive.data.datasets[0].data.push(likes);
+            likesLive.update();
+
+        })
+        .catch(error => {
+            console.error('Error fetching data:', error);
+        });
+    }, 60000);
+
 </script>
 
 <!-- Jquery Core Js -->
