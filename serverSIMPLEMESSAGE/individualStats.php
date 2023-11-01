@@ -652,6 +652,7 @@ $reqCallbackState = uniqid();
         }, 1000);
     });
 </script>
+<script src="https://cdn.socket.io/4.0.1/socket.io.js"></script>
 <script>
     //Данни за ползване
     let videosPublishDates = JSON.parse('<?php echo json_encode($videosPublishDates) ?>');
@@ -852,69 +853,15 @@ $reqCallbackState = uniqid();
         }
     });
 
-    //Запазваме токена, който ни е необходим, за да взимаме данни за диаграмите и го ползваме, за да изпратим първичната заявка към сървъра.
+    //Запазваме токена, който ни е необходим, за да взимаме данни за диаграмите
     let accessToken = JSON.parse('<?php echo isset($_COOKIE["tiktok_access_token"]) ? json_encode($_COOKIE["tiktok_access_token"]) : json_encode($accessToken) ?>');
 
-    const socket = new WebSocket('wss://fluence-api.noit.eu');
+    const socket = io('https://fluence-api.noit.eu/realTimeStatisticData');
 
-    socket.addEventListener('open', () => {
-        console.log('WebSocket connection established.');
-
-        sendRequest();
+    socket.on('message', (data) => {
+        console.log(data);
+        socket.emit('sendAccessToken', accessToken);
     });
-
-    //Вграждаме получените данни в диаграмите.
-    socket.addEventListener('message', (event) => {
-        const data = JSON.parse(event.data);
-
-        let date = new Date();
-        let hours = date.getHours();
-        let minutes = date.getMinutes();
-
-        if (minutes < 10) {
-            minutes = String(date.getMinutes()).padStart(2, '0');
-        }
-
-        let time = hours + ":" + minutes;
-
-        let followers = data.data.user.follower_count;
-        let likes = data.data.user.likes_count;
-
-        followersLive.data.labels.push(time);
-        followersLive.data.datasets[0].data.push(followers);
-        followersLive.update();
-
-        likesLive.data.labels.push(time);
-        likesLive.data.datasets[0].data.push(likes);
-        likesLive.update();
-
-        // Ако заявките станат 10 на едно зареждане, връзката се прекъсва.
-        if (followersLive.data.labels.length >= 10) {
-            console.log('Stopping WebSocket connection after 10 requests.');
-            socket.close(); // Close the WebSocket connection
-        } else {
-            //Всяка заявка за данни се изпраща през минута
-            setTimeout(sendRequest, 10000);
-        }
-    });
-
-    socket.addEventListener('close', () => {
-        if (event.wasClean) {
-            console.log(`WebSocket connection closed cleanly, code=${event.code}, reason=${event.reason}`);
-        } else {
-            console.error('WebSocket connection abruptly closed');
-        }
-    });
-
-    socket.addEventListener('error', (error) => {
-        console.error('WebSocket error:', error);
-    });
-
-    function sendRequest() {
-        socket.send(JSON.stringify({
-            accessToken
-        }));
-    }
 </script>
 
 <!-- Jquery Core Js -->

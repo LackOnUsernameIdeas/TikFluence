@@ -1,57 +1,60 @@
 const express = require('express');
-const app = express();
 const http = require('http');
-const server = http.createServer(app);
-const nodemon = require('nodemon');
-const bodyParser = require('body-parser');
-const fetch = require('node-fetch');
+const socketIo = require('socket.io');
 const cors = require('cors');
-const { Server } = require("socket.io");
-const io = new Server(server);
+const fetch = require('node-fetch');
 
-app.use(bodyParser.json())
+const app = express();
+const server = http.createServer(app);
+const io = socketIo(server, {
+  cors: {
+    origin: "https://fluence.noit.eu",
+    methods: ["GET", "POST"]
+  }
+});
 
-app.use(
-    cors({
-        origin: "https://fluence.noit.eu"
-    })
-);
+io.of("/realTimeStatisticData").on('connection', (socket) => {
+    console.log('Client connected');
+    socket.emit('message', 'Успешна websocket връзка!');
 
-io.on('connection', (socket) => {
-    console.log('A user connected');
+    // Функция за взимане на данни от TikTok API.
+    const fetchDataFromTikTokAPI = async (accessToken) => {
+        try {
+            const response = await fetch('https://open.tiktokapis.com/v2/user/info/?fields=follower_count,likes_count', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`
+                }
+            });
 
-    // Handle the real-time statistic request from the client
-    socket.on('sendAccessToken', (accessToken) => {
-        fetch('https://open.tiktokapis.com/v2/user/info/?fields=follower_count,likes_count', {
-            headers: {
-                'Authorization': `Bearer ${accessToken}`
+            if (response.ok) {
+                const data = await response.json();
+                socket.emit('realTimeData', data); // Send data to the client
+            } else {
+                socket.emit('message', 'Error fetching data from TikTok API');
             }
-        })
-        .then(response => response.json())
-        .then(data => {
-            // Emit the data back to the client
-            socket.emit('realTimeStatisticData', data);
-        })
-        .catch(error => {
-            // Emit the error back to the client
-            socket.emit('realTimeStatisticError', error);
-        });
-    });
+        } catch (error) {
+            socket.emit('message', 'Error fetching data: ' + error.message);
+        }
+    }
 
-    // You can add more socket event handlers here
+    //Слушаме за 'sendAccessToken' event от браузъра
+    socket.on('sendAccessToken', (accessToken) => {
+        let requestCount = 0;
+ 
+        const intervalFunction = setInterval(() => {
+            requestCount++;
+            if(requestCount >= 10) {
+                clearInterval(intervalFunction); // Stop the interval after reaching the maximum count
+                return;
+            }
+            fetchDataFromTikTokAPI(accessToken);
+        }, 60000);
+    });    
 
-    // Example: Send a message to the connected client
-    socket.emit('message', 'Welcome to the real-time statistics server');
-
-    // Example: Listen for a client message and broadcast it to all clients
-    socket.on('chatMessage', (message) => {
-        io.emit('chatMessage', message);
-    });
-
-    // Handle disconnect
     socket.on('disconnect', () => {
-        console.log('A user disconnected');
+        console.log('Client disconnected');
     });
 });
 
-app.listen()
+server.listen();
