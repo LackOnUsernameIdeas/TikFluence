@@ -652,8 +652,7 @@ $reqCallbackState = uniqid();
         }, 1000);
     });
 </script>
-
-<script src="https://cdn.socket.io/4.6.0/socket.io.min.js"></script>
+<script src="https://cdn.socket.io/4.0.1/socket.io.js"></script>
 <script>
     //Данни за ползване
     let videosPublishDates = JSON.parse('<?php echo json_encode($videosPublishDates) ?>');
@@ -854,19 +853,21 @@ $reqCallbackState = uniqid();
         }
     });
 
-    const socket = io('https://fluence-api.noit.eu', {});
-    
     //Запазваме токена, който ни е необходим, за да взимаме данни за диаграмите
     let accessToken = JSON.parse('<?php echo isset($_COOKIE["tiktok_access_token"]) ? json_encode($_COOKIE["tiktok_access_token"]) : json_encode($accessToken) ?>');
-    
-    socket.on('connect', () => {
-        // When the WebSocket connection is established, send the access token to the server
-        console.log("WebSocket connection established!")
-        socket.emit('sendAccessToken', accessToken);
+
+    const socket = io('https://fluence-api.noit.eu/realTimeStatisticData', {
+        reconnection: false, 
+        reconnectionAttempts: 1
     });
 
-    socket.on('realTimeStatisticData', (data) => {
-        // Handle the received data here
+    socket.on('message', (data) => {
+        console.log(data);
+        socket.emit('sendAccessToken', accessToken);
+    });
+    
+    socket.on('realTimeData', (data) => {
+        //Задаваме точно време
         let date = new Date();
         let hours = date.getHours();
         let minutes = date.getMinutes();
@@ -877,30 +878,20 @@ $reqCallbackState = uniqid();
 
         let time = hours + ":" + minutes;
 
-        // Extract necessary information from data
+        //Запазваме необходимата информация в променливи
         let followers = data.data.user.follower_count;
         let likes = data.data.user.likes_count;
 
-        // Update the charts with the new data
+        //Актуализираме новите данни в диаграмите
         followersLive.data.labels.push(time);
         followersLive.data.datasets[0].data.push(followers);
         followersLive.update();
 
         likesLive.data.labels.push(time);
         likesLive.data.datasets[0].data.push(likes);
-        likesLive.update();
+        likesLive.update();        
     });
-    
-    socket.on('error', (error) => {
-        // Handle the error on the client-side
-        console.error('Socket.io error:', error);
-        // You can display an error message to the user or take appropriate action
-    });
-    
-    socket.on('disconnect', () => {
-        console.log('Disconnected from the server');
-        // You can perform any cleanup or display a message to the user here.
-    });        
+
 </script>
 
 <!-- Jquery Core Js -->

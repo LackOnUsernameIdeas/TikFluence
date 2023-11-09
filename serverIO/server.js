@@ -45,7 +45,7 @@ io.of("/realTimeStatisticData").on('connection', (socket) => {
         const intervalFunction = setInterval(() => {
             requestCount++;
             if(requestCount >= 10) {
-                clearInterval(intervalFunction); // Stop the interval after reaching the maximum count
+                clearInterval(intervalFunction);
                 return;
             }
             fetchDataFromTikTokAPI(accessToken);
